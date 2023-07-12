@@ -1,0 +1,56 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar" nzWidth="200px" 
+    nzBreakpoint="sm" nzCollapsible [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <a routerLink="/setting">
+        <h1 style="margin: 0 0 0 00px;">{{title}}</h1>
+      </a>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <ng-container *ngFor="let sidebar of sidebars">
+        <li *ngIf="hasAccess(sidebar.roles)"
+          nz-submenu nzTitle="{{sidebar.name}}" 
+          nzIcon="{{sidebar.icon}}" >
+          <ul *ngIf="sidebar?.childLinks">
+            <ng-container *ngFor="let childLink of sidebar?.childLinks">
+              <li *ngIf="hasAccess(childLink.roles)" nz-menu-item nzMatchRouter>
+                <a routerLink="{{childLink.link}}">
+                  <span nz-icon nzType="{{childLink.icon}}" 
+                    nzTheme="outline"></span> {{childLink.name}}
+                </a>
+              </li>
+            </ng-container>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <div nz-row>
+          <div nz-col nzSpan="1">
+            <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+              style="margin-left: 15px;" (click)="isCollapsed = !isCollapsed"></span>
+          </div>
+          <div nz-col nzSpan="23">
+            <ul nz-menu nzMode="horizontal" style="text-align: end;margin-right: 10px;">
+              <li nz-menu-item (click)="home()" style="font-size: 15px !important;">
+                <span nz-icon nzType="home" nzTheme="outline"></span> Home
+              </li>
+              <li nz-menu-item (click)="back()" style="font-size: 15px !important;">
+                <span nz-icon nzType="rollback" nzTheme="outline"></span> Back
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content>
+      <app-breadcrumb></app-breadcrumb>
+      <div class="content" *ngIf="displayMainContent">Admin</div>
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

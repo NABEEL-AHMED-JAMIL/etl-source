@@ -1,0 +1,86 @@
+/* You can add global styles to this file, and also import other style files */
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item,
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu {
+    margin-top: 0px;
+    margin-bottom: 0;
+    padding: 0 10px;
+}
+
+nz-content {
+    margin: 14px;
+}
+
+.content {
+    padding: 15px;
+    background: #fff;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 1px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.ant-drawer-body {
+    background: #f0f2f5;
+}
+
+.ant-list {
+    background: #fff;
+}
+
+.ant-tabs-top > .ant-tabs-nav, .ant-tabs-bottom > .ant-tabs-nav, .ant-tabs-top > div > .ant-tabs-nav, .ant-tabs-bottom > div > .ant-tabs-nav {
+    margin: 0 0 0px 0;
+}
+
+.ant-list-item-meta-description {
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 9px;
+    line-height: 1.5715;
+}
+
+.INACTIVE {
+    background: orange;
+    color: white;
+}
+
+.ACTIVE {
+    background: green;
+    color: white;
+}
+
+.DELETE {
+    background: red;
+    color: white;
+}
+
+.ant-descriptions-header {
+    margin-bottom: 0px !important;
+}
+
+.extra_action {
+    margin-top: auto;
+}
+
+.ant-input[disabled] {
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    color: rgba(0, 0, 0, 0.85);
+}

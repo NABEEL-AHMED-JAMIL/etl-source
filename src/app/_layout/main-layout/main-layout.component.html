@@ -1,0 +1,10 @@
+<nz-layout class="layout">
+    <app-header-2></app-header-2>
+    <nz-content>
+        <app-breadcrumb></app-breadcrumb>
+        <div class="inner-content">
+            <div class="content" *ngIf="displayMainContent">Main</div>
+            <router-outlet></router-outlet>
+        </div>
+    </nz-content>
+</nz-layout>
