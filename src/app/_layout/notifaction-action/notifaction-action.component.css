@@ -1,0 +1,39 @@
+ul {
+    width: 300px;
+    min-height: 410px;
+    margin-top: -8px;
+    margin-right: 10px;
+}
+
+nz-list {
+    height: 350px;
+    overflow: auto;
+    margin-left: -10px;
+}
+
+.ant-list-item-meta-title {
+    color: #202124;
+}
+
+.ant-list-item-meta-title {
+    font-size: 12px;
+}
+
+.ant-list-item {
+    padding: 5px 0;
+}
+
+.ant-list-item:hover {
+    background-color: #d9e4f3;
+}
+
+nz-list-item-meta-avatar {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+nz-badge {
+    float: right;
+    margin-right: 15px;
+}
+

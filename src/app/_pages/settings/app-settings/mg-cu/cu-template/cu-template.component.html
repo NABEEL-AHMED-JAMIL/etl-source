@@ -1,0 +1,61 @@
+<form nz-form [nzLayout]="'vertical'"
+    [formGroup]="templateForm" (ngSubmit)="submit()">
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>TemplateName</nz-form-label>
+                <nz-form-control nzHasFeedback nzValidatingTip="Validating..."
+                    nzErrorTip="TemplateName required!">
+                    <input nz-input
+                        formControlName="templateName" 
+                        placeholder="Enter Template Name"
+                        oninput="this.value = this.value.toUpperCase()"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>TemplateType</nz-form-label>
+                <nz-form-control nzHasFeedback nzValidatingTip="Validating..."
+                    nzErrorTip="TemplateType required!">
+                    <nz-select nzShowSearch nzAllowClear 
+                        nzPlaceHolder="Select Template Type" 
+                        formControlName="templateType">
+                        <nz-option *ngFor="let item of emailTemplateLookup.lookupChildren" 
+                        [nzLabel]="item.lookupValue" [nzValue]="item.lookupCode"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8" *ngIf="actionType === 1">
+            <nz-form-item>
+                <nz-form-label nzRequired>Status</nz-form-label>
+                <nz-form-control nzHasFeedback nzValidatingTip="Validating..."
+                    nzErrorTip="Status required!">
+                    <nz-select nzShowSearch nzAllowClear 
+                        nzPlaceHolder="Select Status" 
+                        formControlName="status">
+                        <nz-option *ngFor="let item of applicationStatusLookup.lookupChildren" 
+                            [nzLabel]="item.lookupValue" [nzValue]="item.lookupCode"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label>Template Content</nz-form-label>
+                <nz-form-control nzErrorTip="Template Content required!">
+                    <textarea nz-input formControlName="templateContent"
+                        placeholder="Enter Template Content"
+                        [nzAutosize]="{ minRows: 3}"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button type="reset">Clear</button>
+            <button nz-button [nzType]="'primary'"
+                [disabled]="!templateForm.valid" [nzLoading]="loading" 
+                type="submit" style="float: right;">Search</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,29 @@
+<div nz-row>
+    <div nz-col nzSpan="10">
+        <nz-upload [nzBeforeUpload]="beforeUpload">
+            <button nz-button>
+                <span nz-icon nzType="upload"></span>
+                Upload File
+            </button>
+        </nz-upload>
+    </div>
+    <div nz-col nzSpan="14" style="text-align: end;">
+        <button *ngIf="fileList.length !== 0" 
+            nz-button [nzType]="'primary'"
+            [nzLoading]="uploading"
+            (click)="handleUpload()">
+            {{ uploading ? 'Uploading' : 'Start Upload' }}
+        </button>
+    </div>
+    <div nz-col nzSpan="24">
+        <nz-upload [(nzFileList)]="fileList"></nz-upload>
+    </div>
+    <div nz-col nzSpan="24" *ngIf="errors">
+        <nz-list nzBordered nzSize="small">
+            <nz-list-header>Error Message</nz-list-header>
+            <nz-list-item *ngFor="let error of errors">
+                <p class="margin-p" [innerHTML]="error"></p>
+            </nz-list-item>
+        </nz-list>
+    </div>
+</div>

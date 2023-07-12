@@ -1,0 +1,83 @@
+<div class="content">
+    <h3>XML Query</h3>
+    <nz-divider style="margin: 5px 0;"></nz-divider>
+    <div nz-row>
+        <div nz-col [nzSpan]="24">
+            <form nz-form [formGroup]="xmlForm" (ngSubmit)="submintTageForms(xmlForm.value)" 
+			    ngNativeValidate>
+                <nz-table [nzData]="['']" nzSize="small"  [nzFrontPagination]="false" 
+                    [nzBordered]="false" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>TagKey</th>
+                            <th>TagParent</th>
+                            <th>TagValue</th>
+                            <th style="width: 7%;">
+                                <button nz-button type="button" 
+                                    style="width: 100%;"
+                                    nzType="default" nzDanger 
+                                    (click)="tageFormsAddItem()">
+                                    <span nz-icon nzType="plus"></span>
+                                </button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="main-form-content" formArrayName="tagsInfo">
+                        <tr *ngFor="let tag of xmlForm.get('tagsInfo')['controls']; 
+                            let i = index;" [formGroup]="tag">
+                            <td><b>{{i}}</b></td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm" name="tagKey"
+                                    formControlName="tagKey" placeholder="Enter Tag Key">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm" name="tagParent"
+                                    formControlName="tagParent" placeholder="Parent Tag If Any">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm" name="tagValue"
+                                    formControlName="tagValue" placeholder="Enter Tag Value">
+                            </td>
+                            <td style="text-align: center;">
+                                <span nz-icon nzType="plus-circle" class="dynamic-delete-button"
+                                    (click)="tageFormAddItem(i)"></span>
+                                &nbsp;
+                                <span nz-icon nzType="minus-circle-o" class="dynamic-delete-button" 
+                                    (click)="tageFormRemoveItem(i)"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <br>
+                <div nz-row>
+                    <div nz-col [nzSpan]="24" style="text-align: end;">
+                        <button nz-button nzType="primary" type="submit"
+                        [disabled]="xmlForm?.invalid"
+                        [nzLoading]="loading">Show Xml</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- drawer for show xml -->
+<nz-drawer nzTitle="XML Result" 
+    [nzVisible]="visible"
+    nzPlacement="right" 
+    [nzBodyStyle]="{ overflow: 'auto' }"
+    [nzMaskClosable]="false"
+    [nzWidth]="720"
+    [nzVisible]="visible"
+    (nzOnClose)="close()">
+    <ng-container *nzDrawerContent >
+        <textarea class="form-control input-sm" rows="23"
+        style="font-size:12px;font-family:monospace;
+            white-space:pre;height: auto;width: 100%;
+            border-color: #ddd;background-color: #ddd;">{{xmlString}}</textarea>
+        <button nz-button nzType="primary" [nzLoading]="loading"
+            class="add-button" style="width: 100%;" (click)="createFile()">
+            <span nz-icon nzType="download" nzTheme="outline"></span> Downalod Xml
+        </button>
+    </ng-container>
+</nz-drawer>

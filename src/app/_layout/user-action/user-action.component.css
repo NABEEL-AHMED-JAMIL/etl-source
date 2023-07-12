@@ -1,0 +1,45 @@
+.logout {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.poweroff_btn {
+    margin-left: 75px;
+}
+
+
+.ant-list-item-meta {
+    display: flex;
+    flex: 1;
+    align-items: flex-start;
+    font-size: 0;
+}
+
+.ant-list-item-meta-avatar {
+    margin-right: 16px;
+    margin-top: 5px;
+}
+
+.ant-list-item-meta-content {
+    flex: 1 0;
+}
+
+.ant-dropdown-menu-item .ant-list-item-meta-title {
+    margin-bottom: 0;
+    font-weight: 700;
+    line-height: 16px;
+    padding-top: 2px;
+}
+
+.ant-list-item-meta-title {
+    color: #202124;
+}
+
+.ant-list-item-meta-title {
+    font-size: 12px;
+}
+
+
+.ant-list-item-meta-description {
+    font-size: 12px !important;
+}

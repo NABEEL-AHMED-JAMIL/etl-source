@@ -1,0 +1,44 @@
+<div class="content" *ngIf="appUser" style="padding-bottom: 0px;">
+    <nz-descriptions 
+        nzTitle="User Info : ({{appUser.appUserId}}-{{appUser.firstName}} {{appUser.lastName}})"
+        [nzExtra]="extraTpl" [nzSize]="'small'">
+        <nz-descriptions-item nzTitle="UserName">{{appUser.username}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="App Email">{{appUser.email}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Role">
+            <span *ngFor="let role of appUser.roleResponse"><nz-tag>{{role.roleName}}</nz-tag></span>
+        </nz-descriptions-item>
+    </nz-descriptions>
+    <ng-template #extraTpl>
+        Status :&nbsp;<nz-tag class="{{appUser.status.lookupType}}">
+            {{appUser.status.lookupValue}}</nz-tag>
+    </ng-template>
+</div>
+<div class="content" *ngIf="appUser">
+    <nz-tabset>
+        <nz-tab [nzTitle]="role_admin"
+            *ngIf="hasAccess(['ROLE_MASTER_ADMIN'])">
+            <ng-template #role_admin>
+                <nz-badge nzStatus="processing"></nz-badge>Admin User
+            </ng-template>
+            <div style="margin-top: 10px;">
+                <app-gen-table *ngIf="adminAppUserTable" 
+                    [staticTable]="adminAppUserTable" 
+                    (actionEventEmitter)="tableActionReciverAdmin($event)"
+                    (buttonEventEmitter)="buttonActionReciverAdmin($event)">
+                </app-gen-table>
+            </div>
+        </nz-tab>
+        <nz-tab [nzTitle]="role_user">
+            <ng-template #role_user>
+                <nz-badge nzStatus="processing"></nz-badge>Simple User
+            </ng-template>
+            <div style="margin-top: 10px;">
+                <app-gen-table *ngIf="simpleAppUserTable" 
+                    [staticTable]="simpleAppUserTable" 
+                    (actionEventEmitter)="tableActionReciverUser($event)"
+                    (buttonEventEmitter)="buttonActionReciverUser($event)">
+                </app-gen-table>
+            </div>
+        </nz-tab>
+    </nz-tabset>
+</div>

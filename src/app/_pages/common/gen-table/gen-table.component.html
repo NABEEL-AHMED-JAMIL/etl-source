@@ -1,0 +1,101 @@
+<div nz-row>
+    <div nz-col [nzSpan]="8">
+        <input nz-input [(ngModel)]="searchDetails"
+            placeholder="Search Result"/>
+    </div>
+    <!-- *ngIf="staticTable.headerButton" -->
+    <div  nz-col [nzSpan]="16" 
+        style="text-align: end;">
+        <span *ngIf="staticTable.checkbox">
+            Selected {{ setOfCheckedId.size }} items
+        </span>&nbsp;
+        <nz-button-group>
+            <button *ngFor='let button of staticTable.headerButton'
+                nz-button nzType="default"
+                (click)="buttonEvent(button.action)">
+                <span nz-icon [nzType]="button.type" 
+                    nzTheme="outline"
+                    [nzSpin]="button.spin"
+                    [ngStyle]="{'color': button.color}">
+                </span>
+            </button>
+        </nz-button-group>
+    </div>
+</div>
+<nz-divider style="margin: 5px 0;"></nz-divider>
+<nz-table
+    [id]="staticTable.tableId"
+    [nzSize]="staticTable.size"
+    [nzFrontPagination]="false"
+    [nzBordered]="staticTable.bordered"
+    [nzData]="staticTable.dataSource"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+    style="font-size: 10px;display: block;
+        overflow-x: auto;white-space: nowrap;">
+    <thead>
+        <tr>
+            <th *ngIf="staticTable.checkbox" 
+                [(nzChecked)]="checked" 
+                [nzIndeterminate]="indeterminate"
+                (nzCheckedChange)="onAllChecked($event)">
+            </th>
+            <ng-container *ngFor='let col of staticTable.dataColumn'>
+                <th *ngIf="col.type === 'date' || col.type === 'tag' || col.type === 'arr'" 
+                    style="text-align: center;">{{col.header}}
+                </th>
+                <th *ngIf="col.type === 'data'">
+                    {{col.header}}
+                </th>
+                <th *ngIf="col.type === 'img'"
+                    style="width: 1px;text-align: center;">
+                    {{col.header}}
+                </th>
+            </ng-container>
+            <th *ngIf="staticTable.actionType" 
+                style="width: 1px;text-align: center;">
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor='let row of staticTable.dataSource | searchdata: searchDetails;let i = index;'>
+            <td *ngIf="staticTable.checkbox" [nzChecked]="setOfCheckedId.has(row.id)" 
+                (nzCheckedChange)="onItemChecked(row.id, $event)">
+            </td>
+            <ng-container *ngFor='let col of staticTable.dataColumn'>
+                <td *ngIf="col.type === 'img'">
+                    <nz-avatar nzIcon="user" 
+                        nzSrc="{{'./assets/avatar/'+row[col.field]}}">
+                    </nz-avatar>
+                </td>
+                <td *ngIf="col.type === 'date'"
+                    style="text-align: center;width: 1px;">
+                    {{row[col.field] | date:'yyyy-MM-dd'}}
+                </td>
+                <td *ngIf="col.type === 'tag'"
+                    style="text-align: center;width: 1px;">
+                    <nz-tag class="{{row[col.field].lookupType}}">
+                        {{row[col.field].lookupValue}}
+                    </nz-tag>
+                </td>
+                <td *ngIf="col.type === 'data'">
+                    {{row[col.field]}}
+                </td>
+                <td *ngIf="col.type === 'arr'"
+                    style="text-align: center;width: 1px;">
+                    <span *ngFor="let data of row[col.field]">
+                        <nz-tag>{{data[col.subfield]}}</nz-tag>
+                    </span>
+                </td>
+            </ng-container>
+            <td *ngIf="staticTable.actionType">
+                <ng-container *ngFor='let action of staticTable.actionType'>
+                    <a [routerLink]="" (click)="actionEvent(action.action, row)">
+                        <span nz-icon [nzType]="action.type" nzTheme="outline" 
+                        [ngStyle]="{'color': action.color}"></span>
+                    </a>&nbsp;
+                </ng-container>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
