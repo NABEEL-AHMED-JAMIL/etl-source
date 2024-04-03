@@ -1,0 +1,67 @@
+<div nz-row>
+    <div nz-col [nzSpan]="4">
+        <nz-layout class="inner-layout">
+            <nz-sider nzWidth="250px" nzTheme="dark">
+                <ul nz-menu nzMode="inline" class="sider-menu">
+                    <li nz-submenu nzOpen nzTitle="Update Profile" nzIcon="user">
+                        <ul>
+                            <li nz-menu-item (click)="onNaviage(USER_INFO)">
+                                <span nz-icon nzType="info-circle" nzTheme="outline"></span>
+                                &nbsp;User Info
+                            </li>
+                            <!-- compnay detail can be view admin and super -->
+                            <li nz-menu-item (click)="onNaviage(COMPANY_INFO)">
+                                <span nz-icon nzType="book" nzTheme="outline"></span>
+                                &nbsp;Compnay Info
+                            </li>
+                            <li nz-menu-item (click)="onNaviage(CHANGE_PASSWORD)">
+                                <span nz-icon nzType="key" nzTheme="outline"></span>
+                                &nbsp;Change Password
+                            </li>
+                        </ul>
+                    </li>
+                    <li nz-submenu nzOpen nzTitle="Setting" nzIcon="setting">
+                        <ul>
+                            <li nz-menu-item (click)="onNaviage(MY_TEAM)">
+                                <span nz-icon nzType="team" nzTheme="outline"></span>
+                                &nbsp;My Teams
+                            </li>
+                            <li nz-menu-item (click)="onNaviage(ENVIROMENT)">
+                                <span nz-icon nzType="dropbox" nzTheme="outline"></span>
+                                &nbsp;Environment Variable
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nz-sider>
+        </nz-layout>
+    </div>
+    <div nz-col [nzSpan]="20">
+        <nz-card class="profile-card" [nzExtra]="USER_INFO_TAG" id="profileDetail"
+            *ngIf="USER_INFO === viewProfile"  nzTitle="Update Account">
+        </nz-card>
+        <nz-card class="profile-card" id="companyDetail" 
+            *ngIf="COMPANY_INFO === viewProfile" nzTitle="Update Company"
+            style="padding-bottom: 0px;margin-left: 10px;margin-right: 10px;">
+        </nz-card>
+        <nz-card class="profile-card" id="companyDetail" 
+            *ngIf="CHANGE_PASSWORD === viewProfile" nzTitle="Update Password"
+            style="padding-bottom: 0px;margin-left: 10px;margin-right: 10px;">
+        </nz-card>
+        <nz-card class="profile-card" id="teamDetail" 
+            *ngIf="MY_TEAM === viewProfile" nzTitle="My Team"
+            style="padding-bottom: 0px;margin-left: 10px;margin-right: 10px;">
+        </nz-card>
+        <nz-card class="profile-card" id="envDetail" 
+            *ngIf="ENVIROMENT === viewProfile" nzTitle="Environment Variable"
+            style="padding-bottom: 0px;margin-left: 10px;margin-right: 10px;">
+        </nz-card>
+    </div>
+</div>
+<!-- user info -->
+<ng-template #USER_INFO_TAG>
+    <button nz-button nzType="default"
+        nzDanger [nzSize]="'small'">
+        <span nz-icon nzType="lock"></span> Close Account
+    </button>
+</ng-template>

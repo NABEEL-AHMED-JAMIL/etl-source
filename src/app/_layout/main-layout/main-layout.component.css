@@ -1,27 +1,26 @@
 .layout {
-  min-height: 100vh;
+    min-height: 100vh;
 }
 
 nz-header {
-  position: fixed;
-  width: 100%;
+    position: fixed;
+    width: 100%;
 }
 
 [nz-menu] {
-  line-height: 64px;
+    line-height: 64px;
 }
 
 nz-content {
-  padding: 0 0px;
-  margin-top: 12px;
+    padding: 0 0px;
+    margin-top: 12px;
 }
 
 nz-breadcrumb {
-  margin: 16px 0;
+    margin: 16px 0;
 }
 
 .inner-content {
-  height: auto;
-  margin-bottom: 10px;
+    height: auto;
+    margin-bottom: 10px;
 }
-

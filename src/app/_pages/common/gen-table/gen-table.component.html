@@ -1,49 +1,77 @@
-<div nz-row>
-    <div nz-col [nzSpan]="8">
-        <input nz-input [(ngModel)]="searchDetails"
-            placeholder="Search Result"/>
+<div nz-row *ngIf="staticTable">
+    <div nz-col [nzSpan]="6">
+        <input nz-input
+            [(ngModel)]="searchDetails"
+            placeholder="Search Result" />
     </div>
-    <!-- *ngIf="staticTable.headerButton" -->
-    <div  nz-col [nzSpan]="16" 
-        style="text-align: end;">
+    <div nz-col [nzSpan]="18" style="text-align: end;">
+        <!-- more action -->
         <span *ngIf="staticTable.checkbox">
             Selected {{ setOfCheckedId.size }} items
-        </span>&nbsp;
+        </span> &nbsp;
+        <!-- more action -->
+        <nz-button-group *ngIf="isDateFilter">
+            <nz-form-control>
+                <input nz-input type="date" 
+                    [(ngModel)]="startDate"
+                    (change)="onDateChangeEvent()"/>
+            </nz-form-control> &nbsp;
+            <nz-form-control>
+                <input nz-input type="date"
+                    [(ngModel)]="endDate"
+                    (change)="onDateChangeEvent()"/>
+            </nz-form-control>
+        </nz-button-group>&nbsp;
         <nz-button-group>
             <button *ngFor='let button of staticTable.headerButton'
-                nz-button nzType="default"
+                nz-button nz-tooltip nzType="default"
+                nzTooltipTitle="{{ button?.tooltipTitle }}"
                 (click)="buttonEvent(button.action)">
-                <span nz-icon [nzType]="button.type" 
-                    nzTheme="outline"
+                <span nz-icon nzTheme="outline"
+                    [nzType]="button.type"
                     [nzSpin]="button.spin"
                     [ngStyle]="{'color': button.color}">
                 </span>
+            </button>
+            <button *ngIf="staticTable.extraButton"
+                nz-button nz-dropdown
+                [nzDropdownMenu]="extraMenu"
+                nzPlacement="bottomRight">
+                <span nz-icon nzType="ellipsis"></span>
             </button>
         </nz-button-group>
     </div>
 </div>
 <nz-divider style="margin: 5px 0;"></nz-divider>
-<nz-table
+<nz-table #dynamicTable
     [id]="staticTable.tableId"
     [nzSize]="staticTable.size"
-    [nzFrontPagination]="false"
     [nzBordered]="staticTable.bordered"
+    [nzNoResult]="'No Data'"
     [nzData]="staticTable.dataSource"
+    [nzPaginationType]="'small'"
+    [nzPaginationPosition]="'bottom'"
+    [nzShowSizeChanger]='true'
+    [nzPageSize]="50"
+    [nzPageSizeOptions]="[50, 100, 150, 200]"
+    [nzFrontPagination]="true"
+    [nzShowPagination]="true"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
-    style="font-size: 10px;display: block;
-        overflow-x: auto;white-space: nowrap;">
+    style="font-size: 10px;display: block;overflow-x: auto;white-space: pre;">
     <thead>
         <tr>
-            <th *ngIf="staticTable.checkbox" 
+            <th>#</th>
+            <th *ngIf="staticTable.checkbox"
                 [(nzChecked)]="checked" 
                 [nzIndeterminate]="indeterminate"
                 (nzCheckedChange)="onAllChecked($event)">
             </th>
             <ng-container *ngFor='let col of staticTable.dataColumn'>
-                <th *ngIf="col.type === 'date' || col.type === 'tag' || col.type === 'arr'" 
-                    style="text-align: center;">{{col.header}}
+                <th *ngIf="col.type === 'date' || col.type === 'tag'"
+                    style="text-align: center;">
+                    {{col.header}}
                 </th>
-                <th *ngIf="col.type === 'data'">
+                <th *ngIf="col.type === 'data' || col.type === 'phone' || col.type === 'price' || col.type === 'combine' ">
                     {{col.header}}
                 </th>
                 <th *ngIf="col.type === 'img'"
@@ -51,21 +79,28 @@
                     {{col.header}}
                 </th>
             </ng-container>
-            <th *ngIf="staticTable.actionType" 
+            <th *ngIf="staticTable.actionType"
+                style="width: 1px;text-align: center;">
+                Action
+            </th>
+            <th *ngIf="staticTable.enableAction"
                 style="width: 1px;text-align: center;">
                 Action
             </th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor='let row of staticTable.dataSource | searchdata: searchDetails;let i = index;'>
-            <td *ngIf="staticTable.checkbox" [nzChecked]="setOfCheckedId.has(row.id)" 
+        <tr *ngFor='let row of dynamicTable.data | searchdata: searchDetails;let i = index;'>
+            <td style="text-align: center;width: 1px;">{{i+1}}</td>
+            <td *ngIf="staticTable.checkbox"
+                [nzChecked]="setOfCheckedId.has(row.id)"
                 (nzCheckedChange)="onItemChecked(row.id, $event)">
             </td>
             <ng-container *ngFor='let col of staticTable.dataColumn'>
                 <td *ngIf="col.type === 'img'">
-                    <nz-avatar nzIcon="user" 
-                        nzSrc="{{'./assets/avatar/'+row[col.field]}}">
+                    <nz-avatar nzIcon="user"
+                        [nzSrc]="commomService.isValidHttpUrl(row[col.field]) ? 
+                        row[col.field] : './assets/avatar/'+row[col.field]">
                     </nz-avatar>
                 </td>
                 <td *ngIf="col.type === 'date'"
@@ -74,28 +109,51 @@
                 </td>
                 <td *ngIf="col.type === 'tag'"
                     style="text-align: center;width: 1px;">
-                    <nz-tag class="{{row[col.field].lookupType}}">
-                        {{row[col.field].lookupValue}}
+                    <nz-tag class="{{row[col?.field]?.lookupType}}">
+                        {{commomService.getDataFromObject(row[col?.field])}}
                     </nz-tag>
                 </td>
                 <td *ngIf="col.type === 'data'">
                     {{row[col.field]}}
                 </td>
-                <td *ngIf="col.type === 'arr'"
-                    style="text-align: center;width: 1px;">
-                    <span *ngFor="let data of row[col.field]">
-                        <nz-tag>{{data[col.subfield]}}</nz-tag>
-                    </span>
+                <td *ngIf="col.type === 'combine'">
+                    <nz-tag>
+                        {{commomService.getMultiDataFromObject(row[col?.field], col?.subfield)}}
+                    </nz-tag>
                 </td>
             </ng-container>
             <td *ngIf="staticTable.actionType">
                 <ng-container *ngFor='let action of staticTable.actionType'>
-                    <a [routerLink]="" (click)="actionEvent(action.action, row)">
-                        <span nz-icon [nzType]="action.type" nzTheme="outline" 
-                        [ngStyle]="{'color': action.color}"></span>
+                    <a [routerLink]="" nz-tooltip nzTooltipTitle="{{ action?.tooltipTitle }}"
+                        (click)="actionEvent(action.action, row)">
+                        <span nz-icon [nzType]="action.type" nzTheme="outline"
+                            [ngStyle]="{'color': action.color}"></span>
                     </a>&nbsp;
                 </ng-container>
+            </td>
+            <td *ngIf="staticTable.enableAction"
+                style="width: 1px;text-align: center;">
+                <nz-switch nzSize="small"
+                    [nzId]="row.id"
+                    [nzSize]="'small'"
+                    [nzDisabled]="row?.linkStatus?.lookupCode === 0 ? true : false"
+                    [ngModel]="row.linked"
+                    (ngModelChange)="onEnableActionChange(row)">
+                </nz-switch>
             </td>
         </tr>
     </tbody>
 </nz-table>
+
+<!-- extra -->
+<nz-dropdown-menu #extraMenu="nzDropdownMenu">
+    <ul nz-menu>
+        <ng-container *ngFor='let extraButton of staticTable.extraButton'>
+            <li nz-menu-item (click)="extraEvent(extraButton.action)">
+                <span nz-icon nzType="{{extraButton.type}}"
+                    nzTheme="outline"></span>&nbsp;
+                {{extraButton.title}}
+            </li>
+        </ng-container>
+    </ul>
+  </nz-dropdown-menu>

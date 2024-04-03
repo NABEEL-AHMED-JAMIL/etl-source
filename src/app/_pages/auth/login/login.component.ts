@@ -13,6 +13,7 @@ import { first } from 'rxjs/operators';
 })
 export class LoginComponent implements OnInit {
 
+    public passwordVisible: boolean = false;
     public loginForm!: UntypedFormGroup;
     public loading: any = false;
     public returnUrl: string;
@@ -35,7 +36,7 @@ export class LoginComponent implements OnInit {
         this.loginForm = this.fb.group({
             username: [null, [Validators.required]],
             password: [null, [Validators.required]]
-          });
+        });
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
@@ -51,10 +52,10 @@ export class LoginComponent implements OnInit {
         if (this.loginForm.invalid) {
             Object.values(this.loginForm.controls).forEach(control => {
                 if (control.invalid) {
-                  control.markAsDirty();
-                  control.updateValueAndValidity({ onlySelf: true });
+                    control.markAsDirty();
+                    control.updateValueAndValidity({ onlySelf: true });
                 }
-              });
+            });
             this.spinnerService.hide();
             return;
         }

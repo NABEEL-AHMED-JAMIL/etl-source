@@ -1,0 +1,11 @@
+<div class="content">
+    <h3>E Varaible</h3>
+    <nz-divider style="margin: 5px 0;"></nz-divider>
+    <app-gen-table 
+        *ngIf="eVariableTable"
+        [isDateFilter]="false"
+        [staticTable]="eVariableTable"
+        (actionEventEmitter)="tableActionReciver($event)"
+        (buttonEventEmitter)="buttonActionReciver($event)">
+    </app-gen-table>
+</div>

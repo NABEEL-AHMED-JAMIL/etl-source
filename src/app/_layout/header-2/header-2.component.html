@@ -1,38 +1,32 @@
 <nz-header>
     <div nz-row class="app-header">
-        <div nz-col nzSpan="3">
-            <!-- land on dashboard -->
-            <a routerLink="/dashboard"><h4>{{title}}</h4></a>
+        <div nz-col nzMd="2" style="text-align: center;">
+            <a routerLink="/dashboard" style="color: black;">
+                ETL Source 2023
+            </a>
         </div>
-        <div nz-col nzSpan="16">
+        <div nz-col nzMd="12">
             <ul nz-menu nzMode="horizontal">
-                <li class="hli" nz-menu-item>
+                <li *ngIf="hasPermissionAccess(['SOURCE_JOB_PERMISSION'])" class="hli" nz-menu-item>
                     <a nz-dropdown [nzDropdownMenu]="menu">
                         <span nz-icon nzType="appstore"></span> Source Job</a>
                 </li>
-                <li class="hli" nz-menu-item *ngIf="hasAccess(['ROLE_MASTER_ADMIN'])">
-                    <a nz-dropdown [nzDropdownMenu]="config">
-                        <span nz-icon nzType="dingding" nzTheme="outline"></span> Query</a>
-                </li>
-                <li *ngIf="hasAccess(['ROLE_ADMIN', 'ROLE_MASTER_ADMIN'])"
-                    class="hli" nz-menu-item routerLink="/setting">
+                <li *ngIf="hasPermissionAccess(['ADMIN_PAGE_PERMISSION'])" nz-menu-item
+                    class="hli" routerLink="/setting">
                     <span nz-icon nzType="setting" nzTheme="outline"></span> Setting
                 </li>
             </ul>
         </div>
-        <div nz-col nzSpan="5" style="text-align: end;padding-right: 20px">
-            <nz-badge nzSize="small" style="margin-right: 20px;"
+        <div nz-col nzMd="10" style="text-align: end;padding-right: 20px">
+            <nz-badge nzSize="small" style="margin-right: 20px;" nzShowZero
                 [nzCount]="jobNotifactionData.length + otherNotifactionData.length">
-                <nz-avatar nzIcon="bell" nzTrigger="click"
-                    class="bell-notification"
-                    nz-dropdown [nzDropdownMenu]="bellAction">
+                <nz-avatar class="bell-notification" nzIcon="bell" nz-dropdown
+                    [nzDropdownMenu]="bellAction">
                 </nz-avatar>
             </nz-badge>
-            <nz-avatar nzIcon="user" nzTrigger="click"
-                nz-dropdown [nzDropdownMenu]="userAction"
+            <nz-avatar nzIcon="user" nz-dropdown [nzDropdownMenu]="userAction"
                 nzSrc="{{'./assets/avatar/' + currentUser.profileImage }}">
             </nz-avatar>
-
         </div>
     </div>
 </nz-header>
@@ -53,12 +47,5 @@
     <ul nz-menu nzSelectable>
         <li nz-menu-item>Running Jobs</li>
         <li nz-menu-item>Queue Jobs</li>
-    </ul>
-</nz-dropdown-menu>
-<!-- config -->
-<nz-dropdown-menu #config="nzDropdownMenu">
-    <ul nz-menu nzSelectable>
-        <li nz-menu-item routerLink="/main/dbQuery">DB Query</li>
-        <li nz-menu-item routerLink="/main/xmlQuery">XML Config</li>
     </ul>
 </nz-dropdown-menu>

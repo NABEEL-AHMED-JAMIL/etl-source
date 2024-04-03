@@ -1,0 +1,8 @@
+<div class="content">
+    <app-gen-table 
+        *ngIf="roleLinkUserTable"
+        [isDateFilter]="false"
+        [staticTable]="roleLinkUserTable"
+        (enableActionEventEmitter)="enableActionReciver($event)">
+    </app-gen-table>
+</div>

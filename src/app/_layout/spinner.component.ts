@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
-  selector: 'spinner',
-  template: `
+    selector: 'spinner',
+    template: `
     <div class="dark-overlay">
       <div class="loader">Loading...</div>
     </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: none;
       }
@@ -116,11 +117,11 @@ import { Component, OnInit } from '@angular/core';
         }
       }
     `
-  ]
+    ]
 })
 export class SpinnerComponent implements OnInit {
 
-  constructor() {}
+    constructor() { }
 
-  ngOnInit() {}
+    ngOnInit() { }
 }

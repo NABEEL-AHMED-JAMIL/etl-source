@@ -11,28 +11,35 @@ import {
 } from 'rxjs';
 import { catchError, first } from 'rxjs/operators';
 import { AuthenticationService } from '../_shared';
+import { StorageService } from './storage.service';
+import { Router } from '@angular/router';
 
 
 @Injectable({ providedIn: 'root' })
 export class ErrorInterceptor implements HttpInterceptor {
 
-    constructor(private authenticationService: AuthenticationService) {}
+
+    constructor(private router: Router,
+        private storageService: StorageService,
+        private authenticationService: AuthenticationService) { }
+
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
-            if (err.status === 401) {
-                // auto logout if 401 response returned from api
+            if ([401, 403].includes(err.status)) {
                 this.authenticationService.logout()
-                .pipe(first())
-                .subscribe(
-                    data => {
-                        location.reload();
-                    },
-                    error => {
-                    });
-            } 
-            const error = err.error.message || err.statusText;
-            return throwError(error);
-        }))
+                    .pipe(first())
+                    .subscribe(
+                        data => {
+                            this.storageService.clear();
+                            this.router.navigate(['/login']);
+                        },
+                        error => {
+                            this.storageService.clear();
+                            this.router.navigate(['/login']);
+                        });
+            }
+            return throwError(err);
+        }));
     }
 }

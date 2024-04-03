@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ApiCode, ApiResponse } from '../index';
-import { Observable, first } from 'rxjs';
+import { ApiResponse, ILookups } from '../index';
+import { Observable, catchError, map } from 'rxjs';
 import { config } from '../../../environments/environment';
 import { StorageService } from '../../_helpers';
 
@@ -15,56 +15,52 @@ export class LookupService {
         private storageService: StorageService) {
     }
 
-    public fetchCacheData(): void {
-        this.http.get<ApiResponse>(`${config.apiBaseUrl}/lookup.json/fetchCacheData`)
-        .pipe(first())
-        .subscribe((response: any) => {
-            if (response.status === ApiCode.SUCCESS) {
-                this.storageService.set('lookup-cache', response.data);
-            }
-        });;
+    public addLookupData(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/lookupData.json/addLookupData`, payload);
     }
 
-    public addLookupData(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/lookup.json/addLookupData`, payload);
+    public updateLookupData(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/lookupData.json/updateLookupData`, payload);
+    }
+
+    public findAllParentLookupByUsername(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/lookupData.json/findAllParentLookupByUsername`, payload);
+    }
+
+    public fetchSubLookupDataByParentLookupDataId(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/lookupData.json/fetchSubLookupDataByParentLookupDataId`, payload);
+    }
+
+    public fetchLookupDataByLookupType(payload: any): Observable<ILookups> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/lookupData.json/fetchLookupDataByLookupType`, payload)
+            .pipe(map((response: ApiResponse) => {
+                return response.data;
+            }),
+            catchError((error: any) => {
+                return null;
+            }));
     }
 
     public deleteLookupData(payload: any): Observable<ApiResponse> {
-        return this.http.put<ApiResponse>(`${config.apiBaseUrl}/lookup.json/deleteLookupData`, payload);
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/lookupData.json/deleteLookupData`, payload);
     }
 
-    public fetchAllLookup(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/lookup.json/fetchAllLookup`, payload);
+    public downloadLookupDataTemplateFile(): Observable<any> {
+        return this.http.get(`${config.apiBaseUrl}/lookupData.json/downloadLookupDataTemplateFile`,
+            {
+                responseType: 'blob'
+            });
     }
 
-    public fetchSubLookupByParentId(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/lookup.json/fetchSubLookupByParentId`, payload);
+    public downloadLookupData(payload: any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/lookupData.json/downloadLookupData`, payload,
+            {
+                responseType: 'blob'
+            });
     }
 
-    public fetchLookupByLookupType(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/lookup.json/fetchLookupByLookupType`, payload);
-    }    
-
-    public updateLookupData(payload: any): Observable<ApiResponse> {
-        return this.http.put<ApiResponse>(`${config.apiBaseUrl}/lookup.json/updateLookupData`, payload);
-    }
-
-    public uploadLookup(payload:any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/lookup.json/uploadLookup`, payload);
-    }
-
-    public downloadLookup(payload: any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/lookup.json/downloadLookup`, payload,
-        {
-            responseType: 'blob'
-        });
-    }
-
-    public downloadLookupTemplateFile(): Observable<any> {
-        return this.http.get(`${config.apiBaseUrl}/lookup.json/downloadLookupTemplateFile`,
-        {
-            responseType: 'blob'
-        });
+    public uploadLookupData(payload: any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/lookupData.json/uploadLookupData`, payload);
     }
 
 }

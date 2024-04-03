@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot,
+import {
+    Router, CanActivate, ActivatedRouteSnapshot,
     RouterStateSnapshot
 } from '@angular/router';
 import { AuthenticationService } from '../_shared';
@@ -7,15 +8,15 @@ import { AuthenticationService } from '../_shared';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
-    
+
 
     constructor(private router: Router,
-        private authenticationService: AuthenticationService) {}
+        private authenticationService: AuthenticationService) { }
 
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         const currentUser = this.authenticationService.currentUserValue;
         if (currentUser) {
-            if (this.hasAccess(currentUser.roles, route.data['role'])) {
+            if (this.hasPermissionAccess(currentUser.profile.permission, route.data['permission'])) {
                 return true;
             }
             // authorised so return true
@@ -29,5 +30,9 @@ export class AuthGuard implements CanActivate {
 
     public hasAccess(userRoles: any, routeRoles: any) {
         return userRoles.some((role: any) => routeRoles.includes(role));
+    }
+
+    public hasPermissionAccess(userPermission: any, routePermission: any): any {
+        return userPermission.some((permission: any) => routePermission.includes(permission));
     }
 }

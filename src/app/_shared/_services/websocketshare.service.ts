@@ -10,8 +10,8 @@ export class WebSocketShareService implements OnDestroy {
     private notifactionDataSubject = new BehaviorSubject<string>(undefined);
 
     constructor() { }
-    
-    public onNewValueReceive(msg: string) {        
+
+    public onNewValueReceive(msg: string) {
         this.notifactionDataSubject.next(msg);
     }
 

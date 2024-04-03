@@ -2,9 +2,9 @@ button {
     padding: 0px 10px
 }
 
-.ant-btn:hover, .ant-btn:focus {
+.ant-btn:hover,
+.ant-btn:focus {
     color: black;
     border-color: black;
     background: #fff;
 }
-

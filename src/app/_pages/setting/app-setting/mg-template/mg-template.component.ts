@@ -1,0 +1,214 @@
+import { Component, OnInit } from '@angular/core';
+import {
+    ApiCode,
+    IStaticTable,
+    ActionType,
+    TemplateRegService,
+    AuthResponse,
+    AuthenticationService
+} from '../../../../_shared';
+import { CUTemplateComponent } from '../../../index';
+import { AlertService, SpinnerService } from '../../../../_helpers';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { first } from 'rxjs';
+
+
+@Component({
+    selector: 'app-mg-template',
+    templateUrl: './mg-template.component.html',
+    styleUrls: ['./mg-template.component.css']
+})
+export class MgTemplateComponent implements OnInit {
+
+    public sessionUser: AuthResponse;
+    public templateTable: IStaticTable = {
+        tableId: 'template_id',
+        title: 'Template',
+        bordered: true,
+        checkbox: false,
+        size: 'small',
+        headerButton: [
+            {
+                type: 'plus-circle',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Add',
+                action: ActionType.ADD
+            },
+            {
+                type: 'reload',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Refresh',
+                action: ActionType.RE_FRESH
+            }
+        ],
+        dataColumn: [
+            {
+                field: 'templateName',
+                header: 'Template Name',
+                type: 'data'
+            },
+            {
+                field: 'dateCreated',
+                header: 'Created',
+                type: 'date'
+            },
+            {
+                field: 'createdBy',
+                header: 'Created By',
+                type: 'combine',
+                subfield: ['id' , 'username']
+            },
+            {
+                field: 'dateUpdated',
+                header: 'Updated',
+                type: 'date'
+            },
+            {
+                field: 'updatedBy',
+                header: 'Updated By',
+                type: 'combine',
+                subfield: ['id' , 'username']
+            },
+            {
+                field: 'status',
+                header: 'Status',
+                type: 'tag'
+            }
+        ],
+        actionType: [
+            {
+                type: 'edit',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
+            },
+            {
+                type: 'delete',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Delete',
+                action: ActionType.DELETE
+            }
+        ]
+    };
+
+    constructor(
+        private drawerService: NzDrawerService,
+        private modalService: NzModalService,
+        private alertService: AlertService,
+        private spinnerService: SpinnerService,
+        private templateRegService: TemplateRegService,
+        private authenticationService: AuthenticationService) {
+        this.authenticationService.currentUser
+            .subscribe(currentUser => {
+                this.sessionUser = currentUser;
+            });
+    }
+
+    ngOnInit(): void {
+        this.fetchTemplateReg({
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
+    }
+
+    // fetch all lookup
+    public fetchTemplateReg(payload: any): any {
+        this.spinnerService.show();
+        this.templateRegService.fetchTemplateReg(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.templateTable.dataSource = response.data;
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error.message, ApiCode.ERROR);
+            });
+    }
+
+    public deleteTemplateReg(payload: any): void {
+        this.spinnerService.show();
+        this.templateRegService.deleteTemplateReg(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.fetchTemplateReg({
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error, ApiCode.ERROR);
+            });
+    }
+
+    public buttonActionReciver(payload: any): void {
+        if (ActionType.ADD === payload.action) {
+            this.openCuLookup(ActionType.ADD, null);
+        } else if (ActionType.RE_FRESH === payload.action) {
+            this.fetchTemplateReg({
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        }
+    }
+
+    public tableActionReciver(payload: any): void {
+        if (ActionType.EDIT === payload.action) {
+            this.openCuLookup(ActionType.EDIT, payload);
+        } else if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteTemplateReg({
+                        id: payload.data.id,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    public openCuLookup(actionType: ActionType, editPayload: any): void {
+        const drawerRef = this.drawerService.create({
+            nzSize: 'large',
+            nzTitle: actionType === ActionType.ADD ? 'Add Template' : 'Edit Template',
+            nzPlacement: 'right',
+            nzMaskClosable: false,
+            nzContent: CUTemplateComponent,
+            nzContentParams: {
+                actionType: actionType,
+                editPayload: editPayload?.data
+            }
+        });
+        drawerRef.afterClose.subscribe(data => {
+            this.fetchTemplateReg({
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        });
+    }
+
+}

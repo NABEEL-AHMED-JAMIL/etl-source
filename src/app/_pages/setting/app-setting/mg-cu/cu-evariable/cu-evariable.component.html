@@ -1,0 +1,48 @@
+<form nz-form [nzLayout]="'vertical'"
+    [formGroup]="enVariablesForm"
+    (ngSubmit)="submit()">
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="16">
+            <nz-form-item>
+                <nz-form-label nzRequired>EnvKey</nz-form-label>
+                <nz-form-control nzErrorTip="Profile EnvKey Required">
+                    <input nz-input formControlName="envKey"
+                        oninput="this.value = this.value.toUpperCase()"
+                        placeholder="Enter EnvKey" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8" *ngIf="actionType === editAction">
+            <nz-form-item>
+                <nz-form-label nzRequired>EnvKey Status</nz-form-label>
+                <nz-form-control nzErrorTip="EnvKey Status Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="status"
+                        nzPlaceHolder="Select EnvKey Status">
+                        <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label>EnvKey Description</nz-form-label>
+                <nz-form-control nzErrorTip="EnvKey Description Required">
+                    <textarea nz-input formControlName="description"
+                        [nzAutosize]="{ minRows: 3}"
+                        placeholder="Enter EnvKey Description"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button type="reset">Clear</button>
+            <button nz-button [nzType]="'primary'" 
+                [disabled]="!enVariablesForm.valid"
+                [nzLoading]="loading"
+                type="submit" style="float: right;">
+                Submit
+            </button>
+        </div>
+    </div>
+</form>

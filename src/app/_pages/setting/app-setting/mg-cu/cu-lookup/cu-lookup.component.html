@@ -1,0 +1,66 @@
+<form nz-form [nzLayout]="'vertical'"
+    [formGroup]="lookupDataForm"
+    (ngSubmit)="submit()">
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="6">
+            <nz-form-item>
+                <nz-form-label nzRequired>Lookup Type</nz-form-label>
+                <nz-form-control nzErrorTip="Lookup Type Required">
+                    <input nz-input formControlName="lookupType"
+                        pattern="^[-a-zA-Z0-9@\.+_]+$"
+                        oninput="this.value = this.value.toUpperCase()"
+                        placeholder="Enter Lookup Type" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="6">
+            <nz-form-item>
+                <nz-form-label nzRequired>Lookup Value</nz-form-label>
+                <nz-form-control nzErrorTip="Lookup Value Required">
+                    <input nz-input formControlName="lookupValue"
+                        placeholder="Enter Lookup Value" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="6">
+            <nz-form-item>
+                <nz-form-label nzRequired>Lookup Code</nz-form-label>
+                <nz-form-control nzErrorTip="Lookup Code Required">
+                    <input nz-input type="number" formControlName="lookupCode"
+                        placeholder="Enter Lookup Code" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="6">
+            <nz-form-item>
+                <nz-form-label>UI Lookup</nz-form-label>
+                <nz-form-control nzErrorTip="UI Lookup Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="uiLookup"
+                        nzPlaceHolder="Select UI Lookup">
+                        <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
+                            [nzValue]="lookupChildren.lookupCode"
+                            [nzLabel]="commomService.getDataFromObject(lookupChildren)"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label>Description</nz-form-label>
+                <textarea nz-input formControlName="description"
+                    [nzAutosize]="{ minRows: 3, maxRows: 5 }"
+                    placeholder="Enter description"></textarea>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button type="reset">Clear</button>
+            <button nz-button type="submit"
+                [nzType]="'primary'"
+                [nzLoading]="loading"
+                [disabled]="!lookupDataForm.valid"
+                style="float: right;">
+                Submit
+            </button>
+        </div>
+    </div>
+</form>

@@ -9,27 +9,18 @@ import { config } from '../../../environments/environment';
     providedIn: 'root'
 })
 export class AppUserService {
-    
+
     constructor(private http: HttpClient) { }
 
-    public signupAppUser(payload: any): Observable<ApiResponse> {
-        return this.http.post<any>(`${config.apiBaseUrl}/appUser.json/signupAppUser`, payload);
-    }
-
-    public updateAppUserProfile(payload: any): Observable<ApiResponse> {
-        return this.http.post<any>(`${config.apiBaseUrl}/appUser.json/updateAppUserProfile`, payload);
-    }
-
-    public getSubAppUserAccount(payload: any): Observable<ApiResponse> {
+    public findAppUserProfile(payload: any): Observable<ApiResponse> {
         let params = new HttpParams();
         params = params.set('username', payload);
-        return this.http.get<any>(`${config.apiBaseUrl}/appUser.json/getSubAppUserAccount`, { params });
+        return this.http.get<any>(`${config.apiBaseUrl}/appUser.json/findAppUserProfile`, { params });
     }
 
-    public closeAppUserAccount(payload: any): Observable<ApiResponse> {
-        return this.http.post<any>(`${config.apiBaseUrl}/appUser.json/closeAppUserAccount`, payload);
+    public updatePicture(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/updatePicture`, payload);
     }
-
 
 
 }

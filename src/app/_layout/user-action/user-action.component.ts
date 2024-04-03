@@ -6,41 +6,41 @@ import { first } from 'rxjs/operators';
 
 
 @Component({
-  selector: 'app-user-action',
-  templateUrl: './user-action.component.html',
-  styleUrls: ['./user-action.component.css']
+    selector: 'app-user-action',
+    templateUrl: './user-action.component.html',
+    styleUrls: ['./user-action.component.css']
 })
 export class UserActionComponent implements OnInit {
 
-  @Input()
-  public currentUser: AuthResponse;
+    @Input()
+    public currentUser: AuthResponse;
 
-  constructor(private router: Router,
-    private spinnerService: SpinnerService,
-    private alertService: AlertService,
-    private storageService: StorageService,
-    private authenticationService: AuthenticationService) {
-  }
+    constructor(private router: Router,
+        private spinnerService: SpinnerService,
+        private alertService: AlertService,
+        private storageService: StorageService,
+        private authenticationService: AuthenticationService) {
+    }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
-  public logout(): any {
-    this.spinnerService.show();
-    this.authenticationService.logout()
-      .pipe(first())
-      .subscribe((data: any) => {
-        this.spinnerService.hide();
-        if (data.status === ApiCode.ERROR) {
-          this.alertService.showError(data.message, ApiCode.ERROR);
-          return;
-        }
-        this.storageService.clear();
-        this.router.navigate(['/login']);
-      }, (error: any) => {
-        this.spinnerService.hide();
-        this.alertService.showError(error.message, ApiCode.ERROR);
-      });
-  }
+    public logout(): any {
+        this.spinnerService.show();
+        this.authenticationService.logout()
+            .pipe(first())
+            .subscribe((data: any) => {
+                this.spinnerService.hide();
+                if (data.status === ApiCode.ERROR) {
+                    this.alertService.showError(data.message, ApiCode.ERROR);
+                    return;
+                }
+                this.storageService.clear();
+                this.router.navigate(['/login']);
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error.message, ApiCode.ERROR);
+            });
+    }
 
 }

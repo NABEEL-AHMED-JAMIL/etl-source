@@ -20,8 +20,7 @@ export class ForgotPassComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService,
         private alertService: AlertService,
-        private spinnerService: SpinnerService
-    ) {}
+        private spinnerService: SpinnerService) { }
 
     ngOnInit() {
         this.spinnerService.hide()
@@ -41,10 +40,10 @@ export class ForgotPassComponent implements OnInit {
         if (this.forgotForm.invalid) {
             Object.values(this.forgotForm.controls).forEach(control => {
                 if (control.invalid) {
-                  control.markAsDirty();
-                  control.updateValueAndValidity({ onlySelf: true });
+                    control.markAsDirty();
+                    control.updateValueAndValidity({ onlySelf: true });
                 }
-              });
+            });
             this.spinnerService.hide();
             return;
         }

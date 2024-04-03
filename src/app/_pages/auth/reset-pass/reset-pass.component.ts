@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UntypedFormBuilder, UntypedFormControl, 
-    UntypedFormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AlertService, SpinnerService } from '../../../_helpers';
 import { ApiCode, AuthenticationService } from '../../../_shared';
+import {
+    UntypedFormBuilder,
+    UntypedFormControl,
+    UntypedFormGroup,
+    Validators
+} from '@angular/forms';
 import jwt_decode from "jwt-decode";
 
 
@@ -20,41 +24,41 @@ export class ResetPassComponent implements OnInit {
     public submitted: any = false;
     public tokenPayload: any;
 
-    constructor(private fb: UntypedFormBuilder,
+    constructor(private router: Router,
         private _activatedRoute: ActivatedRoute,
-        private router: Router,
+        private fb: UntypedFormBuilder,
         private authenticationService: AuthenticationService,
         private alertService: AlertService,
-        private spinnerService: SpinnerService
-    ) {
+        private spinnerService: SpinnerService) {
         this._activatedRoute.queryParamMap
-        .subscribe(params => {
-            try {
-                debugger
-                if (!params?.get('token')) {
-                    // redirect to forgot password with message token not there
-                    this.alertService.showError('Invlaid url\n please enter email again.', 'Error');
+            .subscribe(params => {
+                try {
+                    if (!params?.get('token')) {
+                        // redirect to forgot password with message token not there
+                        this.alertService.showError('Invlaid url\n please enter email again.', 'Error');
+                        this.router.navigate(['/forgotpass']);
+                    }
+                    this.tokenPayload = jwt_decode(params?.get('token'), { header: false });
+                    this.tokenPayload = JSON.parse(this.tokenPayload.sub);
+                } catch (exception) {
+                    this.alertService.showError('Invlaid token\n please enter email again.', 'Error');
                     this.router.navigate(['/forgotpass']);
                 }
-                this.tokenPayload = jwt_decode(params?.get('token'), { header: false });
-                this.tokenPayload = JSON.parse(this.tokenPayload.sub);
-            } catch (exception) {
-                this.alertService.showError('Invlaid token\n please enter email again.', 'Error');
-                this.router.navigate(['/forgotpass']);
-            }
-        });
+            });
     }
 
     ngOnInit() {
         // if the token is not valid show the message and aslo hide redirect to reset password
         this.spinnerService.hide()
         this.resetPassForm = this.fb.group({
-            appUserId: [this.tokenPayload.appUserId, Validators.required],
+            id: [this.tokenPayload.id, Validators.required],
             email: [this.tokenPayload.email, Validators.required],
             username: [this.tokenPayload.username, Validators.required],
             newPassword: ['', [Validators.required]],
             confirm: ['', [this.confirmValidator]],
         });
+        this.resetPassForm.controls['username'].disable();
+        this.resetPassForm.controls['email'].disable();
     }
 
     public validateConfirmPassword(): void {
@@ -69,24 +73,33 @@ export class ResetPassComponent implements OnInit {
         }
         return {};
     };
-   
+
     public onSubmit(): any {
         this.spinnerService.show();
         this.submitted = true;
         // stop here if form is invalid
         if (this.resetPassForm.invalid) {
             Object.values(this.resetPassForm.controls)
-            .forEach(control => {
-                if (control.invalid) {
-                    control.markAsDirty();
-                    control.updateValueAndValidity({ onlySelf: true });
-                }
-            });
+                .forEach(control => {
+                    if (control.invalid) {
+                        control.markAsDirty();
+                        control.updateValueAndValidity({ onlySelf: true });
+                    }
+                });
             this.spinnerService.hide();
             return;
         }
         this.loading = true;
-        this.authenticationService.resetPassword(this.resetPassForm.value)
+
+        let payload = {
+            sessionUser: {
+                id: this.resetPassForm.controls['id'].value,
+                email: this.resetPassForm.controls['email'].value,
+                username: this.resetPassForm.controls['username'].value
+            },
+            newPassword: this.resetPassForm.controls['newPassword'].value
+        };
+        this.authenticationService.resetPassword(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;
@@ -105,6 +118,5 @@ export class ResetPassComponent implements OnInit {
                 this.alertService.showError(error.message, 'Error');
             });
     }
-
 
 }
