@@ -21,9 +21,9 @@ export class MgRefreshTokenComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
-    public sessionUser: AuthResponse;
-    //
     public setOfCheckedId = new Set<any>();
+    //
+    public sessionUser: AuthResponse;
     public refreshTokenTable: IStaticTable = {
         tableId: 'refresh_id',
         title: 'Refresh Token',
@@ -39,11 +39,10 @@ export class MgRefreshTokenComponent implements OnInit {
                 action: ActionType.RE_FRESH
             }
         ],
-        extraButton: [
+        extraHeaderButton: [
             {
-                title: 'Delete Template',
+                title: 'Delete All',
                 type: 'delete',
-                color: 'red',
                 action: ActionType.DELETE
             }
         ],
@@ -104,12 +103,12 @@ export class MgRefreshTokenComponent implements OnInit {
         public commomService: CommomService,
         private refreshTokenService: RefreshTokenService,
         private authenticationService: AuthenticationService) {
-        this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+            this.endDate = this.commomService.getCurrentDate();
+            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+            this.authenticationService.currentUser
+                .subscribe(currentUser => {
+                    this.sessionUser = currentUser;
+                });
     }
 
     ngOnInit(): void {

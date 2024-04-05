@@ -58,15 +58,15 @@ export class UpdateProfileComponent implements OnInit {
         public storageService: StorageService,
         private authenticationService: AuthenticationService) {
         this.currentUser = this.authenticationService.currentUserValue;
-        this.findAppUserProfile(this.currentUser.username);
+        this.fetchAppUserProfile(this.currentUser.username);
     }
 
     ngOnInit() {
     }
 
-    public findAppUserProfile(payload: any): void {
+    public fetchAppUserProfile(payload: any): void {
         this.spinnerService.show();
-        this.appUserService.findAppUserProfile(payload)
+        this.appUserService.fetchAppUserProfile(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -130,41 +130,6 @@ export class UpdateProfileComponent implements OnInit {
         }
         return {};
     };
-
-    public beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]): Observable<boolean> =>
-        new Observable((observer: Observer<boolean>) => {
-            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-            if (!isJpgOrPng) {
-                this.alertService.showError('You can only upload JPG file!', ApiCode.ERROR);
-                observer.complete();
-                return;
-            }
-            this.fileList = [];
-            this.fileList = this.fileList.concat(file);
-            const formData = new FormData();
-            this.fileList.forEach((file: any) => {
-                formData.append('file', file);
-            });
-            this.spinnerService.show();
-            this.appUserService.updatePicture(formData)
-                .pipe(first())
-                .subscribe((response: any) => {
-                    this.spinnerService.hide();
-                    if (response.status === ApiCode.ERROR) {
-                        this.alertService.showError(response?.message, ApiCode.ERROR);
-                        return;
-                    }
-                    this.currentUser.profileImage = response.data.publicFile;
-                    this.storageService.set('currentUser', this.currentUser);
-                    this.alertService.showSuccess(response?.message, ApiCode.SUCCESS);
-                    this.spinnerService.hide();
-                    observer.complete();
-                }, (error: any) => {
-                    this.spinnerService.hide();
-                    this.alertService.showError(error, ApiCode.ERROR);
-                    observer.complete();
-                });
-    });
 
     public submitUpdateAppUserProfile(): any {
         this.spinnerService.show();

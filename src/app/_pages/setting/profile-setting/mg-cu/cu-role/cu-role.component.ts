@@ -60,7 +60,6 @@ export class CURoleComponent implements OnInit {
             lookupType: LOOKUP_TYPE.APPLICATION_STATUS
         }).subscribe((data) => {
             this.APPLICATION_STATUS = data;
-            this.APPLICATION_STATUS = data;
             this.APPLICATION_STATUS.SUB_LOOKUP_DATA = this.APPLICATION_STATUS.SUB_LOOKUP_DATA
                 .filter((data) => data.lookupCode !== APPLICATION_STATUS.DELETE);
         });

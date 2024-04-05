@@ -8,7 +8,7 @@ import {
     AuthenticationService
 } from '../../../../_shared';
 import { CUTemplateComponent } from '../../../index';
-import { AlertService, SpinnerService } from '../../../../_helpers';
+import { AlertService, CommomService, SpinnerService } from '../../../../_helpers';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { first } from 'rxjs';
@@ -21,12 +21,16 @@ import { first } from 'rxjs';
 })
 export class MgTemplateComponent implements OnInit {
 
+    public startDate: any;
+    public endDate: any;
+    public setOfCheckedId = new Set<any>();
+    //
     public sessionUser: AuthResponse;
     public templateTable: IStaticTable = {
         tableId: 'template_id',
         title: 'Template',
         bordered: true,
-        checkbox: false,
+        checkbox: true,
         size: 'small',
         headerButton: [
             {
@@ -42,6 +46,13 @@ export class MgTemplateComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Refresh',
                 action: ActionType.RE_FRESH
+            }
+        ],
+        extraHeaderButton: [
+            {
+                title: 'Delete All',
+                type: 'delete',
+                action: ActionType.DELETE
             }
         ],
         dataColumn: [
@@ -101,12 +112,15 @@ export class MgTemplateComponent implements OnInit {
         private modalService: NzModalService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
+        private commomService: CommomService,
         private templateRegService: TemplateRegService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+            this.endDate = this.commomService.getCurrentDate();
+            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+            this.authenticationService.currentUser
+                .subscribe(currentUser => {
+                    this.sessionUser = currentUser;
+                });
     }
 
     ngOnInit(): void {

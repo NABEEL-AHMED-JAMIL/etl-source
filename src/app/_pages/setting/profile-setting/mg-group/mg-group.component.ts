@@ -29,12 +29,16 @@ import {
 })
 export class MgGroupComponent implements OnInit {
 
+    public startDate: any;
+    public endDate: any;
+    public setOfCheckedId = new Set<any>();
+    //
     public sessionUser: AuthResponse;
     public uGroupTable: IStaticTable = {
         tableId: 'group_id',
         title: 'Mg Group',
         bordered: true,
-        checkbox: false,
+        checkbox: true,
         size: 'small',
         headerButton: [
             {
@@ -66,7 +70,19 @@ export class MgGroupComponent implements OnInit {
                 action: ActionType.DOWNLOAD
             }
         ],
+        extraHeaderButton: [
+            {
+                title: 'Delete All',
+                type: 'delete',
+                action: ActionType.DELETE
+            }
+        ],
         dataColumn: [
+            {
+                field: 'avatar',
+                header: '',
+                type: 'avatar'
+            },
             {
                 field: 'name',
                 header: 'Group Name',
@@ -76,6 +92,11 @@ export class MgGroupComponent implements OnInit {
                 field: 'description',
                 header: 'Description',
                 type: 'data'
+            },
+            {
+                field: 'totalUser',
+                header: 'Link User',
+                type: 'tag'
             },
             {
                 field: 'dateCreated',
@@ -119,19 +140,17 @@ export class MgGroupComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Delete',
                 action: ActionType.DELETE
-            },
+            }
+        ],
+        moreActionType: [
             {
                 type: 'user',
-                color: 'blue',
-                spin: false,
-                tooltipTitle: 'Add Lead User',
+                title: 'Add Lead User',
                 action: ActionType.ADD
             },
             {
                 type: 'usergroup-add',
-                color: 'rgba(0, 0, 0, 0.85)',
-                spin: false,
-                tooltipTitle: 'Link With User',
+                title: 'Link With User',
                 action: ActionType.LINK
             }
         ]
@@ -145,10 +164,12 @@ export class MgGroupComponent implements OnInit {
         private spinnerService: SpinnerService,
         private mgGroupService: MgGroupService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+            this.endDate = this.commomService.getCurrentDate();
+            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+            this.authenticationService.currentUser
+                .subscribe(currentUser => {
+                    this.sessionUser = currentUser;
+                });
     }
 
     ngOnInit(): void {

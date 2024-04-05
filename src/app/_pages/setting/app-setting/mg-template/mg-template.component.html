@@ -3,7 +3,10 @@
     <nz-divider style="margin: 5px 0;"></nz-divider>
     <app-gen-table 
         *ngIf="templateTable"
-        [isDateFilter]="false"
+        [isDateFilter]="true"
+        [startDate]="startDate"
+        [endDate]="endDate"
+        [setOfCheckedId]="setOfCheckedId"
         [staticTable]="templateTable"
         (actionEventEmitter)="tableActionReciver($event)"
         (buttonEventEmitter)="buttonActionReciver($event)">

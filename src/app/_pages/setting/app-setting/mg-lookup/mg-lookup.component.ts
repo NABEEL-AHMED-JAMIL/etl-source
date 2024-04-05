@@ -28,17 +28,20 @@ import {
 })
 export class MGLookupComponent implements OnInit {
 
+    public startDate: any;
+    public endDate: any;
+    public setOfCheckedId = new Set<any>();
+    //
     public isParent: boolean = false;
     public lookupId: any;
     public lookupAction: ActionType;
     public parentLookupDate: ILookupData;
     public sessionUser: AuthResponse;
-
     public lookupTable: IStaticTable = {
         tableId: 'lookup_id',
         title: 'Lookup',
         bordered: true,
-        checkbox: false,
+        checkbox: true,
         size: 'small',
         headerButton: [
             {
@@ -68,6 +71,13 @@ export class MGLookupComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Download',
                 action: ActionType.DOWNLOAD
+            }
+        ],
+        extraHeaderButton: [
+            {
+                title: 'Delete All',
+                type: 'delete',
+                action: ActionType.DELETE
             }
         ],
         dataColumn: [
@@ -105,7 +115,7 @@ export class MGLookupComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'dateUpdated',
@@ -116,7 +126,7 @@ export class MGLookupComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'status',
@@ -136,25 +146,27 @@ export class MGLookupComponent implements OnInit {
         private spinnerService: SpinnerService,
         private commomService: CommomService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
-        this.route.data
-            .subscribe((data: any) => {
-                this.isParent = data.parent;
-                if (!this.isParent) {
-                    this.route.queryParams.subscribe(params => {
-                        this.lookupId = params['lookupId'];
-                        this.fetchSubLookupDataByParentLookupDataId({
-                            sessionUser: {
-                                username: this.sessionUser.username
-                            },
-                            parentLookupId: this.lookupId
+            this.endDate = this.commomService.getCurrentDate();
+            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+            this.authenticationService.currentUser
+                .subscribe(currentUser => {
+                    this.sessionUser = currentUser;
+                });
+            this.route.data
+                .subscribe((data: any) => {
+                    this.isParent = data.parent;
+                    if (!this.isParent) {
+                        this.route.queryParams.subscribe(params => {
+                            this.lookupId = params['lookupId'];
+                            this.fetchSubLookupDataByParentLookupDataId({
+                                sessionUser: {
+                                    username: this.sessionUser.username
+                                },
+                                parentLookupId: this.lookupId
+                            });
                         });
-                    });
-                }
-            });
+                    }
+                });
     }
 
     ngOnInit(): void {
@@ -295,27 +307,27 @@ export class MGLookupComponent implements OnInit {
         } else if (ActionType.DOWNLOAD === payload.action) {
             if (this.isParent) {
                 this.downloadLookupData({
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        }
+                    sessionUser: {
+                        username: this.sessionUser.username
                     }
+                }
                 );
             } else {
                 this.downloadLookupData({
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        },
-                        parentLookupId: this.lookupId
-                    });
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    },
+                    parentLookupId: this.lookupId
+                });
             }
         } else if (ActionType.UPLOAD === payload.action) {
             if (this.isParent) {
                 payload.action = 'Lookup'
             } else {
                 payload.action = 'SubLookup',
-                payload.data = {
-                    parentLookupId: this.lookupId
-                }
+                    payload.data = {
+                        parentLookupId: this.lookupId
+                    }
             }
             this.openBatchTemplate(payload);
         }
@@ -333,13 +345,14 @@ export class MGLookupComponent implements OnInit {
                     }
                 });
         } else if (ActionType.DELETE === payload.action) {
+            debugger
             const drawerRef = this.modalService.confirm({
                 nzOkText: 'Ok',
                 nzCancelText: 'Cancel',
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    this.deleteLookupData({ lookupId: payload.data.lookupId });
+                    this.deleteLookupData({ id: payload.data.id });
                 }
             });
             drawerRef.afterClose.subscribe(data => {

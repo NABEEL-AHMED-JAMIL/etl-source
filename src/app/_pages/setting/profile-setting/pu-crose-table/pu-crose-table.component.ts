@@ -30,7 +30,7 @@ export class PUCroseTableComponent implements OnInit {
     public profileLinkUserTable: IStaticTable = {
         tableId: 'profile_link_user_id',
         title: 'Profile Link User',
-        bordered: false,
+        bordered: true,
         checkbox: false,
         enableAction: true,
         size: 'small',
@@ -51,10 +51,20 @@ export class PUCroseTableComponent implements OnInit {
                 type: 'data'
             },
             {
+                field: 'username',
+                header: 'Username',
+                type: 'data'
+            },
+            {
                 field: 'profile',
                 header: 'Profile',
                 type: 'combine',
                 subfield: ['id' , 'profileName']
+            },
+            {
+                field: 'linkStatus',
+                header: 'Status',
+                type: 'tag'
             }
         ]
     };

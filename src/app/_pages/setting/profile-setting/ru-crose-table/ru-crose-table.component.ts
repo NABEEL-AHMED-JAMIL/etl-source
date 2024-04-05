@@ -30,7 +30,7 @@ export class RUCroseTableComponent implements OnInit {
     public roleLinkUserTable: IStaticTable = {
         tableId: 'role_link_user_id',
         title: 'Role Link User',
-        bordered: false,
+        bordered: true,
         checkbox: false,
         enableAction: true,
         size: 'small',
@@ -51,10 +51,20 @@ export class RUCroseTableComponent implements OnInit {
                 type: 'data'
             },
             {
+                field: 'username',
+                header: 'Username',
+                type: 'data'
+            },
+            {
                 field: 'profile',
                 header: 'Profile',
                 type: 'combine',
                 subfield: ['id' , 'profileName']
+            },
+            {
+                field: 'linkStatus',
+                header: 'Status',
+                type: 'tag'
             }
         ]
     };

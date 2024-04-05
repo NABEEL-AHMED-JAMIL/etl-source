@@ -33,7 +33,7 @@
                     [ngStyle]="{'color': button.color}">
                 </span>
             </button>
-            <button *ngIf="staticTable.extraButton"
+            <button *ngIf="staticTable.extraHeaderButton"
                 nz-button nz-dropdown
                 [nzDropdownMenu]="extraMenu"
                 nzPlacement="bottomRight">
@@ -57,7 +57,7 @@
     [nzFrontPagination]="true"
     [nzShowPagination]="true"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
-    style="font-size: 10px;display: block;overflow-x: auto;white-space: pre;">
+    class="table-setting">
     <thead>
         <tr>
             <th>#</th>
@@ -74,7 +74,7 @@
                 <th *ngIf="col.type === 'data' || col.type === 'phone' || col.type === 'price' || col.type === 'combine' ">
                     {{col.header}}
                 </th>
-                <th *ngIf="col.type === 'img'"
+                <th *ngIf="col.type === 'img' || col.type === 'avatar'"
                     style="width: 1px;text-align: center;">
                     {{col.header}}
                 </th>
@@ -97,11 +97,14 @@
                 (nzCheckedChange)="onItemChecked(row.id, $event)">
             </td>
             <ng-container *ngFor='let col of staticTable.dataColumn'>
-                <td *ngIf="col.type === 'img'">
+                <td *ngIf="col.type === 'img'" style="text-align: center;">
                     <nz-avatar nzIcon="user"
                         [nzSrc]="commomService.isValidHttpUrl(row[col.field]) ? 
                         row[col.field] : './assets/avatar/'+row[col.field]">
                     </nz-avatar>
+                </td>
+                <td *ngIf="col.type === 'avatar'">
+                    <nz-avatar nzText="{{row[col.field]}}" class="avator-logo"></nz-avatar>
                 </td>
                 <td *ngIf="col.type === 'date'"
                     style="text-align: center;width: 1px;">
@@ -122,7 +125,7 @@
                     </nz-tag>
                 </td>
             </ng-container>
-            <td *ngIf="staticTable.actionType">
+            <td *ngIf="staticTable.actionType || staticTable.moreActionType">
                 <ng-container *ngFor='let action of staticTable.actionType'>
                     <a [routerLink]="" nz-tooltip nzTooltipTitle="{{ action?.tooltipTitle }}"
                         (click)="actionEvent(action.action, row)">
@@ -130,6 +133,24 @@
                             [ngStyle]="{'color': action.color}"></span>
                     </a>&nbsp;
                 </ng-container>
+                <!-- more action -->
+                <span *ngIf="staticTable.moreActionType"
+                    nz-icon nzType="more"
+                    nz-button nz-dropdown
+                    [nzDropdownMenu]="moreActionType"
+                    nzPlacement="bottomRight"></span>
+                <nz-dropdown-menu #moreActionType="nzDropdownMenu">
+                    <ul nz-menu>
+                        <ng-container *ngFor='let moreActionType of staticTable.moreActionType'>
+                            <li nz-menu-item *ngIf="commomService.isShow(row, moreActionType)"
+                                (click)="actionEvent(moreActionType.action, row)">
+                                <span nz-icon nzType="{{moreActionType.type}}"
+                                    nzTheme="outline"></span>&nbsp;
+                                {{moreActionType.title}}
+                            </li>
+                        </ng-container>
+                    </ul>
+                </nz-dropdown-menu>
             </td>
             <td *ngIf="staticTable.enableAction"
                 style="width: 1px;text-align: center;">
@@ -148,7 +169,7 @@
 <!-- extra -->
 <nz-dropdown-menu #extraMenu="nzDropdownMenu">
     <ul nz-menu>
-        <ng-container *ngFor='let extraButton of staticTable.extraButton'>
+        <ng-container *ngFor='let extraButton of staticTable.extraHeaderButton'>
             <li nz-menu-item (click)="extraEvent(extraButton.action)">
                 <span nz-icon nzType="{{extraButton.type}}"
                     nzTheme="outline"></span>&nbsp;
@@ -156,4 +177,6 @@
             </li>
         </ng-container>
     </ul>
-  </nz-dropdown-menu>
+</nz-dropdown-menu>
+
+<!-- more button -->

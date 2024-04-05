@@ -69,14 +69,14 @@ export class CommomService {
     }
 
 
-    public getDataFromObject(payload: any) {
+    public getDataFromObject(payload: any): any {
         if (payload && typeof payload == 'object') {
             return payload?.lookupValue;
         }
         return payload;
     }
 
-    public getMultiDataFromObject(payload: any, fieldList: any) {
+    public getMultiDataFromObject(payload: any, fieldList: any): any {
         if (payload && typeof payload == 'object') {
             const filteredFields = Object.keys(payload)
                 .filter(key => fieldList.includes(key))
@@ -85,6 +85,16 @@ export class CommomService {
         }
         return payload;
     }
+
+    public isShow(row: any, action: any): any {
+        if (action.condition === 'NEQ') {
+          return row[action.targetFiled].lookupCode !== action.targetValue
+        } else if (action.condition === 'EQ') {
+          return row[action.targetFiled].lookupCode === action.targetValue
+        }
+        return true;
+    }
+
 
     public isValidHttpUrl(inputUrl: any): boolean {
         let url;

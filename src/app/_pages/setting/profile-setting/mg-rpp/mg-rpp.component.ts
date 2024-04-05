@@ -22,7 +22,11 @@ import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { CURoleComponent } from '../mg-cu/cu-role/cu-role.component';
 import { CUProfileComponent } from '../mg-cu/cu-profile/cu-profile.component';
 import { CUPermissionComponent } from '../mg-cu/cu-permission/cu-permission.component';
-import { BatchComponent, PUCroseTableComponent, RUCroseTableComponent } from 'src/app/_pages';
+import {
+    BatchComponent,
+    PUCroseTableComponent,
+    RUCroseTableComponent
+} from 'src/app/_pages';
 
 @Component({
     selector: 'app-mg-rpp',
@@ -36,7 +40,7 @@ export class MgRPPComponent implements OnInit {
         tableId: 'role_id',
         title: 'Role',
         bordered: true,
-        checkbox: false,
+        checkbox: true,
         size: 'small',
         headerButton: [
             {
@@ -66,6 +70,13 @@ export class MgRPPComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Download',
                 action: ActionType.DOWNLOAD
+            }
+        ],
+        extraHeaderButton: [
+            {
+                title: 'Delete All',
+                type: 'delete',
+                action: ActionType.DELETE
             }
         ],
         dataColumn: [
@@ -121,12 +132,12 @@ export class MgRPPComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Delete',
                 action: ActionType.DELETE
-            },
+            }
+        ],
+        moreActionType: [
             {
+                title: 'Link With User',
                 type: 'link',
-                color: 'rgba(0, 0, 0, 0.85)',
-                spin: false,
-                tooltipTitle: 'Link With User',
                 action: ActionType.LINK
             }
         ]
@@ -137,7 +148,7 @@ export class MgRPPComponent implements OnInit {
         tableId: 'profile_id',
         title: 'Profile',
         bordered: true,
-        checkbox: false,
+        checkbox: true,
         size: 'small',
         headerButton: [
             {
@@ -167,6 +178,13 @@ export class MgRPPComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Download',
                 action: ActionType.DOWNLOAD
+            }
+        ],
+        extraHeaderButton: [
+            {
+                title: 'Delete All',
+                type: 'delete',
+                action: ActionType.DELETE
             }
         ],
         dataColumn: [
@@ -222,12 +240,12 @@ export class MgRPPComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Delete',
                 action: ActionType.DELETE
-            },
+            }
+        ],
+        moreActionType: [
             {
+                title: 'Link With User',
                 type: 'link',
-                color: 'rgba(0, 0, 0, 0.85)',
-                spin: false,
-                tooltipTitle: 'Link With User',
                 action: ActionType.LINK
             }
         ]
@@ -238,7 +256,7 @@ export class MgRPPComponent implements OnInit {
         tableId: 'permission_id',
         title: 'Permission',
         bordered: true,
-        checkbox: false,
+        checkbox: true,
         size: 'small',
         headerButton: [
             {
@@ -268,6 +286,13 @@ export class MgRPPComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Download',
                 action: ActionType.DOWNLOAD
+            }
+        ],
+        extraHeaderButton: [
+            {
+                title: 'Delete All',
+                type: 'delete',
+                action: ActionType.DELETE
             }
         ],
         dataColumn: [
@@ -441,7 +466,7 @@ export class MgRPPComponent implements OnInit {
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
                 nzTitle: '[' + payload.data.id + '] ' + payload.data.name,
-                nzWidth: 800,
+                nzWidth: 1200,
                 nzFooter: null, // Optional footer
                 nzContent: RUCroseTableComponent,
                 nzContentParams: {
@@ -589,7 +614,7 @@ export class MgRPPComponent implements OnInit {
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
                 nzTitle: '[' + payload.data.id + '] ' + payload.data.profileName,
-                nzWidth: 800,
+                nzWidth: 1200,
                 nzFooter: null, // Optional footer
                 nzContent: PUCroseTableComponent,
                 nzContentParams: {

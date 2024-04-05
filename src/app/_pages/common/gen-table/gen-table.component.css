@@ -8,3 +8,27 @@ button {
     border-color: black;
     background: #fff;
 }
+
+.avator-logo {
+    color:white;
+    background-color:rgba(0, 0, 0, 0.85);
+    font-size: 15px;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+}
+
+.table-setting {
+    font-size: 10px;
+    display: block;
+    overflow-x: auto;
+    white-space: pre;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Adjust as needed */
+  }

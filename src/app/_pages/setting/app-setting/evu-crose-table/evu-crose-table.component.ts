@@ -30,7 +30,7 @@ export class EVUCroseTableComponent implements OnInit {
     public envLinkUserTable: IStaticTable = {
         tableId: 'profile_link_user_id',
         title: 'Profile Link User',
-        bordered: false,
+        bordered: true,
         checkbox: false,
         enableAction: true,
         size: 'small',
@@ -51,10 +51,25 @@ export class EVUCroseTableComponent implements OnInit {
                 type: 'data'
             },
             {
+                field: 'username',
+                header: 'Username',
+                type: 'data'
+            },
+            {
                 field: 'profile',
                 header: 'Profile',
                 type: 'combine',
                 subfield: ['id', 'profileName']
+            },
+            {
+                field: 'envValue',
+                header: 'Env Value',
+                type: 'data',
+            },
+            {
+                field: 'linkStatus',
+                header: 'Status',
+                type: 'tag'
             }
         ]
     };
@@ -71,14 +86,14 @@ export class EVUCroseTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchLinkEVariableWithRootUser({
+        this.fetchLinkEVariableWitUser({
             envId: this.enVariable.id
         });
     }
 
-    public fetchLinkEVariableWithRootUser(payload: any): any {
+    public fetchLinkEVariableWitUser(payload: any): any {
         this.spinnerService.show();
-        this.eVariableService.fetchLinkEVariableWithRootUser(payload)
+        this.eVariableService.fetchLinkEVariableWitUser(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -95,7 +110,7 @@ export class EVUCroseTableComponent implements OnInit {
 
     public enableActionReciver(payload: any): void {
         this.spinnerService.show();
-        this.eVariableService.linkEVariableWithRootUser({
+        this.eVariableService.linkEVariableWithUser({
             envId: this.enVariable.id,
             appUserId: payload.id,
             linked: payload.linked

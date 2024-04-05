@@ -165,8 +165,9 @@ export interface IStaticTable {
     dataSource?: readonly any[];
     dataColumn?: IColumn[];
     actionType?: any; // delete,update,subnode,more->dropdown
+    moreActionType?: any; // delete,update,subnode,more->dropdown
     headerButton?: any;
-    extraButton?: any;
+    extraHeaderButton?: any;
     enableAction?: boolean; // for toggle single action
 }
 
@@ -206,7 +207,9 @@ export enum ActionType {
     RE_FRESH = 6,
     UPLOAD = 7,
     DOWNLOAD = 8,
-    LINK = 9
+    LINK = 9,
+    DISABLED = 10,
+    ENABLED = 11
 }
 
 export enum IProfileSetting {

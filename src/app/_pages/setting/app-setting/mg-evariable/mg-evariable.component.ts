@@ -2,8 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { first } from 'rxjs';
-import { AlertService, CommomService, SpinnerService } from 'src/app/_helpers';
-import { BatchComponent, CUEvariableComponent, EVUCroseTableComponent } from 'src/app/_pages';
+import {
+    AlertService,
+    CommomService,
+    SpinnerService
+} from 'src/app/_helpers';
+import {
+    BatchComponent,
+    CUEvariableComponent,
+    EVUCroseTableComponent
+} from 'src/app/_pages';
 import {
     ApiCode,
     AuthResponse,
@@ -22,12 +30,15 @@ import {
 })
 export class MgEVariableComponent implements OnInit {
 
+    public startDate: any;
+    public endDate: any;
+    public setOfCheckedId = new Set<any>();
     public sessionUser: AuthResponse;
     public eVariableTable: IStaticTable = {
         tableId: 'variable_id',
         title: 'E-Variable',
         bordered: true,
-        checkbox: false,
+        checkbox: true,
         size: 'small',
         headerButton: [
             {
@@ -59,6 +70,13 @@ export class MgEVariableComponent implements OnInit {
                 action: ActionType.DOWNLOAD
             }
         ],
+        extraHeaderButton: [
+            {
+                title: 'Delete All',
+                type: 'delete',
+                action: ActionType.DELETE
+            }
+        ],
         dataColumn: [
             {
                 field: 'envKey',
@@ -79,7 +97,7 @@ export class MgEVariableComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id' , 'username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'dateUpdated',
@@ -90,7 +108,7 @@ export class MgEVariableComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id' , 'username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'status',
@@ -112,12 +130,12 @@ export class MgEVariableComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Delete',
                 action: ActionType.DELETE
-            },
+            }
+        ],
+        moreActionType: [
             {
+                title: 'Link With User',
                 type: 'link',
-                color: 'rgba(0, 0, 0, 0.85)',
-                spin: false,
-                tooltipTitle: 'Link With User',
                 action: ActionType.LINK
             }
         ]
@@ -131,6 +149,8 @@ export class MgEVariableComponent implements OnInit {
         private spinnerService: SpinnerService,
         private eVariableService: EVariableService,
         private authenticationService: AuthenticationService) {
+        this.endDate = this.commomService.getCurrentDate();
+        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
@@ -257,7 +277,7 @@ export class MgEVariableComponent implements OnInit {
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
                 nzTitle: '[' + payload.data.id + '] ' + payload.data.envKey,
-                nzWidth: 800,
+                nzWidth: 1200,
                 nzFooter: null, // Optional footer
                 nzContent: EVUCroseTableComponent,
                 nzContentParams: {

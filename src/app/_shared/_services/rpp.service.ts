@@ -152,5 +152,13 @@ export class RPPService {
     public linkProfileWithRootUser(payload: any): Observable<ApiResponse> {
         return this.http.post(`${config.apiBaseUrl}/rpp.json/linkProfileWithRootUser`, payload);
     }
+    
+    public fetchProfileWithUser(payload: any): Observable<ApiResponse> {
+        return this.http.post(`${config.apiBaseUrl}/rpp.json/fetchProfileWithUser`, payload);
+    }
+
+    public fetchRoleWithUser(payload: any): Observable<ApiResponse> {
+        return this.http.post(`${config.apiBaseUrl}/rpp.json/fetchRoleWithUser`, payload);
+    }
 
 }

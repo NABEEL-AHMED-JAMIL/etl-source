@@ -50,12 +50,12 @@ export class EVariableService {
         return this.http.post(`${config.apiBaseUrl}/eVariable.json/uploadEnVariable`, payload);
     }
 
-    public fetchLinkEVariableWithRootUser(payload: any) : Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/fetchLinkEVariableWithRootUser`, payload);
+    public fetchLinkEVariableWitUser(payload: any) : Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/fetchLinkEVariableWitUser`, payload);
     }
 
-    public linkEVariableWithRootUser(payload: any) : Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/linkEVariableWithRootUser`, payload);
+    public linkEVariableWithUser(payload: any) : Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/linkEVariableWithUser`, payload);
     }
 
 }
