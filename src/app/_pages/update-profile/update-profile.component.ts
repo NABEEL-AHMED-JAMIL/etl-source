@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import {
+    ActionType,
     ApiCode,
     AppUserService,
     AuthResponse,
     AuthenticationService,
     IAppUser,
-    ICompany,
-    IProfileSetting
+    IProfileSetting,
+    IStaticTable
 } from '../../_shared';
 import {
     FormBuilder,
@@ -21,19 +23,20 @@ import {
     CommomService,
     StorageService
 } from 'src/app/_helpers';
-import { Observable, Observer, first } from 'rxjs';
+import { first } from 'rxjs';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { CompanyDetailComponent, EnvVariableValueComponent } from '..';
 
 
 @Component({
     selector: 'update-profile',
     templateUrl: './update-profile.component.html',
-    styleUrls: ['./update-profile.component.css']
+    styleUrls: ['./update-profile.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class UpdateProfileComponent implements OnInit {
 
-    public updateProfileForm: FormGroup;
-    public updateCompnayForm: FormGroup;
     public resetPasswordForm: FormGroup;
     public currentUser: AuthResponse;
     public appUser: IAppUser;
@@ -45,17 +48,88 @@ export class UpdateProfileComponent implements OnInit {
     public CHANGE_PASSWORD: IProfileSetting = IProfileSetting.CHANGE_PASSWORD;
     public MY_TEAM: IProfileSetting = IProfileSetting.MY_TEAM;
     public ENVIROMENT: IProfileSetting = IProfileSetting.ENVIROMENT;
-
     public viewProfile: IProfileSetting = IProfileSetting.USER_INFO;
+
+    // e-varaible
+    public eVariableTable: IStaticTable = {
+        tableId: 'variable_id',
+        title: 'E-Variable',
+        bordered: true,
+        checkbox: false,
+        size: 'small',
+        dataColumn: [
+            {
+                field: 'envKey',
+                header: 'Key',
+                type: 'data'
+            },
+            {
+                field: 'envValue',
+                header: 'Value',
+                type: 'data'
+            },
+            {
+                field: 'description',
+                header: 'Description',
+                type: 'data'
+            }
+        ],
+        actionType: [
+            {
+                type: 'edit',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
+            }
+        ]
+    };
+    // team
+    public teamTable: IStaticTable = {
+        tableId: 'team_id',
+        title: 'Mg Team',
+        bordered: false,
+        checkbox: false,
+        size: 'small',
+        dataColumn: [
+            {
+                field: 'avatar',
+                header: '',
+                type: 'avatar'
+            },
+            {
+                field: 'name',
+                header: 'Group Name',
+                type: 'data'
+            },
+            {
+                field: 'description',
+                header: 'Description',
+                type: 'data'
+            },
+            {
+                field: 'userType',
+                header: 'Position',
+                type: 'data'
+            },
+            {
+                field: 'status',
+                header: 'Status',
+                type: 'tag'
+            }
+        ]
+    };
 
     constructor(
         private router: Router,
         private fb: FormBuilder,
-        private appUserService: AppUserService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         public commomService: CommomService,
         public storageService: StorageService,
+        private appUserService: AppUserService,
+        private drawerService: NzDrawerService,
+        private modalService: NzModalService,
         private authenticationService: AuthenticationService) {
         this.currentUser = this.authenticationService.currentUserValue;
         this.fetchAppUserProfile(this.currentUser.username);
@@ -75,8 +149,7 @@ export class UpdateProfileComponent implements OnInit {
                     return;
                 }
                 this.appUser = response.data;
-                this.fillAppUserProfileDetail(this.appUser);
-                this.fillAppUserCompanyDetail(this.appUser?.company);
+                this.eVariableTable.dataSource = this.appUser.enVariables;
                 this.fillAppUserPasswordDetail(this.appUser);
             }, (error: any) => {
                 this.spinnerService.hide();
@@ -84,38 +157,17 @@ export class UpdateProfileComponent implements OnInit {
             });
     }
 
-    public fillAppUserProfileDetail(payload: IAppUser): void {
-        this.updateProfileForm = this.fb.group({
-            id: [payload.id],
-            ipAddress: [payload?.ipAddress, [Validators.required]],
-            firstName: [payload?.firstName, [Validators.required]],
-            lastName: [payload?.lastName, [Validators.required]],
-            username: [payload.username, [Validators.required]],
-            email: [payload.email, [Validators.email, Validators.required]]
-        });
-        this.updateProfileForm.controls['username'].disable();
-        this.updateProfileForm.controls['email'].disable();
-    }
-
-    public fillAppUserCompanyDetail(payload: ICompany): void {
-        this.updateCompnayForm = this.fb.group({
-            id: [payload.id],
-            name: [payload?.name, [Validators.required]],
-            email: [payload?.email, [Validators.required]],
-            address: [payload?.address, [Validators.required]],
-            phone: [payload.phone, [Validators.required]]
-        });
-    }
-
     public fillAppUserPasswordDetail(payload: IAppUser): void {
         this.resetPasswordForm = this.fb.group({
             id: [payload.id],
             email: [payload.email, [Validators.email, Validators.required]],
+            username: [payload.username, [Validators.required]],
             oldPassword: ['', [Validators.required]],
             newPassword: ['', [Validators.required]],
             confirm: ['', [this.confirmValidator]],
         });
         this.resetPasswordForm.controls['email'].disable();
+        this.resetPasswordForm.controls['username'].disable();
     }
 
     public validateConfirmPassword(): void {
@@ -131,32 +183,81 @@ export class UpdateProfileComponent implements OnInit {
         return {};
     };
 
-    public submitUpdateAppUserProfile(): any {
+    public submitResetPassword(): any {
         this.spinnerService.show();
-        if (this.updateProfileForm.invalid) {
+        if (this.resetPasswordForm.invalid) {
           this.spinnerService.hide();
           return;
         }
-        // this.appUserService.updateAppUserProfile(this.updateProfileForm.getRawValue())
-        //   .pipe(first())
-        //   .subscribe((response: any) => {
-        //     this.spinnerService.hide();
-        //     if (response.status === ApiCode.ERROR) {
-        //       this.alertService.showError(response?.message, ApiCode.ERROR);
-        //       return;
-        //     }
-        //     this.currentUser.appUserName = response.data.appUserName;
-        //     this.storageService.set('currentUser', this.currentUser);
-        //     this.alertService.showSuccess(response?.message, ApiCode.SUCCESS);
-        //   }, (error: any) => {
-        //     this.spinnerService.hide();
-        //     this.alertService.showError(error, ApiCode.ERROR);
-        //   });
-      }
-    
+        this.spinnerService.show();
+        this.appUserService.updateAppUserPassword(this.resetPasswordForm.getRawValue())
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.authenticationService.logout()
+                .pipe(first())
+                .subscribe((data: any) => {
+                    this.spinnerService.hide();
+                    if (data.status === ApiCode.ERROR) {
+                        this.alertService.showError(data.message, ApiCode.ERROR);
+                        return;
+                    }
+                    this.storageService.clear();
+                    this.router.navigate(['/login']);
+                }, (error: any) => {
+                    this.spinnerService.hide();
+                    this.alertService.showError(error.message, ApiCode.ERROR);
+                });
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error.message, ApiCode.ERROR);
+            });
+    }
 
     public onNaviage(profile: IProfileSetting) {
         this.viewProfile = profile;
+    }
+
+    public updateUserProfile(): void {
+
+    }
+
+    public addUpdateCompany(): void {
+        const drawerRef = this.drawerService.create({
+            nzTitle: 'Company Detail',
+            nzSize: 'large',
+            nzMaskClosable: false,
+            nzContent: CompanyDetailComponent,
+            nzContentParams: {
+                actionType: !this.appUser?.company ? ActionType.ADD : ActionType.EDIT,
+                editPayload: this.appUser?.company
+            }
+        });
+        drawerRef.afterClose.subscribe(data => {
+            this.fetchAppUserProfile(this.currentUser.username);
+        });
+    }
+
+    public tableActionReciver(payload: any): void {
+        if (ActionType.EDIT === payload.action) {
+            const drawerRef = this.modalService.create({
+                nzTitle: 'Environment Variable',
+                nzMaskClosable: false,
+                nzContent: EnvVariableValueComponent,
+                nzComponentParams: {
+                    actionType: payload.action,
+                    editPayload: payload?.data
+                },
+                nzFooter: null // Set the footer to null to hide it
+            });
+            drawerRef.afterClose.subscribe(data => {
+                this.fetchAppUserProfile(this.currentUser.username);
+            });
+        }
     }
 
 }

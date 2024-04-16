@@ -4,7 +4,10 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { first } from 'rxjs';
 import { Location } from '@angular/common';
-import { BatchComponent, CULookupComponent } from '../../../index';
+import {
+    BatchComponent,
+    CULookupComponent
+} from '../../../index';
 import {
     ApiCode,
     IStaticTable,
@@ -28,10 +31,6 @@ import {
 })
 export class MGLookupComponent implements OnInit {
 
-    public startDate: any;
-    public endDate: any;
-    public setOfCheckedId = new Set<any>();
-    //
     public isParent: boolean = false;
     public lookupId: any;
     public lookupAction: ActionType;
@@ -41,7 +40,7 @@ export class MGLookupComponent implements OnInit {
         tableId: 'lookup_id',
         title: 'Lookup',
         bordered: true,
-        checkbox: true,
+        checkbox: false,
         size: 'small',
         headerButton: [
             {
@@ -71,13 +70,6 @@ export class MGLookupComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Download',
                 action: ActionType.DOWNLOAD
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
             }
         ],
         dataColumn: [
@@ -146,8 +138,6 @@ export class MGLookupComponent implements OnInit {
         private spinnerService: SpinnerService,
         private commomService: CommomService,
         private authenticationService: AuthenticationService) {
-            this.endDate = this.commomService.getCurrentDate();
-            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
             this.authenticationService.currentUser
                 .subscribe(currentUser => {
                     this.sessionUser = currentUser;
@@ -207,9 +197,9 @@ export class MGLookupComponent implements OnInit {
                         action: ActionType.SUBNODE
                     }
                 ];
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -243,9 +233,9 @@ export class MGLookupComponent implements OnInit {
                         action: ActionType.DELETE
                     }
                 ];
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -256,9 +246,9 @@ export class MGLookupComponent implements OnInit {
             .subscribe((response: any) => {
                 this.commomService.downLoadFile(response);
                 this.spinnerService.hide();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -279,9 +269,9 @@ export class MGLookupComponent implements OnInit {
                     parentLookupId: this.lookupId
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -338,14 +328,13 @@ export class MGLookupComponent implements OnInit {
             this.openCuLookup(ActionType.EDIT, payload);
         } else if (ActionType.SUBNODE === payload.action) {
             // sub node only in parent side setting so no need to check
-            this.router.navigate(['/setting/mgSubLookup'],
+            this.router.navigate(['/setting/mgLookup/mgSubLookup'],
                 {
                     queryParams: {
                         lookupId: payload.data.id
                     }
                 });
         } else if (ActionType.DELETE === payload.action) {
-            debugger
             const drawerRef = this.modalService.confirm({
                 nzOkText: 'Ok',
                 nzCancelText: 'Cancel',

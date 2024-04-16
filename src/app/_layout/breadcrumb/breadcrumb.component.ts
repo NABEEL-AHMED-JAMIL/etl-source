@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BreadcrumbService } from 'src/app/_helpers';
 
 @Component({
     selector: 'app-breadcrumb',
@@ -7,11 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BreadcrumbComponent implements OnInit {
 
-    constructor() {
-    }
+    public breadcrumbs: { label: string, url: string }[] = [];
+
+    constructor(private breadcrumbService: BreadcrumbService) { }
 
     ngOnInit(): void {
-
+        this.breadcrumbs = this.breadcrumbService.breadcrumbs;
     }
 
 }

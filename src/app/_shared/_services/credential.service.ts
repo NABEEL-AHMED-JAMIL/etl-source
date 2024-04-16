@@ -20,16 +20,20 @@ export class CredentailService {
         return this.http.put<ApiResponse>(`${config.apiBaseUrl}/credential.json/updateCredential`, payload);
     }
 
-    public deleteCredential(payload: any): Observable<ApiResponse> {
-        return this.http.put<ApiResponse>(`${config.apiBaseUrl}/credential.json/deleteCredential`, payload);
-    }
-
-    public fetchCredentialByCredentialId(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/credential.json/fetchCredentialByCredentialId`, payload);
+    public fetchCredentialById(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/credential.json/fetchCredentialById`, payload);
     }
 
     public fetchAllCredential(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/credential.json/fetchAllCredential`, payload);
+    }
+
+    public deleteCredential(payload: any): Observable<ApiResponse> {
+        return this.http.put<ApiResponse>(`${config.apiBaseUrl}/credential.json/deleteCredential`, payload);
+    }
+
+    public deleteAllCredential(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/credential.json/deleteAllCredential`, payload);
     }
 
 }

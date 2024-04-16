@@ -159,6 +159,8 @@ export class MgEVariableComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetchAllEnVariable({
+            startDate: this.startDate,
+            endDate: this.endDate,
             sessionUser: {
                 username: this.sessionUser.username
             }
@@ -177,9 +179,9 @@ export class MgEVariableComponent implements OnInit {
                     return;
                 }
                 this.eVariableTable.dataSource = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -194,14 +196,16 @@ export class MgEVariableComponent implements OnInit {
                     return;
                 }
                 this.fetchAllEnVariable({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -210,6 +214,8 @@ export class MgEVariableComponent implements OnInit {
             this.openCuEnVariable(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchAllEnVariable({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -217,17 +223,19 @@ export class MgEVariableComponent implements OnInit {
         } else if (ActionType.DOWNLOAD === payload.action) {
             this.spinnerService.show();
             this.eVariableService.downloadEnVariable({
+                ids: payload.checked,
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 },
-            })
-                .pipe(first())
+            }).pipe(first())
                 .subscribe((response: any) => {
                     this.commomService.downLoadFile(response);
                     this.spinnerService.hide();
-                }, (error: any) => {
+                }, (response: any) => {
                     this.spinnerService.hide();
-                    this.alertService.showError(error, ApiCode.ERROR);
+                    this.alertService.showError(response.error.message, ApiCode.ERROR);
                 });
         } else if (ActionType.UPLOAD === payload.action) {
             payload.action = 'EVariable';
@@ -243,6 +251,8 @@ export class MgEVariableComponent implements OnInit {
             });
             drawerRef.afterClose.subscribe(data => {
                 this.fetchAllEnVariable({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -287,6 +297,38 @@ export class MgEVariableComponent implements OnInit {
         }
     }
 
+    public filterActionReciver(payload: any): void {
+        this.startDate = payload.startDate;
+        this.endDate = payload.endDate;
+        this.fetchAllEnVariable({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
+    }
+
+    public extraActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteAllEnVariable(
+                        {
+                            ids: payload.checked,
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                }
+            });
+        }
+    }
+
     public openCuEnVariable(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
@@ -301,11 +343,38 @@ export class MgEVariableComponent implements OnInit {
         });
         drawerRef.afterClose.subscribe(data => {
             this.fetchAllEnVariable({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
             });
         });
+    }
+
+    public deleteAllEnVariable(payload: any): void {
+        this.spinnerService.show();
+        this.eVariableService.deleteAllEnVariable(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.fetchAllEnVariable({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+                this.setOfCheckedId = new Set<any>();
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
     }
 
 }

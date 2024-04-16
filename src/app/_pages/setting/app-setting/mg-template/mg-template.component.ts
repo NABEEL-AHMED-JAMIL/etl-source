@@ -7,8 +7,12 @@ import {
     AuthResponse,
     AuthenticationService
 } from '../../../../_shared';
+import {
+    AlertService,
+    CommomService,
+    SpinnerService
+} from '../../../../_helpers';
 import { CUTemplateComponent } from '../../../index';
-import { AlertService, CommomService, SpinnerService } from '../../../../_helpers';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { first } from 'rxjs';
@@ -125,6 +129,8 @@ export class MgTemplateComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetchTemplateReg({
+            startDate: this.startDate,
+            endDate: this.endDate,
             sessionUser: {
                 username: this.sessionUser.username
             }
@@ -143,9 +149,9 @@ export class MgTemplateComponent implements OnInit {
                     return;
                 }
                 this.templateTable.dataSource = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -160,14 +166,16 @@ export class MgTemplateComponent implements OnInit {
                     return;
                 }
                 this.fetchTemplateReg({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -176,6 +184,8 @@ export class MgTemplateComponent implements OnInit {
             this.openCuLookup(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchTemplateReg({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -218,11 +228,70 @@ export class MgTemplateComponent implements OnInit {
         });
         drawerRef.afterClose.subscribe(data => {
             this.fetchTemplateReg({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
             });
         });
+    }
+
+    public extraActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteAllTemplateReg(
+                        {
+                            ids: payload.checked,
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                }
+            });
+        }
+    }
+
+    public filterActionReciver(payload: any): void {
+        this.startDate = payload.startDate;
+        this.endDate = payload.endDate;
+        this.fetchTemplateReg({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
+    }
+
+    public deleteAllTemplateReg(payload: any): void {
+        this.spinnerService.show();
+        this.templateRegService.deleteAllTemplateReg(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.fetchTemplateReg({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+                this.setOfCheckedId = new Set<any>();
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
     }
 
 }

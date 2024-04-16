@@ -5,7 +5,6 @@ import {
     ILookups,
     ITemplateReg,
     ActionType,
-    ILookupData,
     LOOKUP_TYPE,
     TemplateRegService,
     AuthResponse,
@@ -36,9 +35,6 @@ export class CUTemplateComponent implements OnInit {
 
     public loading: boolean = false;
     public templateForm: FormGroup;
-
-    public emailTemplateLookup: ILookupData;
-    public applicationStatusLookup: ILookupData;
 
     public EMAIL_TEMPLATE:ILookups;
     public APPLICATION_STATUS:ILookups;
@@ -129,10 +125,10 @@ export class CUTemplateComponent implements OnInit {
                 }
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 this.closeDrawer();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -160,10 +156,10 @@ export class CUTemplateComponent implements OnInit {
                 }
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 this.closeDrawer();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

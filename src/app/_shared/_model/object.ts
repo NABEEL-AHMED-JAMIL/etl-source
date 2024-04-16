@@ -77,6 +77,7 @@ export interface IProfile extends IBaseEntity {
 
 export interface IEnVariables extends IBaseEntity {
     envKey?: any;
+    envValue?: any;
     description?: any;
 }
 
@@ -107,7 +108,7 @@ export interface IRole extends IBaseEntity {
     description?: any;
 }
 
-export interface IAppUser extends IBaseEntity  {
+export interface IAppUser extends IBaseEntity {
     firstName?: any;
     lastName?: any;
     email?: any;
@@ -118,6 +119,14 @@ export interface IAppUser extends IBaseEntity  {
     company?: ICompany;
     roles?: any;
     profile?: any;
+    groups?: any;
+    enVariables?: any;
+}
+
+export interface ICredential extends IBaseEntity {
+    name?: any;
+    type?: any;
+    content?: any;
 }
 
 export interface ICompany extends IBaseEntity {
@@ -133,26 +142,61 @@ export interface IQuery {
     data?: any;
 }
 
-export interface ILinkRURequest extends IBaseEntity {
+export interface ILinkRU extends IBaseEntity {
     roleId?: any;
     appUserId?: any;
     linked?: any;
 }
 
-export interface ILinkPURequest extends IBaseEntity {
+export interface ILinkPU extends IBaseEntity {
     profileId?: any;
     appUserId?: any;
     linked?: any;
 }
 
-export interface ILinkRPUResponse {
-    id?: any;
+export interface ILinkRPU extends IBaseEntity {
     email?: any;
     fullName?: any;
     profileImg?: any;
     linkData?: any;
     linkStatus?: any;
     linked?: any;
+}
+
+export interface IGenFrom extends IBaseEntity {
+    formName: any;
+    description: any;
+    homePage: any;
+    serviceId: any;
+    formType: any;
+    totalSection: any;
+    totalStt: any;
+}
+
+export interface IGenSection extends IBaseEntity {
+    sectionName?: any;
+    description?: any;
+    totalControl?: any;
+    totalForm?: any;
+}
+
+export interface IGenControl extends IBaseEntity {
+    controlName?: any;
+    description?: any;
+    fieldType?: any;
+    fieldTitle?: any;
+    fieldName?: any;
+    placeHolder?: any;
+    fieldWidth?: any;
+    minLength?: any;
+    maxLength?: any;
+    fieldLkValue?: any;
+    mandatory?: any;
+    disabled?: any;
+    isDefault?: any;
+    defaultValue?: any;
+    pattern?: any;
+    totalSection?: any;
 }
 
 export interface IStaticTable {
@@ -183,6 +227,7 @@ export interface IColumn {
 }
 
 export interface INotifaction {
+    id: any;
     title: any;
     data?: any;
     avatar: any;
@@ -190,10 +235,16 @@ export interface INotifaction {
     statusType?: any
 }
 
-export interface ICrossTabResponse {
+export interface ICrossTab {
     row: any;
     col: any;
     crossTab: any;
+}
+
+export interface IControlPattern {
+    type?: any;
+    pattern?: any;
+    value?: any;
 }
 
 // delete,update,subnode,more->dropdown
@@ -209,7 +260,12 @@ export enum ActionType {
     DOWNLOAD = 8,
     LINK = 9,
     DISABLED = 10,
-    ENABLED = 11
+    ENABLED = 11,
+    TREE = 12,
+    LINK_STT = 13,
+    LINK_FROM = 14,
+    LINK_SECTION = 15,
+    LINK_CONTROL = 16
 }
 
 export enum IProfileSetting {
@@ -229,6 +285,44 @@ export interface SideBar {
     childLinks?: SideBar[];
 }
 
+export const CONTROL_PATTERN: IControlPattern[] = [
+    {
+        type: 'Tel',
+        pattern: 'xxx-xxx-xxxx',
+        value: '333-333-3333'
+    },
+    {
+        type: 'Week',
+        pattern: '-',
+        value: '2024-W07'
+    },
+    {
+        type: 'Tel',
+        pattern: '-',
+        value: '06:11:00'
+    },
+    {
+        type: 'Color',
+        pattern: '-',
+        value: '#3497db'
+    },
+    {
+        type: 'Date',
+        pattern: '-',
+        value: '1993-08-06'
+    },
+    {
+        type: 'Email',
+        pattern: 'Email Pattern',
+        value: 'abc@gmail.com'
+    },
+    {
+        type: 'Month',
+        pattern: '-',
+        value: '1993-08'
+    }
+];
+
 export const SETTING_SIDEBAR: SideBar[] = [
     {
         name: 'Service Setting',
@@ -241,28 +335,21 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 icon: 'sketch',
                 link: '/setting/mgSourceTask',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['SOURCE_TASK_PERMISSION'],
+                permission: ['SOURCE_TASK_PERMISSION']
             },
             {
                 name: 'Source Task Type',
                 icon: 'dropbox',
                 link: '/setting/mgSourceTaskType',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['SOURCE_TASKTYPE_PERMISSION'],
+                permission: ['SOURCE_TASKTYPE_PERMISSION']
             },
             {
                 name: 'Source Credential',
                 icon: 'key',
                 link: '/setting/mgCredentail',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['SOURCE_CREDENTAIL_PERMISSION'],
-            },
-            {
-                name: 'Source Storage',
-                icon: 'book',
-                link: '/setting/mgStorage',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['SOURCE_STORAGE_PERMISSION'],
+                permission: ['SOURCE_CREDENTAIL_PERMISSION']
             }
         ]
     },
@@ -277,21 +364,21 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 icon: 'form',
                 link: '/setting/mgForm',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['FORM_PERMISSION'],
+                permission: ['FORM_PERMISSION']
             },
             {
                 name: 'Manage Section',
                 icon: 'highlight',
                 link: '/setting/mgSection',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['SECTION_PERMISSION'],
+                permission: ['SECTION_PERMISSION']
             },
             {
                 name: 'Manage Control',
                 icon: 'control',
                 link: '/setting/mgControl',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['CONTROL_PERMISSION'],
+                permission: ['CONTROL_PERMISSION']
             },
             {
                 name: 'Dynamic Payload',
@@ -303,9 +390,31 @@ export const SETTING_SIDEBAR: SideBar[] = [
             {
                 name: 'Play Ground',
                 icon: 'html5',
-                link: '/setting/playGround',
+                link: '/setting/mgPlayGround',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['PLAY_GROUND_PERMISSION'],
+                permission: ['PLAY_GROUND_PERMISSION']
+            }
+        ]
+    },
+    {
+        name: 'Report Setting',
+        icon: 'pie-chart',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+        permission: ['REPORT_SETTING_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Manage Report',
+                icon: 'form',
+                link: '/setting/mgReport',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                permission: ['MANAGE_REPORT_PERMISSION']
+            },
+            {
+                name: 'Report Play Ground',
+                icon: 'html5',
+                link: '/setting/mgReportPlayGround',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                permission: ['REPORT_PLAY_GROUND_PERMISSION']
             }
         ]
     },
@@ -396,9 +505,52 @@ export const LOOKUP_TYPE = {
     APPLICATION_STATUS: 'APPLICATION_STATUS',
     EMAIL_TEMPLATE: 'EMAIL_TEMPLATE',
     CREDENTIAL_TYPE: 'CREDENTIAL_TYPE',
-    MASTER_ADMIN: 'MASTER_ADMIN'
+    MASTER_ADMIN: 'MASTER_ADMIN',
+    FORM_TYPE: 'FORM_TYPE',
+    FILED_TYPE: 'FILED_TYPE',
+    IS_DEFAULT: 'IS_DEFAULT'
 }
 
 export const enum APPLICATION_STATUS {
     INACTIVE, ACTIVE, DELETE
+}
+
+export const enum CREDENTIAL_TYPE {
+    BASIC_AUTH = 0,
+    CERTIFICATE = 1,
+    AUTHORIZATION_CODE = 2,
+    AWS_AUTH = 3,
+    FIREBASE = 4,
+    FTP = 5
+}
+
+export const enum NOTIFICATION_TYPE {
+    USER_NOTIFICATION = 0,
+    JOB_NOTIFICATION  = 1
+}
+
+export const E_VARAIABLE = {
+    ENV_HOME_PAGE: 'ENV_HOME_PAGE'
+}
+
+export const enum FILED_TYPE {
+    WEEK = 0,
+    RANGE = 1,
+    FILE = 2,
+    DATE = 3,
+    EMAIL = 4,
+    TEL = 5,
+    MONTH = 6,
+    PASSWORD = 7,
+    URL = 8,
+    DATETIME_LOCAL = 9,
+    NUMBER = 10,
+    RADIO = 11,
+    CHECKBOX = 12,
+    COLOR = 13,
+    TIME = 14,
+    TEXT = 15,
+    TEXTAREA = 16,
+    SELECT = 17,
+    MULTI_SELECT = 18
 }

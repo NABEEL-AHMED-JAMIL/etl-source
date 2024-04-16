@@ -3,7 +3,7 @@ import {
     ApiCode,
     RPPService,
     AuthResponse,
-    ICrossTabResponse,
+    ICrossTab,
     AuthenticationService,
     IStaticTable,
     ActionType
@@ -24,7 +24,7 @@ export class PPCroseTableComponent implements OnInit {
 
     public searchDetails: any;
     public sessionUser: AuthResponse;
-    public ppCroseData: ICrossTabResponse;
+    public ppCroseData: ICrossTab;
     public ppCroseTable: IStaticTable = {
         tableId: 'ppCrose_id',
         title: 'Profile X Permission',
@@ -73,9 +73,9 @@ export class PPCroseTableComponent implements OnInit {
                     return;
                 }
                 this.ppCroseData = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -107,9 +107,9 @@ export class PPCroseTableComponent implements OnInit {
                     return;
                 }
                 this.ppCroseData.crossTab[profileId + 'X' + permissionId].key = linked;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

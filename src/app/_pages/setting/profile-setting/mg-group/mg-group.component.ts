@@ -107,7 +107,7 @@ export class MgGroupComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id' , 'username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'dateUpdated',
@@ -118,7 +118,7 @@ export class MgGroupComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id' , 'username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'status',
@@ -144,6 +144,11 @@ export class MgGroupComponent implements OnInit {
         ],
         moreActionType: [
             {
+                type: 'eye',
+                title: 'View Group Detail',
+                action: ActionType.VIEW
+            },
+            {
                 type: 'user',
                 title: 'Add Lead User',
                 action: ActionType.ADD
@@ -164,16 +169,18 @@ export class MgGroupComponent implements OnInit {
         private spinnerService: SpinnerService,
         private mgGroupService: MgGroupService,
         private authenticationService: AuthenticationService) {
-            this.endDate = this.commomService.getCurrentDate();
-            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
-            this.authenticationService.currentUser
-                .subscribe(currentUser => {
-                    this.sessionUser = currentUser;
-                });
+        this.endDate = this.commomService.getCurrentDate();
+        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.authenticationService.currentUser
+            .subscribe(currentUser => {
+                this.sessionUser = currentUser;
+            });
     }
 
     ngOnInit(): void {
         this.fetchAllGroup({
+            startDate: this.startDate,
+            endDate: this.endDate,
             sessionUser: {
                 username: this.sessionUser.username
             }
@@ -192,9 +199,9 @@ export class MgGroupComponent implements OnInit {
                     return;
                 }
                 this.uGroupTable.dataSource = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -209,14 +216,16 @@ export class MgGroupComponent implements OnInit {
                     return;
                 }
                 this.fetchAllGroup({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -225,6 +234,8 @@ export class MgGroupComponent implements OnInit {
             this.openCuEnVariable(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchAllGroup({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -232,6 +243,8 @@ export class MgGroupComponent implements OnInit {
         } else if (ActionType.DOWNLOAD === payload.action) {
             this.spinnerService.show();
             this.mgGroupService.downloadGroup({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 },
@@ -240,9 +253,9 @@ export class MgGroupComponent implements OnInit {
             .subscribe((response: any) => {
                 this.commomService.downLoadFile(response);
                 this.spinnerService.hide();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
         } else if (ActionType.UPLOAD === payload.action) {
             payload.action = 'Group';
@@ -258,6 +271,8 @@ export class MgGroupComponent implements OnInit {
             });
             drawerRef.afterClose.subscribe(data => {
                 this.fetchAllGroup({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -292,6 +307,63 @@ export class MgGroupComponent implements OnInit {
         }
     }
 
+    public filterActionReciver(payload: any): void {
+        this.startDate = payload.startDate;
+        this.endDate = payload.endDate;
+        this.fetchAllGroup({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
+    }
+
+    public extraActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteAllGroup(
+                        {
+                            ids: payload.checked,
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                }
+            });
+        }
+    }
+
+    public deleteAllGroup(payload: any): void {
+        this.spinnerService.show();
+        this.mgGroupService.deleteAllGroup(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.fetchAllGroup({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+                this.setOfCheckedId = new Set<any>();
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
+    }
+
     public openCuEnVariable(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
@@ -306,6 +378,8 @@ export class MgGroupComponent implements OnInit {
         });
         drawerRef.afterClose.subscribe(data => {
             this.fetchAllGroup({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }

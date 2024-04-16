@@ -8,7 +8,11 @@ import {
     AuthenticationService
 } from '../../../../_shared';
 import { first } from 'rxjs';
-import { AlertService, CommomService, SpinnerService } from '../../../../_helpers';
+import {
+    AlertService,
+    CommomService,
+    SpinnerService
+} from '../../../../_helpers';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 
@@ -130,9 +134,9 @@ export class MgRefreshTokenComponent implements OnInit {
                     return;
                 }
                 this.refreshTokenTable.dataSource = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -151,9 +155,9 @@ export class MgRefreshTokenComponent implements OnInit {
                     endDate: this.endDate
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -224,9 +228,9 @@ export class MgRefreshTokenComponent implements OnInit {
                 });
                 this.setOfCheckedId = new Set<any>();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

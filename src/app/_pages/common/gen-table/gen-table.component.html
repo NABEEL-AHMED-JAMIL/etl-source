@@ -53,7 +53,7 @@
     [nzPaginationPosition]="'bottom'"
     [nzShowSizeChanger]='true'
     [nzPageSize]="50"
-    [nzPageSizeOptions]="[50, 100, 150, 200]"
+    [nzPageSizeOptions]="[50,100,150,200,250]"
     [nzFrontPagination]="true"
     [nzShowPagination]="true"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
@@ -93,6 +93,7 @@
         <tr *ngFor='let row of dynamicTable.data | searchdata: searchDetails;let i = index;'>
             <td style="text-align: center;width: 1px;">{{i+1}}</td>
             <td *ngIf="staticTable.checkbox"
+                style="width: 1px;"
                 [nzChecked]="setOfCheckedId.has(row.id)"
                 (nzCheckedChange)="onItemChecked(row.id, $event)">
             </td>
@@ -125,7 +126,7 @@
                     </nz-tag>
                 </td>
             </ng-container>
-            <td *ngIf="staticTable.actionType || staticTable.moreActionType">
+            <td *ngIf="(staticTable.actionType || staticTable.moreActionType) && !staticTable.enableAction">
                 <ng-container *ngFor='let action of staticTable.actionType'>
                     <a [routerLink]="" nz-tooltip nzTooltipTitle="{{ action?.tooltipTitle }}"
                         (click)="actionEvent(action.action, row)">

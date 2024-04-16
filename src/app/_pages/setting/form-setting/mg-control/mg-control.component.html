@@ -1,0 +1,25 @@
+<div class="content">
+    <h3>Mg Control</h3>
+    <nz-divider style="margin: 5px 0;"></nz-divider>
+    <app-gen-table 
+        *ngIf="genControlTable"
+        [isDateFilter]="true"
+        [startDate]="startDate"
+        [endDate]="endDate"
+        [setOfCheckedId]="setOfCheckedId"
+        [staticTable]="genControlTable"
+        (actionEventEmitter)="tableActionReciver($event)"
+        (buttonEventEmitter)="buttonActionReciver($event)"
+        (filterEventEmitter)="filterActionReciver($event)"
+        (extraEventEmitter)="extraActionReciver($event)">
+    </app-gen-table>
+</div>
+<!-- <div class="content">
+    <h3>Sample Pattern</h3>
+    <nz-divider style="margin: 5px 0;"></nz-divider>
+    <app-gen-table 
+        *ngIf="icontrolPatternTable"
+        [isDateFilter]="false"
+        [staticTable]="icontrolPatternTable">
+    </app-gen-table>
+</div> -->

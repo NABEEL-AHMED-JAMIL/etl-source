@@ -35,6 +35,10 @@ import {
 })
 export class MgRPPComponent implements OnInit {
 
+    public setOfRoleCheckedId = new Set<any>();
+    public setOfProfileCheckedId = new Set<any>();
+    public setOfPermissionCheckedId = new Set<any>();
+
     public sessionUser: AuthResponse;
     public roleTable: IStaticTable = {
         tableId: 'role_id',
@@ -476,6 +480,44 @@ export class MgRPPComponent implements OnInit {
         }
     }
 
+    public extraRoleActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.spinnerService.show();
+                    this.rppService.deleteAllRole({
+                        ids: payload.checked,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    })
+                    .pipe(first())
+                    .subscribe((response: any) => {
+                        this.spinnerService.hide();
+                        if (response.status === ApiCode.ERROR) {
+                            this.alertService.showError(response.message, ApiCode.ERROR);
+                            return;
+                        }
+                        this.fetchAllRole({
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                        this.setOfRoleCheckedId = new Set<any>(); 
+                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    }, (response: any) => {
+                        this.spinnerService.hide();
+                        this.alertService.showError(response.error.message, ApiCode.ERROR);
+                    });
+                }
+            });
+        }
+    }
+
     public openCuRole(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
             nzSize: 'default',
@@ -513,9 +555,9 @@ export class MgRPPComponent implements OnInit {
                     }
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -526,9 +568,9 @@ export class MgRPPComponent implements OnInit {
             .subscribe((response: any) => {
                 this.commomService.downLoadFile(response);
                 this.spinnerService.hide();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -544,9 +586,9 @@ export class MgRPPComponent implements OnInit {
                     return;
                 }
                 this.profileTable.dataSource = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -624,6 +666,44 @@ export class MgRPPComponent implements OnInit {
         }
     }
 
+    public extraProfileActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.spinnerService.show();
+                    this.rppService.deleteAllProfile({
+                        ids: payload.checked,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    })
+                    .pipe(first())
+                    .subscribe((response: any) => {
+                        this.spinnerService.hide();
+                        if (response.status === ApiCode.ERROR) {
+                            this.alertService.showError(response.message, ApiCode.ERROR);
+                            return;
+                        }
+                        this.fetchAllProfile({
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                        this.setOfProfileCheckedId = new Set<any>(); 
+                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    }, (response: any) => {
+                        this.spinnerService.hide();
+                        this.alertService.showError(response.error.message, ApiCode.ERROR);
+                    });
+                }
+            });
+        }
+    }
+
     public openCuProfile(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
             nzSize: 'default',
@@ -661,9 +741,9 @@ export class MgRPPComponent implements OnInit {
                     }
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -674,9 +754,9 @@ export class MgRPPComponent implements OnInit {
             .subscribe((response: any) => {
                 this.commomService.downLoadFile(response);
                 this.spinnerService.hide();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -692,9 +772,9 @@ export class MgRPPComponent implements OnInit {
                     return;
                 }
                 this.permissionTable.dataSource = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -762,6 +842,44 @@ export class MgRPPComponent implements OnInit {
         }
     }
 
+    public extraPermissionActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.spinnerService.show();
+                    this.rppService.deleteAllPermission({
+                        ids: payload.checked,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    })
+                    .pipe(first())
+                    .subscribe((response: any) => {
+                        this.spinnerService.hide();
+                        if (response.status === ApiCode.ERROR) {
+                            this.alertService.showError(response.message, ApiCode.ERROR);
+                            return;
+                        }
+                        this.fetchAllPermission({
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                        this.setOfPermissionCheckedId = new Set<any>(); 
+                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    }, (response: any) => {
+                        this.spinnerService.hide();
+                        this.alertService.showError(response.error.message, ApiCode.ERROR);
+                    });
+                }
+            });
+        }
+    }
+
     public openCuPermission(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
             nzSize: 'default',
@@ -799,9 +917,9 @@ export class MgRPPComponent implements OnInit {
                     }
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

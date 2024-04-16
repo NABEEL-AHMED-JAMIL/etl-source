@@ -22,17 +22,25 @@ export class AppUserService {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserProfile`, payload);
     }
 
-    public updateAppUserPassword(payload:any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserPassword`, payload);
-    }
-
     public updateAppUserCompany(payload:any): Observable<any> {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserCompany`, payload);
+    }
+
+    public updateAppUserEnvVariable(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserEnvVariable`, payload);
+    }
+
+    public updateAppUserPassword(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserPassword`, payload);
     }
 
     public closeAppUserAccount(payload:any): Observable<any> {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/closeAppUserAccount`, payload);
     }
+
+    public deleteAllAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/deleteAllAppUserAccount`, payload);
+    }    
 
     public fetchAllAppUserAccount(payload:any): Observable<any> {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/fetchAllAppUserAccount`, payload);

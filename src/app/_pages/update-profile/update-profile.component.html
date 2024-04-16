@@ -9,11 +9,6 @@
                                 <span nz-icon nzType="info-circle" nzTheme="outline"></span>
                                 &nbsp;User Info
                             </li>
-                            <!-- compnay detail can be view admin and super -->
-                            <li nz-menu-item (click)="onNaviage(COMPANY_INFO)">
-                                <span nz-icon nzType="book" nzTheme="outline"></span>
-                                &nbsp;Compnay Info
-                            </li>
                             <li nz-menu-item (click)="onNaviage(CHANGE_PASSWORD)">
                                 <span nz-icon nzType="key" nzTheme="outline"></span>
                                 &nbsp;Change Password
@@ -36,32 +31,165 @@
             </nz-sider>
         </nz-layout>
     </div>
-    <div nz-col [nzSpan]="20">
-        <nz-card class="profile-card" [nzExtra]="USER_INFO_TAG" id="profileDetail"
-            *ngIf="USER_INFO === viewProfile"  nzTitle="Update Account">
+    <div nz-col [nzSpan]="20" *ngIf="appUser">
+        <nz-card class="profile-card" [nzExtra]="USER_INFO_TAG"
+            id="profileDetail" *ngIf="USER_INFO === viewProfile"
+            nzTitle="User Info ({{appUser.ipAddress}})">
+            <nz-descriptions nzSize="small">
+                <nz-descriptions-item nzTitle="Name">
+                    {{appUser.firstName}} {{appUser.lastName}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="UserName">
+                    ({{appUser.id}}) {{appUser.username}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Email">
+                    {{appUser.email}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Profile">
+                    ({{appUser.profile?.id}}) {{appUser.profile?.profileName}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Role" [nzSpan]="2">
+                    <div style="display: block;">
+                        <nz-tag *ngFor="let role of appUser.roles" [nzColor]="'red'">
+                            {{role}}
+                        </nz-tag>
+                    </div>
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Permission">
+                    <div style="display: block;">
+                        <nz-tag *ngFor="let permission of appUser.profile.permission"
+                            [nzColor]="'geekblue'">
+                            {{permission}}
+                        </nz-tag>
+                    </div>
+                </nz-descriptions-item>
+            </nz-descriptions>
+            <hr>
+            <h4>Compnay Info</h4>
+            <hr>
+            <nz-descriptions *ngIf="appUser?.company"
+                nzSize="small" [nzColumn]="3">
+                <nz-descriptions-item nzTitle="Name" [nzSpan]="1">
+                    ({{appUser?.company.id}}) {{appUser?.company.name}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Email" [nzSpan]="1">
+                    {{appUser?.company.email}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Phone" [nzSpan]="1">
+                    <nz-tag [nzColor]="'blue'">
+                        {{appUser?.company.phone}}
+                    </nz-tag>
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Address">
+                    {{appUser?.company.address}}
+                </nz-descriptions-item>
+            </nz-descriptions>
         </nz-card>
-        <nz-card class="profile-card" id="companyDetail" 
-            *ngIf="COMPANY_INFO === viewProfile" nzTitle="Update Company"
-            style="padding-bottom: 0px;margin-left: 10px;margin-right: 10px;">
+        <nz-card class="profile-card" id="companyDetail" nzTitle="Update Password"
+            *ngIf="CHANGE_PASSWORD === viewProfile">
+            <form nz-form *ngIf="resetPasswordForm" [nzLayout]="'vertical'"
+                [formGroup]="resetPasswordForm" (ngSubmit)="submitResetPassword()">
+                <div nz-row [nzGutter]="16">
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>E-mail</nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTpl">
+                                <input nz-input formControlName="email" placeholder="Enter Email" type="email" />
+                                <ng-template #emailErrorTpl let-control>
+                                    <ng-container *ngIf="control.hasError('email')">
+                                        The input is not valid E-mail!
+                                    </ng-container>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        Please input your E-mail!
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Old Password</nz-form-label>
+                            <nz-form-control nzHasFeedback nzErrorTip="Please input your old password!">
+                                <input nz-input type="password" formControlName="oldPassword"
+                                    placeholder="Enter Old Password"/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>New Password</nz-form-label>
+                            <nz-form-control nzHasFeedback nzErrorTip="Please input your new password!">
+                                <input nz-input type="password" formControlName="newPassword"
+                                    placeholder="Enter New Password" (ngModelChange)="validateConfirmPassword()" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Confirm Password</nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="passwordErrorTpl">
+                                <input nz-input type="password" formControlName="confirm"
+                                    placeholder="Enter Confirm Password" />
+                                <ng-template #passwordErrorTpl let-control>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        Please confirm your password!
+                                    </ng-container>
+                                    <ng-container *ngIf="control.hasError('confirm')">
+                                        Password is inconsistent!
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="24" style="text-align: end;">
+                        <nz-form-item>
+                            <nz-form-control>
+                                <button nz-button nzType="primary" 
+                                    [disabled]="!resetPasswordForm.valid">Submit</button>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </form>
         </nz-card>
-        <nz-card class="profile-card" id="companyDetail" 
-            *ngIf="CHANGE_PASSWORD === viewProfile" nzTitle="Update Password"
+        <nz-card class="profile-card" id="teamDetail" nzTitle="My Team"
+            *ngIf="MY_TEAM === viewProfile"
             style="padding-bottom: 0px;margin-left: 10px;margin-right: 10px;">
+            <app-gen-table *ngIf="teamTable"
+                [staticTable]="teamTable">
+            </app-gen-table>
         </nz-card>
-        <nz-card class="profile-card" id="teamDetail" 
-            *ngIf="MY_TEAM === viewProfile" nzTitle="My Team"
+        <nz-card class="profile-card" id="envDetail" nzTitle="Environment Variable"
+            *ngIf="ENVIROMENT === viewProfile"
             style="padding-bottom: 0px;margin-left: 10px;margin-right: 10px;">
-        </nz-card>
-        <nz-card class="profile-card" id="envDetail" 
-            *ngIf="ENVIROMENT === viewProfile" nzTitle="Environment Variable"
-            style="padding-bottom: 0px;margin-left: 10px;margin-right: 10px;">
+            <app-gen-table *ngIf="eVariableTable"
+                [staticTable]="eVariableTable"
+                (actionEventEmitter)="tableActionReciver($event)">
+            </app-gen-table>
         </nz-card>
     </div>
 </div>
 <!-- user info -->
 <ng-template #USER_INFO_TAG>
-    <button nz-button nzType="default"
-        nzDanger [nzSize]="'small'">
+    <!-- <button nz-button nzType="default" nzDanger [nzSize]="'small'">
+        <span nz-icon nzType="user"
+        (click)="updateUserProfile()"></span> Update Profile
+    </button>
+    <ng-container>
+        &nbsp;
+        <button *ngIf="!appUser.company" nz-button 
+            nzType="default" nzDanger [nzSize]="'small'"
+            (click)="addUpdateCompany()">
+            <span nz-icon nzType="home"></span> Add Company
+        </button>
+        <button *ngIf="appUser.company" nz-button 
+            nzType="default" nzDanger [nzSize]="'small'"
+            (click)="addUpdateCompany()">
+            <span nz-icon nzType="home"></span> Update Company
+        </button>
+    </ng-container>
+    &nbsp; -->
+    <button nz-button nzType="default" nzDanger [nzSize]="'small'">
         <span nz-icon nzType="lock"></span> Close Account
     </button>
 </ng-template>

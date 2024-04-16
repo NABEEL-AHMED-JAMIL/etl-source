@@ -104,7 +104,12 @@ export class GenTableComponent implements OnInit {
     }
 
     public buttonEvent(action: ActionType): void {
-        this.buttonEventEmitter.emit({ action: action });
+        this.buttonEventEmitter.emit(
+            {
+                action: action,
+                checked: [...this.setOfCheckedId]
+            }
+        );
         this.setOfCheckedId.clear();
         this.refreshCheckedStatus();
     }
@@ -118,7 +123,8 @@ export class GenTableComponent implements OnInit {
             {
                 action: action,
                 checked: [...this.setOfCheckedId]
-            });
+            }
+        );
     }
 
     public onEnableActionChange(payload: any): any {

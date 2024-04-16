@@ -5,14 +5,36 @@ export * from './auth/forgot-pass/forgot-pass.component';
 // common
 export * from './common/batch/batch.component';
 export * from './common/gen-table/gen-table.component';
+export * from './common/company-detail/company-detail.component';
+export * from './common/env-variable-value/env-variable-value.component';
 // etl-source & setting dashboard
 export * from './dashboards/etl-source/etl-source.component';
 export * from './dashboards/setting-dashboard/setting-dashboard.component';
 export * from './page-notfound/page-notfound.component';
-// form-settings
-export * from './setting/form-settings/xml-query/xml-query.component';
-// support-settings
-export * from './setting/support-settings/db-query/db-query.component';
+// service-setting
+export * from './setting/service-setting/mg-cu/cu-credential/cu-credential.component';
+export * from './setting/service-setting/credential/credential.component';
+export * from './setting/service-setting/source-task/source-task.component';
+export * from './setting/service-setting/mg-cu/cu-source-task/cu-source-task.component';
+export * from './setting/service-setting/mg-cu/cu-source-ttask/cu-source-ttask.component';
+export * from './setting/service-setting/source-ttask/source-ttask.component';
+// form-setting
+export * from './setting/form-setting/mg-cu/cu-form/cu-form.component';
+export * from './setting/form-setting/mg-form/mg-form.component';
+export * from './setting/form-setting/mg-cu/cu-section/cu-section.component';
+export * from './setting/form-setting/mg-section/mg-section.component';
+export * from './setting/form-setting/mg-cu/cu-control/cu-control.component';
+export * from './setting/form-setting/mg-control/mg-control.component';
+export * from './setting/form-setting/play-ground/play-ground.component';
+export * from './setting/form-setting/xml-query/xml-query.component';
+// linking
+export * from './setting/form-setting/linking/sttf-link-stt/sttf-link-stt.component';
+export * from './setting/form-setting/linking/sttc-link-stts/sttc-link-stts.component';
+export * from './setting/form-setting/linking/sttf-link-stts/sttf-link-stts.component';
+export * from './setting/form-setting/linking/stts-link-sttc/stts-link-sttc.component';
+export * from './setting/form-setting/linking/stts-link-sttf/stts-link-sttf.component';
+// support-setting
+export * from './setting/support-setting/db-query/db-query.component';
 // app-setting
 export * from './setting/app-setting/evu-crose-table/evu-crose-table.component';
 export * from './setting/app-setting/mg-cu/cu-evariable/cu-evariable.component';

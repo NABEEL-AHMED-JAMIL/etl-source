@@ -11,8 +11,10 @@
                 *ngIf="roleTable"
                 [isDateFilter]="false"
                 [staticTable]="roleTable"
+                [setOfCheckedId]="setOfRoleCheckedId"
                 (buttonEventEmitter)="buttonRoleActionReciver($event)"
-                (actionEventEmitter)="tableRoleActionReciver($event)">
+                (actionEventEmitter)="tableRoleActionReciver($event)"
+                (extraEventEmitter)="extraRoleActionReciver($event)">
             </app-gen-table>
         </nz-tab>
         <nz-tab [nzTitle]="profileTemplate">
@@ -25,8 +27,10 @@
                 *ngIf="profileTable"
                 [isDateFilter]="false"
                 [staticTable]="profileTable"
+                [setOfCheckedId]="setOfProfileCheckedId"
                 (buttonEventEmitter)="buttonProfileActionReciver($event)"
-                (actionEventEmitter)="tableProfileActionReciver($event)">
+                (actionEventEmitter)="tableProfileActionReciver($event)"
+                (extraEventEmitter)="extraProfileActionReciver($event)">
             </app-gen-table>
         </nz-tab>
         <nz-tab [nzTitle]="permissionTemplate">
@@ -39,8 +43,10 @@
                 *ngIf="permissionTable"
                 [isDateFilter]="false"
                 [staticTable]="permissionTable"
+                [setOfCheckedId]="setOfPermissionCheckedId"
                 (buttonEventEmitter)="buttonPermissionActionReciver($event)"
-                (actionEventEmitter)="tablePermissionActionReciver($event)">
+                (actionEventEmitter)="tablePermissionActionReciver($event)"
+                (extraEventEmitter)="extraPermissionActionReciver($event)">
             </app-gen-table>
         </nz-tab>
         <nz-tab [nzTitle]="lppTemplate">

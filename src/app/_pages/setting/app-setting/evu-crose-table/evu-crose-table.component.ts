@@ -102,9 +102,9 @@ export class EVUCroseTableComponent implements OnInit {
                     return;
                 }
                 this.envLinkUserTable.dataSource = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);;
             });
     }
 
@@ -122,9 +122,9 @@ export class EVUCroseTableComponent implements OnInit {
                 this.alertService.showError(response.message, ApiCode.ERROR);
                 return;
             }
-        }, (error: any) => {
+        }, (response: any) => {
             this.spinnerService.hide();
-            this.alertService.showError(error, ApiCode.ERROR);
+            this.alertService.showError(response.error.message, ApiCode.ERROR);;
         });
     }
 

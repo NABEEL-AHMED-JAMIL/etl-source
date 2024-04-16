@@ -57,7 +57,6 @@ export class AuthenticationService {
     public authClamByRefreshToken(payload: any): Observable<ApiResponse> {
         return this.http.post<any>(`${config.apiBaseUrl}/auth.json/authClamByRefreshToken`, payload)
         .pipe(map(response => {
-            debugger
             if (response.data) {
                 this.storageService.set('currentUser', response.data);
                 this.currentUserSubject.next(response.data);

@@ -28,9 +28,17 @@ export class EVariableService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/fetchEnVariableById`, payload);
     }
 
+    public fetchUserEnvByEnvKey(payload: any) : Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/fetchUserEnvByEnvKey`, payload);
+    }
+
     public deleteEnVariableById(payload: any) : Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/deleteEnVariableById`, payload);
     }
+
+    public deleteAllEnVariable(payload: any) : Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/deleteAllEnVariable`, payload);
+    }    
 
     public downloadEnVariableTemplateFile(): Observable<any> {
         return this.http.get(`${config.apiBaseUrl}/eVariable.json/downloadEnVariableTemplateFile`,

@@ -1,0 +1,28 @@
+<form nz-form [formGroup]="envValueForm" [nzLayout]="'vertical'" (ngSubmit)="onSubmit()">
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label nzRequired>Env Key</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Please input your env key.">
+                    <input nz-input type="text" formControlName="envKey" placeholder="Enter EnvKey" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label nzRequired>Env Value</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Please input your env value.">
+                    <input nz-input type="email" formControlName="envValue" placeholder="Enter EnvValue" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24" style="text-align: end;">
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary"
+                        [disabled]="!envValueForm.valid">Submit</button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</form>

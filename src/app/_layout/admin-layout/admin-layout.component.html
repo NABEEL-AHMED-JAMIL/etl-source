@@ -1,6 +1,11 @@
 <nz-layout class="app-layout">
-    <nz-sider class="menu-sidebar" nzWidth="200px" nzBreakpoint="sm" nzCollapsible [(nzCollapsed)]="isCollapsed"
-        [nzTrigger]="null">
+    <nz-sider class="menu-sidebar" 
+        
+        
+        [nzWidth]="isCollapsed ? '80px' : '200px'" nzBreakpoint="sm" 
+        nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [style.max-width.px]="300"
+        
+        >
         <div class="sidebar-logo">
             <a routerLink="/setting">
                 <h1 style="margin: 0 0 0 00px;">{{title}}</h1>

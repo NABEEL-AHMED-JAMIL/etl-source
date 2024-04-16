@@ -1,8 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { first } from 'rxjs';
-import { AlertService, SpinnerService, CommomService } from 'src/app/_helpers';
+import {
+    FormBuilder,
+    FormGroup,
+    Validators
+} from '@angular/forms';
+import {
+    AlertService,
+    SpinnerService,
+    CommomService
+} from 'src/app/_helpers';
 import {
     ActionType,
     IEnVariables,
@@ -33,9 +41,9 @@ export class CUEvariableComponent implements OnInit {
     public editAction = ActionType.EDIT;
 
     public enVariablesForm: FormGroup;
-    public APPLICATION_STATUS: ILookups;
     public sessionUser: AuthResponse;
 
+    public APPLICATION_STATUS: ILookups;
 
     constructor(
         private fb: FormBuilder,
@@ -119,10 +127,10 @@ export class CUEvariableComponent implements OnInit {
                 }
                 this.closeDrawer();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);;
             });
     }
 
@@ -150,10 +158,10 @@ export class CUEvariableComponent implements OnInit {
                 }
                 this.closeDrawer();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);;
             });
     }
 

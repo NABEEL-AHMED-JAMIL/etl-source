@@ -82,7 +82,7 @@ nz-content {
 .ant-table.ant-table-small .ant-table-tbody>tr>td,
 .ant-table.ant-table-small tfoot>tr>th,
 .ant-table.ant-table-small tfoot>tr>td {
-    padding: 4px 8px;
+    padding: 2px 8px;
 }
 .ant-tabs-top>.ant-tabs-nav,
 .ant-tabs-bottom>.ant-tabs-nav,

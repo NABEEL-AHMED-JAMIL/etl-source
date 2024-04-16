@@ -23,7 +23,12 @@ import {
     UpdateProfileComponent,
     MgEVariableComponent,
     MgGroupComponent,
-    MgUserComponent
+    MgUserComponent,
+    CredentialComponent,
+    MGFormComponent,
+    MGSectionComponent,
+    MgControlComponent,
+    MgPlayGroundComponent
 } from './_pages';
 
 
@@ -86,7 +91,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         data: {
             breadcrumb: 'Setting',
-            roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
+            roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER', 'ROLE_DEV'],
             permission: ['ADMIN_PAGE_PERMISSION'],
         },
         children: [
@@ -98,6 +103,61 @@ const routes: Routes = [
                     admin: true,
                     roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
                     permission: ['ADMIN_PAGE_PERMISSION']
+                }
+            },
+            {
+                path: 'mgCredentail',
+                component: CredentialComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    permission: ['SOURCE_CREDENTAIL_PERMISSION'],
+                    breadcrumb: 'Mg Credentail',
+                }
+            },
+            {
+                path: 'mgForm',
+                component: MGFormComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    permission: ['FORM_PERMISSION'],
+                    breadcrumb: 'Mg Form',
+                }
+            },
+            {
+                path: 'mgSection',
+                component: MGSectionComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    permission: ['SECTION_PERMISSION'],
+                    breadcrumb: 'Mg Section',
+                }
+            },
+            {
+                path: 'mgControl',
+                component: MgControlComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    permission: ['CONTROL_PERMISSION'],
+                    breadcrumb: 'Mg Control',
+                }
+            },
+            {
+                path: 'mgPlayGround',
+                component: MgPlayGroundComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    permission: ['PLAY_GROUND_PERMISSION'],
+                    breadcrumb: 'Mg PlayGround',
                 }
             },
             {
@@ -155,6 +215,7 @@ const routes: Routes = [
                     permission: ['DYNAMIC_PAYLOAD_PERMISSION']
                 }
             },
+            // app-setting -> lookup
             {
                 path: 'mgLookup',
                 component: MGLookupComponent,
@@ -166,8 +227,9 @@ const routes: Routes = [
                     breadcrumb: 'My Lookup',
                 },
             },
+            // app-setting -> sub-lookup
             {
-                path: 'mgSubLookup',
+                path: 'mgLookup/mgSubLookup',
                 component: MGLookupComponent,
                 canActivate: [AuthGuard],
                 data: {
@@ -177,6 +239,7 @@ const routes: Routes = [
                     breadcrumb: 'Sub Lookup',
                 },
             },
+            // app-setting -> template
             {
                 path: 'mgTemplate',
                 component: MgTemplateComponent,
@@ -188,6 +251,7 @@ const routes: Routes = [
                     breadcrumb: 'Template',
                 }
             },
+            // app-setting -> evariable
             {
                 path: 'mgEvariable',
                 component: MgEVariableComponent,
@@ -199,6 +263,7 @@ const routes: Routes = [
                     breadcrumb: 'E-Variable',
                 }
             },
+            // support -> inquery
             {
                 path: 'inquery',
                 component: DBQueryComponent,

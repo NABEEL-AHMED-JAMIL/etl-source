@@ -33,6 +33,10 @@ export class RPPService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/rpp.json/deleteRoleById`, payload);
     }
 
+    public deleteAllRole(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/rpp.json/deleteAllRole`, payload);
+    }
+
     public downloadRoleTemplateFile(): Observable<any> {
         return this.http.get(`${config.apiBaseUrl}/rpp.json/downloadRoleTemplateFile`,
             {
@@ -70,6 +74,10 @@ export class RPPService {
 
     public deleteProfileById(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/rpp.json/deleteProfileById`, payload);
+    }
+
+    public deleteAllProfile(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/rpp.json/deleteAllProfile`, payload);
     }
 
     public downloadProfileTemplateFile(): Observable<any> {
@@ -111,6 +119,10 @@ export class RPPService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/rpp.json/deletePermissionById`, payload);
     }
 
+    public deleteAllPermission(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/rpp.json/deleteAllPermission`, payload);
+    }
+    
     public downloadPermissionTemplateFile(): Observable<any> {
         return this.http.get(`${config.apiBaseUrl}/rpp.json/downloadPermissionTemplateFile`,
             {

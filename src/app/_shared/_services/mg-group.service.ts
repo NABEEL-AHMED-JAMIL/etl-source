@@ -32,6 +32,10 @@ export class MgGroupService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/mgGroup.json/deleteGroupById`, payload);
     }
 
+    public deleteAllGroup(payload: any) : Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/mgGroup.json/deleteAllGroup`, payload);
+    }
+
     public downloadGroupTemplateFile(): Observable<any> {
         return this.http.get(`${config.apiBaseUrl}/mgGroup.json/downloadGroupTemplateFile`,
             {

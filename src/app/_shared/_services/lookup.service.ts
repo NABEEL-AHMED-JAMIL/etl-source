@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { ApiResponse, ILookups } from '../index';
 import { Observable, catchError, map } from 'rxjs';
 import { config } from '../../../environments/environment';
-import { StorageService } from '../../_helpers';
 
 
 @Injectable({
@@ -11,8 +10,7 @@ import { StorageService } from '../../_helpers';
 })
 export class LookupService {
 
-    constructor(private http: HttpClient,
-        private storageService: StorageService) {
+    constructor(private http: HttpClient) {
     }
 
     public addLookupData(payload: any): Observable<ApiResponse> {

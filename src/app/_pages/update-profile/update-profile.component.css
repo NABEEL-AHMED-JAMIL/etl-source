@@ -35,3 +35,11 @@
     padding-bottom: 0px !important;
 }
 
+.ant-card-body {
+    padding: 15px !important;
+}
+
+.ant-modal-body {
+    padding-bottom: 0px;
+    padding-top: 10px;
+}

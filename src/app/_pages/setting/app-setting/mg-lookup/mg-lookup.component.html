@@ -38,10 +38,7 @@
     <h3>Lookup</h3>
     <nz-divider style="margin: 5px 0;"></nz-divider>
     <app-gen-table *ngIf="lookupTable"
-        [isDateFilter]="true"
-        [startDate]="startDate"
-        [endDate]="endDate"
-        [setOfCheckedId]="setOfCheckedId"
+        [isDateFilter]="false"
         [staticTable]="lookupTable"
         (actionEventEmitter)="tableActionReciver($event)"
         (buttonEventEmitter)="buttonActionReciver($event)">

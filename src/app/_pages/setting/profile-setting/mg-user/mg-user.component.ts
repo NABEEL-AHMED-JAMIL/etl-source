@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { first } from 'rxjs';
-import { AlertService, CommomService, SpinnerService } from 'src/app/_helpers';
-import { CUUserComponent } from 'src/app/_pages';
+import {
+    AlertService,
+    CommomService,
+    SpinnerService
+} from 'src/app/_helpers';
 import { 
     APPLICATION_STATUS,
     ActionType,
@@ -14,6 +17,10 @@ import {
     IAppUser,
     IStaticTable,
 } from 'src/app/_shared';
+import {
+    CUUserComponent,
+    CompanyDetailComponent
+} from 'src/app/_pages';
 
 
 @Component({
@@ -94,11 +101,6 @@ export class MgUserComponent implements OnInit {
                 type: 'data'
             },
             {
-                field: 'profileImg',
-                header: 'Image',
-                type: 'img'
-            },
-            {
                 field: 'totalSubUser',
                 header: 'SubUser',
                 type: 'tag'
@@ -133,13 +135,6 @@ export class MgUserComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'eye',
-                color: 'darkorange',
-                spin: false,
-                tooltipTitle: 'View Profile',
-                action: ActionType.VIEW
-            },
-            {
                 type: 'edit',
                 color: 'green',
                 spin: false,
@@ -150,7 +145,7 @@ export class MgUserComponent implements OnInit {
                 type: 'delete',
                 color: 'red',
                 spin: false,
-                tooltipTitle: 'Delete',
+                tooltipTitle: 'Delete Account',
                 action: ActionType.DELETE
             }
         ],
@@ -170,6 +165,11 @@ export class MgUserComponent implements OnInit {
                 condition: "EQ",
                 targetValue: 1,
                 action: ActionType.DISABLED
+            },
+            {
+                title: 'Company Detail',
+                type: 'home',
+                action: ActionType.LINK
             },
             {
                 title: 'View Sub User',
@@ -193,10 +193,15 @@ export class MgUserComponent implements OnInit {
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
             });
+            if (this.sessionUser) {
+                
+            }
     }
 
     ngOnInit(): void {
         this.fetchAllAppUserAccount({
+            startDate: this.startDate,
+            endDate: this.endDate,
             sessionUser: {
                 username: this.sessionUser.username
             }
@@ -214,9 +219,9 @@ export class MgUserComponent implements OnInit {
                     return;
                 }
                 this.subUserTable.dataSource = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -225,6 +230,8 @@ export class MgUserComponent implements OnInit {
             this.openCuEnVariable(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchAllAppUserAccount({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -233,8 +240,7 @@ export class MgUserComponent implements OnInit {
     }
 
     public tableActionReciver(payload: any): void {
-        if (ActionType.VIEW === payload.action) {
-        } else if (ActionType.EDIT === payload.action) {
+        if (ActionType.EDIT === payload.action) {
             this.openCuEnVariable(ActionType.EDIT, payload);
         } else if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
@@ -295,7 +301,84 @@ export class MgUserComponent implements OnInit {
                     });
                 }
             });
+        } else if (ActionType.LINK === payload.action) {
+            const drawerRef = this.drawerService.create({
+                nzTitle: 'Company Detail',
+                nzSize: 'large',
+                nzMaskClosable: false,
+                nzContent: CompanyDetailComponent,
+                nzContentParams: {
+                    actionType: !payload?.data.company ? ActionType.ADD : ActionType.EDIT,
+                    editPayload: payload?.data.company,
+                    subUser: payload?.data
+                }
+            });
+            drawerRef.afterClose.subscribe(data => {
+                this.fetchAllAppUserAccount({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+            });
         }
+    }
+
+    public filterActionReciver(payload: any): void {
+        this.startDate = payload.startDate;
+        this.endDate = payload.endDate;
+        this.fetchAllAppUserAccount({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
+    }
+
+    public extraActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteAllAppUserAccount(
+                        {
+                            ids: payload.checked,
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                }
+            });
+        }
+    }
+
+    public deleteAllAppUserAccount(payload: any): void {
+        this.spinnerService.show();
+        this.appUserService.deleteAllAppUserAccount(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.fetchAllAppUserAccount({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
     }
 
     public closeAppUserAccount(payload: any): void {
@@ -309,14 +392,16 @@ export class MgUserComponent implements OnInit {
                     return;
                 }
                 this.fetchAllAppUserAccount({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -331,14 +416,16 @@ export class MgUserComponent implements OnInit {
                     return;
                 }
                 this.fetchAllAppUserAccount({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -357,6 +444,8 @@ export class MgUserComponent implements OnInit {
         });
         drawerRef.afterClose.subscribe(data => {
             this.fetchAllAppUserAccount({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }

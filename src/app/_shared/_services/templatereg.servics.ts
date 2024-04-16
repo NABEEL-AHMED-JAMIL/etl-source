@@ -33,4 +33,8 @@ export class TemplateRegService {
 		return this.http.post<ApiResponse>(`${config.apiBaseUrl}/templateReg.json/deleteTemplateReg`, payload);
 	}
 
+    public deleteAllTemplateReg(payload: any): Observable<ApiResponse> {
+		return this.http.post<ApiResponse>(`${config.apiBaseUrl}/templateReg.json/deleteAllTemplateReg`, payload);
+	}
+    
 }

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { registerLocaleData } from '@angular/common';
@@ -21,7 +22,7 @@ import {
     NgZorroAntdModule,
     ErrorInterceptor,
     JwtInterceptor,
-    SearchFilterPipe
+    SearchFilterPipe,
 } from './_helpers';
 // compoenet
 import {
@@ -53,13 +54,35 @@ import {
     MgUserComponent,
     RUCroseTableComponent,
     PUCroseTableComponent,
-    EVUCroseTableComponent
- } from './_pages';
+    EVUCroseTableComponent,
+    CompanyDetailComponent,
+    EnvVariableValueComponent,
+    CredentialComponent,
+    CuCredentialComponent,
+    CUFormComponent,
+    CUSectionComponent,
+    CUControlComponent,
+    MGFormComponent,
+    MGSectionComponent,
+    MgControlComponent,
+    MgPlayGroundComponent,
+    SettingDashboardComponent,
+    ETLSourceComponent,
+    SttcLinkSttsComponent,
+    SttfLinkSttComponent,
+    SttfLinkSttsComponent,
+    SttsLinkSttcComponent,
+    SttsLinkSttfComponent
+} from './_pages';
 
 registerLocaleData(en);
 
 export const APP_COMPONENT = [
+    ETLSourceComponent,
+    SettingDashboardComponent,
     BatchComponent,
+    CompanyDetailComponent,
+    EnvVariableValueComponent,
     GenTableComponent,
     SearchFilterPipe,
     SpinnerComponent,
@@ -89,7 +112,21 @@ export const APP_COMPONENT = [
     CUGroupComponent,
     MgGroupComponent,
     CUUserComponent,
-    MgUserComponent
+    MgUserComponent,
+    CredentialComponent,
+    CuCredentialComponent,
+    CUFormComponent,
+    CUSectionComponent,
+    CUControlComponent,
+    MGFormComponent,
+    MGSectionComponent,
+    MgControlComponent,
+    MgPlayGroundComponent,
+    SttcLinkSttsComponent,
+    SttfLinkSttComponent,
+    SttfLinkSttsComponent,
+    SttsLinkSttcComponent,
+    SttsLinkSttfComponent
 ];
 
 
@@ -108,6 +145,9 @@ export const APP_COMPONENT = [
         IconsProviderModule,
         LayoutModule,
         NgZorroAntdModule,
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts')
+        })
     ],
     providers: [
         DatePipe,
