@@ -1,12 +1,13 @@
 <div class="content">
-    <h3>{{subUserTable.title}}</h3>
+    <h3>{{sttTable.title}}</h3>
     <nz-divider style="margin: 5px 0;"></nz-divider>
-    <app-gen-table *ngIf="subUserTable"
+    <app-gen-table 
+        *ngIf="sttTable"
         [isDateFilter]="true"
         [startDate]="startDate"
         [endDate]="endDate"
         [setOfCheckedId]="setOfCheckedId"
-        [staticTable]="subUserTable"
+        [staticTable]="sttTable"
         (actionEventEmitter)="tableActionReciver($event)"
         (buttonEventEmitter)="buttonActionReciver($event)"
         (filterEventEmitter)="filterActionReciver($event)"

@@ -7,7 +7,7 @@ import {
     CommomService,
     SpinnerService
 } from 'src/app/_helpers';
-import { CUControlComponent } from 'src/app/_pages';
+import { BatchComponent, CUControlComponent, SttcLinkSttsComponent } from 'src/app/_pages';
 import {
     AuthResponse,
     IStaticTable,
@@ -15,7 +15,8 @@ import {
     AuthenticationService,
     FormSettingService,
     ApiCode,
-    CONTROL_PATTERN
+    CONTROL_PATTERN,
+    IGenControl
 } from 'src/app/_shared';
 
 
@@ -92,18 +93,18 @@ export class MgControlComponent implements OnInit {
             },
             {
                 field: 'fieldWidth',
-                header: 'Width',
-                type: 'data'
+                header: 'WD',
+                type: 'tag'
             },
             {
                 field: 'minLength',
                 header: 'Min',
-                type: 'data'
+                type: 'tag'
             },
             {
                 field: 'maxLength',
                 header: 'Max',
-                type: 'data'
+                type: 'tag'
             },
             {
                 field: 'fieldLkValue',
@@ -276,7 +277,47 @@ export class MgControlComponent implements OnInit {
         if (ActionType.EDIT === payload.action) {
             this.openCuControl(ActionType.EDIT, payload);
         } else if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    let genControl: IGenControl = {
+                        id: payload.data.id,
+                        controlName: payload.data.controlName,
+                        description: payload.data.description
+                    }
+                    this.deleteControlById({
+                        ...genControl,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                }
+            });
         } else if (ActionType.LINK_SECTION === payload.action) {
+            const drawerRef = this.drawerService.create({
+                nzTitle: 'Link Section',
+                nzSize: 'large',
+                nzWidth: 1200,
+                nzPlacement: 'right',
+                nzMaskClosable: false,
+                nzContent: SttcLinkSttsComponent,
+                nzContentParams: {
+                    actionType: payload.action,
+                    editPayload: payload?.data
+                }
+            });
+            drawerRef.afterClose.subscribe(data => {
+                this.fetchControls({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+            });
         }
     }
 
@@ -292,7 +333,47 @@ export class MgControlComponent implements OnInit {
                 }
             });
         } else if (ActionType.DOWNLOAD === payload.action) {
+            this.spinnerService.show();
+            this.formSettingService.downloadSTTCommon({
+                ids: payload.checked,
+                startDate: this.startDate,
+                endDate: this.endDate,
+                downloadType: 'STT_CONTROL',
+                sessionUser: {
+                    username: this.sessionUser.username
+                },
+            })
+                .pipe(first())
+                .subscribe((response: any) => {
+                    this.commomService.downLoadFile(response);
+                    this.spinnerService.hide();
+                }, (response: any) => {
+                    this.spinnerService.hide();
+                    this.alertService.showError(response.error.message, ApiCode.ERROR);
+                });
         } else if (ActionType.UPLOAD === payload.action) {
+            payload.action = 'Upload Control';
+            const drawerRef = this.drawerService.create({
+                nzTitle: 'Batch Operation',
+                nzSize: 'default',
+                nzMaskClosable: false,
+                nzFooter: 'Note :- Add Xlsx File For Process, Once File Upload Successfully Click the Refresh Button',
+                nzContent: BatchComponent,
+                nzContentParams: {
+                    batchDetail: {
+                        action: 'STT_CONTROL'
+                    }
+                }
+            });
+            drawerRef.afterClose.subscribe(data => {
+                this.fetchControls({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+            });
         }
     }
 
@@ -310,6 +391,40 @@ export class MgControlComponent implements OnInit {
 
     public extraActionReciver(payload: any): void {
         if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.spinnerService.show();
+                    this.formSettingService.deleteAllControls({
+                        ids: payload.checked,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    })
+                        .pipe(first())
+                        .subscribe((response: any) => {
+                            this.spinnerService.hide();
+                            if (response.status === ApiCode.ERROR) {
+                                this.alertService.showError(response.message, ApiCode.ERROR);
+                                return;
+                            }
+                            this.fetchControls({
+                                startDate: this.startDate,
+                                endDate: this.endDate,
+                                sessionUser: {
+                                    username: this.sessionUser.username
+                                }
+                            });
+                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                        }, (error: any) => {
+                            this.spinnerService.hide();
+                            this.alertService.showError(error, ApiCode.ERROR);
+                        });
+                }
+            });
         }
     }
 

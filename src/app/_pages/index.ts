@@ -17,7 +17,7 @@ export * from './setting/service-setting/credential/credential.component';
 export * from './setting/service-setting/source-task/source-task.component';
 export * from './setting/service-setting/mg-cu/cu-source-task/cu-source-task.component';
 export * from './setting/service-setting/mg-cu/cu-source-ttask/cu-source-ttask.component';
-export * from './setting/service-setting/source-ttask/source-ttask.component';
+export * from './setting/service-setting/source-ttype/source-ttype.component';
 // form-setting
 export * from './setting/form-setting/mg-cu/cu-form/cu-form.component';
 export * from './setting/form-setting/mg-form/mg-form.component';

@@ -4,7 +4,10 @@
     <div nz-row>
         <div nz-col [nzSpan]="24">
             <form nz-form [formGroup]="xmlForm" (ngSubmit)="submintTageForms(xmlForm.value)" ngNativeValidate>
-                <nz-table [nzData]="['']" nzSize="small" [nzFrontPagination]="false" [nzBordered]="false"
+                <nz-table [nzData]="['']"
+                    nzSize="small"
+                    [nzFrontPagination]="false"
+                    [nzBordered]="false"
                     [nzShowPagination]="false">
                     <thead>
                         <tr>

@@ -26,7 +26,6 @@ export class Header2Component implements OnInit {
     public title: any = 'ETL 2023';
     public currentUser: AuthResponse;
     public userPermission: any;
-    private audio: HTMLAudioElement;
 
     public jobNotifactionData: INotifaction[] = [];
     public userNotifactionData: INotifaction[] = [];
@@ -112,9 +111,31 @@ export class Header2Component implements OnInit {
                 if (resp) {
                     let pyalod = JSON.parse(resp);
                     if (pyalod.notifyType.lookupCode === NOTIFICATION_TYPE.USER_NOTIFICATION) {
-                        this.userNotifactionData.push(pyalod);
+                        this.userNotifactionData.push({
+                            id: pyalod.id,
+                            title: pyalod.body.title,
+                            data: {
+                                date: pyalod.dateCreated,
+                                message: pyalod.body.message,
+                            },
+                            avatar: './assets/notifaction/mail.png',
+                            status: pyalod.messageStatus.lookupCode == 0 ? 'success' : 'yellow',
+                            notifyType: pyalod.notifyType
+                        });
+                        this.userNotifactionData.reverse();
                     } else {
-                        this.jobNotifactionData.push(pyalod);
+                        this.jobNotifactionData.push({
+                            id: pyalod.notifyId,
+                            title: pyalod.body.title,
+                            data: {
+                                date: pyalod.createDate,
+                                message: pyalod.body.message,
+                            },
+                            avatar: './assets/notifaction/mail.png',
+                            status: pyalod.messageStatus.lookupCode == 0 ? 'success' : 'yellow',
+                            notifyType: pyalod.notifyType
+                        });
+                        this.jobNotifactionData.reverse();
                     }
                 }
             });

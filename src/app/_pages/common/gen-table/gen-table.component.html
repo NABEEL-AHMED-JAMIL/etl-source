@@ -52,8 +52,8 @@
     [nzPaginationType]="'small'"
     [nzPaginationPosition]="'bottom'"
     [nzShowSizeChanger]='true'
-    [nzPageSize]="50"
-    [nzPageSizeOptions]="[50,100,150,200,250]"
+    [nzPageSize]="10"
+    [nzPageSizeOptions]="[10,15]"
     [nzFrontPagination]="true"
     [nzShowPagination]="true"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
@@ -114,7 +114,7 @@
                 <td *ngIf="col.type === 'tag'"
                     style="text-align: center;width: 1px;">
                     <nz-tag class="{{row[col?.field]?.lookupType}}">
-                        {{commomService.getDataFromObject(row[col?.field])}}
+                        {{commomService.getDataFromObjectV2(row[col?.field])}}
                     </nz-tag>
                 </td>
                 <td *ngIf="col.type === 'data'">

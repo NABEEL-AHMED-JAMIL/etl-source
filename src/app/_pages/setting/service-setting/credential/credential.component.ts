@@ -32,7 +32,7 @@ export class CredentialComponent implements OnInit {
     public sessionUser: AuthResponse;
     public credentialTable: IStaticTable = {
         tableId: 'credential_id',
-        title: 'Credential',
+        title: 'Mg Credential',
         bordered: true,
         checkbox: true,
         size: 'small',

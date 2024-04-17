@@ -38,7 +38,7 @@ export class MGLookupComponent implements OnInit {
     public sessionUser: AuthResponse;
     public lookupTable: IStaticTable = {
         tableId: 'lookup_id',
-        title: 'Lookup',
+        title: 'Mg Lookup',
         bordered: true,
         checkbox: false,
         size: 'small',
@@ -80,8 +80,8 @@ export class MGLookupComponent implements OnInit {
             },
             {
                 field: 'lookupCode',
-                header: 'Lookup Code',
-                type: 'data'
+                header: 'Code',
+                type: 'tag'
             },
             {
                 field: 'lookupValue',

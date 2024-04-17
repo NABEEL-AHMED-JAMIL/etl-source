@@ -32,7 +32,7 @@ export class MgTemplateComponent implements OnInit {
     public sessionUser: AuthResponse;
     public templateTable: IStaticTable = {
         tableId: 'template_id',
-        title: 'Template',
+        title: 'Mg Template',
         bordered: true,
         checkbox: true,
         size: 'small',

@@ -5,7 +5,7 @@
             <ng-template #roleTemplate>
                 <span nz-icon nzType="lock"
                     nzTheme="twotone"></span>
-                Role
+                {{roleTable.title}}
             </ng-template>
             <app-gen-table class="content"
                 *ngIf="roleTable"
@@ -21,7 +21,7 @@
             <ng-template #profileTemplate>
                 <span nz-icon nzType="profile"
                     nzTheme="twotone"></span>
-                Profile
+                {{profileTable.title}}
             </ng-template>
             <app-gen-table class="content"
                 *ngIf="profileTable"
@@ -37,7 +37,7 @@
             <ng-template #permissionTemplate>
                 <span nz-icon nzType="reconciliation"
                     nzTheme="twotone"></span>
-                Permission
+                {{permissionTable.title}}
             </ng-template>
             <app-gen-table class="content"
                 *ngIf="permissionTable"

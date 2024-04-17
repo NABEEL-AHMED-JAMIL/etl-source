@@ -68,12 +68,18 @@ export class CommomService {
         return this.datePipe.transform(date, 'dd/MM/yyyy hh:mm a');
     }
 
-
     public getDataFromObject(payload: any): any {
         if (payload && typeof payload == 'object') {
             return payload?.lookupValue;
         }
         return payload;
+    }
+
+    public getDataFromObjectV2(payload: any): any {
+        if (payload && typeof payload == 'object') {
+            return payload?.lookupValue;
+        }
+        return payload ? payload : 'No Data';
     }
 
     public getMultiDataFromObject(payload: any, fieldList: any): any {

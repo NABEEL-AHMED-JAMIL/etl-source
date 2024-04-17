@@ -5,7 +5,7 @@
                 ETL Source 2023
             </a>
         </div>
-        <div nz-col nzMd="12">
+        <div nz-col nzMd="17">
             <ul nz-menu nzMode="horizontal">
                 <li *ngIf="hasPermissionAccess(['SOURCE_JOB_PERMISSION'])" class="hli" nz-menu-item>
                     <a nz-dropdown [nzDropdownMenu]="menu">
@@ -17,7 +17,7 @@
                 </li>
             </ul>
         </div>
-        <div nz-col nzMd="10" style="text-align: end;padding-right: 20px">
+        <div nz-col nzMd="5" style="text-align: end;padding-right: 20px">
             <nz-badge nzSize="small" style="margin-right: 20px;" nzShowZero
                 [nzCount]="jobNotifactionData.length + userNotifactionData.length">
                 <nz-avatar class="bell-notification" nzIcon="bell" nz-dropdown

@@ -233,6 +233,7 @@ export interface INotifaction {
     avatar: any;
     status?: any,
     statusType?: any
+    notifyType?: any;
 }
 
 export interface ICrossTab {

@@ -28,7 +28,9 @@ import {
     MGFormComponent,
     MGSectionComponent,
     MgControlComponent,
-    MgPlayGroundComponent
+    MgPlayGroundComponent,
+    MgSourceTaskComponent,
+    MgSourceTaskTypeComponent
 } from './_pages';
 
 
@@ -105,6 +107,31 @@ const routes: Routes = [
                     permission: ['ADMIN_PAGE_PERMISSION']
                 }
             },
+            // service-setting => source task
+            {
+                path: 'mgSourceTask',
+                component: MgSourceTaskComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    permission: ['SOURCE_CREDENTAIL_PERMISSION'],
+                    breadcrumb: 'Mg Credentail',
+                }
+            },
+            // service-setting => source task type
+            {
+                path: 'mgSourceTaskType',
+                component: MgSourceTaskTypeComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    permission: ['SOURCE_CREDENTAIL_PERMISSION'],
+                    breadcrumb: 'Mg Credentail',
+                }
+            },
+            // service-setting => credentail
             {
                 path: 'mgCredentail',
                 component: CredentialComponent,
@@ -116,6 +143,7 @@ const routes: Routes = [
                     breadcrumb: 'Mg Credentail',
                 }
             },
+            // form-setting => form
             {
                 path: 'mgForm',
                 component: MGFormComponent,
@@ -127,6 +155,7 @@ const routes: Routes = [
                     breadcrumb: 'Mg Form',
                 }
             },
+            // form-setting => section
             {
                 path: 'mgSection',
                 component: MGSectionComponent,
@@ -138,6 +167,7 @@ const routes: Routes = [
                     breadcrumb: 'Mg Section',
                 }
             },
+            // form-setting => control
             {
                 path: 'mgControl',
                 component: MgControlComponent,
@@ -149,6 +179,19 @@ const routes: Routes = [
                     breadcrumb: 'Mg Control',
                 }
             },
+            // profile-setting => mg-refresh token
+            {
+                path: 'dynamicPayload',
+                component: XMLQueryComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    admin: true,
+                    breadcrumb: 'Dynamic Payload',
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    permission: ['DYNAMIC_PAYLOAD_PERMISSION']
+                }
+            },
+            // form-setting => play-ground
             {
                 path: 'mgPlayGround',
                 component: MgPlayGroundComponent,
@@ -160,6 +203,7 @@ const routes: Routes = [
                     breadcrumb: 'Mg PlayGround',
                 }
             },
+            // profile-setting => mg-users
             {
                 path: 'mgUsers',
                 component: MgUserComponent,
@@ -171,6 +215,7 @@ const routes: Routes = [
                     breadcrumb: 'Mg User',
                 }
             },
+            // profile-setting => mg-grouop
             {
                 path: 'mgGroup',
                 component: MgGroupComponent,
@@ -182,6 +227,7 @@ const routes: Routes = [
                     breadcrumb: 'User Group',
                 }
             },
+            // profile-setting => mg-rpp
             {
                 path: 'mgRPPToken',
                 component: MgRPPComponent,
@@ -193,6 +239,7 @@ const routes: Routes = [
                     breadcrumb: 'Roler & Profile',
                 }
             },
+            // profile-setting => mg-refresh token
             {
                 path: 'mgRefreshToken',
                 component: MgRefreshTokenComponent,
@@ -202,17 +249,6 @@ const routes: Routes = [
                     roles: ['ROLE_MASTER_ADMIN'],
                     permission: ['REFRESH_TOKEN_PERMISSION'],
                     breadcrumb: 'Refresh Token',
-                }
-            },
-            {
-                path: 'dynamicPayload',
-                component: XMLQueryComponent,
-                canActivate: [AuthGuard],
-                data: {
-                    admin: true,
-                    breadcrumb: 'Dynamic Payload',
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                    permission: ['DYNAMIC_PAYLOAD_PERMISSION']
                 }
             },
             // app-setting -> lookup

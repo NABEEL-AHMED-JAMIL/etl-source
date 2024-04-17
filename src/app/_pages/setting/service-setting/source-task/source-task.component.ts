@@ -5,7 +5,7 @@ import { Component, Input, OnInit } from '@angular/core';
     templateUrl: 'source-task.component.html',
     styleUrls: ['source-task.component.css']
 })
-export class SourceTaskComponent implements OnInit {
+export class MgSourceTaskComponent implements OnInit {
 
 
     constructor() {

@@ -1,8 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiCode, AuthResponse, AuthenticationService } from '../../_shared';
-import { AlertService, SpinnerService, StorageService } from '../../_helpers';
 import { first } from 'rxjs/operators';
+import {
+    ApiCode,
+    AuthResponse,
+    AuthenticationService
+} from '../../_shared';
+import {
+    AlertService,
+    SpinnerService,
+    StorageService
+} from '../../_helpers';
+import { UpdateProfileComponent } from 'src/app/_pages';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
 
 
 @Component({
@@ -18,6 +28,7 @@ export class UserActionComponent implements OnInit {
     constructor(private router: Router,
         private spinnerService: SpinnerService,
         private alertService: AlertService,
+        private drawerService: NzDrawerService,
         private storageService: StorageService,
         private authenticationService: AuthenticationService) {
     }
@@ -41,6 +52,17 @@ export class UserActionComponent implements OnInit {
                 this.spinnerService.hide();
                 this.alertService.showError(error.message, ApiCode.ERROR);
             });
+    }
+
+    public viewProfile(): void {
+        this.drawerService.create({
+            nzTitle: 'Update Profile',
+            nzWidth: 1000,
+            nzSize: 'large',
+            nzMaskClosable: false,
+            nzContent: UpdateProfileComponent
+        });
+
     }
 
 }

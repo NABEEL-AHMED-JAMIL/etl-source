@@ -8,7 +8,6 @@ import {
     AuthResponse,
     AuthenticationService,
     IAppUser,
-    IProfileSetting,
     IStaticTable
 } from '../../_shared';
 import {
@@ -42,13 +41,6 @@ export class UpdateProfileComponent implements OnInit {
     public appUser: IAppUser;
 
     public fileList: NzUploadFile[] = [];
-
-    public USER_INFO: IProfileSetting = IProfileSetting.USER_INFO;
-    public COMPANY_INFO: IProfileSetting = IProfileSetting.COMPANY_INFO;
-    public CHANGE_PASSWORD: IProfileSetting = IProfileSetting.CHANGE_PASSWORD;
-    public MY_TEAM: IProfileSetting = IProfileSetting.MY_TEAM;
-    public ENVIROMENT: IProfileSetting = IProfileSetting.ENVIROMENT;
-    public viewProfile: IProfileSetting = IProfileSetting.USER_INFO;
 
     // e-varaible
     public eVariableTable: IStaticTable = {
@@ -218,14 +210,6 @@ export class UpdateProfileComponent implements OnInit {
             });
     }
 
-    public onNaviage(profile: IProfileSetting) {
-        this.viewProfile = profile;
-    }
-
-    public updateUserProfile(): void {
-
-    }
-
     public addUpdateCompany(): void {
         const drawerRef = this.drawerService.create({
             nzTitle: 'Company Detail',
@@ -237,7 +221,8 @@ export class UpdateProfileComponent implements OnInit {
                 editPayload: this.appUser?.company
             }
         });
-        drawerRef.afterClose.subscribe(data => {
+        drawerRef.afterClose
+        .subscribe(data => {
             this.fetchAppUserProfile(this.currentUser.username);
         });
     }

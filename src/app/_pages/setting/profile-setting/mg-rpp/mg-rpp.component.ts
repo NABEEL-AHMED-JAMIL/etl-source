@@ -42,7 +42,7 @@ export class MgRPPComponent implements OnInit {
     public sessionUser: AuthResponse;
     public roleTable: IStaticTable = {
         tableId: 'role_id',
-        title: 'Role',
+        title: 'Mg Role',
         bordered: true,
         checkbox: true,
         size: 'small',
@@ -150,7 +150,7 @@ export class MgRPPComponent implements OnInit {
     // profile
     public profileTable: IStaticTable = {
         tableId: 'profile_id',
-        title: 'Profile',
+        title: 'Mg Profile',
         bordered: true,
         checkbox: true,
         size: 'small',
@@ -258,7 +258,7 @@ export class MgRPPComponent implements OnInit {
     // permission
     public permissionTable: IStaticTable = {
         tableId: 'permission_id',
-        title: 'Permission',
+        title: 'Mg Permission',
         bordered: true,
         checkbox: true,
         size: 'small',

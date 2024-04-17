@@ -7,7 +7,7 @@ import {
     CommomService,
     SpinnerService
 } from 'src/app/_helpers';
-import { CUSectionComponent } from 'src/app/_pages';
+import { BatchComponent, CUSectionComponent, SttsLinkSttcComponent, SttsLinkSttfComponent } from 'src/app/_pages';
 import {
     AuthResponse,
     IStaticTable,
@@ -141,7 +141,7 @@ export class MGSectionComponent implements OnInit {
             }
         ]
     };
-    
+
     constructor(
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
@@ -214,8 +214,66 @@ export class MGSectionComponent implements OnInit {
         if (ActionType.EDIT === payload.action) {
             this.openCuSection(ActionType.EDIT, payload);
         } else if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteSectionById({
+                        id: payload.data.id,
+                        sectionName: payload.data.sectionName,
+                        description: payload.data.description,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                }
+            });
         } else if (ActionType.LINK_FROM === payload.action) {
+            const drawerRef = this.drawerService.create({
+                nzTitle: 'Link Form',
+                nzSize: 'large',
+                nzWidth: 1200,
+                nzPlacement: 'right',
+                nzMaskClosable: false,
+                nzContent: SttsLinkSttfComponent,
+                nzContentParams: {
+                    actionType: payload.action,
+                    editPayload: payload?.data
+                }
+            });
+            drawerRef.afterClose.subscribe(data => {
+                this.fetchSections({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+            });
         } else if (ActionType.LINK_CONTROL === payload.action) {
+            const drawerRef = this.drawerService.create({
+                nzTitle: 'Link Control',
+                nzSize: 'large',
+                nzWidth: 1200,
+                nzPlacement: 'right',
+                nzMaskClosable: false,
+                nzContent: SttsLinkSttcComponent,
+                nzContentParams: {
+                    actionType: payload.action,
+                    editPayload: payload?.data
+                }
+            });
+            drawerRef.afterClose.subscribe(data => {
+                this.fetchSections({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+            });
         }
     }
 
@@ -223,8 +281,55 @@ export class MGSectionComponent implements OnInit {
         if (ActionType.ADD === payload.action) {
             this.openCuSection(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
+            this.fetchSections({
+                startDate: this.startDate,
+                endDate: this.endDate,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
         } else if (ActionType.DOWNLOAD === payload.action) {
+            this.spinnerService.show();
+            this.formSettingService.downloadSTTCommon({
+                ids: payload.checked,
+                startDate: this.startDate,
+                endDate: this.endDate,
+                downloadType: 'STT_SECTION',
+                sessionUser: {
+                    username: this.sessionUser.username
+                },
+            })
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.commomService.downLoadFile(response);
+                this.spinnerService.hide();
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
         } else if (ActionType.UPLOAD === payload.action) {
+            payload.action = 'Upload Section';
+            const drawerRef = this.drawerService.create({
+                nzTitle: 'Batch Operation',
+                nzSize: 'default',
+                nzMaskClosable: false,
+                nzFooter: 'Note :- Add Xlsx File For Process, Once File Upload Successfully Click the Refresh Button',
+                nzContent: BatchComponent,
+                nzContentParams: {
+                    batchDetail: {
+                        action: 'STT_SECTION'
+                    }
+                }
+            });
+            drawerRef.afterClose.subscribe(data => {
+                this.fetchSections({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+            });
         }
     }
 
@@ -242,6 +347,40 @@ export class MGSectionComponent implements OnInit {
 
     public extraActionReciver(payload: any): void {
         if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.spinnerService.show();
+                    this.formSettingService.deleteAllSections({
+                        ids: payload.checked,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    })
+                    .pipe(first())
+                    .subscribe((response: any) => {
+                        this.spinnerService.hide();
+                        if (response.status === ApiCode.ERROR) {
+                            this.alertService.showError(response.message, ApiCode.ERROR);
+                            return;
+                        }
+                        this.fetchSections({
+                            startDate: this.startDate,
+                            endDate: this.endDate,
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    }, (error: any) => {
+                        this.spinnerService.hide();
+                        this.alertService.showError(error, ApiCode.ERROR);
+                    });
+                }
+            });
         }
     }
 

@@ -72,7 +72,9 @@ import {
     SttfLinkSttComponent,
     SttfLinkSttsComponent,
     SttsLinkSttcComponent,
-    SttsLinkSttfComponent
+    SttsLinkSttfComponent,
+    MgSourceTaskComponent,
+    MgSourceTaskTypeComponent
 } from './_pages';
 
 registerLocaleData(en);
@@ -126,7 +128,9 @@ export const APP_COMPONENT = [
     SttfLinkSttComponent,
     SttfLinkSttsComponent,
     SttsLinkSttcComponent,
-    SttsLinkSttfComponent
+    SttsLinkSttfComponent,
+    MgSourceTaskComponent,
+    MgSourceTaskTypeComponent
 ];
 
 

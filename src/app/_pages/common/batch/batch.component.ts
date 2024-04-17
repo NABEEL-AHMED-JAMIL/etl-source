@@ -9,7 +9,8 @@ import {
     AuthenticationService,
     RPPService,
     EVariableService,
-    MgGroupService
+    MgGroupService,
+    FormSettingService
 } from '../../../_shared';
 import {
     AlertService,
@@ -39,6 +40,7 @@ export class BatchComponent implements OnInit {
         private lookupService: LookupService,
         private alertService: AlertService,
         private eVariableService: EVariableService,
+        private formSettingService: FormSettingService,
         private mgGroupService: MgGroupService,
         private spinnerService: SpinnerService,
         private drawerRef: NzDrawerRef<any>,
@@ -182,6 +184,30 @@ export class BatchComponent implements OnInit {
             }
             formData.append("data", JSON.stringify(payload));
             this.mgGroupService.uploadGroup(formData)
+                .pipe(first())
+                .subscribe((response: any) => {
+                    this.spinnerService.hide();
+                    this.uploading = false;
+                    if (response?.status === ApiCode.ERROR) {
+                        this.errors = response.data;
+                        this.alertService.showError(response.message, ApiCode.ERROR);
+                        return;
+                    }
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                }, (error: any) => {
+                    this.spinnerService.hide();
+                    this.uploading = false;
+                    this.alertService.showError(error, ApiCode.ERROR);
+                });
+        } else if (this.action === 'STT_FORM' || this.action === 'STT_SECTION' || this.action === 'STT_CONTROL') {
+            let payload = {
+                uploadType: this.action,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            }
+            formData.append("data", JSON.stringify(payload));
+            this.formSettingService.uploadSTTCommon(formData)
                 .pipe(first())
                 .subscribe((response: any) => {
                     this.spinnerService.hide();

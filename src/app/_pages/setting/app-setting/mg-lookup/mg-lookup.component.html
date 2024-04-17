@@ -35,7 +35,7 @@
 </div>
 <br *ngIf="!isParent && parentLookupDate">
 <div class="content">
-    <h3>Lookup</h3>
+    <h3>{{lookupTable.title}}</h3>
     <nz-divider style="margin: 5px 0;"></nz-divider>
     <app-gen-table *ngIf="lookupTable"
         [isDateFilter]="false"
