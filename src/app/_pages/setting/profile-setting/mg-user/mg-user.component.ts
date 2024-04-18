@@ -174,6 +174,10 @@ export class MgUserComponent implements OnInit {
             {
                 title: 'View Sub User',
                 type: 'right-circle',
+                targetFiled: 'profile',
+                condition: "PEQ",
+                targetValue: 'ADMIN_PROFILE',
+                subfield: 'profileName',
                 action: ActionType.MORE
             }
         ]

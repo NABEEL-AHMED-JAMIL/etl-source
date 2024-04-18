@@ -18,6 +18,7 @@ import {
     AuthenticationService,
     IGroup,
     IStaticTable,
+    ISubAppUser,
     MgGroupService
 } from 'src/app/_shared';
 
@@ -32,6 +33,27 @@ export class MgGroupComponent implements OnInit {
     public startDate: any;
     public endDate: any;
     public setOfCheckedId = new Set<any>();
+    public userList: ISubAppUser[] = [
+        {
+            id: 12,
+            username: 'Pakistan',
+            email: 'nabeel.amd93@gmail.com',
+            fullname: 'pakistan'
+        },
+        {
+            id: 12,
+            username: 'Pakistan',
+            email: 'nabeel.amd93@gmail.com',
+            fullname: 'pakistan'
+        },
+        {
+            id: 12,
+            username: 'Pakistan',
+            email: 'nabeel.amd93@gmail.com',
+            fullname: 'pakistan'
+        }
+    ];
+    public listOfSelectedSubAppUser: ISubAppUser[] = [];
     //
     public sessionUser: AuthResponse;
     public uGroupTable: IStaticTable = {

@@ -94,9 +94,11 @@ export class CommomService {
 
     public isShow(row: any, action: any): any {
         if (action.condition === 'NEQ') {
-          return row[action.targetFiled].lookupCode !== action.targetValue
+            return row[action.targetFiled].lookupCode !== action.targetValue
         } else if (action.condition === 'EQ') {
-          return row[action.targetFiled].lookupCode === action.targetValue
+            return row[action.targetFiled].lookupCode === action.targetValue
+        } else if (action.condition === 'PEQ') {
+            return row[action.targetFiled][action.subfield] === action.targetValue;
         }
         return true;
     }

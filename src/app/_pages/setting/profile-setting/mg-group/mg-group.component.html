@@ -1,9 +1,27 @@
 <div class="content">
-    <h3>{{uGroupTable.title}}</h3>
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="18">
+            <h3>{{uGroupTable.title}}</h3>
+        </div>
+        <div nz-col nzSpan="6">
+            <!-- only seen to super admin user -->
+            <nz-select [nzMaxTagCount]="1" style="width: 100%;"
+                [nzMaxTagPlaceholder]="tagPlaceHolder"
+                nzMode="multiple"
+                nzPlaceHolder="Please select"
+                [(ngModel)]="listOfSelectedSubAppUser">
+                <nz-option *ngFor="let item of userList"
+                    nzLabel="[{{item.id}}-{{item.username}}] {{item.fullname}}"
+                    [nzValue]="item">
+                </nz-option>
+            </nz-select>
+            <ng-template #tagPlaceHolder let-selectedList>
+                {{ selectedList.length }} selected
+            </ng-template>
+        </div>
+    </div>
     <nz-divider style="margin: 5px 0;"></nz-divider>
-    <app-gen-table 
-        *ngIf="uGroupTable"
-        [isDateFilter]="true"
+    <app-gen-table *ngIf="uGroupTable" [isDateFilter]="true"
         [startDate]="startDate"
         [endDate]="endDate"
         [setOfCheckedId]="setOfCheckedId"

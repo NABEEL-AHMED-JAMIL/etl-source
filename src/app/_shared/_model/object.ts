@@ -248,6 +248,13 @@ export interface IControlPattern {
     value?: any;
 }
 
+export interface ISubAppUser {
+    id: any,
+    fullname: any;
+    email: any;
+    username: any;
+}
+
 // delete,update,subnode,more->dropdown
 export enum ActionType {
     DELETE = 0,
