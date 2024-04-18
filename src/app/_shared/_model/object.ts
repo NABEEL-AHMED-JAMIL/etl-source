@@ -81,11 +81,6 @@ export interface IEnVariables extends IBaseEntity {
     description?: any;
 }
 
-export interface IGroup extends IBaseEntity {
-    name?: any;
-    description?: any;
-}
-
 export interface IPermission extends IBaseEntity {
     permissionName?: any;
     description?: any;
@@ -119,7 +114,6 @@ export interface IAppUser extends IBaseEntity {
     company?: ICompany;
     roles?: any;
     profile?: any;
-    groups?: any;
     enVariables?: any;
 }
 
@@ -438,13 +432,6 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 link: '/setting/mgUsers',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
                 permission: ['USER_PERMISSION']
-            },
-            {
-                name: 'Manage Groups',
-                icon: 'usergroup-add',
-                link: '/setting/mgGroup',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['GROUP_PERMISSION']
             },
             {
                 name: 'Roler & Profile',

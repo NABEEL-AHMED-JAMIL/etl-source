@@ -9,7 +9,6 @@ import {
     AuthenticationService,
     RPPService,
     EVariableService,
-    MgGroupService,
     FormSettingService
 } from '../../../_shared';
 import {
@@ -41,7 +40,6 @@ export class BatchComponent implements OnInit {
         private alertService: AlertService,
         private eVariableService: EVariableService,
         private formSettingService: FormSettingService,
-        private mgGroupService: MgGroupService,
         private spinnerService: SpinnerService,
         private drawerRef: NzDrawerRef<any>,
         private authenticationService: AuthenticationService) {
@@ -161,29 +159,6 @@ export class BatchComponent implements OnInit {
             }
             formData.append("data", JSON.stringify(payload));
             this.eVariableService.uploadEnVariable(formData)
-                .pipe(first())
-                .subscribe((response: any) => {
-                    this.spinnerService.hide();
-                    this.uploading = false;
-                    if (response?.status === ApiCode.ERROR) {
-                        this.errors = response.data;
-                        this.alertService.showError(response.message, ApiCode.ERROR);
-                        return;
-                    }
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                }, (error: any) => {
-                    this.spinnerService.hide();
-                    this.uploading = false;
-                    this.alertService.showError(error, ApiCode.ERROR);
-                });
-        } else if (this.action === 'Group') {
-            let payload = {
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            }
-            formData.append("data", JSON.stringify(payload));
-            this.mgGroupService.uploadGroup(formData)
                 .pipe(first())
                 .subscribe((response: any) => {
                     this.spinnerService.hide();

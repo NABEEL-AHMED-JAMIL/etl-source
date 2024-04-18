@@ -45,7 +45,6 @@ export * from './setting/app-setting/mg-lookup/mg-lookup.component';
 export * from './setting/app-setting/mg-template/mg-template.component';
 // profile-setting
 export * from './setting/profile-setting/mg-cu/cu-user/cu-user.component';
-export * from './setting/profile-setting/mg-cu/cu-group/cu-group.component';
 export * from './setting/profile-setting/mg-cu/cu-profile/cu-profile.component';
 export * from './setting/profile-setting/mg-cu/cu-permission/cu-permission.component';
 export * from './setting/profile-setting/mg-cu/cu-role/cu-role.component';
@@ -53,7 +52,6 @@ export * from './setting/profile-setting/pu-crose-table/pu-crose-table.component
 export * from './setting/profile-setting/ru-crose-table/ru-crose-table.component';
 export * from './setting/profile-setting/pp-crose-table/pp-crose-table.component';
 export * from './setting/profile-setting/mg-user/mg-user.component';
-export * from './setting/profile-setting/mg-group/mg-group.component';
 export * from './setting/profile-setting/mg-rpp/mg-rpp.component';
 export * from './setting/profile-setting/mg-refresh-token/mg-refresh-token.component';
 // update profile

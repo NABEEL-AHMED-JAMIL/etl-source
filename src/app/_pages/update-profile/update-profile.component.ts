@@ -76,41 +76,6 @@ export class UpdateProfileComponent implements OnInit {
             }
         ]
     };
-    // team
-    public teamTable: IStaticTable = {
-        tableId: 'team_id',
-        title: 'Mg Team',
-        bordered: false,
-        checkbox: false,
-        size: 'small',
-        dataColumn: [
-            {
-                field: 'avatar',
-                header: '',
-                type: 'avatar'
-            },
-            {
-                field: 'name',
-                header: 'Group Name',
-                type: 'data'
-            },
-            {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
-            },
-            {
-                field: 'userType',
-                header: 'Position',
-                type: 'data'
-            },
-            {
-                field: 'status',
-                header: 'Status',
-                type: 'tag'
-            }
-        ]
-    };
 
     constructor(
         private router: Router,

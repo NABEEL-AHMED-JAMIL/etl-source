@@ -22,7 +22,6 @@ import {
     MgRPPComponent,
     UpdateProfileComponent,
     MgEVariableComponent,
-    MgGroupComponent,
     MgUserComponent,
     CredentialComponent,
     MGFormComponent,
@@ -213,18 +212,6 @@ const routes: Routes = [
                     roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
                     permission: ['USER_PERMISSION'],
                     breadcrumb: 'Mg User',
-                }
-            },
-            // profile-setting => mg-grouop
-            {
-                path: 'mgGroup',
-                component: MgGroupComponent,
-                canActivate: [AuthGuard],
-                data: {
-                    parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                    permission: ['GROUP_PERMISSION'],
-                    breadcrumb: 'User Group',
                 }
             },
             // profile-setting => mg-rpp

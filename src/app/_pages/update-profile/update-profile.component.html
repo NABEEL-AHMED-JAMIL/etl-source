@@ -140,19 +140,6 @@
                 </form>
             </div>
         </nz-tab>
-        <nz-tab [nzTitle]="teamTemplate">
-            <ng-template #teamTemplate>
-                <span nz-icon nzType="team"></span>
-                My Teams
-            </ng-template>
-            <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> My Teams</h3>
-            <hr>
-            <div style="margin-top: 10px;">
-                <app-gen-table *ngIf="teamTable"
-                    [staticTable]="teamTable">
-                </app-gen-table>
-            </div>
-        </nz-tab>
         <nz-tab [nzTitle]="envTemplate">
             <ng-template #envTemplate>
                 <span nz-icon nzType="dropbox"></span>
