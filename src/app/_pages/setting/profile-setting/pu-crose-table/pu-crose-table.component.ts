@@ -36,11 +36,6 @@ export class PUCroseTableComponent implements OnInit {
         size: 'small',
         dataColumn: [
             {
-                field: 'profileImg',
-                header: 'Image',
-                type: 'img'
-            },
-            {
                 field: 'fullName',
                 header: 'Name',
                 type: 'data'
