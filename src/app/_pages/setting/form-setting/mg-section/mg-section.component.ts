@@ -232,9 +232,9 @@ export class MGSectionComponent implements OnInit {
             });
         } else if (ActionType.LINK_FROM === payload.action) {
             const drawerRef = this.drawerService.create({
-                nzTitle: 'Link Form',
+                nzTitle: '[Form] => [Section]',
                 nzSize: 'large',
-                nzWidth: 1200,
+                nzWidth: 800,
                 nzPlacement: 'right',
                 nzMaskClosable: false,
                 nzContent: SttsLinkSttfComponent,
@@ -254,9 +254,9 @@ export class MGSectionComponent implements OnInit {
             });
         } else if (ActionType.LINK_CONTROL === payload.action) {
             const drawerRef = this.drawerService.create({
-                nzTitle: 'Link Control',
+                nzTitle: '[Section] => [Control]',
                 nzSize: 'large',
-                nzWidth: 1200,
+                nzWidth: 800,
                 nzPlacement: 'right',
                 nzMaskClosable: false,
                 nzContent: SttsLinkSttcComponent,

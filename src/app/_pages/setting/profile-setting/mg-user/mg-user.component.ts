@@ -7,7 +7,7 @@ import {
     CommomService,
     SpinnerService
 } from 'src/app/_helpers';
-import { 
+import {
     APPLICATION_STATUS,
     ActionType,
     ApiCode,
@@ -19,7 +19,6 @@ import {
 } from 'src/app/_shared';
 import {
     CUUserComponent,
-    CompanyDetailComponent
 } from 'src/app/_pages';
 
 
@@ -33,7 +32,7 @@ export class MgUserComponent implements OnInit {
     public startDate: any;
     public endDate: any;
     public setOfCheckedId = new Set<any>();
-    //
+
     public sessionUser: AuthResponse;
     public subUserTable: IStaticTable = {
         tableId: 'user_id',
@@ -55,13 +54,6 @@ export class MgUserComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Refresh',
                 action: ActionType.RE_FRESH
-            },
-            {
-                type: 'upload',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Upload',
-                action: ActionType.UPLOAD
             },
             {
                 type: 'download',
@@ -114,7 +106,7 @@ export class MgUserComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id' , 'username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'dateUpdated',
@@ -125,7 +117,7 @@ export class MgUserComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id' , 'username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'status',
@@ -165,20 +157,6 @@ export class MgUserComponent implements OnInit {
                 condition: "EQ",
                 targetValue: 1,
                 action: ActionType.DISABLED
-            },
-            {
-                title: 'Company Detail',
-                type: 'home',
-                action: ActionType.LINK
-            },
-            {
-                title: 'View Sub User',
-                type: 'right-circle',
-                targetFiled: 'profile',
-                condition: "PEQ",
-                targetValue: 'ADMIN_PROFILE',
-                subfield: 'profileName',
-                action: ActionType.MORE
             }
         ]
     };
@@ -191,15 +169,12 @@ export class MgUserComponent implements OnInit {
         private spinnerService: SpinnerService,
         private appUserService: AppUserService,
         private authenticationService: AuthenticationService) {
-            this.endDate = this.commomService.getCurrentDate();
-            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
-            this.authenticationService.currentUser
+        this.endDate = this.commomService.getCurrentDate();
+        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
             });
-            if (this.sessionUser) {
-                
-            }
     }
 
     ngOnInit(): void {
@@ -240,6 +215,23 @@ export class MgUserComponent implements OnInit {
                     username: this.sessionUser.username
                 }
             });
+        } else if (ActionType.DOWNLOAD === payload.action) {
+            this.spinnerService.show();
+            this.appUserService.downloadAppUserAccount({
+                ids: payload.checked,
+                startDate: this.startDate,
+                endDate: this.endDate,
+                sessionUser: {
+                    username: this.sessionUser.username
+                },
+            }).pipe(first())
+                .subscribe((response: any) => {
+                    this.commomService.downLoadFile(response);
+                    this.spinnerService.hide();
+                }, (response: any) => {
+                    this.spinnerService.hide();
+                    this.alertService.showError(response.error.message, ApiCode.ERROR);
+                });
         }
     }
 
@@ -266,7 +258,6 @@ export class MgUserComponent implements OnInit {
                     });
                 }
             });
-        } else if (ActionType.MORE === payload.action) {
         } else if (ActionType.ENABLED === payload.action) {
             this.modalService.confirm({
                 nzOkText: 'Ok',
@@ -304,27 +295,6 @@ export class MgUserComponent implements OnInit {
                         }
                     });
                 }
-            });
-        } else if (ActionType.LINK === payload.action) {
-            const drawerRef = this.drawerService.create({
-                nzTitle: 'Company Detail',
-                nzSize: 'large',
-                nzMaskClosable: false,
-                nzContent: CompanyDetailComponent,
-                nzContentParams: {
-                    actionType: !payload?.data.company ? ActionType.ADD : ActionType.EDIT,
-                    editPayload: payload?.data.company,
-                    subUser: payload?.data
-                }
-            });
-            drawerRef.afterClose.subscribe(data => {
-                this.fetchAllAppUserAccount({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
             });
         }
     }

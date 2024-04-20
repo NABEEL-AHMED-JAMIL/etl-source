@@ -5,7 +5,6 @@ export * from './auth/forgot-pass/forgot-pass.component';
 // common
 export * from './common/batch/batch.component';
 export * from './common/gen-table/gen-table.component';
-export * from './common/company-detail/company-detail.component';
 export * from './common/env-variable-value/env-variable-value.component';
 // etl-source & setting dashboard
 export * from './dashboards/etl-source/etl-source.component';

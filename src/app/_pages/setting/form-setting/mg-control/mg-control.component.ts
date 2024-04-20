@@ -92,21 +92,6 @@ export class MgControlComponent implements OnInit {
                 type: 'tag'
             },
             {
-                field: 'fieldWidth',
-                header: 'WD',
-                type: 'tag'
-            },
-            {
-                field: 'minLength',
-                header: 'Min',
-                type: 'tag'
-            },
-            {
-                field: 'maxLength',
-                header: 'Max',
-                type: 'tag'
-            },
-            {
                 field: 'fieldLkValue',
                 header: 'LK Value',
                 type: 'tag'
@@ -168,41 +153,15 @@ export class MgControlComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Delete',
                 action: ActionType.DELETE
-            }
-        ],
-        moreActionType: [
+            },
             {
                 type: 'link',
-                title: 'Link With Section',
+                color: 'orange',
+                spin: false,
+                tooltipTitle: 'Link With Section',
                 action: ActionType.LINK_SECTION
             }
         ]
-    };
-    // 
-    public icontrolPatternTable: IStaticTable = {
-        tableId: 'control_pattern_id',
-        title: 'Control Pattern',
-        bordered: false,
-        checkbox: false,
-        size: 'small',
-        dataColumn: [
-            {
-                field: 'type',
-                header: 'Type',
-                type: 'data'
-            },
-            {
-                field: 'pattern',
-                header: 'Pattern',
-                type: 'data'
-            },
-            {
-                field: 'value',
-                header: 'Value',
-                type: 'data'
-            }
-        ],
-        dataSource: CONTROL_PATTERN
     };
 
     constructor(
@@ -298,9 +257,9 @@ export class MgControlComponent implements OnInit {
             });
         } else if (ActionType.LINK_SECTION === payload.action) {
             const drawerRef = this.drawerService.create({
-                nzTitle: 'Link Section',
+                nzTitle: '[Control] => [Section]',
                 nzSize: 'large',
-                nzWidth: 1200,
+                nzWidth: 800,
                 nzPlacement: 'right',
                 nzMaskClosable: false,
                 nzContent: SttcLinkSttsComponent,
@@ -451,6 +410,5 @@ export class MgControlComponent implements OnInit {
             });
         });
     }
-
 
 }

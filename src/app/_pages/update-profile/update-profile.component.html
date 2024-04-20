@@ -23,26 +23,6 @@
                     </nz-descriptions-item>
                 </nz-descriptions>
             </div>
-            <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> Compnay Info</h3>
-            <hr>
-            <div class="content" *ngIf="appUser?.company">
-                <nz-descriptions nzSize="small">
-                    <nz-descriptions-item nzTitle="Name">
-                        ({{appUser?.company.id}}) {{appUser?.company.name}}
-                    </nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Email">
-                        {{appUser?.company.email}}
-                    </nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Phone">
-                        <nz-tag [nzColor]="'blue'">
-                            {{appUser?.company.phone}}
-                        </nz-tag>
-                    </nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Address">
-                        {{appUser?.company.address}}
-                    </nz-descriptions-item>
-                </nz-descriptions>
-            </div>
             <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> Role & Permission</h3>
             <hr>
             <div class="content" *ngIf="appUser">

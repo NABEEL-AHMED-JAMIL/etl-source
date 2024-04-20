@@ -60,8 +60,8 @@ export class MgSourceTaskTypeComponent implements OnInit {
                 type: 'tag'
             },
             {
-                field: 'totalGroup',
-                header: 'Total Group',
+                field: 'totalUser',
+                header: 'Total User',
                 type: 'tag'
             },
             {

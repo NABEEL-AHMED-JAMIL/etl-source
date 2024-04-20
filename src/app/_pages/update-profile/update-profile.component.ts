@@ -25,7 +25,7 @@ import {
 import { first } from 'rxjs';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
-import { CompanyDetailComponent, EnvVariableValueComponent } from '..';
+import { EnvVariableValueComponent } from '..';
 
 
 @Component({
@@ -173,23 +173,6 @@ export class UpdateProfileComponent implements OnInit {
                 this.spinnerService.hide();
                 this.alertService.showError(error.message, ApiCode.ERROR);
             });
-    }
-
-    public addUpdateCompany(): void {
-        const drawerRef = this.drawerService.create({
-            nzTitle: 'Company Detail',
-            nzSize: 'large',
-            nzMaskClosable: false,
-            nzContent: CompanyDetailComponent,
-            nzContentParams: {
-                actionType: !this.appUser?.company ? ActionType.ADD : ActionType.EDIT,
-                editPayload: this.appUser?.company
-            }
-        });
-        drawerRef.afterClose
-        .subscribe(data => {
-            this.fetchAppUserProfile(this.currentUser.username);
-        });
     }
 
     public tableActionReciver(payload: any): void {

@@ -111,7 +111,6 @@ export interface IAppUser extends IBaseEntity {
     password?: any;
     profileImg?: any;
     ipAddress?: any;
-    company?: ICompany;
     roles?: any;
     profile?: any;
     enVariables?: any;
@@ -121,13 +120,6 @@ export interface ICredential extends IBaseEntity {
     name?: any;
     type?: any;
     content?: any;
-}
-
-export interface ICompany extends IBaseEntity {
-    name?: any;
-    address?: any;
-    email?: any;
-    phone?: any;
 }
 
 export interface IQuery {
@@ -191,6 +183,24 @@ export interface IGenControl extends IBaseEntity {
     defaultValue?: any;
     pattern?: any;
     totalSection?: any;
+}
+
+export interface IControlLinkSection extends IBaseEntity {
+    sectionName?: any;
+    description?: any;
+    linkedControl?: any;
+    linkSectionId?: any;
+    controlOrder?: any;
+}
+
+export interface ISectionLinkControl extends IBaseEntity {
+    controlName?: any;
+    fieldType?: any;
+    fieldTitle?: any;
+    fieldName?: any;
+    controlOrder?: any;
+    linkedSection?: any;
+    linkControlId?: any;
 }
 
 export interface IStaticTable {
@@ -272,7 +282,6 @@ export enum ActionType {
 
 export enum IProfileSetting {
     USER_INFO,
-    COMPANY_INFO,
     CHANGE_PASSWORD,
     MY_TEAM,
     ENVIROMENT
@@ -395,28 +404,6 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 link: '/setting/mgPlayGround',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
                 permission: ['PLAY_GROUND_PERMISSION']
-            }
-        ]
-    },
-    {
-        name: 'Report Setting',
-        icon: 'pie-chart',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-        permission: ['REPORT_SETTING_PERMISSION'],
-        childLinks: [
-            {
-                name: 'Manage Report',
-                icon: 'form',
-                link: '/setting/mgReport',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['MANAGE_REPORT_PERMISSION']
-            },
-            {
-                name: 'Report Play Ground',
-                icon: 'html5',
-                link: '/setting/mgReportPlayGround',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['REPORT_PLAY_GROUND_PERMISSION']
             }
         ]
     },

@@ -22,10 +22,6 @@ export class AppUserService {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserProfile`, payload);
     }
 
-    public updateAppUserCompany(payload:any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserCompany`, payload);
-    }
-
     public updateAppUserEnvVariable(payload:any): Observable<any> {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserEnvVariable`, payload);
     }
@@ -40,7 +36,21 @@ export class AppUserService {
 
     public deleteAllAppUserAccount(payload:any): Observable<any> {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/deleteAllAppUserAccount`, payload);
-    }    
+    }
+
+    public downloadAppUserAccountTemplateFile(): Observable<any> {
+        return this.http.get(`${config.apiBaseUrl}/eVariable.json/downloadAppUserAccountTemplateFile`,
+            {
+                responseType: 'blob'
+            });
+    }
+
+    public downloadAppUserAccount(payload: any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/eVariable.json/downloadAppUserAccount`, payload,
+            {
+                responseType: 'blob'
+            });
+    }
 
     public fetchAllAppUserAccount(payload:any): Observable<any> {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/fetchAllAppUserAccount`, payload);

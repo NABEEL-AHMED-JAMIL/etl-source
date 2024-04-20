@@ -85,6 +85,18 @@ export class FormSettingService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/deleteAllSections`, payload);
     }
 
+    public fetchAllSectionLinkControl(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchAllSectionLinkControl`, payload);
+    }
+    
+    public linkSectionControl(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkSectionControl`, payload);
+    }
+
+    public linkSectionControlOrder(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkSectionControlOrder`, payload);
+    }
+
     public addControl(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/addControl`, payload);
     }
@@ -108,6 +120,18 @@ export class FormSettingService {
     public deleteAllControls(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/deleteAllControls`, payload);
     }
+
+    public fetchAllControlLinkSection(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchAllControlLinkSection`, payload);
+    }
+
+    public linkControlSection(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkControlSection`, payload);
+    }
+
+    public linkControlSectionOrder(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkControlSectionOrder`, payload);
+    }    
 
     public downloadSTTCommon(payload: any): Observable<any> {
         return this.http.post(`${config.apiBaseUrl}/formSetting.json/downloadSTTCommon`, payload,

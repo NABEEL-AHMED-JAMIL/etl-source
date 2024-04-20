@@ -81,7 +81,7 @@ export class MGLookupComponent implements OnInit {
             {
                 field: 'lookupCode',
                 header: 'Code',
-                type: 'tag'
+                type: 'data'
             },
             {
                 field: 'lookupValue',

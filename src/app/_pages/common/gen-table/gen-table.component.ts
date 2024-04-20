@@ -72,7 +72,7 @@ export class GenTableComponent implements OnInit {
         const listOfEnabledData = this.listOfCurrentPageData.filter(({ disabled }) => !disabled);
         if (listOfEnabledData.length > 0) {
             this.checked = listOfEnabledData.every(({ id }) => this.setOfCheckedId.has(id));
-            this.indeterminate = listOfEnabledData.some(({ id }) => this.setOfCheckedId.has(id)) && !this.checked;    
+            this.indeterminate = listOfEnabledData.some(({ id }) => this.setOfCheckedId.has(id)) && !this.checked;
         }
     }
 

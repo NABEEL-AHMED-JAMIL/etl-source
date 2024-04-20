@@ -136,12 +136,12 @@ export class MgRPPComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Delete',
                 action: ActionType.DELETE
-            }
-        ],
-        moreActionType: [
+            },
             {
-                title: 'Link With User',
                 type: 'link',
+                color: 'orange',
+                spin: false,
+                tooltipTitle: 'Link With User',
                 action: ActionType.LINK
             }
         ]
@@ -244,12 +244,12 @@ export class MgRPPComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Delete',
                 action: ActionType.DELETE
-            }
-        ],
-        moreActionType: [
+            },
             {
-                title: 'Link With User',
                 type: 'link',
+                color: 'orange',
+                spin: false,
+                tooltipTitle: 'Link With User',
                 action: ActionType.LINK
             }
         ]
@@ -470,7 +470,7 @@ export class MgRPPComponent implements OnInit {
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
                 nzTitle: '[' + payload.data.id + '] ' + payload.data.name,
-                nzWidth: 1200,
+                nzWidth: 800,
                 nzFooter: null, // Optional footer
                 nzContent: RUCroseTableComponent,
                 nzContentParams: {
@@ -656,7 +656,7 @@ export class MgRPPComponent implements OnInit {
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
                 nzTitle: '[' + payload.data.id + '] ' + payload.data.profileName,
-                nzWidth: 1200,
+                nzWidth: 800,
                 nzFooter: null, // Optional footer
                 nzContent: PUCroseTableComponent,
                 nzContentParams: {

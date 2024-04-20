@@ -18,17 +18,3 @@ button {
     line-height: 25px;
 }
 
-.table-setting {
-    font-size: 10px;
-    display: block;
-    overflow-x: auto;
-    white-space: pre;
-    overflow-y: auto;
-    scrollbar-width: none;
-}
-
-.pagination-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px; /* Adjust as needed */
-  }
