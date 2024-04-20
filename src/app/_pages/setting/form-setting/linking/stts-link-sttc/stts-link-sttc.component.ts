@@ -193,8 +193,7 @@ export class SttsLinkSttcComponent implements OnInit {
     }
 
     public updateEditCache(): void {
-        this.sectionLinkControlTable
-        .forEach(item => {
+        this.sectionLinkControlTable.forEach(item => {
             this.editCache[item.id] = {
                 edit: false,
                 data: { ...item }

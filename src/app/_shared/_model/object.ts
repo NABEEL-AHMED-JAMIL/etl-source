@@ -203,6 +203,14 @@ export interface ISectionLinkControl extends IBaseEntity {
     linkControlId?: any;
 }
 
+export interface ISectionLinkFrom extends IBaseEntity {
+    formName?: any;
+    formType?: any;
+    linkStatus?: any;
+    sectionOrder?: any;
+    sectionLinkForm?: any;
+}
+
 export interface IStaticTable {
     tableId?: any;
     title?: any;

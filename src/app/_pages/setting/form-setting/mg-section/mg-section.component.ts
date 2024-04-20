@@ -232,7 +232,7 @@ export class MGSectionComponent implements OnInit {
             });
         } else if (ActionType.LINK_FROM === payload.action) {
             const drawerRef = this.drawerService.create({
-                nzTitle: '[Form] => [Section]',
+                nzTitle: '[Section] => [Form]',
                 nzSize: 'large',
                 nzWidth: 800,
                 nzPlacement: 'right',

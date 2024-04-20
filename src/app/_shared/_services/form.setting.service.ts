@@ -47,7 +47,7 @@ export class FormSettingService {
 
     public deleteFormById(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/deleteFormById`, payload);
-    }
+    }    
 
     public fetchFormByFormId(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchFormByFormId`, payload);
@@ -59,7 +59,19 @@ export class FormSettingService {
 
     public deleteAllForms(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/deleteAllForms`, payload);
-    }    
+    }
+
+    public fetchAllFormLinkSection(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchAllFormLinkSection`, payload);
+    }
+
+    public linkFormSection(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkFormSection`, payload);
+    }
+
+    public linkFormSectionOrder(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkFormSectionOrder`, payload);
+    }
 
     public addSection(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/addSection`, payload);
@@ -95,6 +107,18 @@ export class FormSettingService {
 
     public linkSectionControlOrder(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkSectionControlOrder`, payload);
+    }
+
+    public fetchAllSectionLinkForm(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchAllSectionLinkForm`, payload);
+    }
+
+    public linkSectionForm(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkSectionForm`, payload);
+    }
+
+    public linkSectionFormOrder(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkSectionFormOrder`, payload);
     }
 
     public addControl(payload: any): Observable<ApiResponse> {
