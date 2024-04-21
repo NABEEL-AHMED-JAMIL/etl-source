@@ -270,7 +270,7 @@ export class MGFormComponent implements OnInit {
             });
         } else if (ActionType.LINK_SECTION === payload.action) {
             const drawerRef = this.drawerService.create({
-                nzTitle: 'Link Section',
+                nzTitle: '[Form] => [Section]',
                 nzSize: 'large',
                 nzWidth: 1200,
                 nzPlacement: 'right',

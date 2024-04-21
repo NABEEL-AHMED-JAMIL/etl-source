@@ -51,7 +51,7 @@ export class CUControlComponent implements OnInit {
     public sessionUser: AuthResponse;
 
     public ISDEFAULT: ILookups;
-    public FILED_TYPE: ILookups;
+    public FIELD_TYPE: ILookups;
     public APPLICATION_STATUS: ILookups;
     public fieldLkValueOption: ILookups;
 
@@ -85,11 +85,11 @@ export class CUControlComponent implements OnInit {
         }).subscribe((data) => {
             this.ISDEFAULT = data;
         });
-        // FILED_TYPE
+        // FIELD_TYPE
         this.lookupService.fetchLookupDataByLookupType({
-            lookupType: LOOKUP_TYPE.FILED_TYPE
+            lookupType: LOOKUP_TYPE.FIELD_TYPE
         }).subscribe((data) => {
-            this.FILED_TYPE = data;
+            this.FIELD_TYPE = data;
         });
         if (this.actionType === ActionType.ADD) {
             this.addGenControlForm();

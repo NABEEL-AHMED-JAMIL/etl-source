@@ -122,6 +122,15 @@ export interface ICredential extends IBaseEntity {
     content?: any;
 }
 
+export interface ISTT extends IBaseEntity {
+    serviceName?: any;
+    description?: any;
+    taskType?: any;
+    credentialId?: any;
+    kafkaTaskType?: any;
+    apiTaskType?: any;
+}
+
 export interface IQuery {
     query?: any;
     column?: any;
@@ -209,6 +218,14 @@ export interface ISectionLinkFrom extends IBaseEntity {
     linkStatus?: any;
     sectionOrder?: any;
     sectionLinkForm?: any;
+}
+
+export interface IFormLinkSection extends IBaseEntity {
+    sectionName?: any;
+    description?: any;
+    linkStatus?: any;
+    sectionOrder?: any;
+    formLinkSection?: any;
 }
 
 export interface IStaticTable {
@@ -497,7 +514,7 @@ export const LOOKUP_TYPE = {
     CREDENTIAL_TYPE: 'CREDENTIAL_TYPE',
     MASTER_ADMIN: 'MASTER_ADMIN',
     FORM_TYPE: 'FORM_TYPE',
-    FILED_TYPE: 'FILED_TYPE',
+    FIELD_TYPE: 'FIELD_TYPE',
     IS_DEFAULT: 'IS_DEFAULT'
 }
 

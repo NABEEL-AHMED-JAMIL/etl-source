@@ -35,7 +35,7 @@
                     <nz-select nzShowSearch nzAllowClear formControlName="fieldType"
                         nzPlaceHolder="Select Field Type"
                         (ngModelChange)="onFieldType($event)">
-                        <nz-option *ngFor="let lookupChildren of FILED_TYPE?.SUB_LOOKUP_DATA"
+                        <nz-option *ngFor="let lookupChildren of FIELD_TYPE?.SUB_LOOKUP_DATA"
                             [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
                         </nz-option>
                     </nz-select>
@@ -128,7 +128,7 @@
         </div>
         <div nz-col nzSpan="8" *ngIf="isMinAllow">
             <nz-form-item>
-                <nz-form-label nzRequired>Min Length</nz-form-label>
+                <nz-form-label>Min Length</nz-form-label>
                 <nz-form-control nzErrorTip="Field Min Length Required">
                     <input nz-input formControlName="minLength"
                         type="number" placeholder="Enter Min Length" />
@@ -137,7 +137,7 @@
         </div>
         <div nz-col nzSpan="8" *ngIf="isMaxAllow">
             <nz-form-item>
-                <nz-form-label nzRequired>Max Length</nz-form-label>
+                <nz-form-label>Max Length</nz-form-label>
                 <nz-form-control nzErrorTip="Field Max Length Required">
                     <input nz-input formControlName="maxLength"
                         type="number" placeholder="Enter Max Length" />

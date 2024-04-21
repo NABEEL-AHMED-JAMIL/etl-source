@@ -1,8 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { AlertService, CommomService, SpinnerService } from 'src/app/_helpers';
-import { AuthResponse, IStaticTable, ActionType, AuthenticationService, FormSettingService } from 'src/app/_shared';
+import { first } from 'rxjs';
+import {
+    AlertService,
+    CommomService,
+    SpinnerService
+} from 'src/app/_helpers';
+import {
+    AuthResponse,
+    IStaticTable,
+    ActionType,
+    AuthenticationService,
+    FormSettingService,
+    ApiCode
+} from 'src/app/_shared';
+import { CuSourceTTaskComponent } from '../mg-cu/cu-source-ttask/cu-source-ttask.component';
 
 @Component({
     selector: 'app-source-ttype',
@@ -73,7 +86,7 @@ export class MgSourceTaskTypeComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id' , 'username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'dateUpdated',
@@ -84,7 +97,7 @@ export class MgSourceTaskTypeComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id' , 'username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'status',
@@ -134,18 +147,171 @@ export class MgSourceTaskTypeComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.fetchAllSTT({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
+    }
+
+    // fetch all lookup
+    public fetchAllSTT(payload: any): any {
+        this.spinnerService.show();
+        this.formSettingService.fetchAllSTT(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.sttTable.dataSource = response.data;
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error.message, ApiCode.ERROR);
+            });
+    }
+
+    public deleteSTT(payload: any): void {
+        this.spinnerService.show();
+        this.formSettingService.deleteSTT(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.fetchAllSTT({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error, ApiCode.ERROR);
+            });
     }
 
     public tableActionReciver(payload: any): void {
+        if (ActionType.EDIT === payload.action) {
+            this.openCuLookup(ActionType.EDIT, payload);
+        } else if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteSTT({
+                        id: payload.data.id,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                }
+            });
+        }
     }
 
     public buttonActionReciver(payload: any): void {
+        if (ActionType.ADD === payload.action) {
+            this.openCuLookup(ActionType.ADD, null);
+        } else if (ActionType.RE_FRESH === payload.action) {
+            this.fetchAllSTT({
+                startDate: this.startDate,
+                endDate: this.endDate,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        }
     }
 
     public filterActionReciver(payload: any): void {
+        this.startDate = payload.startDate;
+        this.endDate = payload.endDate;
+        this.fetchAllSTT({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
     }
 
     public extraActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteAllSTT(
+                        {
+                            ids: payload.checked,
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                }
+            });
+        }
     }
+
+    public openCuLookup(actionType: ActionType, editPayload: any): void {
+        const drawerRef = this.drawerService.create({
+            nzSize: 'large',
+            nzTitle: actionType === ActionType.ADD ? 'Add STT' : 'Edit STT',
+            nzPlacement: 'right',
+            nzMaskClosable: false,
+            nzContent: CuSourceTTaskComponent,
+            nzContentParams: {
+                actionType: actionType,
+                editPayload: editPayload?.data
+            }
+        });
+        drawerRef.afterClose.subscribe(data => {
+            this.fetchAllSTT({
+                startDate: this.startDate,
+                endDate: this.endDate,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        });
+    }
+
+    public deleteAllSTT(payload: any): void {
+        this.spinnerService.show();
+        this.formSettingService.deleteAllSTT(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.fetchAllSTT({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+                this.setOfCheckedId = new Set<any>();
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error, ApiCode.ERROR);
+            });
+    }
+
 
 }
