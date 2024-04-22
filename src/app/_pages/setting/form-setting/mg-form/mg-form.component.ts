@@ -250,7 +250,7 @@ export class MGFormComponent implements OnInit {
             const drawerRef = this.drawerService.create({
                 nzTitle: 'Link Source Task Type',
                 nzSize: 'large',
-                nzWidth: 1200,
+                nzWidth: 800,
                 nzPlacement: 'right',
                 nzMaskClosable: false,
                 nzContent: SttfLinkSttComponent,
@@ -272,7 +272,7 @@ export class MGFormComponent implements OnInit {
             const drawerRef = this.drawerService.create({
                 nzTitle: '[Form] => [Section]',
                 nzSize: 'large',
-                nzWidth: 1200,
+                nzWidth: 800,
                 nzPlacement: 'right',
                 nzMaskClosable: false,
                 nzContent: SttfLinkSttsComponent,
