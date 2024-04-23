@@ -33,18 +33,6 @@ export class FormSettingService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkSTTForm`, payload);
     }
 
-    public linkSTTFormOrder(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkSTTFormOrder`, payload);
-    }
-
-    public fetchAllSTTLinkAppUser(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchAllSTTLinkAppUser`, payload);
-    }
-    
-    public linkSTTLinkAppUser(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkSTTLinkAppUser`, payload);
-    }
-
     public fetchSTTBySttId(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchSTTBySttId`, payload);
     }
@@ -79,6 +67,14 @@ export class FormSettingService {
 
     public deleteAllForms(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/deleteAllForms`, payload);
+    }
+
+    public fetchAllFormLinkSTT(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchAllFormLinkSTT`, payload);
+    }
+    
+    public linkFormSTT(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkFormSTT`, payload);
     }
 
     public fetchAllFormLinkSection(payload: any): Observable<ApiResponse> {

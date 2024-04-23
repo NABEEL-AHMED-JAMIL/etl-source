@@ -89,7 +89,7 @@ export class CommomService {
                 .map(key => payload[key]);
             return filteredFields.join("=>");
         }
-        return payload;
+        return payload ? payload : 'No Data';
     }
 
     public isShow(row: any, action: any): any {

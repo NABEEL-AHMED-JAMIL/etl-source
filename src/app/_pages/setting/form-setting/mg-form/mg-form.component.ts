@@ -248,7 +248,7 @@ export class MGFormComponent implements OnInit {
             });
         } else if (ActionType.LINK_STT === payload.action) {
             const drawerRef = this.drawerService.create({
-                nzTitle: 'Link Source Task Type',
+                nzTitle: '[Form] => [STT]',
                 nzSize: 'large',
                 nzWidth: 800,
                 nzPlacement: 'right',

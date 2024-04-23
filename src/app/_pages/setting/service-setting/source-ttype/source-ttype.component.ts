@@ -8,6 +8,10 @@ import {
     SpinnerService
 } from 'src/app/_helpers';
 import {
+    CuSourceTTaskComponent,
+    SttLinkFormComponent
+} from 'src/app/_pages';
+import {
     AuthResponse,
     IStaticTable,
     ActionType,
@@ -15,7 +19,6 @@ import {
     FormSettingService,
     ApiCode
 } from 'src/app/_shared';
-import { CuSourceTTaskComponent } from '../mg-cu/cu-source-ttask/cu-source-ttask.component';
 
 @Component({
     selector: 'app-source-ttype',
@@ -63,18 +66,19 @@ export class MgSourceTaskTypeComponent implements OnInit {
                 type: 'tag'
             },
             {
-                field: 'credentail',
-                header: 'Credentail',
-                type: 'tag'
+                field: 'credential',
+                header: 'Credential',
+                type: 'combine',
+                subfield: ['id', 'name']
             },
             {
-                field: 'totalSourceTask',
+                field: 'totalTask',
                 header: 'Total Task',
                 type: 'tag'
             },
             {
-                field: 'totalUser',
-                header: 'Total User',
+                field: 'totalForm',
+                header: 'Total Form',
                 type: 'tag'
             },
             {
@@ -126,6 +130,13 @@ export class MgSourceTaskTypeComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Delete',
                 action: ActionType.DELETE
+            }
+        ],
+        moreActionType: [
+            {
+                type: 'link',
+                title: 'Link With Form',
+                action: ActionType.LINK_FROM
             }
         ]
     };
@@ -216,6 +227,28 @@ export class MgSourceTaskTypeComponent implements OnInit {
                     });
                 }
             });
+        } else if (ActionType.LINK_FROM === payload.action) {
+            const drawerRef = this.drawerService.create({
+                nzTitle: '[STT] => [Form]',
+                nzSize: 'large',
+                nzWidth: 800,
+                nzPlacement: 'right',
+                nzMaskClosable: false,
+                nzContent: SttLinkFormComponent,
+                nzContentParams: {
+                    actionType: payload.action,
+                    editPayload: payload?.data
+                }
+            });
+            drawerRef.afterClose.subscribe(data => {
+                this.fetchAllSTT({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+            });
         }
     }
 
@@ -270,6 +303,7 @@ export class MgSourceTaskTypeComponent implements OnInit {
             nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add STT' : 'Edit STT',
             nzPlacement: 'right',
+            nzWidth: 800,
             nzMaskClosable: false,
             nzContent: CuSourceTTaskComponent,
             nzContentParams: {

@@ -1,7 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TransferItem } from 'ng-zorro-antd/transfer';
 import { first } from 'rxjs';
-import { AlertService, CommomService, SpinnerService } from 'src/app/_helpers';
+import {
+    AlertService,
+    CommomService,
+    SpinnerService
+} from 'src/app/_helpers';
 import {
     ActionType,
     ApiCode,

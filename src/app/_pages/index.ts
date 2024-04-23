@@ -32,6 +32,7 @@ export * from './setting/form-setting/linking/sttc-link-stts/sttc-link-stts.comp
 export * from './setting/form-setting/linking/sttf-link-stts/sttf-link-stts.component';
 export * from './setting/form-setting/linking/stts-link-sttc/stts-link-sttc.component';
 export * from './setting/form-setting/linking/stts-link-sttf/stts-link-sttf.component';
+export * from './setting/service-setting/linking/stt-link-sttf/stt-link-sttf.component';
 // support-setting
 export * from './setting/support-setting/db-query/db-query.component';
 // app-setting

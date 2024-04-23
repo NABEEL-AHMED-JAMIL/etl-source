@@ -127,6 +127,7 @@ export interface ISTT extends IBaseEntity {
     description?: any;
     taskType?: any;
     credentialId?: any;
+    credential?: any;
     kafkaTaskType?: any;
     apiTaskType?: any;
 }
@@ -226,6 +227,27 @@ export interface IFormLinkSection extends IBaseEntity {
     linkStatus?: any;
     sectionOrder?: any;
     formLinkSection?: any;
+}
+
+export interface ISourceTaskTypeLinkForm extends IBaseEntity  {
+    formName?: any;
+    formType?: any;
+    linkStatus?: any;
+    formLinkStt?: any;
+}
+
+export interface ISourceTaskTypeLinkForm extends IBaseEntity  {
+    formName?: any;
+    formType?: any;
+    linkStatus?: any;
+    sttLinkForm?: any;
+}
+
+export interface IFormLinkSourceTaskType extends IBaseEntity  {
+    serviceName?: any;
+    taskType?: any;
+    linkStatus?: any;
+    linkSourceTaskTypeId?: any;
 }
 
 export interface IStaticTable {
@@ -390,6 +412,28 @@ export const SETTING_SIDEBAR: SideBar[] = [
         ]
     },
     {
+        name: 'Report Setting',
+        icon: 'pie-chart',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+        permission: ['REPORT_SETTING_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Manage Report',
+                icon: 'form',
+                link: '/setting/mgReport',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                permission: ['MANAGE_REPORT_PERMISSION']
+            },
+            {
+                name: 'Report Play Ground',
+                icon: 'html5',
+                link: '/setting/mgReportPlayGround',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                permission: ['REPORT_PLAY_GROUND_PERMISSION']
+            }
+        ]
+    },
+    {
         name: 'Form Setting',
         icon: 'database',
         roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
@@ -515,7 +559,9 @@ export const LOOKUP_TYPE = {
     MASTER_ADMIN: 'MASTER_ADMIN',
     FORM_TYPE: 'FORM_TYPE',
     FIELD_TYPE: 'FIELD_TYPE',
-    IS_DEFAULT: 'IS_DEFAULT'
+    IS_DEFAULT: 'IS_DEFAULT',
+    TASK_TYPE: 'TASK_TYPE',
+    REQUEST_METHOD: 'REQUEST_METHOD'
 }
 
 export const enum APPLICATION_STATUS {
@@ -560,4 +606,19 @@ export const enum FILED_TYPE {
     TEXTAREA = 16,
     SELECT = 17,
     MULTI_SELECT = 18
+}
+
+export const enum TASK_TYPE {
+    API = 0,
+    AWS_SQS = 1,
+    WEB_SOCKET = 2,
+    KAFKA = 3
+}
+
+export const enum REQUEST_METHOD {
+    GET = 0,
+    HEAD = 1,
+    POST = 2,
+    PUT = 3,
+    PATCH = 4
 }

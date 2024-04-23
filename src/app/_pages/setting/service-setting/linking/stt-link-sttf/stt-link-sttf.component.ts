@@ -1,36 +1,25 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TransferItem } from 'ng-zorro-antd/transfer';
 import { first } from 'rxjs';
-import {
-    AlertService,
-    CommomService,
-    SpinnerService
-} from 'src/app/_helpers';
-import {
-    ActionType,
-    ApiCode,
-    AuthResponse,
-    AuthenticationService,
-    FormSettingService,
-    IGenFrom 
-} from 'src/app/_shared';
+import { AlertService, CommomService, SpinnerService } from 'src/app/_helpers';
+import { ActionType, ApiCode, AuthResponse, AuthenticationService, FormSettingService, IFormLinkSourceTaskType, IGenFrom, ISTT } from 'src/app/_shared';
 
 
 @Component({
-    selector: 'app-sttf-link-stt',
-    templateUrl: './sttf-link-stt.component.html',
-    styleUrls: ['./sttf-link-stt.component.css']
+    selector: 'app-stt-link-sttf',
+    templateUrl: './stt-link-sttf.component.html',
+    styleUrls: ['./stt-link-sttf.component.css']
 })
-export class SttfLinkSttComponent implements OnInit {
+export class SttLinkFormComponent implements OnInit {
 
     @Input()
     public actionType: ActionType;
     @Input()
-    public editPayload: IGenFrom;
+    public editPayload: ISTT;
 
     public sessionUser: AuthResponse;
     // transfer
-    public fromLinkSTTLink: TransferItem[] = [];
+    public sttLinkFormLink: TransferItem[] = [];
 
     constructor(
         private alertService: AlertService,
@@ -45,7 +34,7 @@ export class SttfLinkSttComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchAllFormLinkSTT({
+        this.fetchAllSTTLinkForm({
             id: this.editPayload.id,
             sessionUser: {
                 username: this.sessionUser.username
@@ -54,7 +43,7 @@ export class SttfLinkSttComponent implements OnInit {
     }
 
     public refresh(): void {
-        this.fetchAllFormLinkSTT({
+        this.fetchAllSTTLinkForm({
             id: this.editPayload.id,
             sessionUser: {
                 username: this.sessionUser.username
@@ -63,10 +52,10 @@ export class SttfLinkSttComponent implements OnInit {
     }
 
     // fetch all lookup
-    public fetchAllFormLinkSTT(payload: any): any {
-        const fromLinkSTT: TransferItem[] = [];
+    public fetchAllSTTLinkForm(payload: any): any {
         this.spinnerService.show();
-        this.formSettingService.fetchAllFormLinkSTT(payload)
+        const sttLinkForm: TransferItem[] = [];
+        this.formSettingService.fetchAllSTTLinkForm(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -79,16 +68,16 @@ export class SttfLinkSttComponent implements OnInit {
                     let linkData = response.data;
                     while (index < linkData.length) {
                         let item: TransferItem = {
-                            title: linkData[index].serviceName,
-                            description: linkData[index].taskType,
+                            title: linkData[index].formName,
+                            description: linkData[index].formType,
                             direction: linkData[index].linkStatus ? 'right' : 'left',
                             key: linkData[index].id,
                             payload: linkData[index]
                         }
-                        fromLinkSTT.push(item);
+                        sttLinkForm.push(item);
                         index++;
                     }
-                    this.fromLinkSTTLink = fromLinkSTT;
+                    this.sttLinkFormLink = sttLinkForm;
                 }
             }, (error: any) => {
                 this.spinnerService.hide();
@@ -97,21 +86,22 @@ export class SttfLinkSttComponent implements OnInit {
     }
 
     public onChange(ret: {}): void {
+        debugger
         if (ret['from'] === 'right') {
             // deleting =-> from table
-            this.linkFormSTT({
+            this.linkSTTForm({
                 action: 5,
-                formLinkStt: ret['list'].map((item: any) => item?.payload?.formLinkStt),
+                sttLinkForm: ret['list'].map((item: any) => item?.payload?.sttLinkForm),
                 sessionUser: {
                     username: this.sessionUser.username
                 }
             });
         } else if (ret['from'] === 'left') {
             // inserting => active | in-active state
-            this.linkFormSTT({
+            this.linkSTTForm({
                 action: 4,
                 id: this.editPayload.id, // sectionid
-                sttId: ret['list'].map((item: any) => item?.key),
+                formId: ret['list'].map((item: any) => item?.key),
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -120,9 +110,9 @@ export class SttfLinkSttComponent implements OnInit {
     }
 
     // fetch all lookup
-    public linkFormSTT(payload: any): any {
+    public linkSTTForm(payload: any): any {
         this.spinnerService.show();
-        this.formSettingService.linkFormSTT(payload)
+        this.formSettingService.linkSTTForm(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
