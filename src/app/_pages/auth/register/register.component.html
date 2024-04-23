@@ -44,7 +44,8 @@
                     <div nz-col nzSpan="12">
                         <nz-form-item>
                             <nz-form-label nzRequired>Username</nz-form-label>
-                            <nz-form-control nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
+                            <nz-form-control nzHasFeedback nzValidatingTip="Validating..."
+                                [nzErrorTip]="userErrorTpl">
                                 <input nz-input formControlName="username" placeholder="Enter Username" />
                                 <ng-template #userErrorTpl let-control>
                                     <ng-container *ngIf="control.hasError('required')">
@@ -58,7 +59,8 @@
                         <nz-form-item>
                             <nz-form-label nzRequired>E-mail</nz-form-label>
                             <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTpl">
-                                <input nz-input formControlName="email" placeholder="Enter Email" type="email" />
+                                <input nz-input formControlName="email" 
+                                    placeholder="Enter Email" type="email" />
                                 <ng-template #emailErrorTpl let-control>
                                     <ng-container *ngIf="control.hasError('email')">
                                         The input is not valid E-mail!
@@ -74,8 +76,8 @@
                         <nz-form-item>
                             <nz-form-label nzRequired>Password</nz-form-label>
                             <nz-form-control nzHasFeedback nzErrorTip="Please input your password!">
-                                <input nz-input type="password" formControlName="password" placeholder="Enter Password"
-                                    (ngModelChange)="validateConfirmPassword()" />
+                                <input nz-input type="password" formControlName="password"
+                                    placeholder="Enter Password" (ngModelChange)="validateConfirmPassword()" />
                             </nz-form-control>
                         </nz-form-item>
                     </div>

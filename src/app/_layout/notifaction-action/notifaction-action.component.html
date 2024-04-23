@@ -11,8 +11,7 @@
                         </nz-list-item-meta-title>
                         <nz-list-item-meta-description *ngIf="item.data">
                             RUN AT <span nz-icon nzType="arrow-right" nzTheme="outline"></span>
-                            {{item.data.date | date:'medium'}}<br>
-                            {{item.data.timezone}}
+                            {{item.data.date | date:'medium'}}<br>{{item.data.timezone}}
                         </nz-list-item-meta-description>
                     </nz-list-item-meta>
                 </nz-list-item>

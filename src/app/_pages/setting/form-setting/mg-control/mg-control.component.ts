@@ -7,7 +7,11 @@ import {
     CommomService,
     SpinnerService
 } from 'src/app/_helpers';
-import { BatchComponent, CUControlComponent, SttcLinkSttsComponent } from 'src/app/_pages';
+import {
+    BatchComponent,
+    CUControlComponent,
+    SttcLinkSttsComponent
+} from 'src/app/_pages';
 import {
     AuthResponse,
     IStaticTable,
@@ -15,7 +19,6 @@ import {
     AuthenticationService,
     FormSettingService,
     ApiCode,
-    CONTROL_PATTERN,
     IGenControl
 } from 'src/app/_shared';
 

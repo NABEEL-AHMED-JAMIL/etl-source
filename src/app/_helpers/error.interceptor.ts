@@ -30,11 +30,11 @@ export class ErrorInterceptor implements HttpInterceptor {
                 this.authenticationService.logout()
                     .pipe(first())
                     .subscribe(
-                        data => {
+                        (data: any) => {
                             this.storageService.clear();
                             this.router.navigate(['/login']);
                         },
-                        error => {
+                        (error: any) => {
                             this.storageService.clear();
                             this.router.navigate(['/login']);
                         });

@@ -105,7 +105,7 @@ export class CommomService {
 
 
     public isValidHttpUrl(inputUrl: any): boolean {
-        let url;
+        let url: any;
         try {
             url = new URL(inputUrl);
         } catch (_) {

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
-    Router, CanActivate, ActivatedRouteSnapshot,
-    RouterStateSnapshot
+    Router,
+    CanActivate,
+    ActivatedRouteSnapshot,
 } from '@angular/router';
 import { AuthenticationService } from '../_shared';
 
@@ -13,7 +14,7 @@ export class AuthGuard implements CanActivate {
     constructor(private router: Router,
         private authenticationService: AuthenticationService) { }
 
-    public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    public canActivate(route: ActivatedRouteSnapshot): boolean {
         const currentUser = this.authenticationService.currentUserValue;
         if (currentUser) {
             if (this.hasPermissionAccess(currentUser.profile.permission, route.data['permission'])) {
@@ -23,7 +24,6 @@ export class AuthGuard implements CanActivate {
             this.router.navigate(['/404']);
             return false;
         }
-        // { queryParams: { returnUrl: state.url }}
         this.router.navigate(['/login']);
         return false;
     }

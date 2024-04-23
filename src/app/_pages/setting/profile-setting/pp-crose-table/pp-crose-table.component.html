@@ -1,39 +1,29 @@
 <div nz-row *ngIf="ppCroseTable">
     <div nz-col [nzSpan]="6">
-        <input nz-input [(ngModel)]="searchDetails"
-            placeholder="Search Result" />
+        <input nz-input [(ngModel)]="searchDetails" placeholder="Search Result" />
     </div>
     <div nz-col [nzSpan]="18" style="text-align: end;">
         <nz-button-group>
-            <button *ngFor='let button of ppCroseTable.headerButton'
-                nz-button nz-tooltip nzType="default"
-                nzTooltipTitle="{{ button?.tooltip }}"
-                (click)="buttonEvent(button.action)">
-                <span nz-icon [nzType]="button.type" nzTheme="outline"
-                    [nzSpin]="button.spin"
+            <button *ngFor='let button of ppCroseTable.headerButton' nz-button nz-tooltip nzType="default"
+                nzTooltipTitle="{{ button?.tooltip }}" (click)="buttonEvent(button.action)">
+                <span nz-icon [nzType]="button.type" nzTheme="outline" [nzSpin]="button.spin"
                     [ngStyle]="{'color': button.color}"></span>
             </button>
         </nz-button-group>
     </div>
 </div>
 <nz-divider style="margin: 5px 0;"></nz-divider>
-<nz-table *ngIf="ppCroseData" id="ppCroseTable"
-    [nzData]="ppCroseData.col"
-    [nzFrontPagination]="false"
-    [nzBordered]="true"
-    [nzShowPagination]="false"
-    [nzSize]="'small'"
+<nz-table *ngIf="ppCroseData" id="ppCroseTable" [nzData]="ppCroseData.col" [nzFrontPagination]="false"
+    [nzBordered]="true" [nzShowPagination]="false" [nzSize]="'small'"
     style="font-size: 10px;display: block;overflow-x: auto;white-space: nowrap;">
     <thead>
         <tr>
             <th>#</th>
             <th><b>Permission/Profile</b></th>
             <th *ngFor="let row of ppCroseData.row" style="white-space: nowrap;text-align: center;">
-                <nz-tag class="{{row.status.lookupType}}"
-                    nzTooltipTitle="{{row.description}}"
-                    nzTooltipPlacement="top" nz-tooltip>
-                    <span nz-icon nzType="info-circle"
-                        nzTheme="outline"></span>
+                <nz-tag class="{{row.status.lookupType}}" nzTooltipTitle="{{row.description}}" nzTooltipPlacement="top"
+                    nz-tooltip>
+                    <span nz-icon nzType="info-circle" nzTheme="outline"></span>
                 </nz-tag>
                 <nz-tag>{{row.profileName}}</nz-tag>
             </th>
@@ -43,21 +33,18 @@
         <tr *ngFor="let col of ppCroseData.col | searchdata: searchDetails;let i = index;">
             <td style="text-align: center;width: 1px;">{{i+1}}</td>
             <td>
-                <nz-tag class="{{col.status.lookupType}}" 
-                    nzTooltipTitle="{{col.description}}"
-                    nzTooltipPlacement="top" nz-tooltip>
+                <nz-tag class="{{col.status.lookupType}}" nzTooltipTitle="{{col.description}}" nzTooltipPlacement="top"
+                    nz-tooltip>
                     <span nz-icon nzType="info-circle" nzTheme="outline"></span>
                 </nz-tag>
                 {{col.permissionName}}
             </td>
             <td *ngFor="let row of ppCroseData.row" style="white-space: nowrap;text-align: center;">
-                <nz-tag nzTooltipTitle="{{col.permissionName}} X {{row.profileName}}"
-                    nzTooltipPlacement="top" nz-tooltip>
+                <nz-tag nzTooltipTitle="{{col.permissionName}} X {{row.profileName}}" nzTooltipPlacement="top"
+                    nz-tooltip>
                     {{ ppCroseData.crossTab[row.id + 'X' + col.id]?.key ? 'Linked': 'UnLink'}}
                 </nz-tag>&nbsp;&nbsp;
-                <nz-switch nzSize="small"
-                    [nzId]="row.id + 'X' + col.id"
-                    [nzSize]="'small'"
+                <nz-switch nzSize="small" [nzId]="row.id + 'X' + col.id" [nzSize]="'small'"
                     [nzDisabled]="ppCroseData.crossTab[row.id + 'X' + col.id]?.value.lookupCode === 0 ? true : false"
                     [ngModel]="ppCroseData.crossTab[row.id + 'X' + col.id]?.key"
                     (ngModelChange)="onPPChange($event, row.id, col.id)">
@@ -65,4 +52,4 @@
             </td>
         </tr>
     </tbody>
-<nz-table>
+    <nz-table>

@@ -1,6 +1,5 @@
 <div class="content" *ngIf="editPayload">
-    <nz-descriptions [nzTitle]="controlTitle" [nzExtra]="extraTpl"
-        nzSize="small" [nzColumn]="3">
+    <nz-descriptions [nzTitle]="controlTitle" [nzExtra]="extraTpl" nzSize="small" [nzColumn]="3">
         <ng-template #controlTitle>
             <span nz-icon nzType="link" nzTheme="outline"></span>
             ({{editPayload.id}}) {{editPayload.serviceName}}
@@ -28,16 +27,13 @@
     <nz-tabset [nzTabBarExtraContent]="refreshTemplate">
         <nz-tab [nzTitle]="linkControl">
             <ng-template #linkControl>
-                <span nz-icon nzType="link"
-                    nzTheme="outline"></span>
-                    Form Link With Form
+                <span nz-icon nzType="link" nzTheme="outline"></span>
+                Form Link With Form
             </ng-template>
-            <div class="content"
-                style="padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
-                <nz-transfer nzShowSearch [nzDataSource]="sttLinkFormLink"
-                    [nzOperations]="['To Right', 'To Left']"
-                    [nzListStyle]="{ 'width.px': 500, 'height.px': 325 }"
-                    [nzRender]="render" (nzChange)="onChange($event)">
+            <div class="content" style="padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
+                <nz-transfer nzShowSearch [nzDataSource]="sttLinkFormLink" [nzOperations]="['To Right', 'To Left']"
+                    [nzListStyle]="{ 'width.px': 500, 'height.px': 325 }" [nzRender]="render"
+                    (nzChange)="onChange($event)">
                     <ng-template #render let-item>
                         {{ item.title }} [{{commomService.getDataFromObjectV2(item.description)}}]
                     </ng-template>
@@ -47,8 +43,7 @@
     </nz-tabset>
     <!-- refreshTemplate -->
     <ng-template #refreshTemplate>
-        <button nz-button [nzSize]="'small'"
-            (click)="refresh()" nzType="default">
+        <button nz-button [nzSize]="'small'" (click)="refresh()" nzType="default">
             Refresh
         </button>
     </ng-template>

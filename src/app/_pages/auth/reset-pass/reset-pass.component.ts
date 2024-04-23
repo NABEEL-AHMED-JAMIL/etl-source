@@ -90,7 +90,6 @@ export class ResetPassComponent implements OnInit {
             return;
         }
         this.loading = true;
-
         let payload = {
             sessionUser: {
                 id: this.resetPassForm.controls['id'].value,
@@ -99,8 +98,7 @@ export class ResetPassComponent implements OnInit {
             },
             newPassword: this.resetPassForm.controls['newPassword'].value
         };
-        this.authenticationService.resetPassword(payload)
-            .pipe(first())
+        this.authenticationService.resetPassword(payload).pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;
                 this.submitted = false;

@@ -495,24 +495,24 @@ export class MgRPPComponent implements OnInit {
                             username: this.sessionUser.username
                         }
                     })
-                    .pipe(first())
-                    .subscribe((response: any) => {
-                        this.spinnerService.hide();
-                        if (response.status === ApiCode.ERROR) {
-                            this.alertService.showError(response.message, ApiCode.ERROR);
-                            return;
-                        }
-                        this.fetchAllRole({
-                            sessionUser: {
-                                username: this.sessionUser.username
+                        .pipe(first())
+                        .subscribe((response: any) => {
+                            this.spinnerService.hide();
+                            if (response.status === ApiCode.ERROR) {
+                                this.alertService.showError(response.message, ApiCode.ERROR);
+                                return;
                             }
+                            this.fetchAllRole({
+                                sessionUser: {
+                                    username: this.sessionUser.username
+                                }
+                            });
+                            this.setOfRoleCheckedId = new Set<any>();
+                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                        }, (response: any) => {
+                            this.spinnerService.hide();
+                            this.alertService.showError(response.error.message, ApiCode.ERROR);
                         });
-                        this.setOfRoleCheckedId = new Set<any>(); 
-                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (response: any) => {
-                        this.spinnerService.hide();
-                        this.alertService.showError(response.error.message, ApiCode.ERROR);
-                    });
                 }
             });
         }
@@ -681,24 +681,24 @@ export class MgRPPComponent implements OnInit {
                             username: this.sessionUser.username
                         }
                     })
-                    .pipe(first())
-                    .subscribe((response: any) => {
-                        this.spinnerService.hide();
-                        if (response.status === ApiCode.ERROR) {
-                            this.alertService.showError(response.message, ApiCode.ERROR);
-                            return;
-                        }
-                        this.fetchAllProfile({
-                            sessionUser: {
-                                username: this.sessionUser.username
+                        .pipe(first())
+                        .subscribe((response: any) => {
+                            this.spinnerService.hide();
+                            if (response.status === ApiCode.ERROR) {
+                                this.alertService.showError(response.message, ApiCode.ERROR);
+                                return;
                             }
+                            this.fetchAllProfile({
+                                sessionUser: {
+                                    username: this.sessionUser.username
+                                }
+                            });
+                            this.setOfProfileCheckedId = new Set<any>();
+                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                        }, (response: any) => {
+                            this.spinnerService.hide();
+                            this.alertService.showError(response.error.message, ApiCode.ERROR);
                         });
-                        this.setOfProfileCheckedId = new Set<any>(); 
-                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (response: any) => {
-                        this.spinnerService.hide();
-                        this.alertService.showError(response.error.message, ApiCode.ERROR);
-                    });
                 }
             });
         }
@@ -857,24 +857,24 @@ export class MgRPPComponent implements OnInit {
                             username: this.sessionUser.username
                         }
                     })
-                    .pipe(first())
-                    .subscribe((response: any) => {
-                        this.spinnerService.hide();
-                        if (response.status === ApiCode.ERROR) {
-                            this.alertService.showError(response.message, ApiCode.ERROR);
-                            return;
-                        }
-                        this.fetchAllPermission({
-                            sessionUser: {
-                                username: this.sessionUser.username
+                        .pipe(first())
+                        .subscribe((response: any) => {
+                            this.spinnerService.hide();
+                            if (response.status === ApiCode.ERROR) {
+                                this.alertService.showError(response.message, ApiCode.ERROR);
+                                return;
                             }
+                            this.fetchAllPermission({
+                                sessionUser: {
+                                    username: this.sessionUser.username
+                                }
+                            });
+                            this.setOfPermissionCheckedId = new Set<any>();
+                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                        }, (response: any) => {
+                            this.spinnerService.hide();
+                            this.alertService.showError(response.error.message, ApiCode.ERROR);
                         });
-                        this.setOfPermissionCheckedId = new Set<any>(); 
-                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (response: any) => {
-                        this.spinnerService.hide();
-                        this.alertService.showError(response.error.message, ApiCode.ERROR);
-                    });
                 }
             });
         }

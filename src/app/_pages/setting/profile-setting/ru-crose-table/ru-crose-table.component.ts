@@ -54,7 +54,7 @@ export class RUCroseTableComponent implements OnInit {
                 field: 'profile',
                 header: 'Profile',
                 type: 'combine',
-                subfield: ['id' , 'profileName']
+                subfield: ['id', 'profileName']
             },
             {
                 field: 'linkStatus',
@@ -106,17 +106,17 @@ export class RUCroseTableComponent implements OnInit {
             appUserId: payload.id,
             linked: payload.linked,
         })
-        .pipe(first())
-        .subscribe((response: any) => {
-            this.spinnerService.hide();
-            if (response.status === ApiCode.ERROR) {
-                this.alertService.showError(response.message, ApiCode.ERROR);
-                return;
-            }
-        }, (response: any) => {
-            this.spinnerService.hide();
-            this.alertService.showError(response.error.message, ApiCode.ERROR);
-        });
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
     }
 
 

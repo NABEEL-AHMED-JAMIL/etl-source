@@ -55,7 +55,6 @@ export class RPPService {
         return this.http.post(`${config.apiBaseUrl}/rpp.json/uploadRole`, payload);
     }
 
-
     public addProfile(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/rpp.json/addProfile`, payload);
     }

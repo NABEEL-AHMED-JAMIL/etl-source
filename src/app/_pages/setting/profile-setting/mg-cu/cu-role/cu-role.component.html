@@ -4,8 +4,7 @@
             <nz-form-item>
                 <nz-form-label nzRequired>Role Name</nz-form-label>
                 <nz-form-control nzErrorTip="Role Name Required">
-                    <input nz-input formControlName="name"
-                        oninput="this.value = this.value.toUpperCase()"
+                    <input nz-input formControlName="name" oninput="this.value = this.value.toUpperCase()"
                         placeholder="Enter Role Name" />
                 </nz-form-control>
             </nz-form-item>
@@ -14,8 +13,7 @@
             <nz-form-item>
                 <nz-form-label nzRequired>Role Status</nz-form-label>
                 <nz-form-control nzErrorTip="Role Status Required">
-                    <nz-select nzShowSearch nzAllowClear formControlName="status"
-                        nzPlaceHolder="Select Role Status">
+                    <nz-select nzShowSearch nzAllowClear formControlName="status" nzPlaceHolder="Select Role Status">
                         <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
                             [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
                         </nz-option>
@@ -27,19 +25,15 @@
             <nz-form-item>
                 <nz-form-label>Role Description</nz-form-label>
                 <nz-form-control nzErrorTip="Role Description Required">
-                    <textarea nz-input formControlName="description"
-                        [nzAutosize]="{ minRows: 3}"
+                    <textarea nz-input formControlName="description" [nzAutosize]="{ minRows: 3}"
                         placeholder="Enter Role Description"></textarea>
                 </nz-form-control>
             </nz-form-item>
         </div>
         <div nz-col [nzSpan]="24" class="search-area">
             <button nz-button type="reset">Clear</button>
-            <button nz-button [nzType]="'primary'" 
-                [disabled]="!roleForm.valid"
-                [nzLoading]="loading"
-                type="submit"
-                style="float: right;">
+            <button nz-button [nzType]="'primary'" [disabled]="!roleForm.valid" 
+                [nzLoading]="loading" type="submit" style="float: right;">
                 Submit
             </button>
         </div>

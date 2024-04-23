@@ -72,7 +72,7 @@ export class CredentialComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id' , 'username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'dateUpdated',
@@ -83,7 +83,7 @@ export class CredentialComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id' , 'username']
+                subfield: ['id', 'username']
             },
             {
                 field: 'status',
@@ -124,12 +124,12 @@ export class CredentialComponent implements OnInit {
         private commomService: CommomService,
         private credentailService: CredentailService,
         private authenticationService: AuthenticationService) {
-            this.endDate = this.commomService.getCurrentDate();
-            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
-            this.authenticationService.currentUser
-                .subscribe(currentUser => {
-                    this.sessionUser = currentUser;
-                });
+        this.endDate = this.commomService.getCurrentDate();
+        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.authenticationService.currentUser
+            .subscribe(currentUser => {
+                this.sessionUser = currentUser;
+            });
     }
 
 
@@ -183,7 +183,7 @@ export class CredentialComponent implements OnInit {
                 this.spinnerService.hide();
                 this.alertService.showError(error, ApiCode.ERROR);
             });
-    }    
+    }
 
     public tableActionReciver(payload: any): void {
         if (ActionType.EDIT === payload.action) {

@@ -102,7 +102,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     admin: true,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER', 'ROLE_DEV'],
                     permission: ['ADMIN_PAGE_PERMISSION']
                 }
             },
@@ -113,9 +113,9 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                    permission: ['SOURCE_CREDENTAIL_PERMISSION'],
-                    breadcrumb: 'Mg Credentail',
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                    permission: ['SOURCE_TASK_PERMISSION'],
+                    breadcrumb: 'Mg Source Task',
                 }
             },
             // service-setting => source task type
@@ -125,9 +125,9 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                    permission: ['SOURCE_CREDENTAIL_PERMISSION'],
-                    breadcrumb: 'Mg Credentail',
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                    permission: ['SOURCE_TASKTYPE_PERMISSION'],
+                    breadcrumb: 'Mg Source Task Type',
                 }
             },
             // service-setting => credentail
@@ -137,7 +137,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['SOURCE_CREDENTAIL_PERMISSION'],
                     breadcrumb: 'Mg Credentail',
                 }
@@ -149,7 +149,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['FORM_PERMISSION'],
                     breadcrumb: 'Mg Form',
                 }
@@ -161,7 +161,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['SECTION_PERMISSION'],
                     breadcrumb: 'Mg Section',
                 }
@@ -173,7 +173,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['CONTROL_PERMISSION'],
                     breadcrumb: 'Mg Control',
                 }
@@ -186,7 +186,7 @@ const routes: Routes = [
                 data: {
                     admin: true,
                     breadcrumb: 'Dynamic Payload',
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['DYNAMIC_PAYLOAD_PERMISSION']
                 }
             },
@@ -197,7 +197,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['PLAY_GROUND_PERMISSION'],
                     breadcrumb: 'Mg PlayGround',
                 }
@@ -209,7 +209,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
                     permission: ['USER_PERMISSION'],
                     breadcrumb: 'Mg User',
                 }
@@ -221,7 +221,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
                     permission: ['RPP_PERMISSION'],
                     breadcrumb: 'Roler & Profile',
                 }
@@ -233,7 +233,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
                     permission: ['REFRESH_TOKEN_PERMISSION'],
                     breadcrumb: 'Refresh Token',
                 }
@@ -245,7 +245,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: true,
-                    roles: ['ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['LOOKUP_PERMISSION'],
                     breadcrumb: 'My Lookup',
                 },
@@ -257,7 +257,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['LOOKUP_PERMISSION'],
                     breadcrumb: 'Sub Lookup',
                 },
@@ -269,7 +269,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
                     permission: ['TEMPLATE_PERMISSION'],
                     breadcrumb: 'Template',
                 }
@@ -281,7 +281,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
                     permission: ['EVARIABL_PERMISSION'],
                     breadcrumb: 'E-Variable',
                 }
@@ -294,7 +294,7 @@ const routes: Routes = [
                 data: {
                     admin: true,
                     breadcrumb: 'Query Inquiry',
-                    roles: ['ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
                     permission: ['QUERY_INQUIRY_PERMISSION']
                 }
             }

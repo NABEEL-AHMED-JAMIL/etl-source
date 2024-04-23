@@ -143,8 +143,8 @@ export class UpdateProfileComponent implements OnInit {
     public submitResetPassword(): any {
         this.spinnerService.show();
         if (this.resetPasswordForm.invalid) {
-          this.spinnerService.hide();
-          return;
+            this.spinnerService.hide();
+            return;
         }
         this.spinnerService.show();
         this.appUserService.updateAppUserPassword(this.resetPasswordForm.getRawValue())
@@ -156,19 +156,19 @@ export class UpdateProfileComponent implements OnInit {
                     return;
                 }
                 this.authenticationService.logout()
-                .pipe(first())
-                .subscribe((data: any) => {
-                    this.spinnerService.hide();
-                    if (data.status === ApiCode.ERROR) {
-                        this.alertService.showError(data.message, ApiCode.ERROR);
-                        return;
-                    }
-                    this.storageService.clear();
-                    this.router.navigate(['/login']);
-                }, (error: any) => {
-                    this.spinnerService.hide();
-                    this.alertService.showError(error.message, ApiCode.ERROR);
-                });
+                    .pipe(first())
+                    .subscribe((data: any) => {
+                        this.spinnerService.hide();
+                        if (data.status === ApiCode.ERROR) {
+                            this.alertService.showError(data.message, ApiCode.ERROR);
+                            return;
+                        }
+                        this.storageService.clear();
+                        this.router.navigate(['/login']);
+                    }, (error: any) => {
+                        this.spinnerService.hide();
+                        this.alertService.showError(error.message, ApiCode.ERROR);
+                    });
             }, (error: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(error.message, ApiCode.ERROR);

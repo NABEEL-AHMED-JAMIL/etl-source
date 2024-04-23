@@ -46,7 +46,7 @@ export class CUUserComponent implements OnInit {
 
     public roleList: IRole[] = [];
     public profiles: IProfile[] = [];
-    
+
     public loading: boolean = false;
     public editAction = ActionType.EDIT;
 

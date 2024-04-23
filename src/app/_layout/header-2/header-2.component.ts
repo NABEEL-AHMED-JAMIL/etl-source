@@ -92,7 +92,7 @@ export class Header2Component implements OnInit {
                                 date: pyalod.createDate,
                                 message: pyalod.body.message,
                             },
-                            avatar: './assets/notifaction/mail.png',
+                            avatar: './assets/notifaction/job.png',
                             status: pyalod.messageStatus.lookupCode == 0 ? 'success' : 'yellow',
                             notifyType: pyalod.notifyType
                         };
@@ -107,9 +107,9 @@ export class Header2Component implements OnInit {
     // method to receive the updated data.
     public onNewValueReceive() {
         this.websocketService.getNewValue()
-            .subscribe(resp => {
-                if (resp) {
-                    let pyalod = JSON.parse(resp);
+            .subscribe(response => {
+                if (response) {
+                    let pyalod = JSON.parse(response);
                     if (pyalod.notifyType.lookupCode === NOTIFICATION_TYPE.USER_NOTIFICATION) {
                         this.userNotifactionData.push({
                             id: pyalod.id,
@@ -131,7 +131,7 @@ export class Header2Component implements OnInit {
                                 date: pyalod.createDate,
                                 message: pyalod.body.message,
                             },
-                            avatar: './assets/notifaction/mail.png',
+                            avatar: './assets/notifaction/job.png',
                             status: pyalod.messageStatus.lookupCode == 0 ? 'success' : 'yellow',
                             notifyType: pyalod.notifyType
                         });
@@ -140,7 +140,6 @@ export class Header2Component implements OnInit {
                 }
             });
     }
-
 
     public hasPermissionAccess(userProfile: any): any {
         return this.userPermission.some((permission: any) => userProfile.includes(permission));

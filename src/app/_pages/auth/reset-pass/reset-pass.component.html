@@ -2,8 +2,7 @@
     <img class="bottom" src="../../../../assets/bg.jpg">
     <div nz-col nzMd="12" nzSm="24" class="center-container">
         <div class="content-container">
-            <form nz-form *ngIf="resetPassForm" [nzLayout]="'vertical'"
-                [formGroup]="resetPassForm"
+            <form nz-form *ngIf="resetPassForm" [nzLayout]="'vertical'" [formGroup]="resetPassForm"
                 (ngSubmit)="onSubmit()" style="padding-top: 25px;
                 padding-right: 50px;padding-bottom: 25px;padding-left: 50px;">
                 <div style="text-align: center">
@@ -18,8 +17,7 @@
                         <nz-form-item>
                             <nz-form-label nzRequired>Username</nz-form-label>
                             <nz-form-control [nzErrorTip]="userErrorTpl">
-                                <input nz-input formControlName="username" [disabled]="true"
-                                    placeholder="Enter Username" />
+                                <input nz-input formControlName="username" [disabled]="true" placeholder="Enter Username" />
                                 <ng-template #userErrorTpl let-control>
                                     <ng-container *ngIf="control.hasError('required')">Username Required.</ng-container>
                                 </ng-template>

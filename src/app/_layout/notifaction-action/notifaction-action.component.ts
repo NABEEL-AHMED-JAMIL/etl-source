@@ -1,5 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ApiCode, INotifaction, NotificationService } from '../../_shared';
+import {
+    Component,
+    Input,
+    OnInit
+} from '@angular/core';
+import {
+    ApiCode,
+    INotifaction,
+    NotificationService
+} from '../../_shared';
 import { first } from 'rxjs';
 
 @Component({
@@ -18,7 +26,6 @@ export class NotifactionActionComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
     }
 
     public changeUserNotifactionStatus(notifaction: INotifaction, index: any) {
@@ -29,8 +36,7 @@ export class NotifactionActionComponent implements OnInit {
                     return;
                 }
                 this.userNotifactionData[index].status = "yellow";
-            }, (error: any) => {
-        });
+            });
     }
 
     public changeJobNotifactionStatus(notifaction: INotifaction, index: any) {
@@ -41,8 +47,7 @@ export class NotifactionActionComponent implements OnInit {
                     return;
                 }
                 this.jobNotifactionData[index].status = "yellow";
-            }, (error: any) => {
-        });
+            });
     }
 
 }

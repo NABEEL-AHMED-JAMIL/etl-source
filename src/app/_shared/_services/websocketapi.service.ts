@@ -23,7 +23,7 @@ export class WebSocketAPI {
                     let ws = new SockJS(`${config.webSocketEndPoint}`);
                     this.stompClient = Stomp.over(ws);
                     const _this = this;
-                    _this.stompClient.connect({}, function (frame) {
+                    _this.stompClient.connect({}, function () {
                         _this.stompClient.subscribe("/user/" + currentUser.username + "/reply",
                             function (sdkEvent: any) {
                                 _this.onMessageReceived(sdkEvent);
@@ -41,14 +41,14 @@ export class WebSocketAPI {
     }
 
     // on error, schedule a reconnection attempt
-    public errorCallBack(error): void {
+    public errorCallBack(error: any): void {
         console.log("errorCallBack -> " + error)
         setTimeout(() => {
             this.connect();
         }, 5000);
     }
 
-    public onMessageReceived(message): void {
+    public onMessageReceived(message: any): void {
         this.websocketShare.onNewValueReceive(message.body);
     }
 }

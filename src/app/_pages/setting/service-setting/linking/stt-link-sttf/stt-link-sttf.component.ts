@@ -1,8 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TransferItem } from 'ng-zorro-antd/transfer';
 import { first } from 'rxjs';
-import { AlertService, CommomService, SpinnerService } from 'src/app/_helpers';
-import { ActionType, ApiCode, AuthResponse, AuthenticationService, FormSettingService, IFormLinkSourceTaskType, IGenFrom, ISTT } from 'src/app/_shared';
+import {
+    AlertService,
+    CommomService,
+    SpinnerService
+} from 'src/app/_helpers';
+import {
+    ISTT,
+    ActionType,
+    ApiCode,
+    AuthResponse,
+    AuthenticationService,
+    FormSettingService
+} from 'src/app/_shared';
 
 
 @Component({

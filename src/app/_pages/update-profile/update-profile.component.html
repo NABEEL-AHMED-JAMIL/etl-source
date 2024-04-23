@@ -54,8 +54,8 @@
             <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> Change Password</h3>
             <hr>
             <div style="margin-top: 10px;">
-                <form nz-form *ngIf="resetPasswordForm" [nzLayout]="'vertical'"
-                    [formGroup]="resetPasswordForm" (ngSubmit)="submitResetPassword()">
+                <form nz-form *ngIf="resetPasswordForm" [nzLayout]="'vertical'" [formGroup]="resetPasswordForm"
+                    (ngSubmit)="submitResetPassword()">
                     <div nz-row [nzGutter]="16">
                         <div nz-col nzSpan="12">
                             <nz-form-item>
@@ -128,8 +128,7 @@
             <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> Environment Variable</h3>
             <hr>
             <div style="margin-top: 10px;">
-                <app-gen-table *ngIf="eVariableTable"
-                    [staticTable]="eVariableTable"
+                <app-gen-table *ngIf="eVariableTable" [staticTable]="eVariableTable"
                     (actionEventEmitter)="tableActionReciver($event)">
                 </app-gen-table>
             </div>

@@ -7,7 +7,12 @@ import {
     CommomService,
     SpinnerService
 } from 'src/app/_helpers';
-import { BatchComponent, CUSectionComponent, SttsLinkSttcComponent, SttsLinkSttfComponent } from 'src/app/_pages';
+import {
+    BatchComponent,
+    CUSectionComponent,
+    SttsLinkSttcComponent,
+    SttsLinkSttfComponent
+} from 'src/app/_pages';
 import {
     AuthResponse,
     IStaticTable,

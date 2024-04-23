@@ -13,7 +13,7 @@ import {
 import {
     ActionType,
     ApiCode,
-    AuthResponse, 
+    AuthResponse,
     AuthenticationService,
     CredentailService,
     FormSettingService,
@@ -178,7 +178,7 @@ export class CuSourceTTaskComponent implements OnInit {
             this.fb.group({
                 numPartitions: [this.topicPartition, [Validators.required, Validators.min(1), Validators.max(10)]],
                 topicName: ['', [Validators.required, Validators.pattern(this.topicNamePatter)]],
-                topicPattern: [{value: this.topicPattern, disabled: true}],
+                topicPattern: [{ value: this.topicPattern, disabled: true }],
                 serviceUrl: ['', [Validators.required]]
             }));
     }
@@ -190,10 +190,10 @@ export class CuSourceTTaskComponent implements OnInit {
             this.fb.group({
                 numPartitions: [payload.numPartitions, [Validators.required, Validators.min(1), Validators.max(5)]],
                 topicName: [payload.topicName, [Validators.required, Validators.pattern(this.topicNamePatter)]],
-                topicPattern: [{value: payload.topicPattern, disabled: true}],
+                topicPattern: [{ value: payload.topicPattern, disabled: true }],
                 serviceUrl: [payload.serviceUrl, [Validators.required]]
             }));
-            this.kafkaTaskType.get('topicPattern').disable();
+        this.kafkaTaskType.get('topicPattern').disable();
     }
 
     public addApiTaskType(): void {

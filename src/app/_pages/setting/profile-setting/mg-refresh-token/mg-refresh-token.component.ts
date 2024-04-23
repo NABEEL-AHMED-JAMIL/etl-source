@@ -107,12 +107,12 @@ export class MgRefreshTokenComponent implements OnInit {
         public commomService: CommomService,
         private refreshTokenService: RefreshTokenService,
         private authenticationService: AuthenticationService) {
-            this.endDate = this.commomService.getCurrentDate();
-            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
-            this.authenticationService.currentUser
-                .subscribe(currentUser => {
-                    this.sessionUser = currentUser;
-                });
+        this.endDate = this.commomService.getCurrentDate();
+        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.authenticationService.currentUser
+            .subscribe(currentUser => {
+                this.sessionUser = currentUser;
+            });
     }
 
     ngOnInit(): void {
