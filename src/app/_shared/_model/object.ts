@@ -412,8 +412,30 @@ export const SETTING_SIDEBAR: SideBar[] = [
         ]
     },
     {
-        name: 'Report Setting',
+        name: 'Dashboard Setting',
         icon: 'pie-chart',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+        permission: ['DASHBOARD_SETTING_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Manage Dashboard',
+                icon: 'form',
+                link: '/setting/mgReport',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                permission: ['MANAGE_DASHBOARD_PERMISSION']
+            },
+            {
+                name: 'Report Play Ground',
+                icon: 'html5',
+                link: '/setting/mgReportPlayGround',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                permission: ['DASHBOARD_PLAY_GROUND_PERMISSION']
+            }
+        ]
+    },
+    {
+        name: 'Report Setting',
+        icon: 'paper-clip',
         roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
         permission: ['REPORT_SETTING_PERMISSION'],
         childLinks: [

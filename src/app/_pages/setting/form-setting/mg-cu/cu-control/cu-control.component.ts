@@ -165,6 +165,7 @@ export class CUControlComponent implements OnInit {
             this.editPayload.fieldType.lookupCode === FILED_TYPE.EMAIL ||
             this.editPayload.fieldType.lookupCode === FILED_TYPE.PASSWORD ||
             this.editPayload.fieldType.lookupCode === FILED_TYPE.TEL ||
+            this.editPayload.fieldType.lookupCode === FILED_TYPE.NUMBER ||
             this.editPayload.fieldType.lookupCode === FILED_TYPE.TEXT ||
             this.editPayload.fieldType.lookupCode === FILED_TYPE.TEXTAREA) {
             if (this.editPayload.fieldType.lookupCode === FILED_TYPE.TEXT ||
