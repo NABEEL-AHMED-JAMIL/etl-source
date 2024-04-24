@@ -1,0 +1,118 @@
+<div class="content" *ngIf="editPayload">
+    <nz-descriptions [nzTitle]="controlTitle" [nzExtra]="extraTpl"
+        nzSize="small" [nzColumn]="3">
+        <ng-template #controlTitle>
+            <span nz-icon nzType="link" nzTheme="outline"></span>
+            ({{editPayload.id}}) {{editPayload.sectionName}}
+        </ng-template>
+        <nz-descriptions-item nzTitle="Description" nzSpan="1">
+            {{editPayload.description}}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Created Date" nzSpan="1">
+            {{editPayload.dateCreated | date}}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Updated Date" nzSpan="1">
+            {{editPayload.dateUpdated | date}}
+        </nz-descriptions-item>
+    </nz-descriptions>
+    <!-- extra tpl -->
+    <ng-template #extraTpl>
+        <p>
+            <nz-tag class="{{editPayload.status?.lookupType}}">
+                <nz-badge nzStatus="processing"></nz-badge>
+                <span>{{editPayload.status?.lookupValue}}</span>
+            </nz-tag>
+        </p>
+    </ng-template>
+</div>
+<!-- STTS -->
+<div class="content">
+    <nz-tabset [nzTabBarExtraContent]="refreshTemplate">
+        <nz-tab [nzTitle]="linkControl">
+            <ng-template #linkControl>
+                <span nz-icon nzType="link"
+                    nzTheme="outline"></span>
+                    Control Link With Section
+            </ng-template>
+            <div class="content"
+                style="padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
+                <nz-transfer nzShowSearch [nzDataSource]="sectionLinkControlLink"
+                    [nzOperations]="['To Right', 'To Left']"
+                    [nzListStyle]="{ 'width.px': 500, 'height.px': 325 }"
+                    [nzRender]="render" (nzChange)="onChange($event)">
+                    <ng-template #render let-item>
+                        {{ item.title }} [{{commomService.getDataFromObjectV2(item.description)}}]
+                    </ng-template>
+                </nz-transfer>
+            </div>
+        </nz-tab>
+        <nz-tab [nzTitle]="orderLinkSection">
+            <ng-template #orderLinkSection>
+                <span nz-icon nzType="ungroup" 
+                    nzTheme="outline"></span>Control Order In Section
+            </ng-template>
+            <div class="content"
+                style="padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
+                <div nz-row *ngIf="sectionLinkControlTable">
+                    <div nz-col [nzSpan]="24">
+                        <input nz-input
+                            [(ngModel)]="searchDetails"
+                            placeholder="Search Result" />
+                    </div>
+                </div>
+                <nz-table #dynamicTable
+                    [id]="sectionLinkControlTable"
+                    [nzSize]="'small'"
+                    [nzBordered]="'true'"
+                    [nzData]="sectionLinkControlTable"
+                    [nzPaginationType]="'small'"
+                    [nzPaginationPosition]="'bottom'"
+                    [nzShowSizeChanger]='true'
+                    [nzPageSize]="10"
+                    [nzPageSizeOptions]="[10,15]"
+                    [nzFrontPagination]="true"
+                    [nzShowPagination]="true"
+                    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+                    class="table-setting">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th nzWidth="10%" 
+                                style="text-align: center;">Control Order</th>
+                            <th nzWidth="10%"
+                                style="text-align: center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of dynamicTable.data | searchdata: searchDetails;let i = index;">
+                            <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
+                                <td>{{data.controlName}} [{{commomService.getDataFromObjectV2(data.fieldType)}}]</td>
+                                <td style="text-align: center;">{{data.controlOrder}}</td>
+                                <td style="text-align: center;"><a (click)="startEdit(data.id)">Edit</a></td>
+                            </ng-container>
+                            <ng-template #editTemplate>
+                                <td>{{data.controlName}} [{{commomService.getDataFromObjectV2(data.fieldType)}}]</td>
+                                <td style="text-align: center;">
+                                    <input type="number" [nzSize]="'small'" nz-input
+                                        [(ngModel)]="editCache[data.id].data.controlOrder" />
+                                </td>
+                                <td style="text-align: center;">
+                                    <a (click)="saveEdit(data.id)" class="save">Save</a>&nbsp;
+                                    <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?"
+                                        (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>
+                                </td>
+                            </ng-template>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </nz-tab>
+    </nz-tabset>
+    <!-- refreshTemplate -->
+    <ng-template #refreshTemplate>
+        <button nz-button [nzSize]="'small'"
+            (click)="refresh()" nzType="default">
+            Refresh
+        </button>
+    </ng-template>
+</div>

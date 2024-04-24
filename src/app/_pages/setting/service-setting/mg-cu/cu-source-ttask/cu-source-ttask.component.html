@@ -1,0 +1,147 @@
+<form *ngIf="sttForm" nz-form [nzLayout]="'vertical'" [formGroup]="sttForm" (ngSubmit)="onSubmit()">
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="18">
+            <nz-form-item>
+                <nz-form-label nzRequired>Service Name</nz-form-label>
+                <nz-form-control nzErrorTip="Service Name Is Required">
+                    <input nz-input formControlName="serviceName" type="text"
+                        oninput="this.value = this.value.toUpperCase()" placeholder="Enter Service Name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="6" *ngIf="TASK_TYPE">
+            <nz-form-item>
+                <nz-form-label nzRequired>TaskType</nz-form-label>
+                <nz-form-control nzErrorTip="TaskType Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="taskType" nzPlaceHolder="Select TaskType"
+                        (ngModelChange)="onTaskTypeSelected($event)">
+                        <nz-option *ngFor="let lookupChildren of TASK_TYPE?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="18">
+            <nz-form-item>
+                <nz-form-label nzRequired>Description</nz-form-label>
+                <nz-form-control nzErrorTip="Description Is Required">
+                    <input nz-input formControlName="description" type="text"
+                        oninput="this.value = this.value.toUpperCase()" placeholder="Enter Description" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="6" *ngIf="credentails">
+            <nz-form-item>
+                <nz-form-label>Credential</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear formControlName="credentialId"
+                        nzPlaceHolder="Select Credential">
+                        <nz-option *ngFor="let credentail of credentails" [nzLabel]="credentail.name"
+                            [nzValue]="credentail.id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="16" *ngIf="selectedTaskType === 3" formGroupName="kafkaTaskType">
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label nzRequired>Kafka Url</nz-form-label>
+                <nz-form-control nzErrorTip="Kafka Url Is Required">
+                    <input nz-input formControlName="serviceUrl" type="text" placeholder="Enter Service Url" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Topic Name</nz-form-label>
+                <nz-form-control [nzErrorTip]="numPartitionsErrorTpl">
+                    <input nz-input formControlName="topicName" type="text"
+                        (ngModelChange)="changeOnTopicNameValue($event)" placeholder="Enter Topic Name" />
+                    <ng-template #numPartitionsErrorTpl let-control>
+                        <ng-container *ngIf="control.errors?.required">
+                            Topic Name Is Required
+                        </ng-container>
+                        <ng-container *ngIf="control.errors?.pattern">
+                            Topic Name Not Valid
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="4">
+            <nz-form-item>
+                <nz-form-label nzRequired>Partitions</nz-form-label>
+                <nz-form-control [nzErrorTip]="numPartitionsErrorTpl">
+                    <input nz-input formControlName="numPartitions" type="number"
+                        (ngModelChange)="changeOnToppicPartition($event)" placeholder="Enter Partitions" />
+                    <ng-template #numPartitionsErrorTpl let-control>
+                        <ng-container *ngIf="control.errors?.required">
+                            Partitions Required
+                        </ng-container>
+                        <ng-container *ngIf="control.errors?.min">
+                            Partitions Min 1
+                        </ng-container>
+                        <ng-container *ngIf="control.errors?.max">
+                            Partitions Max 10
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label>Topic Pattern</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="topicPattern" [(ngModel)]="topicPattern" type="text"
+                        placeholder="Enter Pattern" [disabled]="true" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="16" *ngIf="selectedTaskType === 0 || selectedTaskType === 1 || selectedTaskType === 2"
+        formGroupName="apiTaskType">
+        <div nz-col nzSpan="18">
+            <nz-form-item>
+                <nz-form-label nzRequired>Endpoint</nz-form-label>
+                <nz-form-control nzErrorTip="Kafka Url Is Required">
+                    <input nz-input formControlName="apiUrl" type="url" placeholder="Enter Service Url" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="6">
+            <nz-form-item>
+                <nz-form-label nzRequired>Request Method</nz-form-label>
+                <nz-form-control nzErrorTip="Request Method Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="httpMethod"
+                        nzPlaceHolder="Select Request Method">
+                        <nz-option *ngFor="let lookupChildren of REQUEST_METHOD?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="24" *ngIf="actionType === editAction">
+            <nz-form-item>
+                <nz-form-label nzRequired>STT Status</nz-form-label>
+                <nz-form-control nzErrorTip="STT Status Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="status" nzPlaceHolder="Select STT Status">
+                        <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button type="reset">Clear</button>
+            <button nz-button [nzType]="'primary'" type="submit" [disabled]="!sttForm.valid"
+                style="float: right;">Submit</button>
+        </div>
+    </div>
+</form>

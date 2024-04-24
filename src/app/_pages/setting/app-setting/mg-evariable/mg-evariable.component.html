@@ -1,0 +1,16 @@
+<div class="content">
+    <h3>{{eVariableTable.title}}</h3>
+    <nz-divider style="margin: 5px 0;"></nz-divider>
+    <app-gen-table 
+        *ngIf="eVariableTable"
+        [isDateFilter]="true"
+        [startDate]="startDate"
+        [endDate]="endDate"
+        [setOfCheckedId]="setOfCheckedId"
+        [staticTable]="eVariableTable"
+        (actionEventEmitter)="tableActionReciver($event)"
+        (buttonEventEmitter)="buttonActionReciver($event)"
+        (filterEventEmitter)="filterActionReciver($event)"
+        (extraEventEmitter)="extraActionReciver($event)">
+    </app-gen-table>
+</div>

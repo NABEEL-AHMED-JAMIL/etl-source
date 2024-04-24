@@ -1,23 +1,36 @@
-<div class="parent">
-    <form [formGroup]="forgotForm" class="login-form" (ngSubmit)="onSubmit()">
-        <h3 class="text-center">Forgot Password</h3>
-        <nz-form-item>
-            <nz-form-control nzErrorTip="Please input your Email!">
-                <nz-input-group nzPrefixIcon="user">
-                    <input type="text" nz-input formControlName="email" 
-                        placeholder="Enter Email" />
-                </nz-input-group>
-            </nz-form-control>
-        </nz-form-item>
-        <div nz-row class="login-form-margin">
-            <div nz-col [nzSpan]="16" style="margin-top: 5px;">
-                <a routerLink="/login"><span nz-icon nzType="rollback" 
-                    nzTheme="outline"></span> Login</a>
+<div nz-row class="h100vh form" style="position: relative;">
+    <img class="bottom" src="../../../../assets/bg.jpg">
+    <div class="center-container" nz-col [nzSpan]="24">
+        <form nz-form [formGroup]="forgotForm" class="login-form" (ngSubmit)="onSubmit()">
+            <div style="text-align: center">
+                <a href="https://targetfitout.com/">
+                    <img src="../../../../assets/logo.png" alt="logo" style="width: 200px;" />
+                </a>
             </div>
-            <div nz-col [nzSpan]="8">
-                <button nz-button class="login-form-button login-form-margin"
-                [nzType]="'primary'" [nzLoading]="loading">Submit</button>
+            <h1 style="text-align: center;margin: 25px 0px" class="title">Forgot Password</h1>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Please input your Email!">
+                    <nz-input-group nzPrefixIcon="user">
+                        <input nz-input type="email" formControlName="email" placeholder="Enter Email" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <div nz-row>
+                <div nz-col [nzSpan]="12">
+                    <button nz-button nzDanger nzType="default" style="width: fit-content"
+                        routerLink="/login">Back</button>
+                </div>
+                <div nz-col [nzSpan]="12" style="text-align: end;">
+                    <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'"
+                        [nzLoading]="loading" style="width: fit-content;">Submit
+                    </button>
+                </div>
             </div>
-        </div>
-    </form>
+            <div>
+                <p nz-col [nzSpan]="24" class="text-center title" style="line-height: 50px">Don't have an account?
+                    <a routerLink="/register">Register now</a>
+                </p>
+            </div>
+        </form>
+    </div>
 </div>

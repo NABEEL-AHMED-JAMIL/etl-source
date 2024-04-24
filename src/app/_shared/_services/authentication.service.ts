@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { StorageService } from '../../_helpers';
 import { ApiResponse } from '../index';
-import { LookupService } from '..';
 import { map } from 'rxjs/operators';
 import { AuthResponse } from '..';
 import { config } from '../../../environments/environment';
@@ -16,10 +15,8 @@ export class AuthenticationService {
     public currentUser: Observable<AuthResponse>;
 
     constructor(private http: HttpClient,
-        private storageService: StorageService,
-        private lookupService: LookupService) {
-        this.currentUserSubject = new BehaviorSubject<AuthResponse>(
-        this.storageService.get('currentUser'));
+        private storageService: StorageService) {
+        this.currentUserSubject = new BehaviorSubject<AuthResponse>(this.storageService.get('currentUser'));
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
@@ -34,10 +31,12 @@ export class AuthenticationService {
                     this.storageService.set('currentUser', response.data);
                     this.currentUserSubject.next(response.data);
                 }
-                // fetch all setting
-                this.lookupService.fetchCacheData();
                 return response;
             }));
+    }
+
+    public signupAppUser(payload: any): Observable<ApiResponse> {
+        return this.http.post<any>(`${config.apiBaseUrl}/auth.json/signupAppUser`, payload);
     }
 
     public forgotPassword(payload: any): Observable<ApiResponse> {
@@ -50,8 +49,19 @@ export class AuthenticationService {
 
     public tokenVerify(token: any): Observable<ApiResponse> {
         return this.http.get<any>(`${config.apiBaseUrl}/appUser.json/tokenVerify`, {
-            headers: {'Authorization': token}
+            headers: { 'Authorization': token }
         });
+    }
+
+    public authClamByRefreshToken(payload: any): Observable<ApiResponse> {
+        return this.http.post<any>(`${config.apiBaseUrl}/auth.json/authClamByRefreshToken`, payload)
+        .pipe(map(response => {
+            if (response.data) {
+                this.storageService.set('currentUser', response.data);
+                this.currentUserSubject.next(response.data);
+            }
+            return response;
+        }));
     }
 
     public logout(): Observable<ApiResponse> {

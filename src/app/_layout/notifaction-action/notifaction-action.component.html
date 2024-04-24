@@ -2,42 +2,38 @@
     <nz-tabset style="padding-left: 10px;">
         <nz-tab nzTitle="Job Notifaction {{jobNotifactionData.length}}">
             <nz-list nzItemLayout="horizontal">
-                <nz-list-item *ngFor="let item of jobNotifactionData">
-                    <nz-list-item-meta>
+                <nz-list-item *ngFor="let item of jobNotifactionData; let i = index">
+                    <nz-list-item-meta (click)="changeJobNotifactionStatus(item, i)">
                         <nz-list-item-meta-avatar [nzSrc]="item.avatar"></nz-list-item-meta-avatar>
                         <nz-list-item-meta-title>
                             {{item.title}}
-                            <nz-badge nzStatus="{{item.statusType}}" 
-                                nzText="{{item.status | uppercase}}">
-                            </nz-badge>
+                            <nz-badge nzStatus="{{item.status}}"></nz-badge>
                         </nz-list-item-meta-title>
                         <nz-list-item-meta-description *ngIf="item.data">
-                            RUN AT <span nz-icon nzType="arrow-right" nzTheme="outline"></span> {{item.data.date}}<br>
-                            {{item.data.timezone}}
+                            RUN AT <span nz-icon nzType="arrow-right" nzTheme="outline"></span>
+                            {{item.data.date | date:'medium'}}<br>{{item.data.timezone}}
                         </nz-list-item-meta-description>
                     </nz-list-item-meta>
                 </nz-list-item>
                 <nz-list-empty *ngIf="jobNotifactionData.length === 0"></nz-list-empty>
             </nz-list>
         </nz-tab>
-        <nz-tab nzTitle="Other Notifaction {{otherNotifactionData.length}}">
+        <nz-tab nzTitle="User Notifaction {{userNotifactionData.length}}">
             <nz-list nzItemLayout="horizontal">
-                <nz-list-item *ngFor="let item of otherNotifactionData">
-                    <nz-list-item-meta>
+                <nz-list-item *ngFor="let item of userNotifactionData; let i = index">
+                    <nz-list-item-meta (click)="changeUserNotifactionStatus(item, i)">
                         <nz-list-item-meta-avatar [nzSrc]="item.avatar"></nz-list-item-meta-avatar>
                         <nz-list-item-meta-title>
                             {{item.title}}
-                            <nz-badge nzStatus="{{item.statusType}}"
-                                nzText="{{item.status | uppercase}}">
-                            </nz-badge>
+                            <nz-badge nzStatus="{{item.status}}"></nz-badge>
                         </nz-list-item-meta-title>
                         <nz-list-item-meta-description *ngIf="item.data">
-                            Date : {{item.data.date}}<br>
+                            Date : {{item.data.date | date:'medium'}}<br>
                             Message : {{item.data.message}}
                         </nz-list-item-meta-description>
                     </nz-list-item-meta>
                 </nz-list-item>
-                <nz-list-empty *ngIf="otherNotifactionData.length === 0"></nz-list-empty>
+                <nz-list-empty *ngIf="userNotifactionData.length === 0"></nz-list-empty>
             </nz-list>
         </nz-tab>
     </nz-tabset>

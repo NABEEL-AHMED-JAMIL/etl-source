@@ -1,0 +1,136 @@
+<form nz-form [nzLayout]="'vertical'" [formGroup]="userForm" (ngSubmit)="submit()">
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>FirstName</nz-form-label>
+                <nz-form-control nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="firstnameErrorTpl">
+                    <input nz-input formControlName="firstName" placeholder="Enter FirstName" />
+                    <ng-template #firstnameErrorTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                            Please input your firstname!
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>LastName</nz-form-label>
+                <nz-form-control nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="lastnameErrorTpl">
+                    <input nz-input formControlName="lastName" placeholder="Enter LastName" />
+                    <ng-template #lastnameErrorTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                            Please input your lastname!
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>Username</nz-form-label>
+                <nz-form-control nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
+                    <input nz-input formControlName="username" placeholder="Enter Username" />
+                    <ng-template #userErrorTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                            Please input your username!
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>E-mail</nz-form-label>
+                <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTpl">
+                    <input nz-input formControlName="email" placeholder="Enter Email" type="email" />
+                    <ng-template #emailErrorTpl let-control>
+                        <ng-container *ngIf="control.hasError('email')">
+                            The input is not valid E-mail!
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('required')">
+                            Please input your E-mail!
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12" *ngIf="actionType !== editAction">
+            <nz-form-item>
+                <nz-form-label nzRequired>Password</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Please input your password!">
+                    <input nz-input type="password" formControlName="password" placeholder="Enter Password"
+                        (ngModelChange)="validateConfirmPassword()" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12" *ngIf="actionType !== editAction">
+            <nz-form-item>
+                <nz-form-label nzRequired>Confirm Password</nz-form-label>
+                <nz-form-control nzHasFeedback [nzErrorTip]="passwordErrorTpl">
+                    <input nz-input type="password" formControlName="confirm" placeholder="Enter Confirm Password" />
+                    <ng-template #passwordErrorTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">
+                            Please confirm your password!
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('confirm')">
+                            Password is inconsistent!
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- <div nz-col nzSpan="12" *ngIf="actionType === editAction && APPLICATION_STATUS">
+            <nz-form-item>
+                <nz-form-label nzRequired>EnvKey Status</nz-form-label>
+                <nz-form-control nzErrorTip="EnvKey Status Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="status"
+                        nzPlaceHolder="Select EnvKey Status">
+                        <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+        <div nz-col nzSpan="12" *ngIf="roleList">
+            <nz-form-item>
+                <nz-form-label nzRequired>Roles</nz-form-label>
+                <nz-form-control nzErrorTip="Roles Required">
+                    <nz-select nzShowSearch nzAllowClear nzMode="multiple" [nzMaxTagCount]="2"
+                        formControlName="assignRole" nzPlaceHolder="Select Roles">
+                        <nz-option *ngFor="let role of roleList" [nzLabel]="role.name" [nzValue]="role.name">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12" *ngIf="profiles">
+            <nz-form-item>
+                <nz-form-label nzRequired>Profile</nz-form-label>
+                <nz-form-control nzErrorTip="Profile Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="profile" nzPlaceHolder="Select Profile">
+                        <nz-option *ngFor="let profile of profiles" [nzLabel]="profile.profileName"
+                            [nzValue]="profile.id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>IP Address</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Please input a valid IP address!">
+                    <input nz-input type="text" formControlName="ipAddress" placeholder="Enter IP Address" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button type="reset">Clear</button>
+            <button nz-button [nzType]="'primary'" [disabled]="!userForm.valid" 
+                [nzLoading]="loading" type="submit" style="float: right;">
+                Submit
+            </button>
+        </div>
+    </div>
+</form>

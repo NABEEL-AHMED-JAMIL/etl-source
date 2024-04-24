@@ -2,9 +2,19 @@ button {
     padding: 0px 10px
 }
 
-.ant-btn:hover, .ant-btn:focus {
+.ant-btn:hover,
+.ant-btn:focus {
     color: black;
     border-color: black;
     background: #fff;
+}
+
+.avator-logo {
+    color:white;
+    background-color:rgba(0, 0, 0, 0.85);
+    font-size: 15px;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
 }
 

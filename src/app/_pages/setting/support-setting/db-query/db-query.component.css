@@ -1,0 +1,7 @@
+textarea+textarea {
+    margin-top: 24px;
+}
+
+.ant-table.ant-table-small {
+    font-size: 10px !important;
+}

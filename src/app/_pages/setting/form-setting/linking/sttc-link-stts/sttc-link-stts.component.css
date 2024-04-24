@@ -1,0 +1,7 @@
+[hidden] {
+    display: block !important;
+}
+
+nz-pagination {
+    float: inline-end;
+}

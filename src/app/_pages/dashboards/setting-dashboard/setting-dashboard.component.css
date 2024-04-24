@@ -1,0 +1,42 @@
+.demo-chart {
+    height: 200px;
+}
+/* 
+table, th, td {
+    border: 1px solid black;
+} */
+
+td {
+    width: 14px !important;
+    height: 30px !important
+}
+
+.ant-table-tbody > tr > td {
+    font-weight: 400;
+    line-height: 12px !important;
+}
+
+table.scroll {
+    margin: 4px, 4px;
+    padding: 4px;
+    width: 300px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.hoverTd {
+    cursor: pointer;
+    vertical-align:top;
+}
+
+.refreshBtn {
+    border-radius: 50%;
+    background: white;
+    border-width: thin;
+    margin-right: 5px;
+}
+
+.content {
+    padding: 0px !important;
+}

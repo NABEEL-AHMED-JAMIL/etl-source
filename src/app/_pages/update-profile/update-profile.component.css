@@ -1,0 +1,45 @@
+.user-profile {
+    margin: 0 0 1rem 0;
+    padding-bottom: 1rem;
+    text-align: center;
+}
+
+.user-profile .user-avatar {
+    margin: 0 0 1rem 0;
+}
+
+.user-profile h5.user-name {
+    margin: 0 0 0.5rem 0;
+}
+
+.user-profile .user-avatar img {
+    width: 200px;
+    height: 200px;
+}
+
+.profile-card {
+    padding-bottom: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.user-profile h6.user-email {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #9fa8b9;
+}
+
+.ant-card-body {
+    padding-bottom: 0px !important;
+}
+
+.ant-card-body {
+    padding: 15px !important;
+}
+
+.ant-modal-body {
+    padding-bottom: 0px;
+    padding-top: 10px;
+}
+

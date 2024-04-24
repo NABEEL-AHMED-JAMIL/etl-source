@@ -1,0 +1,73 @@
+<form nz-form [nzLayout]="'vertical'" [formGroup]="genFormForm" (ngSubmit)="onSubmit()">
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>Form Name</nz-form-label>
+                <nz-form-control nzErrorTip="Form Name Required">
+                    <input nz-input formControlName="formName" placeholder="Enter Form Name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12" *ngIf="FORM_TYPE">
+            <nz-form-item>
+                <nz-form-label nzRequired>Form Type</nz-form-label>
+                <nz-form-control nzErrorTip="Form Type Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="formType" nzPlaceHolder="Select Form Type">
+                        <nz-option *ngFor="let lookupChildren of FORM_TYPE?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12" *ngIf="HOME_PAGE">
+            <nz-form-item>
+                <nz-form-label>Home Page</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear formControlName="homePage" nzPlaceHolder="Select Home Page">
+                        <nz-option *ngFor="let lookupChildren of HOME_PAGE?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupType">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="actionType !== editAction ? 12 : 6">
+            <nz-form-item>
+                <nz-form-label>ServiceId</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="serviceId" placeholder="Enter ServiceId" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="6" *ngIf="actionType === editAction">
+            <nz-form-item>
+                <nz-form-label nzRequired>Form Status</nz-form-label>
+                <nz-form-control nzErrorTip="Form Status Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="status"
+                        nzPlaceHolder="Select Form Status">
+                        <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label nzRequired>Form Description</nz-form-label>
+                <nz-form-control nzErrorTip="Form Description Required">
+                    <textarea nz-input formControlName="description" [nzAutosize]="{ minRows: 3}"
+                        placeholder="Enter Form Description"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button type="reset">Clear</button>
+            <button nz-button [nzType]="'primary'" [disabled]="!genFormForm.valid"
+                [nzLoading]="loading" type="submit" style="float: right;">
+                Submit
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,28 +1,30 @@
-<ul nz-menu nzSelectable style="width: 260px;">
+<ul nz-menu nzSelectable style="width: 300px;">
     <li nz-menu-item>
         <div class="ant-list-item-meta">
             <div class="ant-list-item-meta-avatar">
                 <nz-avatar [nzSize]="48" [nzShape]="'square'" [nzIcon]="'user'"
-                    nzSrc="{{'./assets/avatar/' + currentUser.profileImage }}"></nz-avatar>
+                    nzSrc="{{'./assets/avatar/' + currentUser.profileImage }}">
+                </nz-avatar>
             </div>
             <div class="ant-list-item-meta-content">
-                <h4 class="ant-list-item-meta-title">{{currentUser.username | uppercase}}</h4>
+                <h4 class="ant-list-item-meta-title">Username : {{currentUser.username | uppercase}}</h4>
                 <div class="ant-list-item-meta-description">
                     <div class="pt-1" style="line-height: 15px;">
-                        <div class="text-muted">{{currentUser.email}}</div>
+                        <div class="text-muted">Name : {{currentUser.firstName}} {{currentUser.lastName}}</div>
+                        <div class="text-muted">Email : {{currentUser.email}}</div>
+                        <div class="text-muted">Profile : {{currentUser.profile?.profileName}}</div>
                         <div class="text-muted">IP Address : {{currentUser.ipAddress}}</div>
-                        <div *ngFor="let role of currentUser.roles" class="text-muted">{{role}}</div>
                     </div>
                 </div>
             </div>
         </div>
     </li>
     <li nz-menu-divider></li>
-    <!-- <li nz-menu-item><span nz-icon nzType="lock"
-        nzTheme="outline"></span>&nbsp;Change Password</li>
-    <li nz-menu-divider></li> -->
+    <li nz-menu-item routerLink="/user/myProfile">
+        <span nz-icon nzType="profile" nzTheme="outline"></span>&nbsp;Update Profile
+    </li>
+    <li nz-menu-divider></li>
     <li nz-menu-item (click)="logout()" class="logout">
-        <span nz-icon nzType="poweroff" nzTheme="outline" 
-            class="poweroff_btn"></span>&nbsp;LOGOUT
+        <span nz-icon nzType="poweroff" nzTheme="outline" class="poweroff_btn"></span>&nbsp;LOGOUT
     </li>
 </ul>

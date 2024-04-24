@@ -1,0 +1,46 @@
+<div *ngIf="!isParent && parentLookupDate" class="site-page-header-ghost-wrapper">
+    <nz-page-header [nzGhost]="false" [nzGhost]="false" 
+        class="site-page-header" (nzBack)="onBack()" nzBackIcon>
+        <nz-page-header-title>
+            {{parentLookupDate.id}}-{{parentLookupDate.lookupType}}
+        </nz-page-header-title>
+        <nz-page-header-subtitle>
+            {{parentLookupDate.description}}
+        </nz-page-header-subtitle>
+        <nz-page-header-content>
+            <nz-descriptions nzSize="small" [nzColumn]="4">
+                <nz-descriptions-item nzTitle="Lookup Code" [nzSpan]="1">
+                    {{parentLookupDate.lookupCode}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Lookup Value" [nzSpan]="1">
+                    {{parentLookupDate.lookupValue}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Status" [nzSpan]="1">
+                    <nz-page-header-tags>
+                        <nz-tag [nzColor]="'blue'">
+                            {{parentLookupDate.status.lookupValue}}
+                        </nz-tag>
+                      </nz-page-header-tags>
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="UI Lookup" [nzSpan]="1">
+                    <nz-page-header-tags>
+                        <nz-tag [nzColor]="'black'">
+                            {{parentLookupDate.uiLookup.lookupValue}}
+                        </nz-tag>
+                      </nz-page-header-tags>
+                </nz-descriptions-item>
+            </nz-descriptions>
+        </nz-page-header-content>
+    </nz-page-header>
+</div>
+<br *ngIf="!isParent && parentLookupDate">
+<div class="content">
+    <h3>{{lookupTable.title}}</h3>
+    <nz-divider style="margin: 5px 0;"></nz-divider>
+    <app-gen-table *ngIf="lookupTable"
+        [isDateFilter]="false"
+        [staticTable]="lookupTable"
+        (actionEventEmitter)="tableActionReciver($event)"
+        (buttonEventEmitter)="buttonActionReciver($event)">
+    </app-gen-table>
+</div>

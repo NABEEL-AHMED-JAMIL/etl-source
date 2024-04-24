@@ -11,27 +11,27 @@ import { config } from '../../../environments/environment';
 export class WebSocketAPI {
 
     public stompClient: any;
-    
+
     constructor(private websocketShare: WebSocketShareService,
         private authenticationService: AuthenticationService) {
     }
 
     public connect(): any {
         this.authenticationService.currentUser
-        .subscribe(currentUser => {
-            if (currentUser) {
-                let ws = new SockJS(`${config.webSocketEndPoint}`);
-                this.stompClient = Stomp.over(ws);
-                const _this = this;
-                _this.stompClient.connect({}, function (frame) {
-                    _this.stompClient.subscribe("/user/"+currentUser.username+"/reply",
-                    function (sdkEvent: any) {
-                        _this.onMessageReceived(sdkEvent);
-                    });
-                    _this.stompClient.reconnect_delay = 2000;
-                }, this.errorCallBack);
-            }
-        });
+            .subscribe(currentUser => {
+                if (currentUser) {
+                    let ws = new SockJS(`${config.webSocketEndPoint}`);
+                    this.stompClient = Stomp.over(ws);
+                    const _this = this;
+                    _this.stompClient.connect({}, function () {
+                        _this.stompClient.subscribe("/user/" + currentUser.username + "/reply",
+                            function (sdkEvent: any) {
+                                _this.onMessageReceived(sdkEvent);
+                            });
+                        _this.stompClient.reconnect_delay = 2000;
+                    }, this.errorCallBack);
+                }
+            });
     };
 
     public disconnect(): any {
@@ -41,14 +41,14 @@ export class WebSocketAPI {
     }
 
     // on error, schedule a reconnection attempt
-    public errorCallBack(error): void {
+    public errorCallBack(error: any): void {
         console.log("errorCallBack -> " + error)
         setTimeout(() => {
             this.connect();
         }, 5000);
-    }  
+    }
 
-    public onMessageReceived(message): void {    
+    public onMessageReceived(message: any): void {
         this.websocketShare.onNewValueReceive(message.body);
     }
 }

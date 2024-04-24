@@ -9,27 +9,63 @@ import { config } from '../../../environments/environment';
     providedIn: 'root'
 })
 export class AppUserService {
-    
+
     constructor(private http: HttpClient) { }
 
-    public signupAppUser(payload: any): Observable<ApiResponse> {
-        return this.http.post<any>(`${config.apiBaseUrl}/appUser.json/signupAppUser`, payload);
-    }
-
-    public updateAppUserProfile(payload: any): Observable<ApiResponse> {
-        return this.http.post<any>(`${config.apiBaseUrl}/appUser.json/updateAppUserProfile`, payload);
-    }
-
-    public getSubAppUserAccount(payload: any): Observable<ApiResponse> {
+    public fetchAppUserProfile(payload: any): Observable<ApiResponse> {
         let params = new HttpParams();
         params = params.set('username', payload);
-        return this.http.get<any>(`${config.apiBaseUrl}/appUser.json/getSubAppUserAccount`, { params });
+        return this.http.get<any>(`${config.apiBaseUrl}/appUser.json/fetchAppUserProfile`, { params });
     }
 
-    public closeAppUserAccount(payload: any): Observable<ApiResponse> {
-        return this.http.post<any>(`${config.apiBaseUrl}/appUser.json/closeAppUserAccount`, payload);
+    public updateAppUserProfile(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserProfile`, payload);
     }
 
+    public updateAppUserEnvVariable(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserEnvVariable`, payload);
+    }
 
+    public updateAppUserPassword(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserPassword`, payload);
+    }
+
+    public closeAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/closeAppUserAccount`, payload);
+    }
+
+    public deleteAllAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/deleteAllAppUserAccount`, payload);
+    }
+
+    public downloadAppUserAccountTemplateFile(): Observable<any> {
+        return this.http.get(`${config.apiBaseUrl}/eVariable.json/downloadAppUserAccountTemplateFile`,
+            {
+                responseType: 'blob'
+            });
+    }
+
+    public downloadAppUserAccount(payload: any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/eVariable.json/downloadAppUserAccount`, payload,
+            {
+                responseType: 'blob'
+            });
+    }
+
+    public fetchAllAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/fetchAllAppUserAccount`, payload);
+    }
+
+    public addAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/addAppUserAccount`, payload);
+    }
+
+    public editAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/editAppUserAccount`, payload);
+    }
+
+    public enabledDisabledAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/enabledDisabledAppUserAccount`, payload);
+    }    
 
 }

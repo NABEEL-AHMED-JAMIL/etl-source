@@ -1,0 +1,178 @@
+<form nz-form [nzLayout]="'vertical'" [formGroup]="genControlForm" (ngSubmit)="onSubmit()">
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Control Name</nz-form-label>
+                <nz-form-control nzErrorTip="Control Name Required">
+                    <input nz-input formControlName="controlName"
+                        oninput="this.value = this.value.toUpperCase()"
+                        placeholder="Enter Control Name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Field Title</nz-form-label>
+                <nz-form-control nzErrorTip="Field Title Required">
+                    <input nz-input formControlName="fieldTitle"
+                        placeholder="Enter Field Title" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Field Name</nz-form-label>
+                <nz-form-control nzErrorTip="Field Name Required">
+                    <input nz-input formControlName="fieldName"
+                        placeholder="Enter Field Name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Field Type</nz-form-label>
+                <nz-form-control nzErrorTip="Field Type Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="fieldType"
+                        nzPlaceHolder="Select Field Type"
+                        (ngModelChange)="onFieldType($event)">
+                        <nz-option *ngFor="let lookupChildren of FIELD_TYPE?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Description</nz-form-label>
+                <nz-form-control nzErrorTip="Description Required">
+                    <input nz-input formControlName="description"
+                        placeholder="Enter Description" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>PlaceHolder</nz-form-label>
+                <nz-form-control nzErrorTip="PlaceHolder Required">
+                    <input nz-input formControlName="placeHolder"
+                        placeholder="Enter PlaceHolder" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Field Width</nz-form-label>
+                <nz-form-control nzErrorTip="Field Width Required">
+                    <input nz-input formControlName="fieldWidth"
+                        type="number" placeholder="Enter Field Width" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Mandatory</nz-form-label>
+                <nz-form-control nzErrorTip="Mandatory Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="mandatory"
+                        nzPlaceHolder="Select Mandatory">
+                        <nz-option *ngFor="let lookupChildren of ISDEFAULT?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Default</nz-form-label>
+                <nz-form-control nzErrorTip="Default Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="isDefault"
+                        nzPlaceHolder="Select Default">
+                        <nz-option *ngFor="let lookupChildren of ISDEFAULT?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label>Default Value</nz-form-label>
+                <nz-form-control nzErrorTip="Default Value Required">
+                    <input nz-input formControlName="defaultValue"
+                        placeholder="Enter Default Value" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Disabled</nz-form-label>
+                <nz-form-control nzErrorTip="Disabled Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="disabled"
+                        nzPlaceHolder="Select Disabled">
+                        <nz-option *ngFor="let lookupChildren of ISDEFAULT?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8" *ngIf="isPatternAllow">
+            <nz-form-item>
+                <nz-form-label>Pattern</nz-form-label>
+                <nz-form-control nzErrorTip="Pattern Required">
+                    <input nz-input formControlName="pattern"
+                        placeholder="Enter Pattern If Any" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8" *ngIf="isMinAllow">
+            <nz-form-item>
+                <nz-form-label>Min Length</nz-form-label>
+                <nz-form-control nzErrorTip="Field Min Length Required">
+                    <input nz-input formControlName="minLength"
+                        type="number" placeholder="Enter Min Length" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8" *ngIf="isMaxAllow">
+            <nz-form-item>
+                <nz-form-label>Max Length</nz-form-label>
+                <nz-form-control nzErrorTip="Field Max Length Required">
+                    <input nz-input formControlName="maxLength"
+                        type="number" placeholder="Enter Max Length" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8" *ngIf="fieldTypeForLkValue">
+            <nz-form-item>
+                <nz-form-label>Field Lookup Value</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="fieldLkValue"
+                        placeholder="Enter Field Lookup"
+                        (ngModelChange)="onChangefieldLkValue($event)"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8" *ngIf="actionType === editAction">
+            <nz-form-item>
+                <nz-form-label nzRequired>Control Status</nz-form-label>
+                <nz-form-control nzErrorTip="Control Status Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="status"
+                        nzPlaceHolder="Select Control Status">
+                        <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button type="reset">Clear</button>
+            <button nz-button [nzType]="'primary'" [disabled]="!genControlForm.valid"
+                [nzLoading]="loading" type="submit" style="float: right;">
+                Submit
+            </button>
+        </div>
+    </div>
+</form>

@@ -2,15 +2,13 @@
     <div nz-col nzSpan="10">
         <nz-upload [nzBeforeUpload]="beforeUpload">
             <button nz-button>
-                <span nz-icon nzType="upload"></span>
-                Upload File
+                <span nz-icon nzType="upload"></span>Upload File
             </button>
         </nz-upload>
     </div>
     <div nz-col nzSpan="14" style="text-align: end;">
-        <button *ngIf="fileList.length !== 0" 
-            nz-button [nzType]="'primary'"
-            [nzLoading]="uploading"
+        <button *ngIf="fileList.length !== 0" nz-button
+            [nzType]="'primary'" [nzLoading]="uploading"
             (click)="handleUpload()">
             {{ uploading ? 'Uploading' : 'Start Upload' }}
         </button>

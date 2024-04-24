@@ -1,0 +1,62 @@
+<div class="content" *ngIf="editPayload">
+    <nz-descriptions [nzTitle]="controlTitle" [nzExtra]="extraTpl"
+        nzSize="small" [nzColumn]="3">
+        <ng-template #controlTitle>
+            <span nz-icon nzType="link" nzTheme="outline"></span>
+            ({{editPayload.id}}) {{editPayload.formName}}
+        </ng-template>
+        <nz-descriptions-item nzTitle="Form Type" nzSpan="1">
+            {{editPayload.formType?.lookupValue}}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Home Page" nzSpan="1">
+            {{editPayload.homePage?.lookupValue}}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="ServiceId" nzSpan="1">
+            {{editPayload.serviceId}}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Description" nzSpan="1">
+            {{editPayload.description}}
+        </nz-descriptions-item>
+    </nz-descriptions>
+    <!-- extra tpl -->
+    <!-- extra tpl -->
+    <ng-template #extraTpl>
+        <p>
+            Date: [{{editPayload.dateCreated | date}} | {{editPayload.dateUpdated | date}}]
+            <nz-tag class="{{editPayload.status?.lookupType}}">
+                <nz-badge nzStatus="processing"></nz-badge>
+                <span>{{editPayload.status?.lookupValue}}</span>
+            </nz-tag>
+        </p>
+    </ng-template>
+</div>
+<!-- STTS -->
+<div class="content">
+    <nz-tabset [nzTabBarExtraContent]="refreshTemplate">
+        <nz-tab [nzTitle]="linkControl">
+            <ng-template #linkControl>
+                <span nz-icon nzType="link"
+                    nzTheme="outline"></span>
+                    Stt Link With Form
+            </ng-template>
+            <div class="content"
+                style="padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
+                <nz-transfer nzShowSearch [nzDataSource]="fromLinkSTTLink"
+                    [nzOperations]="['To Right', 'To Left']"
+                    [nzListStyle]="{ 'width.px': 500, 'height.px': 325 }"
+                    [nzRender]="render" (nzChange)="onChange($event)">
+                    <ng-template #render let-item>
+                        {{ item.title }} [{{commomService.getDataFromObjectV2(item.description)}}]
+                    </ng-template>
+                </nz-transfer>
+            </div>
+        </nz-tab>
+    </nz-tabset>
+    <!-- refreshTemplate -->
+    <ng-template #refreshTemplate>
+        <button nz-button [nzSize]="'small'"
+            (click)="refresh()" nzType="default">
+            Refresh
+        </button>
+    </ng-template>
+</div>

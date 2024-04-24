@@ -9,17 +9,27 @@ import { config } from '../../../environments/environment';
     providedIn: 'root'
 })
 export class SettingService {
-    
+
     constructor(private http: HttpClient) { }
 
+    // query
     public dynamicQueryResponse(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/dynamicQueryResponse`, payload);
     }
 
-    public getXmlData(payload:any): Observable<ApiResponse> {
+    public downloadDynamicQueryFile(payload: any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/setting.json/downloadDynamicQueryFile`, payload,
+            {
+                responseType: 'blob'
+            });
+    }
+
+    // xml
+    public getXmlData(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/xmlCreateChecker`, payload);
     }
 
+    // template
     public addTemplateReg(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/addTemplateReg`, payload);
     }
@@ -40,11 +50,5 @@ export class SettingService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/findTemplateRegByTemplateId`, payload);
     }
 
-    public downloadDynamicQueryFile(payload: any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/setting.json/downloadDynamicQueryFile`, payload,
-        {
-            responseType: 'blob'
-        });
-    }
 
 }
