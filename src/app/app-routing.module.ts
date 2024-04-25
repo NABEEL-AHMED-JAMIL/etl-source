@@ -4,7 +4,8 @@ import { AuthGuard } from './_helpers';
 // compoenet
 import {
     MainLayoutComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    ReportLayoutComponent
 } from './_layout';
 import {
     LoginComponent,
@@ -298,6 +299,18 @@ const routes: Routes = [
                     permission: ['QUERY_INQUIRY_PERMISSION']
                 }
             }
+        ]
+    },
+    {
+        path: 'report',
+        component: ReportLayoutComponent,
+        canActivate: [AuthGuard],
+        data: {
+            breadcrumb: 'Report',
+            roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER', 'ROLE_DEV'],
+            permission: ['ADMIN_PAGE_PERMISSION'],
+        },
+        children: [
         ]
     },
     {

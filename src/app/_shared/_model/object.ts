@@ -644,3 +644,9 @@ export const enum REQUEST_METHOD {
     PUT = 3,
     PATCH = 4
 }
+
+export const enum FORM_TYPE {
+    SERVICE_FORM = 0,
+    REPORT_FORM = 1,
+    DASHBOARD_FORM = 2
+}

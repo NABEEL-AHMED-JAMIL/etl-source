@@ -11,6 +11,10 @@
                     <a nz-dropdown [nzDropdownMenu]="menu">
                         <span nz-icon nzType="appstore"></span> Source Job</a>
                 </li>
+                <li *ngIf="hasPermissionAccess(['REPORT_PAGE_PERMISSION'])" nz-menu-item
+                    class="hli" routerLink="/report">
+                    <span nz-icon nzType="line-chart" nzTheme="outline"></span> Report & Dashboard
+                </li>
                 <li *ngIf="hasPermissionAccess(['ADMIN_PAGE_PERMISSION'])" nz-menu-item
                     class="hli" routerLink="/setting">
                     <span nz-icon nzType="setting" nzTheme="outline"></span> Setting

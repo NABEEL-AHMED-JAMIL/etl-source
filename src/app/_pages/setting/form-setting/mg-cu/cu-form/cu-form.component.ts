@@ -19,6 +19,7 @@ import {
     AuthenticationService,
     EVariableService,
     E_VARAIABLE,
+    FORM_TYPE,
     FormSettingService,
     IGenFrom,
     ILookups,
@@ -112,7 +113,7 @@ export class CUFormComponent implements OnInit {
         this.genFormForm = this.fb.group({
             formName: ['', Validators.required],
             description: ['', [Validators.required]],
-            formType: ['', [Validators.required]],
+            formType: [FORM_TYPE.SERVICE_FORM, [Validators.required]],
             homePage: [''],
             serviceId: [''],
         });
