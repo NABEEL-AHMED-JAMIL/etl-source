@@ -54,5 +54,10 @@ export * from './setting/profile-setting/pp-crose-table/pp-crose-table.component
 export * from './setting/profile-setting/mg-user/mg-user.component';
 export * from './setting/profile-setting/mg-rpp/mg-rpp.component';
 export * from './setting/profile-setting/mg-refresh-token/mg-refresh-token.component';
+// report-setting
+export * from './setting/report-setting/cu-report/cu-report.component';
+export * from './setting/dashboard-setting/cu-dashboard/cu-dashboard.component';
+export * from './setting/report-setting/mg-report/mg-report.component';
+export * from './setting/dashboard-setting/mg-dashboard/mg-dashboard.component';
 // update profile
 export * from './update-profile/update-profile.component';

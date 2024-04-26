@@ -125,18 +125,18 @@ export class MgEVariableComponent implements OnInit {
                 action: ActionType.EDIT
             },
             {
+                type: 'link',
+                color: 'orange',
+                spin: false,
+                tooltipTitle: 'Link With User',
+                action: ActionType.LINK
+            },
+            {
                 type: 'delete',
                 color: 'red',
                 spin: false,
                 tooltipTitle: 'Delete',
                 action: ActionType.DELETE
-            }
-        ],
-        moreActionType: [
-            {
-                title: 'Link With User',
-                type: 'link',
-                action: ActionType.LINK
             }
         ]
     };
@@ -264,7 +264,17 @@ export class MgEVariableComponent implements OnInit {
     public tableActionReciver(payload: any): void {
         if (ActionType.EDIT === payload.action) {
             this.openCuEnVariable(ActionType.EDIT, payload);
-        } else if (ActionType.DELETE === payload.action) {
+        } else if (ActionType.LINK === payload.action) {
+            this.drawerService.create({
+                nzTitle: '[' + payload.data.id + '] ' + payload.data.envKey,
+                nzWidth: 800,
+                nzFooter: null, // Optional footer
+                nzContent: EVUCroseTableComponent,
+                nzContentParams: {
+                    enVariable: payload.data
+                }
+            });
+        }else if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
                 nzOkText: 'Ok',
                 nzCancelText: 'Cancel',
@@ -284,17 +294,7 @@ export class MgEVariableComponent implements OnInit {
                     });
                 }
             });
-        } else if (ActionType.LINK === payload.action) {
-            this.drawerService.create({
-                nzTitle: '[' + payload.data.id + '] ' + payload.data.envKey,
-                nzWidth: 800,
-                nzFooter: null, // Optional footer
-                nzContent: EVUCroseTableComponent,
-                nzContentParams: {
-                    enVariable: payload.data
-                }
-            });
-        }
+        } 
     }
 
     public filterActionReciver(payload: any): void {

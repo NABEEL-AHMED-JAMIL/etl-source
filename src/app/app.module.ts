@@ -73,7 +73,11 @@ import {
     MgSourceTaskComponent,
     MgSourceTaskTypeComponent,
     CuSourceTTaskComponent,
-    SttLinkFormComponent
+    SttLinkFormComponent,
+    CUDashboardComponent,
+    CUReportComponent,
+    MgDashboardComponent,
+    MgReportComponent
 } from './_pages';
 
 registerLocaleData(en);
@@ -128,7 +132,11 @@ export const APP_COMPONENT = [
     MgSourceTaskComponent,
     MgSourceTaskTypeComponent,
     CuSourceTTaskComponent,
-    SttLinkFormComponent
+    SttLinkFormComponent,
+    CUDashboardComponent,
+    CUReportComponent,
+    MgDashboardComponent,
+    MgReportComponent
 ];
 
 

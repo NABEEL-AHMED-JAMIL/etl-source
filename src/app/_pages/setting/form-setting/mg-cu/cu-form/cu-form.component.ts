@@ -114,8 +114,8 @@ export class CUFormComponent implements OnInit {
             formName: ['', Validators.required],
             description: ['', [Validators.required]],
             formType: [FORM_TYPE.SERVICE_FORM, [Validators.required]],
-            homePage: [''],
-            serviceId: [''],
+            homePage: [],
+            serviceId: [],
         });
         this.spinnerService.hide();
     }

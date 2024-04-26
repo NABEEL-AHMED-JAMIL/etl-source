@@ -131,18 +131,18 @@ export class MgRPPComponent implements OnInit {
                 action: ActionType.EDIT
             },
             {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            },
-            {
                 type: 'link',
                 color: 'orange',
                 spin: false,
                 tooltipTitle: 'Link With User',
                 action: ActionType.LINK
+            },
+            {
+                type: 'delete',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Delete',
+                action: ActionType.DELETE
             }
         ]
     };
@@ -239,18 +239,18 @@ export class MgRPPComponent implements OnInit {
                 action: ActionType.EDIT
             },
             {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            },
-            {
                 type: 'link',
                 color: 'orange',
                 spin: false,
                 tooltipTitle: 'Link With User',
                 action: ActionType.LINK
+            },
+            {
+                type: 'delete',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Delete',
+                action: ActionType.DELETE
             }
         ]
     };

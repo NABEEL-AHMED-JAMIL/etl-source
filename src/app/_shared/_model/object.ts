@@ -414,44 +414,30 @@ export const SETTING_SIDEBAR: SideBar[] = [
     {
         name: 'Dashboard Setting',
         icon: 'pie-chart',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
         permission: ['DASHBOARD_SETTING_PERMISSION'],
         childLinks: [
             {
                 name: 'Manage Dashboard',
                 icon: 'form',
-                link: '/setting/mgReport',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                link: '/setting/mgDashboard',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['MANAGE_DASHBOARD_PERMISSION']
-            },
-            {
-                name: 'Report Play Ground',
-                icon: 'html5',
-                link: '/setting/mgReportPlayGround',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['DASHBOARD_PLAY_GROUND_PERMISSION']
             }
         ]
     },
     {
         name: 'Report Setting',
         icon: 'paper-clip',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
         permission: ['REPORT_SETTING_PERMISSION'],
         childLinks: [
             {
                 name: 'Manage Report',
                 icon: 'form',
                 link: '/setting/mgReport',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['MANAGE_REPORT_PERMISSION']
-            },
-            {
-                name: 'Report Play Ground',
-                icon: 'html5',
-                link: '/setting/mgReportPlayGround',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['REPORT_PLAY_GROUND_PERMISSION']
             }
         ]
     },
@@ -647,6 +633,5 @@ export const enum REQUEST_METHOD {
 
 export const enum FORM_TYPE {
     SERVICE_FORM = 0,
-    REPORT_FORM = 1,
-    DASHBOARD_FORM = 2
+    REPORT_FORM = 1
 }
