@@ -1,4 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { first } from 'rxjs';
+import {
+    AlertService,
+    CommomService,
+    SpinnerService
+} from 'src/app/_helpers';
+import {
+    ActionType,
+    ApiCode,
+    AuthResponse,
+    AuthenticationService,
+    IReportSetting,
+    IStaticTable,
+    ReportSettingService
+} from 'src/app/_shared';
+import { CUReportComponent } from '../cu-report/cu-report.component';
 
 
 @Component({
@@ -8,10 +26,303 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MgReportComponent implements OnInit {
 
-    constructor() {
+    public startDate: any;
+    public endDate: any;
+    public setOfCheckedId = new Set<any>();
+    public sessionUser: AuthResponse;
+    public reportSettingTable: IStaticTable = {
+        tableId: 'report_id',
+        title: 'Mg Report',
+        bordered: true,
+        checkbox: true,
+        size: 'small',
+        headerButton: [
+            {
+                type: 'plus-circle',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Add',
+                action: ActionType.ADD
+            },
+            {
+                type: 'reload',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Refresh',
+                action: ActionType.RE_FRESH
+            },
+            {
+                type: 'upload',
+                color: 'balck',
+                spin: false,
+                tooltipTitle: 'Upload',
+                action: ActionType.UPLOAD
+            },
+            {
+                type: 'download',
+                color: 'balck',
+                spin: false,
+                tooltipTitle: 'Download',
+                action: ActionType.DOWNLOAD
+            }
+        ],
+        extraHeaderButton: [
+            {
+                title: 'Delete All',
+                type: 'delete',
+                action: ActionType.DELETE
+            }
+        ],
+        dataColumn: [
+            {
+                field: 'envKey',
+                header: 'Env Key',
+                type: 'data'
+            },
+            {
+                field: 'description',
+                header: 'Description',
+                type: 'data'
+            },
+            {
+                field: 'dateCreated',
+                header: 'Created',
+                type: 'date'
+            },
+            {
+                field: 'createdBy',
+                header: 'Created By',
+                type: 'combine',
+                subfield: ['id', 'username']
+            },
+            {
+                field: 'dateUpdated',
+                header: 'Updated',
+                type: 'date'
+            },
+            {
+                field: 'updatedBy',
+                header: 'Updated By',
+                type: 'combine',
+                subfield: ['id', 'username']
+            },
+            {
+                field: 'status',
+                header: 'Status',
+                type: 'tag'
+            }
+        ],
+        actionType: [
+            {
+                type: 'edit',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
+            },
+            {
+                type: 'link',
+                color: 'orange',
+                spin: false,
+                tooltipTitle: 'Link With User',
+                action: ActionType.LINK
+            },
+            {
+                type: 'delete',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Delete',
+                action: ActionType.DELETE
+            }
+        ]
+    };
+
+    constructor(
+        private drawerService: NzDrawerService,
+        private modalService: NzModalService,
+        private alertService: AlertService,
+        private commomService: CommomService,
+        private spinnerService: SpinnerService,
+        private reportSettingService: ReportSettingService,
+        private authenticationService: AuthenticationService) {
+        this.endDate = this.commomService.getCurrentDate();
+        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.authenticationService.currentUser
+            .subscribe(currentUser => {
+                this.sessionUser = currentUser;
+            });
     }
 
     ngOnInit(): void {
+        this.fetchAllReportSetting({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
+    }
+    
+    // fetch all lookup
+    public fetchAllReportSetting(payload: any): any {
+        this.spinnerService.show();
+        this.reportSettingService.fetchAllReportSetting(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.reportSettingTable.dataSource = response.data;
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
+    }
+
+    public deleteReportSettingById(payload: any): void {
+        this.spinnerService.show();
+        this.reportSettingService.deleteReportSettingById(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.fetchAllReportSetting({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
+    }
+
+    public tableActionReciver(payload: any): void {
+        if (ActionType.EDIT === payload.action) {
+            this.openCuEnVariable(ActionType.EDIT, payload);
+        } else if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    let report: IReportSetting = {
+                        id: payload.data.id,
+                        name: payload.data.name,
+                        description: payload.data.description
+                    }
+                    this.deleteReportSettingById({
+                        ...report,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    public buttonActionReciver(payload: any): void {
+        if (ActionType.ADD === payload.action) {
+            this.openCuEnVariable(ActionType.ADD, null);
+        } else if (ActionType.RE_FRESH === payload.action) {
+            this.fetchAllReportSetting({
+                startDate: this.startDate,
+                endDate: this.endDate,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        }
+    }
+
+    public filterActionReciver(payload: any): void {
+        this.startDate = payload.startDate;
+        this.endDate = payload.endDate;
+        this.fetchAllReportSetting({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
+    }
+
+    public extraActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteAllReportSetting(
+                        {
+                            ids: payload.checked,
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                }
+            });
+        }
+    }
+
+    public openCuEnVariable(actionType: ActionType, editPayload: any): void {
+        const drawerRef = this.drawerService.create({
+            nzSize: 'large',
+            nzTitle: actionType === ActionType.ADD ? 'Add Report' : 'Edit Report',
+            nzPlacement: 'right',
+            nzMaskClosable: false,
+            nzContent: CUReportComponent,
+            nzContentParams: {
+                actionType: actionType,
+                editPayload: editPayload?.data
+            }
+        });
+        drawerRef.afterClose.subscribe(data => {
+            this.deleteAllReportSetting({
+                startDate: this.startDate,
+                endDate: this.endDate,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        });
+    }
+
+    public deleteAllReportSetting(payload: any): void {
+        this.spinnerService.show();
+        this.reportSettingService.deleteAllReportSetting(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.fetchAllReportSetting({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+                this.setOfCheckedId = new Set<any>();
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
     }
 
 }

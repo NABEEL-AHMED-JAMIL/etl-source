@@ -331,7 +331,7 @@ export class MgEVariableComponent implements OnInit {
 
     public openCuEnVariable(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'large',
+            nzSize: 'default',
             nzTitle: actionType === ActionType.ADD ? 'Add EVariable' : 'Edit EVariable',
             nzPlacement: 'right',
             nzMaskClosable: false,

@@ -254,7 +254,7 @@ export class CredentialComponent implements OnInit {
 
     public openCuLookup(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'large',
+            nzSize: 'default',
             nzTitle: actionType === ActionType.ADD ? 'Add Credential' : 'Edit Credential',
             nzPlacement: 'right',
             nzMaskClosable: false,

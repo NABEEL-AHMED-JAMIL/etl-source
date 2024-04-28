@@ -133,6 +133,7 @@ export class CuCredentialComponent implements OnInit {
     public addBasicAuth(): void {
         this.credentialForm.addControl('content',
             this.fb.group({
+                authenticationUrl: ['', [Validators.required]],
                 username: ['', [Validators.required]],
                 password: ['', [Validators.required]]
             }));
@@ -141,6 +142,7 @@ export class CuCredentialComponent implements OnInit {
     public editBasicAuth(payload: any): void {
         this.credentialForm.addControl('content',
             this.fb.group({
+                authenticationUrl: [payload.authenticationUrl, [Validators.required]],
                 username: [payload.username, [Validators.required]],
                 password: [payload.password, [Validators.required]]
             }));

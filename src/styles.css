@@ -4,14 +4,6 @@
 }
 
 /* same globel styling  */
-a {
-    color: var(--primary);
-}
-
-a:hover {
-    color: var(--primary) !important;
-}
-
 .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item,
 .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu {
     margin-top: 0px;
@@ -108,7 +100,7 @@ nz-content {
 }
 
 .DELETE {
-    background: red;
+    background: rgba(255, 0, 0, 0.636);
     color: white;
 }
 
@@ -118,88 +110,7 @@ nz-content {
 }
 
 .FALSE {
-    background: red;
-    color: white;
-}
-
-.NEW_REQUEST {
-    background: rgb(0 137 255 / 91%);
-    color: white;
-}
-
-.NEW {
-    background: #414BB2;
-    color: white;
-}
-
-.REVIEW {
-    background: #808080;
-    color: white;
-}
-
-.REJECTED {
-    background: #F24726;
-    color: white;
-}
-
-.APPROVED {
-    background: #e6c85a;
-    color: white;
-}
-
-.BIDDING {
-    background: #36c0b4;
-    color: white;
-}
-
-.BIDDING_DONE {
-    background: #85bd36;
-    color: white;
-}
-
-.ASSIGN {
-    background: #661818;
-    color: white;
-}
-
-.IN_PROGRESS {
-    background: #2D9BF0;
-    color: white;
-}
-
-.COMPLETED {
-    background: #8FD14F;
-    color: white;
-}
-
-
-.NEW_BID {
-    background: #4fd197;
-    color: white;
-}
-
-.WITHDRAW {
-    background: #c8552f;
-    color: white;
-}
-
-.ATTENDING {
-    background: #98b52d;
-    color: white;
-}
-
-.WIN {
-    background: gray;
-    color: white;
-}
-
-.BID {
-    background: #4f78d1;
-    color: white;
-}
-
-.NOT_BID {
-    background: #cb4fd1;
+    background: rgba(255, 0, 0, 0.636);
     color: white;
 }
 

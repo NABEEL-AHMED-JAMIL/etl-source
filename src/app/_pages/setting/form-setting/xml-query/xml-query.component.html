@@ -3,7 +3,8 @@
     <nz-divider style="margin: 5px 0;"></nz-divider>
     <div nz-row>
         <div nz-col [nzSpan]="24">
-            <form nz-form [formGroup]="xmlForm" (ngSubmit)="submintTageForms(xmlForm.value)" ngNativeValidate>
+            <form nz-form [formGroup]="xmlForm" 
+                (ngSubmit)="submintTageForms(xmlForm.value)" ngNativeValidate>
                 <nz-table [nzData]="['']"
                     nzSize="small"
                     [nzFrontPagination]="false"
@@ -17,9 +18,9 @@
                             <th>TagParent</th>
                             <th>TagValue</th>
                             <th style="width: 7%;">
-                                <button nz-button type="button" style="width: 100%;" 
-                                    nzType="default" nzDanger (click)="tageFormsAddItem()">
-                                    <span nz-icon nzType="plus"></span>
+                                <button nz-button type="button" nzSize="small"
+                                    nzType="default" nzDanger (click)="tageFormsAddItem()"
+                                    style="width: 90%;float: inline-end;">Add
                                 </button>
                             </th>
                         </tr>
@@ -31,17 +32,17 @@
                             <td>
                                 <input nz-input type="text" class="form-control input-sm"
                                     name="tagKey" formControlName="tagKey"
-                                    placeholder="Enter Tag Key">
+                                    placeholder="Enter Tag Key" nzSize="small">
                             </td>
                             <td>
                                 <input nz-input type="text" class="form-control input-sm"
                                     name="tagParent" formControlName="tagParent"
-                                    placeholder="Parent Tag If Any">
+                                    placeholder="Parent Tag If Any" nzSize="small">
                             </td>
                             <td>
                                 <input nz-input type="text" class="form-control input-sm"
                                     name="tagValue" formControlName="tagValue"
-                                    placeholder="Enter Tag Value">
+                                    placeholder="Enter Tag Value" nzSize="small">
                             </td>
                             <td style="text-align: center;">
                                 <span nz-icon nzType="plus-circle" class="dynamic-delete-button"

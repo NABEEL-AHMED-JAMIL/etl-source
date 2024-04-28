@@ -1,6 +1,6 @@
 <form *ngIf="sttForm" nz-form [nzLayout]="'vertical'" [formGroup]="sttForm" (ngSubmit)="onSubmit()">
     <div nz-row [nzGutter]="16">
-        <div nz-col nzSpan="18">
+        <div nz-col nzSpan="12">
             <nz-form-item>
                 <nz-form-label nzRequired>Service Name</nz-form-label>
                 <nz-form-control nzErrorTip="Service Name Is Required">
@@ -9,7 +9,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="6" *ngIf="TASK_TYPE">
+        <div nz-col nzSpan="12" *ngIf="TASK_TYPE">
             <nz-form-item>
                 <nz-form-label nzRequired>TaskType</nz-form-label>
                 <nz-form-control nzErrorTip="TaskType Required">
@@ -22,7 +22,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="18">
+        <div nz-col nzSpan="12">
             <nz-form-item>
                 <nz-form-label nzRequired>Description</nz-form-label>
                 <nz-form-control nzErrorTip="Description Is Required">
@@ -31,7 +31,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="6" *ngIf="credentails">
+        <div nz-col nzSpan="12" *ngIf="credentails">
             <nz-form-item>
                 <nz-form-label>Credential</nz-form-label>
                 <nz-form-control>
@@ -71,7 +71,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="4">
+        <div nz-col nzSpan="8">
             <nz-form-item>
                 <nz-form-label nzRequired>Partitions</nz-form-label>
                 <nz-form-control [nzErrorTip]="numPartitionsErrorTpl">
@@ -91,7 +91,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="8">
             <nz-form-item>
                 <nz-form-label>Topic Pattern</nz-form-label>
                 <nz-form-control>
@@ -103,7 +103,7 @@
     </div>
     <div nz-row [nzGutter]="16" *ngIf="selectedTaskType === 0 || selectedTaskType === 1 || selectedTaskType === 2"
         formGroupName="apiTaskType">
-        <div nz-col nzSpan="18">
+        <div nz-col nzSpan="12">
             <nz-form-item>
                 <nz-form-label nzRequired>Endpoint</nz-form-label>
                 <nz-form-control nzErrorTip="Kafka Url Is Required">
@@ -111,7 +111,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="6">
+        <div nz-col nzSpan="12">
             <nz-form-item>
                 <nz-form-label nzRequired>Request Method</nz-form-label>
                 <nz-form-control nzErrorTip="Request Method Required">
