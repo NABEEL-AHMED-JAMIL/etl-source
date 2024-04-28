@@ -1,0 +1,91 @@
+<form nz-form [nzLayout]="'vertical'"
+    [formGroup]="dashboardSettingForm"
+    (ngSubmit)="submit()">
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>Name</nz-form-label>
+                <nz-form-control nzErrorTip="Profile Name Required">
+                    <input nz-input formControlName="name" placeholder="Enter Name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>Dashboard Type</nz-form-label>
+                <nz-form-control nzErrorTip="Dashboard Type Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="boardType"
+                        nzPlaceHolder="Select Dashboard Type">
+                        <nz-option *ngFor="let lookupChildren of DASHBOARD_TYPE?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>Group Type</nz-form-label>
+                <nz-form-control nzErrorTip="Group Type Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="groupType"
+                        nzPlaceHolder="Select Dashboard Type">
+                        <nz-option *ngFor="let lookupChildren of DASHBOARD_GROUP?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupType">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>IFrame</nz-form-label>
+                <nz-form-control nzErrorTip="IFrame Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="iframe"
+                        nzPlaceHolder="Select IFrame">
+                        <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label nzRequired>Dashboard Url</nz-form-label>
+                <nz-form-control nzErrorTip="Dashboard Url Required">
+                    <input nz-input formControlName="dashboardUrl" type="url"
+                        placeholder="Enter Dashboard Url" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24" *ngIf="actionType === editAction">
+            <nz-form-item>
+                <nz-form-label nzRequired>Dashboard Status</nz-form-label>
+                <nz-form-control nzErrorTip="Dashboard Status Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="status"
+                        nzPlaceHolder="Select Dashboard Status">
+                        <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label>Description</nz-form-label>
+                <nz-form-control nzErrorTip="Description Required">
+                    <textarea nz-input formControlName="description"
+                        [nzAutosize]="{ minRows: 3}"
+                        placeholder="Enter Description"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>      
+        <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button type="reset">Clear</button>
+            <button nz-button [nzType]="'primary'" [nzLoading]="loading"
+                [disabled]="!dashboardSettingForm.valid"
+                type="submit" style="float: right;">Submit</button>
+        </div>
+    </div>
+</form>

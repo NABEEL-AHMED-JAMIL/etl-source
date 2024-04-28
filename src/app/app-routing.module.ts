@@ -4,7 +4,8 @@ import { AuthGuard } from './_helpers';
 // compoenet
 import {
     MainLayoutComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    ReportLayoutComponent
 } from './_layout';
 import {
     LoginComponent,
@@ -29,7 +30,9 @@ import {
     MgControlComponent,
     MgPlayGroundComponent,
     MgSourceTaskComponent,
-    MgSourceTaskTypeComponent
+    MgSourceTaskTypeComponent,
+    MgReportComponent,
+    MgDashboardComponent
 } from './_pages';
 
 
@@ -140,6 +143,28 @@ const routes: Routes = [
                     roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['SOURCE_CREDENTAIL_PERMISSION'],
                     breadcrumb: 'Mg Credentail',
+                }
+            },
+            {
+                path: 'mgDashboard',
+                component: MgDashboardComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                    permission: ['MANAGE_DASHBOARD_PERMISSION'],
+                    breadcrumb: 'Mg Dashboard',
+                }
+            },
+            {
+                path: 'mgReport',
+                component: MgReportComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                    permission: ['MANAGE_REPORT_PERMISSION'],
+                    breadcrumb: 'Mg Report',
                 }
             },
             // form-setting => form
@@ -298,6 +323,18 @@ const routes: Routes = [
                     permission: ['QUERY_INQUIRY_PERMISSION']
                 }
             }
+        ]
+    },
+    {
+        path: 'report',
+        component: ReportLayoutComponent,
+        canActivate: [AuthGuard],
+        data: {
+            breadcrumb: 'Report',
+            roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER', 'ROLE_DEV'],
+            permission: ['ADMIN_PAGE_PERMISSION'],
+        },
+        children: [
         ]
     },
     {

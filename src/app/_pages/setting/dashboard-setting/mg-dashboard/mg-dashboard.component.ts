@@ -2,41 +2,37 @@ import { Component, OnInit } from '@angular/core';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { first } from 'rxjs';
+import { CUDashboardComponent } from '../cu-dashboard/cu-dashboard.component';
 import {
     AlertService,
     CommomService,
     SpinnerService
 } from 'src/app/_helpers';
 import {
-    BatchComponent,
-    CUEvariableComponent,
-    EVUCroseTableComponent
-} from 'src/app/_pages';
-import {
+    ActionType,
     ApiCode,
     AuthResponse,
-    IStaticTable,
-    ActionType,
     AuthenticationService,
-    EVariableService,
-    IEnVariables
+    DashboardService,
+    IDashboardSetting,
+    IStaticTable
 } from 'src/app/_shared';
 
 
 @Component({
-    selector: 'app-mg-evariable',
-    templateUrl: './mg-evariable.component.html',
-    styleUrls: ['./mg-evariable.component.css']
+    selector: 'app-mg-dashboard',
+    templateUrl: './mg-dashboard.component.html',
+    styleUrls: ['./mg-dashboard.component.css']
 })
-export class MgEVariableComponent implements OnInit {
+export class MgDashboardComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
     public setOfCheckedId = new Set<any>();
     public sessionUser: AuthResponse;
-    public eVariableTable: IStaticTable = {
-        tableId: 'variable_id',
-        title: 'E-Variable',
+    public dashboardTable: IStaticTable = {
+        tableId: 'dashboard_id',
+        title: 'Mg Dashboard',
         bordered: true,
         checkbox: true,
         size: 'small',
@@ -54,20 +50,6 @@ export class MgEVariableComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Refresh',
                 action: ActionType.RE_FRESH
-            },
-            {
-                type: 'upload',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Upload',
-                action: ActionType.UPLOAD
-            },
-            {
-                type: 'download',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Download',
-                action: ActionType.DOWNLOAD
             }
         ],
         extraHeaderButton: [
@@ -79,19 +61,24 @@ export class MgEVariableComponent implements OnInit {
         ],
         dataColumn: [
             {
-                field: 'envKey',
-                header: 'Env Key',
+                field: 'name',
+                header: 'Name',
                 type: 'data'
             },
             {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
+                field: 'groupType',
+                header: 'Group Type',
+                type: 'tag'
             },
             {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
+                field: 'boardType',
+                header: 'Board Type',
+                type: 'tag'
+            },
+            {
+                field: 'iframe',
+                header: 'Frame',
+                type: 'tag'
             },
             {
                 field: 'createdBy',
@@ -125,13 +112,6 @@ export class MgEVariableComponent implements OnInit {
                 action: ActionType.EDIT
             },
             {
-                type: 'link',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'Link With User',
-                action: ActionType.LINK
-            },
-            {
                 type: 'delete',
                 color: 'red',
                 spin: false,
@@ -147,7 +127,7 @@ export class MgEVariableComponent implements OnInit {
         private alertService: AlertService,
         private commomService: CommomService,
         private spinnerService: SpinnerService,
-        private eVariableService: EVariableService,
+        private dashboardService: DashboardService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
         this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
@@ -158,7 +138,7 @@ export class MgEVariableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchAllEnVariable({
+        this.fetchAllDashboardSetting({
             startDate: this.startDate,
             endDate: this.endDate,
             sessionUser: {
@@ -168,9 +148,9 @@ export class MgEVariableComponent implements OnInit {
     }
 
     // fetch all lookup
-    public fetchAllEnVariable(payload: any): any {
+    public fetchAllDashboardSetting(payload: any): any {
         this.spinnerService.show();
-        this.eVariableService.fetchAllEnVariable(payload)
+        this.dashboardService.fetchAllDashboardSetting(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -178,16 +158,16 @@ export class MgEVariableComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.eVariableTable.dataSource = response.data;
+                this.dashboardTable.dataSource = response.data;
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
-    public deleteEnVariableById(payload: any): void {
+    public deleteDashboardSettingById(payload: any): void {
         this.spinnerService.show();
-        this.eVariableService.deleteEnVariableById(payload)
+        this.dashboardService.deleteDashboardSettingById(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -195,7 +175,7 @@ export class MgEVariableComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllEnVariable({
+                this.fetchAllDashboardSetting({
                     startDate: this.startDate,
                     endDate: this.endDate,
                     sessionUser: {
@@ -209,98 +189,50 @@ export class MgEVariableComponent implements OnInit {
             });
     }
 
-    public buttonActionReciver(payload: any): void {
-        if (ActionType.ADD === payload.action) {
-            this.openCuEnVariable(ActionType.ADD, null);
-        } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchAllEnVariable({
-                startDate: this.startDate,
-                endDate: this.endDate,
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
-        } else if (ActionType.DOWNLOAD === payload.action) {
-            this.spinnerService.show();
-            this.eVariableService.downloadEnVariable({
-                ids: payload.checked,
-                startDate: this.startDate,
-                endDate: this.endDate,
-                sessionUser: {
-                    username: this.sessionUser.username
-                },
-            }).pipe(first())
-                .subscribe((response: any) => {
-                    this.commomService.downLoadFile(response);
-                    this.spinnerService.hide();
-                }, (response: any) => {
-                    this.spinnerService.hide();
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
-                });
-        } else if (ActionType.UPLOAD === payload.action) {
-            payload.action = 'EVariable';
-            const drawerRef = this.drawerService.create({
-                nzTitle: 'Batch Operation',
-                nzSize: 'default',
-                nzMaskClosable: false,
-                nzFooter: 'Note :- Add Xlsx File For Process, Once File Upload Successfully Click the Refresh Button',
-                nzContent: BatchComponent,
-                nzContentParams: {
-                    batchDetail: payload
-                }
-            });
-            drawerRef.afterClose.subscribe(data => {
-                this.fetchAllEnVariable({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-            });
-        }
-    }
-
     public tableActionReciver(payload: any): void {
         if (ActionType.EDIT === payload.action) {
             this.openCuEnVariable(ActionType.EDIT, payload);
-        } else if (ActionType.LINK === payload.action) {
-            this.drawerService.create({
-                nzTitle: '[' + payload.data.id + '] ' + payload.data.envKey,
-                nzWidth: 800,
-                nzFooter: null, // Optional footer
-                nzContent: EVUCroseTableComponent,
-                nzContentParams: {
-                    enVariable: payload.data
-                }
-            });
-        }else if (ActionType.DELETE === payload.action) {
+        } else if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
                 nzOkText: 'Ok',
                 nzCancelText: 'Cancel',
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    let enVariable: IEnVariables = {
+                    let dashboard: IDashboardSetting = {
                         id: payload.data.id,
-                        envKey: payload.data.envKey,
+                        name: payload.data.name,
                         description: payload.data.description
                     }
-                    this.deleteEnVariableById({
-                        ...enVariable,
+                    this.deleteDashboardSettingById({
+                        ...dashboard,
                         sessionUser: {
                             username: this.sessionUser.username
                         }
                     });
                 }
             });
-        } 
+        }
+    }
+
+    public buttonActionReciver(payload: any): void {
+        if (ActionType.ADD === payload.action) {
+            this.openCuEnVariable(ActionType.ADD, null);
+        } else if (ActionType.RE_FRESH === payload.action) {
+            this.fetchAllDashboardSetting({
+                startDate: this.startDate,
+                endDate: this.endDate,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        }
     }
 
     public filterActionReciver(payload: any): void {
         this.startDate = payload.startDate;
         this.endDate = payload.endDate;
-        this.fetchAllEnVariable({
+        this.fetchAllDashboardSetting({
             startDate: this.startDate,
             endDate: this.endDate,
             sessionUser: {
@@ -317,7 +249,7 @@ export class MgEVariableComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    this.deleteAllEnVariable(
+                    this.deleteAllDashboardSetting(
                         {
                             ids: payload.checked,
                             sessionUser: {
@@ -331,18 +263,18 @@ export class MgEVariableComponent implements OnInit {
 
     public openCuEnVariable(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'default',
-            nzTitle: actionType === ActionType.ADD ? 'Add EVariable' : 'Edit EVariable',
+            nzSize: 'large',
+            nzTitle: actionType === ActionType.ADD ? 'Add Dashboard' : 'Edit Dashboard',
             nzPlacement: 'right',
             nzMaskClosable: false,
-            nzContent: CUEvariableComponent,
+            nzContent: CUDashboardComponent,
             nzContentParams: {
                 actionType: actionType,
                 editPayload: editPayload?.data
             }
         });
         drawerRef.afterClose.subscribe(data => {
-            this.fetchAllEnVariable({
+            this.fetchAllDashboardSetting({
                 startDate: this.startDate,
                 endDate: this.endDate,
                 sessionUser: {
@@ -352,9 +284,9 @@ export class MgEVariableComponent implements OnInit {
         });
     }
 
-    public deleteAllEnVariable(payload: any): void {
+    public deleteAllDashboardSetting(payload: any): void {
         this.spinnerService.show();
-        this.eVariableService.deleteAllEnVariable(payload)
+        this.dashboardService.deleteAllDashboardSetting(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -362,7 +294,7 @@ export class MgEVariableComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllEnVariable({
+                this.fetchAllDashboardSetting({
                     startDate: this.startDate,
                     endDate: this.endDate,
                     sessionUser: {

@@ -1,7 +1,7 @@
 <form nz-form [nzLayout]="'vertical'"
     [formGroup]="templateForm" (ngSubmit)="submit()">
     <div nz-row [nzGutter]="16">
-        <div nz-col nzSpan="18">
+        <div nz-col nzSpan="24">
             <nz-form-item>
                 <nz-form-label nzRequired>Template Name</nz-form-label>
                 <nz-form-control nzErrorTip="Template Name Required">
@@ -11,7 +11,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="6" *ngIf="actionType === editAction">
+        <div nz-col nzSpan="24" *ngIf="actionType === editAction">
             <nz-form-item>
                 <nz-form-label nzRequired>Template Status</nz-form-label>
                 <nz-form-control nzErrorTip="Template Status Required">

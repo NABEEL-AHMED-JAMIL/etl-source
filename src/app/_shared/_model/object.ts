@@ -229,25 +229,68 @@ export interface IFormLinkSection extends IBaseEntity {
     formLinkSection?: any;
 }
 
-export interface ISourceTaskTypeLinkForm extends IBaseEntity  {
+export interface ISourceTaskTypeLinkForm extends IBaseEntity {
     formName?: any;
     formType?: any;
     linkStatus?: any;
     formLinkStt?: any;
 }
 
-export interface ISourceTaskTypeLinkForm extends IBaseEntity  {
+export interface ISourceTaskTypeLinkForm extends IBaseEntity {
     formName?: any;
     formType?: any;
     linkStatus?: any;
     sttLinkForm?: any;
 }
 
-export interface IFormLinkSourceTaskType extends IBaseEntity  {
+export interface IFormLinkSourceTaskType extends IBaseEntity {
     serviceName?: any;
     taskType?: any;
     linkStatus?: any;
     linkSourceTaskTypeId?: any;
+}
+
+export interface IDashboardSetting extends IBaseEntity {
+    name?: any;
+    groupType?: any;
+    description?: any;
+    boardType?: any;
+    dashboardUrl?: any;
+    iframe?: any;
+}
+
+export interface IReportSetting extends IBaseEntity {
+    name?: any;
+    groupType?: any;
+    description?: any;
+    payloadRef?: any;
+    isPdf?: any;
+    pdfUrl?: any;
+    pdfApiToken?: any;	
+    isXlsx?: any;
+    xlsxUrl?: any;
+    xlsxApiToken?: any;
+    isCsv?: any;
+    csvUrl?: any;
+    csvApiToken?: any;
+    isData?: any;
+    dataUrl?: any;
+    dataApiToken?: any;
+    isFirstDimension?: any;
+    firstDimensionUrl?: any;
+    firstDimensLKValue?: any;
+    firstDimensionApiToken?: any;
+    isSecondDimension?: any;
+    secondDimensionUrl?: any;
+    secondDimensionLKValue?: any;
+    secondDimensionApiToken?: any;
+    isThirdDimension?: any;
+    thirdDimensionUrl?: any;
+    thirdDimensionLKValue?: any;
+    thirdDimensionApiToken?: any;
+    distinctLKValue?: any;
+    aggLKValue?: any;    
+    formResponse?: any;
 }
 
 export interface IStaticTable {
@@ -412,24 +455,32 @@ export const SETTING_SIDEBAR: SideBar[] = [
         ]
     },
     {
-        name: 'Report Setting',
+        name: 'Dashboard Setting',
         icon: 'pie-chart',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+        permission: ['DASHBOARD_SETTING_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Manage Dashboard',
+                icon: 'form',
+                link: '/setting/mgDashboard',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['MANAGE_DASHBOARD_PERMISSION']
+            }
+        ]
+    },
+    {
+        name: 'Report Setting',
+        icon: 'paper-clip',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
         permission: ['REPORT_SETTING_PERMISSION'],
         childLinks: [
             {
                 name: 'Manage Report',
                 icon: 'form',
                 link: '/setting/mgReport',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['MANAGE_REPORT_PERMISSION']
-            },
-            {
-                name: 'Report Play Ground',
-                icon: 'html5',
-                link: '/setting/mgReportPlayGround',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['REPORT_PLAY_GROUND_PERMISSION']
             }
         ]
     },
@@ -561,7 +612,8 @@ export const LOOKUP_TYPE = {
     FIELD_TYPE: 'FIELD_TYPE',
     IS_DEFAULT: 'IS_DEFAULT',
     TASK_TYPE: 'TASK_TYPE',
-    REQUEST_METHOD: 'REQUEST_METHOD'
+    REQUEST_METHOD: 'REQUEST_METHOD',
+    DASHBOARD_TYPE: 'DASHBOARD_TYPE'
 }
 
 export const enum APPLICATION_STATUS {
@@ -583,7 +635,9 @@ export const enum NOTIFICATION_TYPE {
 }
 
 export const E_VARAIABLE = {
-    ENV_HOME_PAGE: 'ENV_HOME_PAGE'
+    ENV_HOME_PAGE: 'ENV_HOME_PAGE',
+    DASHBOARD_GROUP: 'DASHBOARD_GROUP',
+    REPORT_GROUP: 'REPORT_GROUP'
 }
 
 export const enum FILED_TYPE {
@@ -621,4 +675,9 @@ export const enum REQUEST_METHOD {
     POST = 2,
     PUT = 3,
     PATCH = 4
+}
+
+export const enum FORM_TYPE {
+    SERVICE_FORM = 0,
+    REPORT_FORM = 1
 }

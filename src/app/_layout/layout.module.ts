@@ -10,13 +10,15 @@ import {
     AdminLayoutComponent,
     MainLayoutComponent,
     UserActionComponent,
-    NotifactionActionComponent
+    NotifactionActionComponent,
+    ReportLayoutComponent
 } from './index';
 
 export const APP_COMPONENT = [
     Header2Component,
     BreadcrumbComponent,
     AdminLayoutComponent,
+    ReportLayoutComponent,
     MainLayoutComponent,
     UserActionComponent,
     NotifactionActionComponent

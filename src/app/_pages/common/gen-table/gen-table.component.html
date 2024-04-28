@@ -33,7 +33,8 @@
 <nz-divider style="margin: 5px 0;"></nz-divider>
 <nz-table #dynamicTable [id]="staticTable.tableId" [nzSize]="staticTable.size" [nzBordered]="staticTable.bordered"
     [nzNoResult]="'No Data'" [nzData]="staticTable.dataSource" [nzPaginationType]="'small'"
-    [nzPaginationPosition]="'bottom'" [nzShowSizeChanger]='true' [nzPageSize]="10" [nzPageSizeOptions]="[10,15]"
+    [nzPaginationPosition]="'bottom'" [nzShowSizeChanger]='true'
+    [nzPageSize]="10" [nzPageSizeOptions]="[10,15,20,25]"
     [nzFrontPagination]="true" [nzShowPagination]="true" (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
     class="table-setting">
     <thead>

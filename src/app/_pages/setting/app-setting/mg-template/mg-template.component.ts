@@ -25,8 +25,6 @@ import { first } from 'rxjs';
 })
 export class MgTemplateComponent implements OnInit {
 
-    public startDate: any;
-    public endDate: any;
     public setOfCheckedId = new Set<any>();
     //
     public sessionUser: AuthResponse;
@@ -119,8 +117,6 @@ export class MgTemplateComponent implements OnInit {
         private commomService: CommomService,
         private templateRegService: TemplateRegService,
         private authenticationService: AuthenticationService) {
-            this.endDate = this.commomService.getCurrentDate();
-            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
             this.authenticationService.currentUser
                 .subscribe(currentUser => {
                     this.sessionUser = currentUser;
@@ -129,8 +125,6 @@ export class MgTemplateComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetchTemplateReg({
-            startDate: this.startDate,
-            endDate: this.endDate,
             sessionUser: {
                 username: this.sessionUser.username
             }
@@ -166,8 +160,6 @@ export class MgTemplateComponent implements OnInit {
                     return;
                 }
                 this.fetchTemplateReg({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -184,8 +176,6 @@ export class MgTemplateComponent implements OnInit {
             this.openCuLookup(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchTemplateReg({
-                startDate: this.startDate,
-                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -216,7 +206,7 @@ export class MgTemplateComponent implements OnInit {
 
     public openCuLookup(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'large',
+            nzSize: 'default',
             nzTitle: actionType === ActionType.ADD ? 'Add Template' : 'Edit Template',
             nzPlacement: 'right',
             nzMaskClosable: false,
@@ -228,8 +218,6 @@ export class MgTemplateComponent implements OnInit {
         });
         drawerRef.afterClose.subscribe(data => {
             this.fetchTemplateReg({
-                startDate: this.startDate,
-                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -258,11 +246,7 @@ export class MgTemplateComponent implements OnInit {
     }
 
     public filterActionReciver(payload: any): void {
-        this.startDate = payload.startDate;
-        this.endDate = payload.endDate;
         this.fetchTemplateReg({
-            startDate: this.startDate,
-            endDate: this.endDate,
             sessionUser: {
                 username: this.sessionUser.username
             }
@@ -280,8 +264,6 @@ export class MgTemplateComponent implements OnInit {
                     return;
                 }
                 this.fetchTemplateReg({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }

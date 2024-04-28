@@ -1,54 +1,45 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { first } from 'rxjs';
-import {
-    FormBuilder,
-    FormGroup,
-    Validators
-} from '@angular/forms';
 import {
     AlertService,
     SpinnerService,
     CommomService
 } from 'src/app/_helpers';
 import {
-    APPLICATION_STATUS,
     ActionType,
-    ApiCode,
     AuthResponse,
     AuthenticationService,
     EVariableService,
-    E_VARAIABLE,
-    FORM_TYPE,
-    FormSettingService,
-    IGenFrom,
     ILookups,
+    IReportSetting,
     LOOKUP_TYPE,
-    LookupService
+    LookupService,
+    APPLICATION_STATUS,
+    ReportSettingService,
+    ApiCode
 } from 'src/app/_shared';
 
 
 @Component({
-    selector: 'app-cu-form',
-    templateUrl: './cu-form.component.html',
-    styleUrls: ['./cu-form.component.css']
+    selector: 'app-cu-report',
+    templateUrl: './cu-report.component.html',
+    styleUrls: ['./cu-report.component.css']
 })
-export class CUFormComponent implements OnInit {
+export class CUReportComponent implements OnInit {
 
     @Input()
     public actionType: ActionType;
     @Input()
-    public editPayload: IGenFrom;
+    public editPayload: IReportSetting;
 
     public loading: boolean = false;
     public editAction = ActionType.EDIT;
 
-    public genFormForm: FormGroup;
+    public reportSettingForm: FormGroup;
     public sessionUser: AuthResponse;
-
     public APPLICATION_STATUS: ILookups;
-    public FORM_TYPE: ILookups;
-    public HOME_PAGE: ILookups;
 
     constructor(
         private fb: FormBuilder,
@@ -57,8 +48,8 @@ export class CUFormComponent implements OnInit {
         private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private envVarService: EVariableService,
+        private reportSettingService: ReportSettingService,
         public commomService: CommomService,
-        private formSettingService: FormSettingService,
         private authenticationService: AuthenticationService) {
         this.authenticationService.currentUser
             .subscribe(currentUser => {
@@ -67,8 +58,6 @@ export class CUFormComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchUserEnvByEnvKey();
-        // APPLICATION_STATUS
         this.lookupService.fetchLookupDataByLookupType({
             lookupType: LOOKUP_TYPE.APPLICATION_STATUS
         }).subscribe((data) => {
@@ -76,86 +65,49 @@ export class CUFormComponent implements OnInit {
             this.APPLICATION_STATUS.SUB_LOOKUP_DATA = this.APPLICATION_STATUS.SUB_LOOKUP_DATA
                 .filter((data) => data.lookupCode !== APPLICATION_STATUS.DELETE);
         });
-        // FORM_TYPE
-        this.lookupService.fetchLookupDataByLookupType({
-            lookupType: LOOKUP_TYPE.FORM_TYPE
-        }).subscribe((data) => {
-            this.FORM_TYPE = data;
-        });
         if (this.actionType === ActionType.ADD) {
-            this.addGenFormForm();
+            this.addReportSettingForm();
         } else if (this.actionType === ActionType.EDIT) {
-            this.editGenFormForm();
+            this.editReportSettingForm();
         }
     }
 
-    public fetchUserEnvByEnvKey(): any {
+    public addReportSettingForm(): any {
         this.spinnerService.show();
-        let payload = {
-            envKey: E_VARAIABLE.ENV_HOME_PAGE,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        };
-        this.envVarService.fetchUserEnvByEnvKey(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.HOME_PAGE = response.data;
-                this.spinnerService.hide();
-            }, (error: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
-            });
-    }
-
-    public addGenFormForm(): any {
-        this.spinnerService.show();
-        this.genFormForm = this.fb.group({
-            formName: ['', Validators.required],
-            description: ['', [Validators.required]],
-            formType: [FORM_TYPE.SERVICE_FORM, [Validators.required]],
-            homePage: [],
-            serviceId: [],
+        this.reportSettingForm = this.fb.group({
         });
         this.spinnerService.hide();
     }
 
-    public editGenFormForm(): void {
+    public editReportSettingForm(): void {
         this.spinnerService.show();
-        this.genFormForm = this.fb.group({
-            id: [this.editPayload.id, [Validators.required]],
-            formName: [this.editPayload.formName, Validators.required],
-            description: [this.editPayload.description, [Validators.required]],
-            status: [this.editPayload.status.lookupCode, [Validators.required]],
-            formType: [this.editPayload.formType.lookupCode, [Validators.required]],
-            homePage: [this.editPayload.homePage ? this.editPayload.homePage.lookupType : ''],
-            serviceId: [this.editPayload.serviceId]
+        this.reportSettingForm = this.fb.group({
         });
         this.spinnerService.hide();
     }
 
-    public onSubmit(): void {
+    public submit(): void {
         if (this.actionType === ActionType.ADD) {
-            this.addForm();
+            this.addReportSetting();
         } else if (this.actionType === ActionType.EDIT) {
-            this.editForm();
+            this.updateReportSetting();
         }
     }
 
-    public addForm(): void {
+    public addReportSetting(): void {
         this.loading = true;
         this.spinnerService.show();
-        if (this.genFormForm.invalid) {
+        if (this.reportSettingForm.invalid) {
             this.spinnerService.hide();
             return;
         }
         let payload = {
-            ...this.genFormForm.value,
+            ...this.reportSettingForm.value,
             sessionUser: {
                 username: this.sessionUser.username
             }
         }
-        this.formSettingService.addForm(payload)
+        this.reportSettingService.addReportSetting(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;
@@ -166,27 +118,27 @@ export class CUFormComponent implements OnInit {
                 }
                 this.closeDrawer();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);;
             });
     }
 
-    public editForm(): void {
+    public updateReportSetting(): void {
         this.loading = true;
         this.spinnerService.show();
-        if (this.genFormForm.invalid) {
+        if (this.reportSettingForm.invalid) {
             this.spinnerService.hide();
             return;
         }
         let payload = {
-            ...this.genFormForm.value,
+            ...this.reportSettingForm.value,
             sessionUser: {
                 username: this.sessionUser.username
             }
         }
-        this.formSettingService.editForm(payload)
+        this.reportSettingService.updateReportSetting(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;
@@ -197,16 +149,16 @@ export class CUFormComponent implements OnInit {
                 }
                 this.closeDrawer();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);;
             });
     }
 
     // convenience getter for easy access to form fields
-    get genForm() {
-        return this.genFormForm.controls;
+    get reportSetting() {
+        return this.reportSettingForm.controls;
     }
 
     public closeDrawer(): void {

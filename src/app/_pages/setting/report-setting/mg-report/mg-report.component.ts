@@ -8,35 +8,31 @@ import {
     SpinnerService
 } from 'src/app/_helpers';
 import {
-    BatchComponent,
-    CUEvariableComponent,
-    EVUCroseTableComponent
-} from 'src/app/_pages';
-import {
+    ActionType,
     ApiCode,
     AuthResponse,
-    IStaticTable,
-    ActionType,
     AuthenticationService,
-    EVariableService,
-    IEnVariables
+    IReportSetting,
+    IStaticTable,
+    ReportSettingService
 } from 'src/app/_shared';
+import { CUReportComponent } from '../cu-report/cu-report.component';
 
 
 @Component({
-    selector: 'app-mg-evariable',
-    templateUrl: './mg-evariable.component.html',
-    styleUrls: ['./mg-evariable.component.css']
+    selector: 'app-mg-report',
+    templateUrl: './mg-report.component.html',
+    styleUrls: ['./mg-report.component.css']
 })
-export class MgEVariableComponent implements OnInit {
+export class MgReportComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
     public setOfCheckedId = new Set<any>();
     public sessionUser: AuthResponse;
-    public eVariableTable: IStaticTable = {
-        tableId: 'variable_id',
-        title: 'E-Variable',
+    public reportSettingTable: IStaticTable = {
+        tableId: 'report_id',
+        title: 'Mg Report',
         bordered: true,
         checkbox: true,
         size: 'small',
@@ -147,7 +143,7 @@ export class MgEVariableComponent implements OnInit {
         private alertService: AlertService,
         private commomService: CommomService,
         private spinnerService: SpinnerService,
-        private eVariableService: EVariableService,
+        private reportSettingService: ReportSettingService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
         this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
@@ -158,7 +154,7 @@ export class MgEVariableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchAllEnVariable({
+        this.fetchAllReportSetting({
             startDate: this.startDate,
             endDate: this.endDate,
             sessionUser: {
@@ -166,11 +162,11 @@ export class MgEVariableComponent implements OnInit {
             }
         });
     }
-
+    
     // fetch all lookup
-    public fetchAllEnVariable(payload: any): any {
+    public fetchAllReportSetting(payload: any): any {
         this.spinnerService.show();
-        this.eVariableService.fetchAllEnVariable(payload)
+        this.reportSettingService.fetchAllReportSetting(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -178,16 +174,16 @@ export class MgEVariableComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.eVariableTable.dataSource = response.data;
+                this.reportSettingTable.dataSource = response.data;
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
-    public deleteEnVariableById(payload: any): void {
+    public deleteReportSettingById(payload: any): void {
         this.spinnerService.show();
-        this.eVariableService.deleteEnVariableById(payload)
+        this.reportSettingService.deleteReportSettingById(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -195,7 +191,7 @@ export class MgEVariableComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllEnVariable({
+                this.fetchAllReportSetting({
                     startDate: this.startDate,
                     endDate: this.endDate,
                     sessionUser: {
@@ -209,98 +205,50 @@ export class MgEVariableComponent implements OnInit {
             });
     }
 
-    public buttonActionReciver(payload: any): void {
-        if (ActionType.ADD === payload.action) {
-            this.openCuEnVariable(ActionType.ADD, null);
-        } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchAllEnVariable({
-                startDate: this.startDate,
-                endDate: this.endDate,
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
-        } else if (ActionType.DOWNLOAD === payload.action) {
-            this.spinnerService.show();
-            this.eVariableService.downloadEnVariable({
-                ids: payload.checked,
-                startDate: this.startDate,
-                endDate: this.endDate,
-                sessionUser: {
-                    username: this.sessionUser.username
-                },
-            }).pipe(first())
-                .subscribe((response: any) => {
-                    this.commomService.downLoadFile(response);
-                    this.spinnerService.hide();
-                }, (response: any) => {
-                    this.spinnerService.hide();
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
-                });
-        } else if (ActionType.UPLOAD === payload.action) {
-            payload.action = 'EVariable';
-            const drawerRef = this.drawerService.create({
-                nzTitle: 'Batch Operation',
-                nzSize: 'default',
-                nzMaskClosable: false,
-                nzFooter: 'Note :- Add Xlsx File For Process, Once File Upload Successfully Click the Refresh Button',
-                nzContent: BatchComponent,
-                nzContentParams: {
-                    batchDetail: payload
-                }
-            });
-            drawerRef.afterClose.subscribe(data => {
-                this.fetchAllEnVariable({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-            });
-        }
-    }
-
     public tableActionReciver(payload: any): void {
         if (ActionType.EDIT === payload.action) {
             this.openCuEnVariable(ActionType.EDIT, payload);
-        } else if (ActionType.LINK === payload.action) {
-            this.drawerService.create({
-                nzTitle: '[' + payload.data.id + '] ' + payload.data.envKey,
-                nzWidth: 800,
-                nzFooter: null, // Optional footer
-                nzContent: EVUCroseTableComponent,
-                nzContentParams: {
-                    enVariable: payload.data
-                }
-            });
-        }else if (ActionType.DELETE === payload.action) {
+        } else if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
                 nzOkText: 'Ok',
                 nzCancelText: 'Cancel',
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    let enVariable: IEnVariables = {
+                    let report: IReportSetting = {
                         id: payload.data.id,
-                        envKey: payload.data.envKey,
+                        name: payload.data.name,
                         description: payload.data.description
                     }
-                    this.deleteEnVariableById({
-                        ...enVariable,
+                    this.deleteReportSettingById({
+                        ...report,
                         sessionUser: {
                             username: this.sessionUser.username
                         }
                     });
                 }
             });
-        } 
+        }
+    }
+
+    public buttonActionReciver(payload: any): void {
+        if (ActionType.ADD === payload.action) {
+            this.openCuEnVariable(ActionType.ADD, null);
+        } else if (ActionType.RE_FRESH === payload.action) {
+            this.fetchAllReportSetting({
+                startDate: this.startDate,
+                endDate: this.endDate,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        }
     }
 
     public filterActionReciver(payload: any): void {
         this.startDate = payload.startDate;
         this.endDate = payload.endDate;
-        this.fetchAllEnVariable({
+        this.fetchAllReportSetting({
             startDate: this.startDate,
             endDate: this.endDate,
             sessionUser: {
@@ -317,7 +265,7 @@ export class MgEVariableComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    this.deleteAllEnVariable(
+                    this.deleteAllReportSetting(
                         {
                             ids: payload.checked,
                             sessionUser: {
@@ -331,18 +279,18 @@ export class MgEVariableComponent implements OnInit {
 
     public openCuEnVariable(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'default',
-            nzTitle: actionType === ActionType.ADD ? 'Add EVariable' : 'Edit EVariable',
+            nzSize: 'large',
+            nzTitle: actionType === ActionType.ADD ? 'Add Report' : 'Edit Report',
             nzPlacement: 'right',
             nzMaskClosable: false,
-            nzContent: CUEvariableComponent,
+            nzContent: CUReportComponent,
             nzContentParams: {
                 actionType: actionType,
                 editPayload: editPayload?.data
             }
         });
         drawerRef.afterClose.subscribe(data => {
-            this.fetchAllEnVariable({
+            this.deleteAllReportSetting({
                 startDate: this.startDate,
                 endDate: this.endDate,
                 sessionUser: {
@@ -352,9 +300,9 @@ export class MgEVariableComponent implements OnInit {
         });
     }
 
-    public deleteAllEnVariable(payload: any): void {
+    public deleteAllReportSetting(payload: any): void {
         this.spinnerService.show();
-        this.eVariableService.deleteAllEnVariable(payload)
+        this.reportSettingService.deleteAllReportSetting(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -362,7 +310,7 @@ export class MgEVariableComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllEnVariable({
+                this.fetchAllReportSetting({
                     startDate: this.startDate,
                     endDate: this.endDate,
                     sessionUser: {

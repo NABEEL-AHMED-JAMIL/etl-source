@@ -395,7 +395,7 @@ export class MGLookupComponent implements OnInit {
     public openCuLookup(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
             nzTitle: actionType === ActionType.ADD ? 'Add Lookup' : 'Edit Lookup',
-            nzSize: 'large',
+            nzSize: 'default',
             nzMaskClosable: false,
             nzContent: CULookupComponent,
             nzContentParams: {

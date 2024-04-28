@@ -20,7 +20,8 @@ import {
     AuthenticationService,
     FormSettingService,
     ApiCode,
-    IGenFrom
+    IGenFrom,
+    FORM_TYPE
 } from 'src/app/_shared';
 
 
@@ -153,6 +154,9 @@ export class MGFormComponent implements OnInit {
             {
                 type: 'link',
                 title: 'Link With STT',
+                targetFiled: 'formType',
+                condition: "EQ",
+                targetValue: FORM_TYPE.SERVICE_FORM,
                 action: ActionType.LINK_STT
             },
             {

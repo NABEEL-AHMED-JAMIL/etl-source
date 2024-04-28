@@ -67,6 +67,11 @@ export class MgRefreshTokenComponent implements OnInit {
                 type: 'data'
             },
             {
+                field: 'dateCreated',
+                header: 'Created',
+                type: 'date'
+            },
+            {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',

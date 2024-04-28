@@ -12,43 +12,42 @@ import {
     CommomService
 } from 'src/app/_helpers';
 import {
-    APPLICATION_STATUS,
     ActionType,
-    ApiCode,
+    IDashboardSetting,
     AuthResponse,
-    AuthenticationService,
-    EVariableService,
-    E_VARAIABLE,
-    FORM_TYPE,
-    FormSettingService,
-    IGenFrom,
     ILookups,
+    AuthenticationService,
+    LookupService,
+    DashboardService,
     LOOKUP_TYPE,
-    LookupService
+    APPLICATION_STATUS,
+    ApiCode,
+    E_VARAIABLE,
+    EVariableService
 } from 'src/app/_shared';
 
 
 @Component({
-    selector: 'app-cu-form',
-    templateUrl: './cu-form.component.html',
-    styleUrls: ['./cu-form.component.css']
+    selector: 'app-cu-dashboard',
+    templateUrl: './cu-dashboard.component.html',
+    styleUrls: ['./cu-dashboard.component.css']
 })
-export class CUFormComponent implements OnInit {
+export class CUDashboardComponent implements OnInit {
 
     @Input()
     public actionType: ActionType;
     @Input()
-    public editPayload: IGenFrom;
+    public editPayload: IDashboardSetting;
 
     public loading: boolean = false;
     public editAction = ActionType.EDIT;
 
-    public genFormForm: FormGroup;
+    public dashboardSettingForm: FormGroup;
     public sessionUser: AuthResponse;
-
     public APPLICATION_STATUS: ILookups;
-    public FORM_TYPE: ILookups;
-    public HOME_PAGE: ILookups;
+    public DASHBOARD_TYPE: ILookups;
+    public DASHBOARD_GROUP: ILookups;
+    public UI_LOOKUP: ILookups;
 
     constructor(
         private fb: FormBuilder,
@@ -57,8 +56,8 @@ export class CUFormComponent implements OnInit {
         private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private envVarService: EVariableService,
+        private dashboardService: DashboardService,
         public commomService: CommomService,
-        private formSettingService: FormSettingService,
         private authenticationService: AuthenticationService) {
         this.authenticationService.currentUser
             .subscribe(currentUser => {
@@ -68,7 +67,11 @@ export class CUFormComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetchUserEnvByEnvKey();
-        // APPLICATION_STATUS
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.UI_LOOKUP
+        }).subscribe((data) => {
+            this.UI_LOOKUP = data;
+        });
         this.lookupService.fetchLookupDataByLookupType({
             lookupType: LOOKUP_TYPE.APPLICATION_STATUS
         }).subscribe((data) => {
@@ -76,23 +79,22 @@ export class CUFormComponent implements OnInit {
             this.APPLICATION_STATUS.SUB_LOOKUP_DATA = this.APPLICATION_STATUS.SUB_LOOKUP_DATA
                 .filter((data) => data.lookupCode !== APPLICATION_STATUS.DELETE);
         });
-        // FORM_TYPE
         this.lookupService.fetchLookupDataByLookupType({
-            lookupType: LOOKUP_TYPE.FORM_TYPE
+            lookupType: LOOKUP_TYPE.DASHBOARD_TYPE
         }).subscribe((data) => {
-            this.FORM_TYPE = data;
+            this.DASHBOARD_TYPE = data;
         });
         if (this.actionType === ActionType.ADD) {
-            this.addGenFormForm();
+            this.addDashboardSettingForm();
         } else if (this.actionType === ActionType.EDIT) {
-            this.editGenFormForm();
+            this.editDashboardSettingForm();
         }
     }
 
     public fetchUserEnvByEnvKey(): any {
         this.spinnerService.show();
         let payload = {
-            envKey: E_VARAIABLE.ENV_HOME_PAGE,
+            envKey: E_VARAIABLE.DASHBOARD_GROUP,
             sessionUser: {
                 username: this.sessionUser.username
             }
@@ -100,7 +102,7 @@ export class CUFormComponent implements OnInit {
         this.envVarService.fetchUserEnvByEnvKey(payload)
             .pipe(first())
             .subscribe((response: any) => {
-                this.HOME_PAGE = response.data;
+                this.DASHBOARD_GROUP = response.data;
                 this.spinnerService.hide();
             }, (error: any) => {
                 this.spinnerService.hide();
@@ -108,54 +110,56 @@ export class CUFormComponent implements OnInit {
             });
     }
 
-    public addGenFormForm(): any {
+    public addDashboardSettingForm(): any {
         this.spinnerService.show();
-        this.genFormForm = this.fb.group({
-            formName: ['', Validators.required],
-            description: ['', [Validators.required]],
-            formType: [FORM_TYPE.SERVICE_FORM, [Validators.required]],
-            homePage: [],
-            serviceId: [],
+        this.dashboardSettingForm = this.fb.group({
+            name: ['', Validators.required],
+            groupType: ['', Validators.required],
+            description: ['', Validators.required],
+            boardType: ['', Validators.required],
+            dashboardUrl: ['', Validators.required],
+            iframe: ['', Validators.required],
         });
         this.spinnerService.hide();
     }
 
-    public editGenFormForm(): void {
+    public editDashboardSettingForm(): void {
         this.spinnerService.show();
-        this.genFormForm = this.fb.group({
-            id: [this.editPayload.id, [Validators.required]],
-            formName: [this.editPayload.formName, Validators.required],
-            description: [this.editPayload.description, [Validators.required]],
-            status: [this.editPayload.status.lookupCode, [Validators.required]],
-            formType: [this.editPayload.formType.lookupCode, [Validators.required]],
-            homePage: [this.editPayload.homePage ? this.editPayload.homePage.lookupType : ''],
-            serviceId: [this.editPayload.serviceId]
+        this.dashboardSettingForm = this.fb.group({
+            id: [this.editPayload.id, Validators.required],
+            name: [this.editPayload.name, Validators.required],
+            groupType: [this.editPayload.groupType?.lookupType, Validators.required],
+            description: [this.editPayload.description, Validators.required],
+            boardType: [this.editPayload.boardType?.lookupCode, Validators.required],
+            dashboardUrl: [this.editPayload.dashboardUrl, Validators.required],
+            iframe: [this.editPayload.iframe?.lookupCode, Validators.required],
+            status: [this.editPayload.status?.lookupCode, Validators.required]
         });
         this.spinnerService.hide();
     }
 
-    public onSubmit(): void {
+    public submit(): void {
         if (this.actionType === ActionType.ADD) {
-            this.addForm();
+            this.addDashboardSetting();
         } else if (this.actionType === ActionType.EDIT) {
-            this.editForm();
+            this.updateDashboardSetting();
         }
     }
 
-    public addForm(): void {
+    public addDashboardSetting(): void {
         this.loading = true;
         this.spinnerService.show();
-        if (this.genFormForm.invalid) {
+        if (this.dashboardSettingForm.invalid) {
             this.spinnerService.hide();
             return;
         }
         let payload = {
-            ...this.genFormForm.value,
+            ...this.dashboardSettingForm.value,
             sessionUser: {
                 username: this.sessionUser.username
             }
         }
-        this.formSettingService.addForm(payload)
+        this.dashboardService.addDashboardSetting(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;
@@ -166,27 +170,27 @@ export class CUFormComponent implements OnInit {
                 }
                 this.closeDrawer();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);;
             });
     }
 
-    public editForm(): void {
+    public updateDashboardSetting(): void {
         this.loading = true;
         this.spinnerService.show();
-        if (this.genFormForm.invalid) {
+        if (this.dashboardSettingForm.invalid) {
             this.spinnerService.hide();
             return;
         }
         let payload = {
-            ...this.genFormForm.value,
+            ...this.dashboardSettingForm.value,
             sessionUser: {
                 username: this.sessionUser.username
             }
         }
-        this.formSettingService.editForm(payload)
+        this.dashboardService.updateDashboardSetting(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;
@@ -197,16 +201,16 @@ export class CUFormComponent implements OnInit {
                 }
                 this.closeDrawer();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);;
             });
     }
 
     // convenience getter for easy access to form fields
-    get genForm() {
-        return this.genFormForm.controls;
+    get dashboardSetting() {
+        return this.dashboardSettingForm.controls;
     }
 
     public closeDrawer(): void {

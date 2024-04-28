@@ -1,11 +1,13 @@
 <div class="content">
-    <h3>{{templateTable.title}}</h3>
+    <h3>{{dashboardTable.title}}</h3>
     <nz-divider style="margin: 5px 0;"></nz-divider>
     <app-gen-table 
-        *ngIf="templateTable"
-        [isDateFilter]="false"
+        *ngIf="dashboardTable"
+        [isDateFilter]="true"
+        [startDate]="startDate"
+        [endDate]="endDate"
         [setOfCheckedId]="setOfCheckedId"
-        [staticTable]="templateTable"
+        [staticTable]="dashboardTable"
         (actionEventEmitter)="tableActionReciver($event)"
         (buttonEventEmitter)="buttonActionReciver($event)"
         (filterEventEmitter)="filterActionReciver($event)"
