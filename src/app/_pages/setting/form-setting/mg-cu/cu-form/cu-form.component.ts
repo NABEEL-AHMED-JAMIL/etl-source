@@ -131,6 +131,7 @@ export class CUFormComponent implements OnInit {
             homePage: [this.editPayload.homePage ? this.editPayload.homePage.lookupType : ''],
             serviceId: [this.editPayload.serviceId]
         });
+        this.genFormForm.get('formType').disable();
         this.spinnerService.hide();
     }
 

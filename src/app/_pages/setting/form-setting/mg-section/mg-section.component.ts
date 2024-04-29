@@ -391,7 +391,6 @@ export class MGSectionComponent implements OnInit {
 
     public openCuSection(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add Section' : 'Edit Section',
             nzPlacement: 'right',
             nzMaskClosable: false,

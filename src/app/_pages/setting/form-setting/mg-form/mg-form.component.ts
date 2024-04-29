@@ -413,6 +413,7 @@ export class MGFormComponent implements OnInit {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add Form' : 'Edit Form',
+            nzFooter: 'Once Form Created, Form Type Will Not Change',
             nzPlacement: 'right',
             nzMaskClosable: false,
             nzContent: CUFormComponent,

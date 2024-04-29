@@ -1,1 +1,340 @@
-Dashboard
+<form nz-form [nzLayout]="'vertical'"
+    [formGroup]="reportSettingForm"
+    (ngSubmit)="submit()">
+    <div nz-row [nzGutter]="16">
+        <div nz-col [nzSpan]="actionType !== editAction ? 12 : 8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Name</nz-form-label>
+                <nz-form-control nzErrorTip="Profile Name Required">
+                    <input nz-input formControlName="name" placeholder="Enter Name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="actionType !== editAction ? 12 : 8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Group Type</nz-form-label>
+                <nz-form-control nzErrorTip="Group Type Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="groupType"
+                        nzPlaceHolder="Select Dashboard Type">
+                        <nz-option *ngFor="let lookupChildren of REPORT_GROUP?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupType">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8" *ngIf="actionType === editAction">
+            <nz-form-item>
+                <nz-form-label nzRequired>Report Status</nz-form-label>
+                <nz-form-control nzErrorTip="Report Status Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="status"
+                        nzPlaceHolder="Select Report Status">
+                        <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- dimention detail -->
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label nzRequired>Report Config Detail</nz-form-label>
+                <nz-table [nzData]="['']" nzSize="small" [nzFrontPagination]="false" 
+                    [nzBordered]="false" [nzShowPagination]="false"
+                    class="table-setting">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;text-align: center;">Data Type</th>
+                            <th style="text-align: center;">Service Url
+                                <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
+                                nzTooltipTitle="Your Application Service Url Must Be Post Type."
+                                    nzTooltipPlacement="top" nz-tooltip>
+                                </span>
+                            </th>
+                            <th style="text-align: center;">Service Token
+                                <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
+                                    nzTooltipTitle="Your Application Service Token, If Any Access Url."
+                                        nzTooltipPlacement="top" nz-tooltip>
+                                </span>
+                            </th>
+                            <th style="text-align: center;">Lookup Value
+                                <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
+                                    nzTooltipTitle="Enter The Valid Lookup For DropDown Show In Report."
+                                        nzTooltipPlacement="top" nz-tooltip>
+                                </span>
+                            </th>
+                            <th style="text-align: center;width: 10%;">Hide/Show
+                                <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
+                                    nzTooltipTitle="Enable Check, Will Show The Setting On Report Screen"
+                                        nzTooltipPlacement="top" nz-tooltip>
+                                </span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <nz-badge nzStatus="processing"></nz-badge> Want Data?
+                            </td>
+                            <td>
+                                <input nz-input type="url" class="form-control input-sm"
+                                    name="dataUrl" placeholder="Enter API URL"
+                                    formControlName="dataUrl">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm"
+                                    name="dataApiToken" placeholder="Enter API Token"
+                                    formControlName="dataApiToken">
+                            </td>
+                            <td style="text-align: center;">NO LOOKUP</td>
+                            <td>
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select DATA"
+                                    formControlName="isData" style="width: 100%;">
+                                    <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
+                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                    </nz-option>
+                                </nz-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><nz-badge nzStatus="processing"></nz-badge> Want First Dimension?</td>
+                            <td>
+                                <input nz-input type="url" class="form-control input-sm"
+                                    name="firstDimensionUrl" placeholder="Enter API URL"
+                                    formControlName="firstDimensionUrl">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm"
+                                    name="firstDimensionApiToken" placeholder="Enter API Token"
+                                    formControlName="firstDimensionApiToken">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm"
+                                    name="firstDimensionLKValue" placeholder="Enter Lookup Key"
+                                    formControlName="firstDimensionLKValue"
+                                    (ngModelChange)="onChangefieldLkValue($event)">
+                            </td>
+                            <td>
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select First Dimention"
+                                    formControlName="isFirstDimension" style="width: 100%;">
+                                    <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
+                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                    </nz-option>
+                                </nz-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><nz-badge nzStatus="processing"></nz-badge> Want Second Dimension?</td>
+                            <td>
+                                <input nz-input type="url" class="form-control input-sm"
+                                    name="secondDimensionUrl" placeholder="Enter API URL"
+                                    formControlName="secondDimensionUrl">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm"
+                                    name="secondDimensionApiToken" placeholder="Enter API Token"
+                                    formControlName="secondDimensionApiToken">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm"
+                                    name="secondDimensionLKValue" placeholder="Enter Lookup Key"
+                                    formControlName="secondDimensionLKValue"
+                                    (ngModelChange)="onChangefieldLkValue($event)">
+                            </td>
+                            <td>
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select CSV"
+                                    formControlName="isSecondDimension" style="width: 100%;">
+                                    <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
+                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                    </nz-option>
+                                </nz-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><nz-badge nzStatus="processing"></nz-badge> Want Third Dimension?</td>
+                            <td>
+                                <input nz-input type="url" class="form-control input-sm"
+                                    name="thirdDimensionUrl" placeholder="Enter API URL"
+                                    formControlName="thirdDimensionUrl">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm"
+                                    name="thirdDimensionApiToken" placeholder="Enter API Token"
+                                    formControlName="thirdDimensionApiToken">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm"
+                                    name="thirdDimensionLKValue" placeholder="Enter Lookup Key"
+                                    formControlName="thirdDimensionLKValue" (ngModelChange)="onChangefieldLkValue($event)">
+                            </td>
+                            <td>
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Third" formControlName="isThirdDimension"
+                                    style="width: 100%;">
+                                    <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
+                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                    </nz-option>
+                                </nz-select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </nz-form-item>
+        </div>
+        <!-- download detail -->
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label nzRequired>Want Downalod File?</nz-form-label>
+                <nz-table [nzData]="['']" nzSize="small" [nzFrontPagination]="false" 
+                    [nzBordered]="false" [nzShowPagination]="false"
+                    class="table-setting">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;text-align: center;">Downalod Type</th>
+                            <th style="text-align: center;">Service Url
+                                <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
+                                nzTooltipTitle="Your Application Service Url Must Be Post Type."
+                                    nzTooltipPlacement="top" nz-tooltip>
+                                </span>
+                            </th>
+                            <th style="text-align: center;">Service Token
+                                <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
+                                    nzTooltipTitle="Your Application Service Token, If Any Access Url."
+                                        nzTooltipPlacement="top" nz-tooltip>
+                                </span>
+                            </th>
+                            <th style="text-align: center;width: 10%;">Hide/Show
+                                <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
+                                    nzTooltipTitle="Enable Check, Will Show The Setting On Report Screen"
+                                        nzTooltipPlacement="top" nz-tooltip>
+                                </span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><nz-badge nzStatus="processing"></nz-badge> Want Pdf?</td>
+                            <td>
+                                <input nz-input type="url" class="form-control input-sm"
+                                    name="pdfUrl" placeholder="Enter API URL" formControlName="pdfUrl">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm"
+                                    name="pdfApiToken" placeholder="Enter API Token" formControlName="pdfApiToken">
+                            </td>
+                            <td>
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select PDF" formControlName="isPdf"
+                                    style="width: 100%;">
+                                    <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
+                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                    </nz-option>
+                                </nz-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><nz-badge nzStatus="processing"></nz-badge> Want XLSX?</td>
+                            <td>
+                                <input nz-input type="url" class="form-control input-sm"
+                                    name="xlsxUrl" placeholder="Enter API URL" formControlName="xlsxUrl">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm"
+                                    name="xlsxApiToken" placeholder="Enter API Token" formControlName="xlsxApiToken">
+                            </td>
+                            <td>
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select XLSX" formControlName="isXlsx"
+                                    style="width: 100%;">
+                                    <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
+                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                    </nz-option>
+                                </nz-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><nz-badge nzStatus="processing"></nz-badge> Want CSV?</td>
+                            <td>
+                                <input nz-input type="url" class="form-control input-sm"
+                                    name="csvUrl" placeholder="Enter API URL" formControlName="csvUrl">
+                            </td>
+                            <td>
+                                <input nz-input type="text" class="form-control input-sm"
+                                    name="csvApiToken" placeholder="Enter API Token" formControlName="csvApiToken">
+                            </td>
+                            <td>
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select CSV" formControlName="isCsv"
+                                    style="width: 100%;">
+                                    <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
+                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                    </nz-option>
+                                </nz-select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="formRefShow ? 6 : 8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Distinct LookupKey</nz-form-label>
+                <nz-form-control nzErrorTip="Profile Name Required">
+                    <input nz-input formControlName="distinctLKValue"
+                        placeholder="Enter Distinct Lookup"
+                        (ngModelChange)="onChangefieldLkValue($event)"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="formRefShow ? 6 : 8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Aggreation LookupKey</nz-form-label>
+                <nz-form-control nzErrorTip="Profile Name Required">
+                    <input nz-input formControlName="aggLKValue"
+                        placeholder="Enter Aggreation Lookup"
+                        (ngModelChange)="onChangefieldLkValue($event)"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="formRefShow ? 6 : 8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Payload Ref</nz-form-label>
+                <nz-form-control nzErrorTip="Payload Ref Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="payloadRef"
+                        nzPlaceHolder="Select Payload Ref"
+                        (ngModelChange)="onChangePayloadRefValue($event)">
+                        <nz-option *ngFor="let lookupChildren of PAYLOAD_REF?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="6" *ngIf="formRefShow">
+            <nz-form-item>
+                <nz-form-label nzRequired>Form Reference</nz-form-label>
+                <nz-form-control nzErrorTip="Form Reference Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="formRequestId"
+                        nzPlaceHolder="Select Form Reference">
+                        <nz-option *ngFor="let genForm of genForms"
+                            [nzLabel]="genForm.formName" [nzValue]="genForm.id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label>Description</nz-form-label>
+                <nz-form-control nzErrorTip="Description Required">
+                    <textarea nz-input formControlName="description"
+                        [nzAutosize]="{ minRows: 3}"
+                        placeholder="Enter Description"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>      
+        <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button type="reset">Clear</button>
+            <button nz-button [nzType]="'primary'" [nzLoading]="loading"
+                [disabled]="!reportSettingForm.valid"
+                type="submit" style="float: right;">Submit</button>
+        </div>
+    </div>
+</form>

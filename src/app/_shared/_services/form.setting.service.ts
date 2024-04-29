@@ -65,6 +65,10 @@ export class FormSettingService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchForms`, payload);
     }
 
+    public fetchFormsByFormType(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchFormsByFormType`, payload);
+    }
+
     public deleteAllForms(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/deleteAllForms`, payload);
     }
