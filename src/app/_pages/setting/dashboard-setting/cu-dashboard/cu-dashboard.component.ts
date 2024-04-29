@@ -44,6 +44,7 @@ export class CUDashboardComponent implements OnInit {
 
     public dashboardSettingForm: FormGroup;
     public sessionUser: AuthResponse;
+    // ilookup
     public APPLICATION_STATUS: ILookups;
     public DASHBOARD_TYPE: ILookups;
     public DASHBOARD_GROUP: ILookups;

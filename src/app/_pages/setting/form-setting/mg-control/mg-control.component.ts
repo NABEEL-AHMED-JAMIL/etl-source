@@ -151,18 +151,18 @@ export class MgControlComponent implements OnInit {
                 action: ActionType.EDIT
             },
             {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            },
-            {
                 type: 'link',
                 color: 'orange',
                 spin: false,
                 tooltipTitle: 'Link With Section',
                 action: ActionType.LINK_SECTION
+            },
+            {
+                type: 'delete',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Delete',
+                action: ActionType.DELETE
             }
         ]
     };

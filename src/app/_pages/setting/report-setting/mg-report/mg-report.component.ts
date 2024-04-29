@@ -50,20 +50,6 @@ export class MgReportComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Refresh',
                 action: ActionType.RE_FRESH
-            },
-            {
-                type: 'upload',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Upload',
-                action: ActionType.UPLOAD
-            },
-            {
-                type: 'download',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Download',
-                action: ActionType.DOWNLOAD
             }
         ],
         extraHeaderButton: [
@@ -75,14 +61,54 @@ export class MgReportComponent implements OnInit {
         ],
         dataColumn: [
             {
-                field: 'envKey',
-                header: 'Env Key',
+                field: 'name',
+                header: 'Name',
                 type: 'data'
             },
             {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
+                field: 'groupType',
+                header: 'Group Type',
+                type: 'tag'
+            },
+            {
+                field: 'payloadRef',
+                header: 'Payload Ref',
+                type: 'tag'
+            },
+            {
+                field: 'isPdf',
+                header: 'Pdf File',
+                type: 'tag'
+            },
+			{
+                field: 'isXlsx',
+                header: 'Xlsx File',
+                type: 'tag'
+            },
+			{
+                field: 'isCsv',
+                header: 'Csv File',
+                type: 'tag'
+            },
+            {
+                field: 'isData',
+                header: 'Data File',
+                type: 'tag'
+            },
+			{
+                field: 'isFirstDimension',
+                header: '1st Dim',
+                type: 'tag'
+            },
+			{
+                field: 'isSecondDimension',
+                header: '2nd Dim',
+                type: 'tag'
+            },
+			{
+                field: 'isThirdDimension',
+                header: '3rd Dim',
+                type: 'tag'
             },
             {
                 field: 'dateCreated',
@@ -119,13 +145,6 @@ export class MgReportComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Edit',
                 action: ActionType.EDIT
-            },
-            {
-                type: 'link',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'Link With User',
-                action: ActionType.LINK
             },
             {
                 type: 'delete',
@@ -280,7 +299,9 @@ export class MgReportComponent implements OnInit {
     public openCuEnVariable(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
+            nzWidth: 1100,
             nzTitle: actionType === ActionType.ADD ? 'Add Report' : 'Edit Report',
+            nzFooter: 'For Service OutPut Pattern Please Download The Above Documentation.',
             nzPlacement: 'right',
             nzMaskClosable: false,
             nzContent: CUReportComponent,
@@ -290,7 +311,7 @@ export class MgReportComponent implements OnInit {
             }
         });
         drawerRef.afterClose.subscribe(data => {
-            this.deleteAllReportSetting({
+            this.fetchAllReportSetting({
                 startDate: this.startDate,
                 endDate: this.endDate,
                 sessionUser: {

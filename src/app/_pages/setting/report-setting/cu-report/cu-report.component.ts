@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { first } from 'rxjs';
 import {
@@ -18,7 +18,11 @@ import {
     LookupService,
     APPLICATION_STATUS,
     ReportSettingService,
-    ApiCode
+    ApiCode,
+    E_VARAIABLE,
+    IGenFrom,
+    FormSettingService,
+    PAYLOAD_REF
 } from 'src/app/_shared';
 
 
@@ -35,11 +39,17 @@ export class CUReportComponent implements OnInit {
     public editPayload: IReportSetting;
 
     public loading: boolean = false;
+    public formRefShow: boolean = false;
     public editAction = ActionType.EDIT;
 
     public reportSettingForm: FormGroup;
     public sessionUser: AuthResponse;
+    // ilookup
+    public genForms: IGenFrom[] = [];
     public APPLICATION_STATUS: ILookups;
+    public REPORT_GROUP: ILookups;
+    public PAYLOAD_REF: ILookups;
+    public UI_LOOKUP: ILookups;
 
     constructor(
         private fb: FormBuilder,
@@ -48,6 +58,7 @@ export class CUReportComponent implements OnInit {
         private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private envVarService: EVariableService,
+        private formSettingService: FormSettingService,
         private reportSettingService: ReportSettingService,
         public commomService: CommomService,
         private authenticationService: AuthenticationService) {
@@ -58,6 +69,17 @@ export class CUReportComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.fetchUserEnvByEnvKey();
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.UI_LOOKUP
+        }).subscribe((data) => {
+            this.UI_LOOKUP = data;
+        });
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.PAYLOAD_REF
+        }).subscribe((data) => {
+            this.PAYLOAD_REF = data;
+        });
         this.lookupService.fetchLookupDataByLookupType({
             lookupType: LOOKUP_TYPE.APPLICATION_STATUS
         }).subscribe((data) => {
@@ -70,11 +92,85 @@ export class CUReportComponent implements OnInit {
         } else if (this.actionType === ActionType.EDIT) {
             this.editReportSettingForm();
         }
+        // report form type
+        this.fetchFormsByFormType({
+            formType: 1,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
+    }
+
+    // fetch all lookup
+    public fetchFormsByFormType(payload: any): any {
+        this.spinnerService.show();
+        this.formSettingService.fetchFormsByFormType(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.genForms = response.data;
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error.message, ApiCode.ERROR);
+            });
+    }
+    
+    public fetchUserEnvByEnvKey(): any {
+        this.spinnerService.show();
+        let payload = {
+            envKey: E_VARAIABLE.REPORT_GROUP,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        };
+        this.envVarService.fetchUserEnvByEnvKey(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.REPORT_GROUP = response.data;
+                this.spinnerService.hide();
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error, ApiCode.ERROR);
+            });
     }
 
     public addReportSettingForm(): any {
         this.spinnerService.show();
         this.reportSettingForm = this.fb.group({
+            name: ['', Validators.required],
+            groupType: ['', Validators.required],
+            description: ['', Validators.required],
+            payloadRef: ['', Validators.required],
+            isPdf: [0, Validators.required],
+            pdfUrl: [],
+            pdfApiToken: [],
+            isXlsx: [0, Validators.required],
+            xlsxUrl: [],
+            xlsxApiToken: [],
+            isCsv: [0, Validators.required],
+            csvUrl: [],
+            csvApiToken: [],
+            isData: [0, Validators.required],
+            dataUrl: [],
+            dataApiToken: [],
+            isFirstDimension: [0, Validators.required],
+            firstDimensionUrl: ['', Validators.required],
+            firstDimensionApiToken: [],
+            firstDimensionLKValue: ['', Validators.required],
+            isSecondDimension: [0, Validators.required],
+            secondDimensionUrl: ['', Validators.required],
+            secondDimensionApiToken: [],
+            secondDimensionLKValue: ['', Validators.required],
+            isThirdDimension: [0, Validators.required],
+            thirdDimensionUrl: ['', Validators.required],
+            thirdDimensionApiToken: [],
+            thirdDimensionLKValue: ['', Validators.required],
+            distinctLKValue: [],
+            aggLKValue: []
         });
         this.spinnerService.hide();
     }
@@ -82,8 +178,86 @@ export class CUReportComponent implements OnInit {
     public editReportSettingForm(): void {
         this.spinnerService.show();
         this.reportSettingForm = this.fb.group({
+            id: [this.editPayload.id, Validators.required],
+            name: [this.editPayload.name, Validators.required],
+            groupType: [this.editPayload.groupType?.lookupType, Validators.required],
+            description: [this.editPayload.description, Validators.required],
+            payloadRef: [this.editPayload.payloadRef?.lookupCode, Validators.required],
+            isPdf: [this.editPayload.isPdf?.lookupCode, Validators.required],
+            pdfUrl: [this.editPayload.pdfUrl],
+            pdfApiToken: [this.editPayload.pdfApiToken],
+            isXlsx: [this.editPayload.isXlsx?.lookupCode, Validators.required],
+            xlsxUrl: [this.editPayload.xlsxUrl],
+            xlsxApiToken: [this.editPayload.xlsxApiToken],
+            isCsv: [this.editPayload.isCsv?.lookupCode, Validators.required],
+            csvUrl: [this.editPayload.csvUrl],
+            csvApiToken: [this.editPayload.csvApiToken],
+            isData: [this.editPayload.isData?.lookupCode, Validators.required],
+            dataUrl: [this.editPayload.dataUrl],
+            dataApiToken: [this.editPayload.dataApiToken],
+            isFirstDimension: [this.editPayload.isFirstDimension?.lookupCode, Validators.required],
+            firstDimensionUrl: [this.editPayload.firstDimensionUrl, Validators.required],
+            firstDimensionApiToken: [this.editPayload.firstDimensionApiToken],
+            firstDimensionLKValue: [this.editPayload.firstDimensionLKValue?.lookupType, Validators.required],
+            isSecondDimension: [this.editPayload.isSecondDimension?.lookupCode, Validators.required],
+            secondDimensionUrl: [this.editPayload.secondDimensionUrl, Validators.required],
+            secondDimensionApiToken: [this.editPayload.secondDimensionApiToken],
+            secondDimensionLKValue: [this.editPayload.secondDimensionLKValue?.lookupType, Validators.required],
+            isThirdDimension: [this.editPayload.isThirdDimension?.lookupCode, Validators.required],
+            thirdDimensionUrl: [this.editPayload.thirdDimensionUrl, Validators.required],
+            thirdDimensionApiToken: [this.editPayload.thirdDimensionApiToken],
+            thirdDimensionLKValue: [this.editPayload.thirdDimensionLKValue?.lookupType, Validators.required],
+            distinctLKValue: [this.editPayload.distinctLKValue?.lookupType],
+            aggLKValue: [this.editPayload.aggLKValue?.lookupType],
+            status: [this.editPayload.status?.lookupCode, Validators.required]
         });
+        if (this.editPayload.payloadRef?.lookupCode == PAYLOAD_REF.REF_REPORT_FORM) {
+            this.reportSettingForm.addControl('formRequestId', new FormControl(this.editPayload.formRequestId, Validators.required));
+            this.formRefShow = true;
+        }
         this.spinnerService.hide();
+    }
+
+    public onChangefieldLkValue(value: any): void {
+        if (value != null && value != '') {
+            this.spinnerService.show();
+            let payload = {
+                lookupType: value,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            }
+            this.lookupService.fetchLookupDataByLookupType(payload)
+                .pipe(first())
+                .subscribe((response: any) => {
+                    this.spinnerService.hide();
+                    if (response) {
+                        if (response.status === ApiCode.ERROR) {
+                            this.alertService.showError('No lookup found', ApiCode.ERROR);
+                            return;
+                        } else if (response.data?.subLookupData.length === 0) {
+                            this.alertService.showError('Lookup not valid', ApiCode.ERROR);
+                            return;
+                        }
+                    } else {
+                        this.alertService.showError('Lookup not valid', ApiCode.ERROR);
+                        return;
+                    }
+                }, (error: any) => {
+                    this.spinnerService.hide();
+                    this.alertService.showError(error.message, ApiCode.ERROR);
+                });
+        }
+    }
+
+    public onChangePayloadRefValue(value: any): void {
+        if (value != null && value == PAYLOAD_REF.REF_REPORT_FORM) {
+            this.reportSettingForm.addControl('formRequestId', new FormControl('', Validators.required));
+            this.formRefShow = true;
+            return;
+        }
+        this.reportSettingForm.removeControl('formRequestId');
+        this.formRefShow = false;
     }
 
     public submit(): void {

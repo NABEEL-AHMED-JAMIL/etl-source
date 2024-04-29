@@ -278,7 +278,7 @@ export interface IReportSetting extends IBaseEntity {
     dataApiToken?: any;
     isFirstDimension?: any;
     firstDimensionUrl?: any;
-    firstDimensLKValue?: any;
+    firstDimensionLKValue?: any;
     firstDimensionApiToken?: any;
     isSecondDimension?: any;
     secondDimensionUrl?: any;
@@ -290,7 +290,7 @@ export interface IReportSetting extends IBaseEntity {
     thirdDimensionApiToken?: any;
     distinctLKValue?: any;
     aggLKValue?: any;    
-    formResponse?: any;
+    formRequestId?: any;
 }
 
 export interface IStaticTable {
@@ -613,7 +613,8 @@ export const LOOKUP_TYPE = {
     IS_DEFAULT: 'IS_DEFAULT',
     TASK_TYPE: 'TASK_TYPE',
     REQUEST_METHOD: 'REQUEST_METHOD',
-    DASHBOARD_TYPE: 'DASHBOARD_TYPE'
+    DASHBOARD_TYPE: 'DASHBOARD_TYPE',
+    PAYLOAD_REF: 'PAYLOAD_REF'
 }
 
 export const enum APPLICATION_STATUS {
@@ -680,4 +681,9 @@ export const enum REQUEST_METHOD {
 export const enum FORM_TYPE {
     SERVICE_FORM = 0,
     REPORT_FORM = 1
+}
+
+export const enum PAYLOAD_REF {
+    DYNAMIC_PAYLOAD = 0,
+    REF_REPORT_FORM = 1
 }
