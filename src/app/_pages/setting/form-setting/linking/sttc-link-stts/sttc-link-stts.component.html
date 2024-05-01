@@ -88,6 +88,8 @@
                         <tr>
                             <th>Name</th>
                             <th nzWidth="10%" style="text-align: center;">Control Order</th>
+                            <th nzWidth="10%" style="text-align: center;width: 30%;">Visible Pattern</th>
+                            <th nzWidth="10%" style="text-align: center;width: 30%;">Disabled Pattern</th>
                             <th nzWidth="10%" style="text-align: center;">Action</th>
                         </tr>
                     </thead>
@@ -96,6 +98,8 @@
                             <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
                                 <td>{{data.sectionName}} [{{data.description}}]</td>
                                 <td style="text-align: center;">{{data.controlOrder}}</td>
+                                <td style="text-align: center;">{{data.visiblePattern}}</td>
+                                <td style="text-align: center;">{{data.disabledPattern}}</td>
                                 <td style="text-align: center;"><a (click)="startEdit(data.id)">Edit</a></td>
                             </ng-container>
                             <ng-template #editTemplate>
@@ -103,6 +107,14 @@
                                 <td style="text-align: center;">
                                     <input type="number" [nzSize]="'small'" nz-input
                                         [(ngModel)]="editCache[data.id].data.controlOrder" />
+                                </td>
+                                <td style="text-align: center;">
+                                    <input type="text" [nzSize]="'small'" nz-input
+                                        [(ngModel)]="editCache[data.id].data.visiblePattern" />
+                                </td>
+                                <td style="text-align: center;">
+                                    <input type="text" [nzSize]="'small'" nz-input
+                                        [(ngModel)]="editCache[data.id].data.disabledPattern" />
                                 </td>
                                 <td style="text-align: center;">
                                     <a (click)="saveEdit(data.id)" class="save">Save</a>&nbsp;

@@ -152,7 +152,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><nz-badge nzStatus="processing"></nz-badge> Want Third Dimension?</td>
+                            <td><nz-badge nzStatus="warning"></nz-badge> Want Third Dimension?</td>
                             <td>
                                 <input nz-input type="url" class="form-control input-sm"
                                     name="thirdDimensionUrl" placeholder="Enter API URL"
@@ -169,7 +169,8 @@
                                     formControlName="thirdDimensionLKValue" (ngModelChange)="onChangefieldLkValue($event)">
                             </td>
                             <td>
-                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Third" formControlName="isThirdDimension"
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Third" 
+                                    formControlName="isThirdDimension"
                                     style="width: 100%;">
                                     <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
                                         [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">

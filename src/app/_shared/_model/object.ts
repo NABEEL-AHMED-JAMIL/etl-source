@@ -201,6 +201,8 @@ export interface IControlLinkSection extends IBaseEntity {
     linkedControl?: any;
     linkSectionId?: any;
     controlOrder?: any;
+    visiblePattern?: any;
+    disabledPattern?: any;
 }
 
 export interface ISectionLinkControl extends IBaseEntity {
@@ -209,6 +211,8 @@ export interface ISectionLinkControl extends IBaseEntity {
     fieldTitle?: any;
     fieldName?: any;
     controlOrder?: any;
+    visiblePattern?: any;
+    disabledPattern?: any;
     linkedSection?: any;
     linkControlId?: any;
 }

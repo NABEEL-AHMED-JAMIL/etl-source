@@ -169,6 +169,8 @@ export class SttsLinkSttcComponent implements OnInit {
         let payload = {
             sectionLinkControl: [this.editCache[id].data.linkControlId],
             controlOrder: this.editCache[id].data.controlOrder,
+            disabledPattern: this.editCache[id].data.disabledPattern,
+            visiblePattern: this.editCache[id].data.visiblePattern,
             sessionUser: {
                 username: this.sessionUser.username
             }
