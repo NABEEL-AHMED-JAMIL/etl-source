@@ -77,7 +77,10 @@ import {
     CUDashboardComponent,
     CUReportComponent,
     MgDashboardComponent,
-    MgReportComponent
+    MgReportComponent,
+    InputControlComponent,
+    KeyValueControlComponent,
+    SelectControlComponent 
 } from './_pages';
 
 registerLocaleData(en);
@@ -136,7 +139,10 @@ export const APP_COMPONENT = [
     CUDashboardComponent,
     CUReportComponent,
     MgDashboardComponent,
-    MgReportComponent
+    MgReportComponent,
+    InputControlComponent,
+    KeyValueControlComponent,
+    SelectControlComponent 
 ];
 
 

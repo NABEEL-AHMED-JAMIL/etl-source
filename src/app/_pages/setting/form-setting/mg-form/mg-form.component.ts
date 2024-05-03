@@ -20,7 +20,6 @@ import {
     AuthenticationService,
     FormSettingService,
     ApiCode,
-    IGenFrom,
     FORM_TYPE
 } from 'src/app/_shared';
 

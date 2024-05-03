@@ -61,3 +61,7 @@ export * from './setting/report-setting/mg-report/mg-report.component';
 export * from './setting/dashboard-setting/mg-dashboard/mg-dashboard.component';
 // update profile
 export * from './update-profile/update-profile.component';
+// dynamic-controls
+export * from './dynamic-controls/input-control/input-control.component';
+export * from './dynamic-controls/key-value-control/key-value-control.component';
+export * from './dynamic-controls/select-control/select-control.component';

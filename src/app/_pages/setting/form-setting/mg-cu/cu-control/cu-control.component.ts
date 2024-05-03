@@ -178,10 +178,16 @@ export class CUControlComponent implements OnInit {
             this.isMaxAllow = true;
             this.spinnerService.hide();
             return;
+        } else {
+            this.isMinAllow = false;
+            this.isMaxAllow = false;
+            this.isPatternAllow = false;
+            this.spinnerService.hide();
         }
     }
 
     public onFieldType(payload: any): void {
+        debugger
         if (payload === FILED_TYPE.RADIO || payload === FILED_TYPE.CHECKBOX ||
             payload === FILED_TYPE.SELECT || payload === FILED_TYPE.MULTI_SELECT || payload === FILED_TYPE.COLOR) {
             if (payload !== FILED_TYPE.COLOR) {

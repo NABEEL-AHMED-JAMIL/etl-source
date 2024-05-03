@@ -1,1 +1,55 @@
-play gound
+<div class="content">
+    <form nz-form [nzLayout]="'vertical'" [formGroup]="palyGroundForm">
+        <div nz-row [nzGutter]="16">
+            <div nz-col [nzSpan]="24">
+                <h3><span nz-icon nzType="link" nzTheme="outline"></span> Play Ground</h3>
+                <hr>
+            </div>
+            <div nz-col [nzSpan]="6">
+                <nz-form-label>Start Data</nz-form-label>
+                <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input type="date" formControlName="startDate" 
+                            (change)="onDateChangeEvent()" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="6">
+                <nz-form-label>End Date</nz-form-label>
+                <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input type="date" formControlName="endDate" 
+                            (change)="onDateChangeEvent()" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-label>Forms</nz-form-label>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Form To Render View"
+                            (ngModelChange)="onFormChange($event)" formControlName="formId">
+                            <nz-option *ngFor="let dynamicForm of dynamicForms"
+                                [nzLabel]="dynamicForm.name" [nzValue]="dynamicForm.id">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="content" *ngIf="dynamicRanderForms">
+    <nz-page-header class="site-page-header" 
+        nzTitle="{{dynamicRanderForms.name}}"
+        nzSubtitle="({{dynamicRanderForms.description}})">
+    </nz-page-header>
+    <hr>
+    <!-- select form  -->
+    <div nz-row [nzGutter]="16">
+        <div nz-col [nzSpan]="24">
+
+        </div>
+    </div>
+</div>

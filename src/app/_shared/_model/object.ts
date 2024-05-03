@@ -288,10 +288,6 @@ export interface IReportSetting extends IBaseEntity {
     secondDimensionUrl?: any;
     secondDimensionLKValue?: any;
     secondDimensionApiToken?: any;
-    isThirdDimension?: any;
-    thirdDimensionUrl?: any;
-    thirdDimensionLKValue?: any;
-    thirdDimensionApiToken?: any;
     distinctLKValue?: any;
     aggLKValue?: any;    
     formRequestId?: any;
@@ -485,6 +481,13 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 link: '/setting/mgReport',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['MANAGE_REPORT_PERMISSION']
+            },
+            {
+                name: 'Manage OLAP',
+                icon: 'form',
+                link: '/setting/mgOLAP',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['MANAGE_OLAP_PERMISSION']
             }
         ]
     },
