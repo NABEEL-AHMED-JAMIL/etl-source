@@ -171,6 +171,7 @@ export class SttcLinkSttsComponent implements OnInit {
             controlOrder: this.editCache[id].data.controlOrder,
             disabledPattern: this.editCache[id].data.disabledPattern,
             visiblePattern: this.editCache[id].data.visiblePattern,
+            fieldWidth: this.editCache[id].data.fieldWidth,
             sessionUser: {
                 username: this.sessionUser.username
             }

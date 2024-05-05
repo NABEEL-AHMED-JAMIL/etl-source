@@ -21,6 +21,7 @@ import {
     FormSettingService,
     IGenControl,
     ILookups,
+    IS_DEFAULT,
     LOOKUP_TYPE,
     LookupService
 } from 'src/app/_shared';
@@ -104,15 +105,13 @@ export class CUControlComponent implements OnInit {
             controlName: ['', [Validators.required]],
             fieldTitle: ['', [Validators.required]],
             fieldName: ['', [Validators.required]],
-            fieldType: [15, [Validators.required]],
+            fieldType: [FILED_TYPE.TEXT, [Validators.required]],
             description: ['', [Validators.required]],
             placeHolder: [''],
-            fieldWidth: ['', [Validators.required]],
-            mandatory: [1, [Validators.required]],
-            isDefault: [0, [Validators.required]],
+            mandatory: [IS_DEFAULT.YES_DEFAULT, [Validators.required]],
+            isDefault: [IS_DEFAULT.NO_DEFAULT, [Validators.required]],
             defaultValue: [''],
-            disabled: [0, [Validators.required]],
-            pattern: [''],
+            pattern: [],
             minLength: [''],
             maxLength: [''],
             fieldLkValue: ['']
@@ -130,11 +129,9 @@ export class CUControlComponent implements OnInit {
             fieldType: [this.editPayload.fieldType.lookupCode, [Validators.required]],
             description: [this.editPayload.description, [Validators.required]],
             placeHolder: [this.editPayload.placeHolder],
-            fieldWidth: [this.editPayload.fieldWidth, [Validators.required]],
             mandatory: [this.editPayload.mandatory.lookupCode, [Validators.required]],
             isDefault: [this.editPayload.isDefault.lookupCode, [Validators.required]],
             defaultValue: [this.editPayload.defaultValue],
-            disabled: [this.editPayload.disabled.lookupCode, [Validators.required]],
             pattern: [this.editPayload.pattern],
             minLength: [this.editPayload.minLength],
             maxLength: [this.editPayload.maxLength],
@@ -187,7 +184,6 @@ export class CUControlComponent implements OnInit {
     }
 
     public onFieldType(payload: any): void {
-        debugger
         if (payload === FILED_TYPE.RADIO || payload === FILED_TYPE.CHECKBOX ||
             payload === FILED_TYPE.SELECT || payload === FILED_TYPE.MULTI_SELECT || payload === FILED_TYPE.COLOR) {
             if (payload !== FILED_TYPE.COLOR) {
@@ -255,7 +251,6 @@ export class CUControlComponent implements OnInit {
             this.fieldLkValueOption = undefined;
         }
     }
-
 
     public onSubmit(): void {
         if (this.actionType === ActionType.ADD) {

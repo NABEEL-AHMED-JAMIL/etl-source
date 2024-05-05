@@ -21,9 +21,6 @@
         <nz-descriptions-item nzTitle="Mandatory" nzSpan="1">
             {{editPayload.mandatory?.lookupValue}}
         </nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Disabled" nzSpan="1">
-            {{editPayload.disabled?.lookupValue}}
-        </nz-descriptions-item>
     </nz-descriptions>
     <!-- extra tpl -->
     <ng-template #extraTpl>
@@ -88,6 +85,7 @@
                         <tr>
                             <th>Name</th>
                             <th nzWidth="10%" style="text-align: center;">Control Order</th>
+                            <th nzWidth="10%" style="text-align: center;width: 30%;">Control With</th>
                             <th nzWidth="10%" style="text-align: center;width: 30%;">Visible Pattern</th>
                             <th nzWidth="10%" style="text-align: center;width: 30%;">Disabled Pattern</th>
                             <th nzWidth="10%" style="text-align: center;">Action</th>
@@ -98,6 +96,7 @@
                             <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
                                 <td>{{data.sectionName}} [{{data.description}}]</td>
                                 <td style="text-align: center;">{{data.controlOrder}}</td>
+                                <td style="text-align: center;">{{data.fieldWidth}}</td>
                                 <td style="text-align: center;">{{data.visiblePattern}}</td>
                                 <td style="text-align: center;">{{data.disabledPattern}}</td>
                                 <td style="text-align: center;"><a (click)="startEdit(data.id)">Edit</a></td>
@@ -107,6 +106,10 @@
                                 <td style="text-align: center;">
                                     <input type="number" [nzSize]="'small'" nz-input
                                         [(ngModel)]="editCache[data.id].data.controlOrder" />
+                                </td>
+                                <td style="text-align: center;">
+                                    <input type="number" [nzSize]="'small'" nz-input
+                                        [(ngModel)]="editCache[data.id].data.fieldWidth"  min="0" max="24" />
                                 </td>
                                 <td style="text-align: center;">
                                     <input type="text" [nzSize]="'small'" nz-input

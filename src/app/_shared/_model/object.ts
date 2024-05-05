@@ -183,12 +183,10 @@ export interface IGenControl extends IBaseEntity {
     fieldTitle?: any;
     fieldName?: any;
     placeHolder?: any;
-    fieldWidth?: any;
     minLength?: any;
     maxLength?: any;
     fieldLkValue?: any;
     mandatory?: any;
-    disabled?: any;
     isDefault?: any;
     defaultValue?: any;
     pattern?: any;
@@ -203,6 +201,7 @@ export interface IControlLinkSection extends IBaseEntity {
     controlOrder?: any;
     visiblePattern?: any;
     disabledPattern?: any;
+    fieldWidth: any;
 }
 
 export interface ISectionLinkControl extends IBaseEntity {
@@ -213,6 +212,7 @@ export interface ISectionLinkControl extends IBaseEntity {
     controlOrder?: any;
     visiblePattern?: any;
     disabledPattern?: any;
+    fieldWidth: any;
     linkedSection?: any;
     linkControlId?: any;
 }
@@ -693,4 +693,9 @@ export const enum FORM_TYPE {
 export const enum PAYLOAD_REF {
     DYNAMIC_PAYLOAD = 0,
     REF_REPORT_FORM = 1
+}
+
+export const enum IS_DEFAULT {
+    NO_DEFAULT = 0,
+    YES_DEFAULT = 1
 }

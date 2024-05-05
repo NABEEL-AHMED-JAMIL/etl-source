@@ -1,5 +1,3 @@
-import { ValidatorFn } from "@angular/forms";
-
 export interface IFrom {
     id?: any;
     name: any;
@@ -10,10 +8,10 @@ export interface IFrom {
 export interface ISection {
     id?: any;
     name?: any;
-    controls?: IControl[];
+    controls?: IControlFiled[];
 }
 
-export interface IControl {
+export interface IControlFiled {
     id?: any;
     type?: any;
     label?: any;

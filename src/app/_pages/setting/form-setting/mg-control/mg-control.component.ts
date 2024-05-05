@@ -90,11 +90,6 @@ export class MgControlComponent implements OnInit {
                 type: 'data'
             },
             {
-                field: 'fieldWidth',
-                header: 'Width',
-                type: 'tag'
-            },
-            {
                 field: 'fieldType',
                 header: 'Type',
                 type: 'tag'
@@ -107,11 +102,6 @@ export class MgControlComponent implements OnInit {
             {
                 field: 'mandatory',
                 header: 'Mandatory',
-                type: 'tag'
-            },
-            {
-                field: 'disabled',
-                header: 'Disabled',
                 type: 'tag'
             },
             {
