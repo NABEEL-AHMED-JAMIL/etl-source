@@ -1,1 +1,109 @@
-play gound
+<div class="content">
+    <form nz-form [nzLayout]="'vertical'" [formGroup]="palyGroundForm">
+        <div nz-row [nzGutter]="16">
+            <div nz-col [nzSpan]="24">
+                <h3><span nz-icon nzType="link" nzTheme="outline"></span> Play Ground</h3>
+                <hr>
+            </div>
+            <div nz-col [nzSpan]="6">
+                <nz-form-label>Start Data</nz-form-label>
+                <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input type="date" formControlName="startDate" (change)="onDateChangeEvent()" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="6">
+                <nz-form-label>End Date</nz-form-label>
+                <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input type="date" formControlName="endDate" (change)="onDateChangeEvent()" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-label>Forms</nz-form-label>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Form To Render View"
+                            (ngModelChange)="onFormChange($event)" formControlName="formId">
+                            <nz-option *ngFor="let dynamicForm of dynamicForms" [nzLabel]="dynamicForm.name"
+                                [nzValue]="dynamicForm.id">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="content" *ngIf="dynamicForm">
+    <!-- select form  -->
+    <form nz-form [nzLayout]="'vertical'" [formGroup]="dynamicForm" ngNativeValidate
+        (ngSubmit)="submit(dynamicForm.value)">
+        <nz-collapse>
+            <nz-collapse-panel *ngFor="let section of selectedForm.sections;" [nzHeader]="section.name"
+                [id]="'section-' + section.id" [formGroupName]="'section-' + section.id">
+                <div nz-row [nzGutter]="16">
+                    <ng-container *ngFor="let control of section.controls" formGroupName="fields">
+                        <div nz-col [nzSpan]="control.width" style="margin-bottom: 8px;">
+                            <ng-container *ngIf="control.type.lookupType === 'URL' || control.type.lookupType === 'TEXT' 
+                                || control.type.lookupType === 'EMAIL'">
+                                <nz-form-item>
+                                    <nz-form-label nzRequired="{{ control.validators.length > 0 }}">
+                                        {{control.label}}
+                                    </nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input [formControlName]="control.name" [id]="control.name"
+                                            [name]="control.name" [type]="control.type.lookupType"
+                                            [placeholder]="control.placeHolder" />
+                                    </nz-form-control>
+                                    <div style="color: red !important;">
+                                        <span *ngIf="getSectionFiled('section-' + section.id, control.name)!.dirty">
+                                            {{ getErrorMessage('section-' + section.id, control)}}
+                                        </span>
+                                    </div>
+                                </nz-form-item>
+                            </ng-container>
+                            <!-- select & multi-select -->
+                            <ng-container
+                                *ngIf="control.type.lookupType === 'MULTI_SELECT' || control.type.lookupType === 'SELECT'">
+                                <nz-form-item>
+                                    <nz-form-label nzRequired="{{ control.validators.length > 0 }}">
+                                        {{control.label}}
+                                    </nz-form-label>
+                                    <nz-form-control>
+                                        <nz-select [nzId]="control.name" [formControlName]="control.name"
+                                            [nzAllowClear]="'true'" [nzShowSearch]="'true'" [nzShowArrow]="true"
+                                            [nzPlaceHolder]="control.placeHolder"
+                                            [nzMode]="control.type.lookupType === 'SELECT' ? 'default' : 'tags'"
+                                            [nzMaxTagCount]="control.type.lookupType === 'SELECT' ? 1 : 3">
+                                            <nz-option *ngFor="let option of control.selectMenuOptions"
+                                                [nzValue]="option.lookupCode"
+                                                [nzLabel]="option.lookupValue"></nz-option>
+                                        </nz-select>
+                                    </nz-form-control>
+                                    <div style="color: red !important;">
+                                        <span *ngIf="getSectionFiled('section-' + section.id, control.name)!.dirty">
+                                            {{ getErrorMessage('section-' + section.id, control)}}
+                                        </span>
+                                    </div>
+                                </nz-form-item>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+            </nz-collapse-panel>
+        </nz-collapse>
+        <br>
+        <div nz-row [nzGutter]="16">
+            <div nz-col [nzSpan]="24" class="search-area">
+                <button nz-button type="reset">Clear</button>
+                <button nz-button [nzType]="'primary'" [disabled]="!dynamicForm.valid" type="submit"
+                    style="float: right;">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

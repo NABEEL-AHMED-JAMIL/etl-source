@@ -53,19 +53,10 @@
         </div>
         <div nz-col nzSpan="8">
             <nz-form-item>
-                <nz-form-label nzRequired>PlaceHolder</nz-form-label>
-                <nz-form-control nzErrorTip="PlaceHolder Required">
+                <nz-form-label>PlaceHolder</nz-form-label>
+                <nz-form-control>
                     <input nz-input formControlName="placeHolder"
                         placeholder="Enter PlaceHolder" />
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzSpan="8">
-            <nz-form-item>
-                <nz-form-label nzRequired>Field Width</nz-form-label>
-                <nz-form-control nzErrorTip="Field Width Required">
-                    <input nz-input formControlName="fieldWidth"
-                        type="number" placeholder="Enter Field Width" />
                 </nz-form-control>
             </nz-form-item>
         </div>
@@ -101,19 +92,6 @@
                 <nz-form-control nzErrorTip="Default Value Required">
                     <input nz-input formControlName="defaultValue"
                         placeholder="Enter Default Value" />
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzSpan="8">
-            <nz-form-item>
-                <nz-form-label nzRequired>Disabled</nz-form-label>
-                <nz-form-control nzErrorTip="Disabled Required">
-                    <nz-select nzShowSearch nzAllowClear formControlName="disabled"
-                        nzPlaceHolder="Select Disabled">
-                        <nz-option *ngFor="let lookupChildren of ISDEFAULT?.SUB_LOOKUP_DATA"
-                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
-                        </nz-option>
-                    </nz-select>
                 </nz-form-control>
             </nz-form-item>
         </div>

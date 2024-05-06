@@ -105,11 +105,6 @@ export class MgControlComponent implements OnInit {
                 type: 'tag'
             },
             {
-                field: 'disabled',
-                header: 'Disabled',
-                type: 'tag'
-            },
-            {
                 field: 'isDefault',
                 header: 'Default',
                 type: 'tag'

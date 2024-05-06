@@ -105,11 +105,6 @@ export class MgReportComponent implements OnInit {
                 header: '2nd Dim',
                 type: 'tag'
             },
-			{
-                field: 'isThirdDimension',
-                header: '3rd Dim',
-                type: 'tag'
-            },
             {
                 field: 'dateCreated',
                 header: 'Created',

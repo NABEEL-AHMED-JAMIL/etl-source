@@ -183,12 +183,10 @@ export interface IGenControl extends IBaseEntity {
     fieldTitle?: any;
     fieldName?: any;
     placeHolder?: any;
-    fieldWidth?: any;
     minLength?: any;
     maxLength?: any;
     fieldLkValue?: any;
     mandatory?: any;
-    disabled?: any;
     isDefault?: any;
     defaultValue?: any;
     pattern?: any;
@@ -201,6 +199,9 @@ export interface IControlLinkSection extends IBaseEntity {
     linkedControl?: any;
     linkSectionId?: any;
     controlOrder?: any;
+    visiblePattern?: any;
+    disabledPattern?: any;
+    fieldWidth: any;
 }
 
 export interface ISectionLinkControl extends IBaseEntity {
@@ -209,6 +210,9 @@ export interface ISectionLinkControl extends IBaseEntity {
     fieldTitle?: any;
     fieldName?: any;
     controlOrder?: any;
+    visiblePattern?: any;
+    disabledPattern?: any;
+    fieldWidth: any;
     linkedSection?: any;
     linkControlId?: any;
 }
@@ -284,10 +288,6 @@ export interface IReportSetting extends IBaseEntity {
     secondDimensionUrl?: any;
     secondDimensionLKValue?: any;
     secondDimensionApiToken?: any;
-    isThirdDimension?: any;
-    thirdDimensionUrl?: any;
-    thirdDimensionLKValue?: any;
-    thirdDimensionApiToken?: any;
     distinctLKValue?: any;
     aggLKValue?: any;    
     formRequestId?: any;
@@ -481,6 +481,13 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 link: '/setting/mgReport',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['MANAGE_REPORT_PERMISSION']
+            },
+            {
+                name: 'Manage OLAP',
+                icon: 'form',
+                link: '/setting/mgOLAP',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['MANAGE_OLAP_PERMISSION']
             }
         ]
     },
@@ -686,4 +693,9 @@ export const enum FORM_TYPE {
 export const enum PAYLOAD_REF {
     DYNAMIC_PAYLOAD = 0,
     REF_REPORT_FORM = 1
+}
+
+export const enum IS_DEFAULT {
+    NO_DEFAULT = 0,
+    YES_DEFAULT = 1
 }

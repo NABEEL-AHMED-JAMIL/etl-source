@@ -165,10 +165,6 @@ export class CUReportComponent implements OnInit {
             secondDimensionUrl: ['', Validators.required],
             secondDimensionApiToken: [],
             secondDimensionLKValue: ['', Validators.required],
-            isThirdDimension: [0, Validators.required],
-            thirdDimensionUrl: ['', Validators.required],
-            thirdDimensionApiToken: [],
-            thirdDimensionLKValue: ['', Validators.required],
             distinctLKValue: [],
             aggLKValue: []
         });
@@ -203,10 +199,6 @@ export class CUReportComponent implements OnInit {
             secondDimensionUrl: [this.editPayload.secondDimensionUrl, Validators.required],
             secondDimensionApiToken: [this.editPayload.secondDimensionApiToken],
             secondDimensionLKValue: [this.editPayload.secondDimensionLKValue?.lookupType, Validators.required],
-            isThirdDimension: [this.editPayload.isThirdDimension?.lookupCode, Validators.required],
-            thirdDimensionUrl: [this.editPayload.thirdDimensionUrl, Validators.required],
-            thirdDimensionApiToken: [this.editPayload.thirdDimensionApiToken],
-            thirdDimensionLKValue: [this.editPayload.thirdDimensionLKValue?.lookupType, Validators.required],
             distinctLKValue: [this.editPayload.distinctLKValue?.lookupType],
             aggLKValue: [this.editPayload.aggLKValue?.lookupType],
             status: [this.editPayload.status?.lookupCode, Validators.required]
