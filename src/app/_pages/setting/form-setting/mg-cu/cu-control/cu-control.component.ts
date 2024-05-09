@@ -114,7 +114,8 @@ export class CUControlComponent implements OnInit {
             pattern: [],
             minLength: [''],
             maxLength: [''],
-            fieldLkValue: ['']
+            fieldLkValue: [''],
+            apiLkValue: ['']
         });
         this.spinnerService.hide();
     }
@@ -136,6 +137,7 @@ export class CUControlComponent implements OnInit {
             minLength: [this.editPayload.minLength],
             maxLength: [this.editPayload.maxLength],
             fieldLkValue: [this.editPayload.fieldLkValue],
+            apiLkValue: [this.editPayload.apiLkValue],
             status: [this.editPayload.status.lookupCode, [Validators.required]],
         });
         debugger

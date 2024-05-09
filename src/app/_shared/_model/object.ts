@@ -186,6 +186,7 @@ export interface IGenControl extends IBaseEntity {
     minLength?: any;
     maxLength?: any;
     fieldLkValue?: any;
+    apiLkValue?: any;
     mandatory?: any;
     isDefault?: any;
     defaultValue?: any;
