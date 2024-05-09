@@ -1,0 +1,20 @@
+<nz-form-item *ngIf="control" [formGroup]="fields">
+    <nz-form-label nzRequired="{{ control.validators.length > 0 }}">
+        {{control.label}}
+    </nz-form-label>
+    <!-- date picker with date -->
+    <nz-form-control>
+        <nz-date-picker
+            [id]="control.name"
+            [formControlName]="control.name"
+            [nzFormat]="control.pattern"
+            [nzMode]="control.type.lookupValue.toLowerCase()"
+            [disabled]="control.disabledPattern">
+        </nz-date-picker>
+    </nz-form-control>
+    <div style="color: red !important;">
+        <span *ngIf="getFiledControl(control.name)!.dirty">
+            {{ getErrorMessage(control)}}
+        </span>
+    </div>
+</nz-form-item>

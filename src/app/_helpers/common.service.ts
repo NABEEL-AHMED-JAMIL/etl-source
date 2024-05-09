@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { DatePipe } from '@angular/common';
+import { IControlFiled, FILED_TYPE } from '../_shared';
 
 
 @Injectable({ providedIn: 'root' })
@@ -103,6 +104,61 @@ export class CommomService {
         return true;
     }
 
+    public isSupportedInputControl(control: IControlFiled): any {
+        let type = control.type;
+        if (FILED_TYPE.URL === type.lookupCode || 
+            FILED_TYPE.RANGE === type.lookupCode ||
+            FILED_TYPE.WEEK === type.lookupCode ||
+            FILED_TYPE.TEXT === type.lookupCode || 
+            FILED_TYPE.NUMBER === type.lookupCode || 
+            FILED_TYPE.TIME === type.lookupCode || 
+            FILED_TYPE.DATETIME_LOCAL === type.lookupCode ||
+            FILED_TYPE.EMAIL === type.lookupCode ||
+            FILED_TYPE.PASSWORD === type.lookupCode) {
+            return true;
+        }
+        return false;
+    }
+
+    public isSupportedSelectControl(control: IControlFiled): any {
+        let type = control.type;
+        if (FILED_TYPE.SELECT === type.lookupCode || 
+            FILED_TYPE.MULTI_SELECT === type.lookupCode) {
+            return true;
+        }
+        return false;
+    }
+
+    public isSupportedTextControl(control: IControlFiled): any {
+        return control.type.lookupCode === FILED_TYPE.TEXTAREA ? true : false;
+    }
+
+    public isSupportedTelControl(control: IControlFiled): any {
+        return control.type.lookupCode === FILED_TYPE.TEL ? true : false;
+    }
+
+    public isSupportedNumberControl(control: IControlFiled): any {
+        return control.type.lookupCode === FILED_TYPE.NUMBER ? true : false;
+    }
+
+    public isSupportedDatePickerControl(control: IControlFiled): any {
+        let type = control.type;
+        if ( 
+            FILED_TYPE.MONTH === type.lookupCode ||
+            FILED_TYPE.YEAR === type.lookupCode ||
+            FILED_TYPE.DATE === type.lookupCode) {
+            return true;
+        }
+        return false;
+    }
+
+    public isSupportedTimePickerControl(control: IControlFiled): any {
+        let type = control.type;
+        if (FILED_TYPE.TIME === type.lookupCode) {
+            return true;
+        }
+        return false;
+    }
 
     public isValidHttpUrl(inputUrl: any): boolean {
         let url: any;

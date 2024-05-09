@@ -23,6 +23,7 @@ import {
     ErrorInterceptor,
     JwtInterceptor,
     SearchFilterPipe,
+    SearchFilterPipeV2
 } from './_helpers';
 // compoenet
 import {
@@ -80,6 +81,15 @@ import {
     MgReportComponent 
 } from './_pages';
 
+// dynamic fileds
+import {
+    DynamicInputComponent,
+    DynamicTextAreaComponent,
+    DynamicRadioComponent,
+    DynamicSelectComponent,
+    DynamicDatePickerComponent
+} from './_dynamic-fields';
+
 registerLocaleData(en);
 
 export const APP_COMPONENT = [
@@ -89,6 +99,7 @@ export const APP_COMPONENT = [
     EnvVariableValueComponent,
     GenTableComponent,
     SearchFilterPipe,
+    SearchFilterPipeV2,
     SpinnerComponent,
     LoginComponent,
     RegisterComponent,
@@ -136,7 +147,13 @@ export const APP_COMPONENT = [
     CUDashboardComponent,
     CUReportComponent,
     MgDashboardComponent,
-    MgReportComponent 
+    MgReportComponent,
+    // dynamic fileds
+    DynamicInputComponent,
+    DynamicTextAreaComponent,
+    DynamicRadioComponent,
+    DynamicSelectComponent,
+    DynamicDatePickerComponent
 ];
 
 

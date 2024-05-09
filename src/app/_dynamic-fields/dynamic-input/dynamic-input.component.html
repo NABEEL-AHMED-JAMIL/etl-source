@@ -1,0 +1,20 @@
+<nz-form-item *ngIf="control" [formGroup]="fields">
+    <nz-form-label nzRequired="{{ control.validators.length > 0 }}">
+        {{control.label}}
+    </nz-form-label>
+    <nz-form-control>
+        <input nz-input
+            [id]="control.name"
+            [name]="control.name"
+            [formControlName]="control.name"
+            [pattern]="control.pattern"
+            [type]="control.type.lookupType.toLowerCase()"
+            [disabled]="control.disabledPattern"
+            [placeholder]="control.placeHolder"/>
+    </nz-form-control>
+    <div style="color: red !important;">
+        <span *ngIf="getFiledControl(control.name)!.dirty">
+            {{ getErrorMessage(control)}}
+        </span>
+    </div>
+</nz-form-item>

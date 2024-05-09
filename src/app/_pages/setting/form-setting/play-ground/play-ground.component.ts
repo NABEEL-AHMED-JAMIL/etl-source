@@ -16,7 +16,6 @@ import {
     AuthResponse,
     AuthenticationService,
     FILED_TYPE,
-    IControlFiled,
     IFrom,
     IValidation,
     PlayGroundService
@@ -30,10 +29,14 @@ import {
 })
 export class MgPlayGroundComponent implements OnInit {
 
+    public date = null;
+
     public sessionUser: AuthResponse;
     public palyGroundForm: FormGroup;
-    public dynamicForm: FormGroup;
+    public rootForm: FormGroup;
+    // form list
     public dynamicForms: IFrom[];
+    // single selected form with detail
     public selectedForm: IFrom;
 
     constructor(
@@ -121,7 +124,7 @@ export class MgPlayGroundComponent implements OnInit {
     }
 
     public formInit(formJson: IFrom): void {
-        this.dynamicForm = this.fb.group({});
+        this.rootForm = this.fb.group({});
         formJson.sections.forEach((section: any) => {
             let sectionGroup: FormGroup = this.fb.group({
                 id: new FormControl(section.id, Validators.required),
@@ -134,14 +137,16 @@ export class MgPlayGroundComponent implements OnInit {
                 if (control.type.lookupCode === FILED_TYPE.MULTI_SELECT || control.type.lookupCode === FILED_TYPE.SELECT) {
                     fieldsControls.addControl(control.name, new FormControl(
                         control.value !== '' ? control.value : null, this.controlValidators(control.validators)));
+                } else if (control.type.lookupCode === FILED_TYPE.DATE) {
+                    fieldsControls.addControl(control.name, new FormControl(
+                        control.value !== '' ? control.value : null, this.controlValidators(control.validators)));
                 } else {
                     fieldsControls.addControl(control.name, new FormControl(control.value, this.controlValidators(control.validators)));
                 }
             });
             sectionGroup.addControl("fields", fieldsControls);
-            this.dynamicForm.addControl("section-" + section.id, sectionGroup);
+            this.rootForm.addControl("section-" + section.id, sectionGroup);
         });
-        console.log(this.dynamicForm.getRawValue());
     }
 
     private controlValidators(controlValidators: IValidation[]): any {
@@ -155,10 +160,10 @@ export class MgPlayGroundComponent implements OnInit {
                     case 'pattern':
                         validators.push(Validators.pattern(validation.pattern));
                         break;
-                    case 'min_length':
+                    case 'minlength':
                         validators.push(Validators.minLength(validation.pattern));
                         break;
-                    case 'max_length':
+                    case 'maxlength':
                         validators.push(Validators.maxLength(validation.pattern));
                         break;
                 }
@@ -167,25 +172,12 @@ export class MgPlayGroundComponent implements OnInit {
         return validators;
     }
 
-    public getErrorMessage(sectionId: any, control: IControlFiled): any {
-        for (let validation of control.validators) {
-            if (this.getSectionFiled(sectionId, control.name).hasError(validation.validator)) {
-                return validation.message;
-            }
-        }
-        return '';
-    }
-
     public getFormSection(sectionId: any): FormGroup {
-        return this.dynamicForm.get(sectionId) as FormGroup;
+        return this.rootForm.get(sectionId) as FormGroup;
     }
 
     public getFormSectionFiledGroup(sectionId: any): FormGroup {
         return this.getFormSection(sectionId).get('fields') as FormGroup;
-    }
-
-    public getSectionFiled(sectionId: any, field: any): FormControl {
-        return this.getFormSectionFiledGroup(sectionId).get(field) as FormControl;
     }
 
     public submit(value: any): void {
