@@ -1,0 +1,26 @@
+<!-- select & multi-select -->
+<nz-form-item *ngIf="control" [formGroup]="fields">
+    <nz-form-label nzRequired="{{ control.validators.length > 0 }}">
+        {{control.label}}
+    </nz-form-label>
+    <nz-form-control>
+        <nz-select
+            [nzId]="control.name"
+            [formControlName]="control.name"
+            [nzAllowClear]="'true'"
+            [nzShowSearch]="'true'"
+            [nzShowArrow]="true"
+            [nzPlaceHolder]="control.placeHolder"
+            [nzMode]="control.type.lookupType === 'SELECT' ? 'default' : 'tags'"
+            [nzMaxTagCount]="control.type.lookupType === 'SELECT' ? 1 : 3">
+            <nz-option *ngFor="let option of control.selectMenuOptions"
+                [nzValue]="option.lookupCode"
+                [nzLabel]="option.lookupValue"></nz-option>
+        </nz-select>
+    </nz-form-control>
+    <div style="color: red !important;">
+        <span *ngIf="getFiledControl(control.name)!.dirty">
+            {{ getErrorMessage(control)}}
+        </span>
+    </div>
+</nz-form-item>

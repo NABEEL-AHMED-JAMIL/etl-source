@@ -138,24 +138,30 @@ export class CUControlComponent implements OnInit {
             fieldLkValue: [this.editPayload.fieldLkValue],
             status: [this.editPayload.status.lookupCode, [Validators.required]],
         });
+        debugger
         if (this.editPayload.fieldType.lookupCode === FILED_TYPE.RADIO ||
             this.editPayload.fieldType.lookupCode === FILED_TYPE.CHECKBOX ||
             this.editPayload.fieldType.lookupCode === FILED_TYPE.SELECT ||
             this.editPayload.fieldType.lookupCode === FILED_TYPE.MULTI_SELECT ||
-            this.editPayload.fieldType.lookupCode === FILED_TYPE.COLOR ||
-            this.editPayload.fieldType.lookupCode === FILED_TYPE.DATE ||
-            this.editPayload.fieldType.lookupCode === FILED_TYPE.TIME ||
-            this.editPayload.fieldType.lookupCode === FILED_TYPE.MONTH) {
-            if (this.editPayload.fieldType.lookupCode !== FILED_TYPE.COLOR
-                && this.editPayload.fieldType.lookupCode !== FILED_TYPE.DATE
-                && this.editPayload.fieldType.lookupCode !== FILED_TYPE.TIME
-                && this.editPayload.fieldType.lookupCode !== FILED_TYPE.MONTH) {
-                this.fieldTypeForLkValue = true;
-            }
+            this.editPayload.fieldType.lookupCode === FILED_TYPE.COLOR) {
             this.isMinAllow = false;
             this.isMaxAllow = false;
             this.isPatternAllow = false;
+            this.hasKey = true;
+            this.fieldTypeForLkValue = true;
             this.onChangefieldLkValue(this.editPayload.fieldLkValue);
+            this.spinnerService.hide();
+            return;
+        } else if (this.editPayload.fieldType.lookupCode == FILED_TYPE.YEAR
+            || this.editPayload.fieldType.lookupCode == FILED_TYPE.DATE
+            || this.editPayload.fieldType.lookupCode == FILED_TYPE.DATETIME_LOCAL
+            || this.editPayload.fieldType.lookupCode == FILED_TYPE.WEEK
+            || this.editPayload.fieldType.lookupCode == FILED_TYPE.TIME
+            || this.editPayload.fieldType.lookupCode == FILED_TYPE.MONTH) {
+            this.isPatternAllow = true;
+            this.fieldTypeForLkValue = false;
+            this.isMinAllow = false;
+            this.isMaxAllow = false;
             this.spinnerService.hide();
             return;
         } else if (this.editPayload.fieldType.lookupCode === FILED_TYPE.URL ||
@@ -203,6 +209,12 @@ export class CUControlComponent implements OnInit {
             }
             this.isMinAllow = true;
             this.isMaxAllow = true;
+        } else if (payload == FILED_TYPE.YEAR || payload == FILED_TYPE.DATE 
+            || payload == FILED_TYPE.DATETIME_LOCAL || payload == FILED_TYPE.MONTH
+            || payload == FILED_TYPE.WEEK || payload == FILED_TYPE.TIME) {
+            this.isPatternAllow = true;
+            this.isMinAllow = false;
+            this.isMaxAllow = false;
         } else {
             this.isMinAllow = false;
             this.isMaxAllow = false;
@@ -246,9 +258,6 @@ export class CUControlComponent implements OnInit {
                     this.spinnerService.hide();
                     this.alertService.showError(error.message, ApiCode.ERROR);
                 });
-        } else {
-            this.hasKey = false;
-            this.fieldLkValueOption = undefined;
         }
     }
 

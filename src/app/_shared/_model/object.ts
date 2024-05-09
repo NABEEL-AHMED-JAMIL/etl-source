@@ -300,7 +300,7 @@ export interface IStaticTable {
     bordered?: boolean,
     checkbox?: boolean,
     size?: NzTableSize,
-    dataSource?: readonly any[];
+    dataSource?: any[];
     dataColumn?: IColumn[];
     actionType?: any; // delete,update,subnode,more->dropdown
     moreActionType?: any; // delete,update,subnode,more->dropdown
@@ -667,7 +667,9 @@ export const enum FILED_TYPE {
     TEXT = 15,
     TEXTAREA = 16,
     SELECT = 17,
-    MULTI_SELECT = 18
+    MULTI_SELECT = 18,
+    KEY_VALUE = 19,
+    YEAR = 20,
 }
 
 export const enum TASK_TYPE {

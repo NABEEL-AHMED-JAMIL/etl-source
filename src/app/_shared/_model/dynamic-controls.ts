@@ -17,6 +17,7 @@ export interface IControlFiled {
     label?: any;
     name?: any;
     value?: any;
+    pattern: any;
     placeHolder?: any;
     width?: any; // will use for div col
     selectMenuOptions?: any; // fieldLkValue value

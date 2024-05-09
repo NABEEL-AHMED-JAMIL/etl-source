@@ -18,6 +18,7 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
@@ -56,6 +57,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
         NzPopconfirmModule,
         NzUploadModule,
         NzInputNumberModule,
+        NzDatePickerModule,
         NzListModule,
         NzModalModule,
         NzAvatarModule,
