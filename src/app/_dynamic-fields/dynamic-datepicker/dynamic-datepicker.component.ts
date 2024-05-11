@@ -18,11 +18,11 @@ export class DynamicDatePickerComponent extends DynamicFieldComponent implements
     }
 
     ngOnInit() {
-        this.getFiledControl(this.control.name)
+        this.getFiledControl('name')
             .valueChanges.subscribe(value => {
                 if (this.control.pattern && this.control.type.lookupCode != FILED_TYPE.WEEK) {
                     const formattedDate = this.datePipe.transform(value, this.control.pattern);
-                    this.getFiledControl(this.control.name).setValue(formattedDate, { emitEvent: false });
+                    this.getFiledControl('name').setValue(formattedDate, { emitEvent: false });
                     console.log('data: ', formattedDate);
                 }
             });

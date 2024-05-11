@@ -140,7 +140,6 @@ export class CUControlComponent implements OnInit {
             apiLkValue: [this.editPayload.apiLkValue],
             status: [this.editPayload.status.lookupCode, [Validators.required]],
         });
-        debugger
         if (this.editPayload.fieldType.lookupCode === FILED_TYPE.RADIO ||
             this.editPayload.fieldType.lookupCode === FILED_TYPE.CHECKBOX ||
             this.editPayload.fieldType.lookupCode === FILED_TYPE.SELECT ||

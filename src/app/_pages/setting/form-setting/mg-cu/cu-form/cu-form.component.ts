@@ -182,7 +182,7 @@ export class CUFormComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.genFormForm.value,
+            ...this.genFormForm.getRawValue(),
             sessionUser: {
                 username: this.sessionUser.username
             }

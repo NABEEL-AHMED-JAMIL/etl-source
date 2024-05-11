@@ -1,12 +1,11 @@
 <!-- select & multi-select -->
-<nz-form-item *ngIf="control" [formGroup]="fields">
+<nz-form-item *ngIf="control" [formGroup]="field">
     <nz-form-label nzRequired="{{ control.validators.length > 0 }}">
         {{control.label}}
     </nz-form-label>
     <nz-form-control>
         <nz-select
-            [nzId]="control.name"
-            [formControlName]="control.name"
+            formControlName="name"
             [nzAllowClear]="'true'"
             [nzShowSearch]="'true'"
             [nzShowArrow]="true"
@@ -19,7 +18,7 @@
         </nz-select>
     </nz-form-control>
     <div style="color: red !important;">
-        <span *ngIf="getFiledControl(control.name)!.dirty">
+        <span *ngIf="field.get('name')!.dirty">
             {{ getErrorMessage(control)}}
         </span>
     </div>

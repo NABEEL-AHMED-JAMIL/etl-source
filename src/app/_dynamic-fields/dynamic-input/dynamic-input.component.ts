@@ -16,7 +16,6 @@ export class DynamicInputComponent extends DynamicFieldComponent implements OnIn
     }
 
     ngOnInit() {
-        console.log(this.control);
     }
 
 }

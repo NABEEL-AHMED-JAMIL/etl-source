@@ -97,7 +97,6 @@ export class SttLinkFormComponent implements OnInit {
     }
 
     public onChange(ret: {}): void {
-        debugger
         if (ret['from'] === 'right') {
             // deleting =-> from table
             this.linkSTTForm({
