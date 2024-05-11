@@ -1,17 +1,15 @@
-<nz-form-item *ngIf="control" [formGroup]="fields">
+<nz-form-item *ngIf="control" [formGroup]="field">
     <nz-form-label nzRequired="{{ control.validators.length > 0 }}">
         {{control.label}}
     </nz-form-label>
     <nz-form-control>
         <textarea nz-input rows="5"
-            [id]="control.name"
-            [name]="control.name"
-            [formControlName]="control.name"
+            formControlName="name"
             [disabled]="control.disabledPattern"
             [placeholder]="control.placeHolder"></textarea>
     </nz-form-control>
     <div style="color: red !important;">
-        <span *ngIf="getFiledControl(control.name)!.dirty">
+        <span *ngIf="field.get('name')!.dirty">
             {{ getErrorMessage(control)}}
         </span>
     </div>

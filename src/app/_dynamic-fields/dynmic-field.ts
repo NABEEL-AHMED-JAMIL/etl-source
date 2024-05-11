@@ -15,14 +15,14 @@ export abstract class DynamicFieldComponent {
     public control: IControlFiled;
 
     @Input()
-    public fields: FormGroup;
+    public field: FormGroup;
 
     constructor() {
     }
 
     public getErrorMessage(control: IControlFiled): any {
         for (let validation of control.validators) {
-            if (this.getFiledControl(control.name).hasError(validation.validator)) {
+            if (this.getFiledControl('name').hasError(validation.validator)) {
                 return validation.message;
             }
         }
@@ -30,7 +30,7 @@ export abstract class DynamicFieldComponent {
     }
     
     public getFiledControl(controlName: any): FormControl {
-        return this.fields.get(controlName) as FormControl;
+        return this.field.get(controlName) as FormControl;
     }
 
 }

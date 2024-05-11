@@ -12,6 +12,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
@@ -51,6 +52,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
         NzTableModule,
         NzDividerModule,
         NzFormModule,
+        NzAlertModule,
         NzTagModule,
         NzPageHeaderModule,
         NzDescriptionsModule,

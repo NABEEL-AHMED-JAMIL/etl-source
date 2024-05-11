@@ -132,6 +132,15 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
+        <div nz-col nzSpan="16" *ngIf="fieldTypeForLkValue">
+            <nz-form-item>
+                <nz-form-label>API URL (External Api (KEY-VALUE))</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="apiLkValue"
+                        placeholder="Enter Fetch Dropdown Api Url"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
         <div nz-col nzSpan="8" *ngIf="actionType === editAction">
             <nz-form-item>
                 <nz-form-label nzRequired>Control Status</nz-form-label>

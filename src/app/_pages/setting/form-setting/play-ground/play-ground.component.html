@@ -50,27 +50,30 @@
                 <div nz-row [nzGutter]="16">
                     <ng-container *ngFor="let control of section.controls"
                         [formGroupName]="'fields'">
-                        <div nz-col [nzSpan]="control.width" style="margin-bottom: 8px;">
+                        <div nz-col [nzSpan]="control.width"
+                            [id]="control.id"
+                            [formGroupName]="control.name"
+                            style="margin-bottom: 8px;">
                             <!-- input -->
                             <dynamic-input *ngIf="commomService.isSupportedInputControl(control)"
-                                [fields]="getFormSectionFiledGroup('section-' + section.id)"
+                                [field]="getFiledGroup('section-' + section.id, control)"
                                 [section]="section"
                                 [control]="control">
                             </dynamic-input>
                             <!-- textarea -->
                             <dynamic-textarea *ngIf="commomService.isSupportedTextControl(control)"
-                                [fields]="getFormSectionFiledGroup('section-' + section.id)"
+                                [field]="getFiledGroup('section-' + section.id, control)"
                                 [section]="section"
                                 [control]="control">
                             </dynamic-textarea>
                             <!-- selection & multi selection -->
                             <dynamic-select *ngIf="commomService.isSupportedSelectControl(control)"
-                                [fields]="getFormSectionFiledGroup('section-' + section.id)"
+                                [field]="getFiledGroup('section-' + section.id, control)"
                                 [section]="section"
                                 [control]="control">
                             </dynamic-select>
                             <dynamic-datepicker *ngIf="commomService.isSupportedDatePickerControl(control)"
-                                [fields]="getFormSectionFiledGroup('section-' + section.id)"
+                                [field]="getFiledGroup('section-' + section.id, control)"
                                 [section]="section"
                                 [control]="control">
                             </dynamic-datepicker>

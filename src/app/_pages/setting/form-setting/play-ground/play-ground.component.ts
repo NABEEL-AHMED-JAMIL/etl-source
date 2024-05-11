@@ -16,6 +16,7 @@ import {
     AuthResponse,
     AuthenticationService,
     FILED_TYPE,
+    IControlFiled,
     IFrom,
     IValidation,
     PlayGroundService
@@ -134,15 +135,20 @@ export class MgPlayGroundComponent implements OnInit {
             // Loop through fields in the section
             let fieldsControls: FormGroup = this.fb.group({});
             section.controls.forEach((control: any) => {
+                let field: FormGroup = this.fb.group({
+                    id: new FormControl(control.id, Validators.required),
+                    order: new FormControl(control.order, Validators.required),    
+                });
                 if (control.type.lookupCode === FILED_TYPE.MULTI_SELECT || control.type.lookupCode === FILED_TYPE.SELECT) {
-                    fieldsControls.addControl(control.name, new FormControl(
+                    field.addControl('name', new FormControl(
                         control.value !== '' ? control.value : null, this.controlValidators(control.validators)));
                 } else if (control.type.lookupCode === FILED_TYPE.DATE) {
-                    fieldsControls.addControl(control.name, new FormControl(
+                    field.addControl('name', new FormControl(
                         control.value !== '' ? control.value : null, this.controlValidators(control.validators)));
                 } else {
-                    fieldsControls.addControl(control.name, new FormControl(control.value, this.controlValidators(control.validators)));
+                    field.addControl('name', new FormControl(control.value, this.controlValidators(control.validators)));
                 }
+                fieldsControls.addControl(control.name, field);
             });
             sectionGroup.addControl("fields", fieldsControls);
             this.rootForm.addControl("section-" + section.id, sectionGroup);
@@ -176,8 +182,19 @@ export class MgPlayGroundComponent implements OnInit {
         return this.rootForm.get(sectionId) as FormGroup;
     }
 
-    public getFormSectionFiledGroup(sectionId: any): FormGroup {
+    public getFormSectionFiledsGroup(sectionId: any): FormGroup {
         return this.getFormSection(sectionId).get('fields') as FormGroup;
+    }
+
+    /**
+     * Method return the control filed group from the fileds
+     * pattern for control stroe like this
+     * section => fileds => list of control with name
+     * section-1 => fileds => email
+     * section-1 => fileds => username 
+     */
+    public getFiledGroup(sectionId: any, control: IControlFiled): FormGroup {
+        return this.getFormSectionFiledsGroup(sectionId).get(control.name) as FormGroup;
     }
 
     public submit(value: any): void {

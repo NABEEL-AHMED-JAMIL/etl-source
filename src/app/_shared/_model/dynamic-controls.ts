@@ -21,6 +21,7 @@ export interface IControlFiled {
     placeHolder?: any;
     width?: any; // will use for div col
     selectMenuOptions?: any; // fieldLkValue value
+    apiLkValue?: any;
     disabledPattern?: any;
     visiblePattern?: any;
     validators?: IValidation[];
