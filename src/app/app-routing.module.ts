@@ -32,7 +32,8 @@ import {
     MgSourceTaskComponent,
     MgSourceTaskTypeComponent,
     MgReportComponent,
-    MgDashboardComponent
+    MgDashboardComponent,
+    MgOLAPComponent
 } from './_pages';
 
 
@@ -165,6 +166,17 @@ const routes: Routes = [
                     roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['MANAGE_REPORT_PERMISSION'],
                     breadcrumb: 'Mg Report',
+                }
+            },
+            {
+                path: 'mgOLAP',
+                component: MgOLAPComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                    permission: ['MANAGE_OLAP_PERMISSION'],
+                    breadcrumb: 'Mg OLAP',
                 }
             },
             // form-setting => form
