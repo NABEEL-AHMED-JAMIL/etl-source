@@ -57,6 +57,8 @@ export * from './setting/profile-setting/mg-refresh-token/mg-refresh-token.compo
 // report-setting
 export * from './setting/report-setting/cu-report/cu-report.component';
 export * from './setting/dashboard-setting/cu-dashboard/cu-dashboard.component';
+export * from './setting/report-setting/mg-olap/mg-olap.component';
+export * from './setting/report-setting/cu-olap/cu-olap.component';
 export * from './setting/report-setting/mg-report/mg-report.component';
 export * from './setting/dashboard-setting/mg-dashboard/mg-dashboard.component';
 // update profile

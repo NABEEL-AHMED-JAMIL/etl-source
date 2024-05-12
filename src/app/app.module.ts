@@ -4,7 +4,10 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { registerLocaleData } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+    ReactiveFormsModule,
+    FormsModule
+} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import en from '@angular/common/locales/en';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -72,13 +75,16 @@ import {
     SttsLinkSttcComponent,
     SttsLinkSttfComponent,
     MgSourceTaskComponent,
+    CuSourceTaskComponent,
     MgSourceTaskTypeComponent,
     CuSourceTTaskComponent,
     SttLinkFormComponent,
     CUDashboardComponent,
     CUReportComponent,
     MgDashboardComponent,
-    MgReportComponent 
+    MgReportComponent,
+    CUOLAPComponent,
+    MgOLAPComponent
 } from './_pages';
 
 // dynamic fileds
@@ -141,6 +147,7 @@ export const APP_COMPONENT = [
     SttsLinkSttcComponent,
     SttsLinkSttfComponent,
     MgSourceTaskComponent,
+    CuSourceTaskComponent,
     MgSourceTaskTypeComponent,
     CuSourceTTaskComponent,
     SttLinkFormComponent,
@@ -148,6 +155,8 @@ export const APP_COMPONENT = [
     CUReportComponent,
     MgDashboardComponent,
     MgReportComponent,
+    CUOLAPComponent,
+    MgOLAPComponent,
     // dynamic fileds
     DynamicInputComponent,
     DynamicTextAreaComponent,

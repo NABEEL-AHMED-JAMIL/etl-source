@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SideBar, SETTING_SIDEBAR } from '../../_shared';
-import { AuthenticationService, AuthResponse } from '../../_shared';
+import {
+    AuthenticationService,
+    AuthResponse
+} from '../../_shared';
 
 
 @Component({
@@ -33,6 +36,7 @@ export class AdminLayoutComponent implements OnInit {
     }
 
     ngOnInit(): void {
+
     }
 
     public hasPermissionAccess(userProfile: any): any {

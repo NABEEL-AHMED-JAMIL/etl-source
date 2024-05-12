@@ -12,6 +12,10 @@ export class SettingService {
 
     constructor(private http: HttpClient) { }
 
+    public fetchSettingDashboard(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/fetchSettingDashboard`, payload);
+    }
+
     // query
     public dynamicQueryResponse(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/dynamicQueryResponse`, payload);
