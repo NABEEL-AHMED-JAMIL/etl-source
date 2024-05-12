@@ -122,6 +122,10 @@ export interface ICredential extends IBaseEntity {
     content?: any;
 }
 
+export interface ISourceTask extends IBaseEntity {
+
+} 
+
 export interface ISTT extends IBaseEntity {
     serviceName?: any;
     description?: any;
