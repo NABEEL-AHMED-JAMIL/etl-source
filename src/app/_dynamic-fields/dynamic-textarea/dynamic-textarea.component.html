@@ -4,12 +4,12 @@
     </nz-form-label>
     <nz-form-control>
         <textarea nz-input rows="5"
-            formControlName="name"
+            formControlName="value"
             [disabled]="control.disabledPattern"
             [placeholder]="control.placeHolder"></textarea>
     </nz-form-control>
     <div style="color: red !important;">
-        <span *ngIf="field.get('name')!.dirty">
+        <span *ngIf="field.get('value')!.dirty">
             {{ getErrorMessage(control)}}
         </span>
     </div>

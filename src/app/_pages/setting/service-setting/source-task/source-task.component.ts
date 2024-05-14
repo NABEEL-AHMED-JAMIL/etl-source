@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    ViewEncapsulation
+} from '@angular/core';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { first } from 'rxjs';
@@ -13,97 +17,41 @@ import {
     ApiCode,
     AuthResponse,
     AuthenticationService,
-    IStaticTable,
     SourceTaskService
 } from 'src/app/_shared';
 
 @Component({
     selector: 'app-source-task',
     templateUrl: 'source-task.component.html',
-    styleUrls: ['source-task.component.css']
+    styleUrls: ['source-task.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class MgSourceTaskComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
-    public setOfCheckedId = new Set<any>();
-
+    public searchDetails: any;
+    public headerButton: any = [
+        {
+            type: 'plus-circle',
+            color: 'red',
+            spin: false,
+            tooltipTitle: 'Add',
+            action: ActionType.ADD
+        },
+        {
+            type: 'reload',
+            color: 'red',
+            spin: false,
+            tooltipTitle: 'Refresh',
+            action: ActionType.RE_FRESH
+        }
+    ];
+    // session user
     public sessionUser: AuthResponse;
-    public sourceTaskTable: IStaticTable = {
-        tableId: 'stt_id',
-        title: 'Mg Source Task',
-        bordered: true,
-        checkbox: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'plus-circle',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Add',
-                action: ActionType.ADD
-            },
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
-            },
-            {
-                field: 'createdBy',
-                header: 'Created By',
-                type: 'combine',
-                subfield: ['id', 'username']
-            },
-            {
-                field: 'dateUpdated',
-                header: 'Updated',
-                type: 'date'
-            },
-            {
-                field: 'updatedBy',
-                header: 'Updated By',
-                type: 'combine',
-                subfield: ['id', 'username']
-            },
-            {
-                field: 'status',
-                header: 'Status',
-                type: 'tag'
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
-            }
-        ],
-        actionType: [
-            {
-                type: 'edit',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            }
-        ]
-    };
+
+    // test loop
+    public iterationArray: number[] = Array(12).fill(0).map((x, i) => i);
 
     constructor(
         private drawerService: NzDrawerService,
@@ -142,7 +90,6 @@ export class MgSourceTaskComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.sourceTaskTable.dataSource = response.data;
             }, (error: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(error.message, ApiCode.ERROR);
@@ -220,31 +167,11 @@ export class MgSourceTaskComponent implements OnInit {
         });
     }
 
-    public extraActionReciver(payload: any): void {
-        if (ActionType.DELETE === payload.action) {
-            this.modalService.confirm({
-                nzOkText: 'Ok',
-                nzCancelText: 'Cancel',
-                nzTitle: 'Do you want to delete?',
-                nzContent: 'Press \'Ok\' may effect the business source.',
-                nzOnOk: () => {
-                    this.deleteAllSourceTask(
-                        {
-                            ids: payload.checked,
-                            sessionUser: {
-                                username: this.sessionUser.username
-                            }
-                        });
-                }
-            });
-        }
-    }
-
     public openCuLookup(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add STT' : 'Edit STT',
-            nzFooter: 'Once Source Task Type Created, Task Type Will Not Change',
+            nzFooter: 'Once Source Task Created, Task Type Will Not Change',
             nzPlacement: 'right',
             nzWidth: 800,
             nzMaskClosable: false,
@@ -263,31 +190,6 @@ export class MgSourceTaskComponent implements OnInit {
                 }
             });
         });
-    }
-
-    public deleteAllSourceTask(payload: any): void {
-        this.spinnerService.show();
-        this.sourceTaskService.deleteAllSourceTask(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllSourceTask({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-                this.setOfCheckedId = new Set<any>();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
-            });
     }
 
 }

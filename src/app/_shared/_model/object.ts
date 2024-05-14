@@ -460,6 +460,14 @@ export const SETTING_SIDEBAR: SideBar[] = [
         ]
     },
     {
+        name: 'Asset Store',
+        icon: 'folder-open',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+        permission: ['ASSET_STORE_PERMISSION'],
+        childLinks: [
+        ]
+    },
+    {
         name: 'Dashboard Setting',
         icon: 'pie-chart',
         roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],

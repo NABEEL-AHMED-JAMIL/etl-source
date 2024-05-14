@@ -5,7 +5,7 @@
     </nz-form-label>
     <nz-form-control>
         <nz-select
-            formControlName="name"
+            formControlName="value"
             [nzAllowClear]="'true'"
             [nzShowSearch]="'true'"
             [nzShowArrow]="true"
@@ -18,7 +18,7 @@
         </nz-select>
     </nz-form-control>
     <div style="color: red !important;">
-        <span *ngIf="field.get('name')!.dirty">
+        <span *ngIf="field.get('value')!.dirty">
             {{ getErrorMessage(control)}}
         </span>
     </div>

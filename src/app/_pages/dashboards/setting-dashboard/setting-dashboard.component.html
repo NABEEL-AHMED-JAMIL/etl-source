@@ -3,15 +3,23 @@
         style="text-align: center;padding-top: 10px;">
         <h4>ETL Source (2023)</h4>
     </div>
-    <div nz-col [nzSpan]="6" *ngIf="SERVICE_SETTING_STATISTICS">
+    <div nz-col [nzSpan]="6" *ngIf="APP_SETTING_STATISTICS">
         <hr><h4 style="text-align: center;">
-            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
+            <span nz-icon nzType="pie-chart" nzTheme="outline"></span> Dashboard Setting
         </h4><hr>
-        <div id="SERVICE_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
-            class="demo-chart" [options]="SERVICE_SETTING_STATISTICS">
+        <div id="DASHBOARD_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
+            class="demo-chart" [options]="DASHBOARD_SETTING_STATISTICS">
         </div>
     </div>
-    <div nz-col [nzSpan]="18" *ngIf="SESSION_COUNT_STATISTICS">
+    <div nz-col [nzSpan]="6">
+        <hr><h4 style="text-align: center;">
+            <span nz-icon nzType="paper-clip" nzTheme="outline"></span> Report Setting
+        </h4><hr>
+        <div id="REPORT_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
+            class="demo-chart" [options]="REPORT_SETTING_STATISTICS">
+        </div>
+    </div>
+    <div nz-col [nzSpan]="12" *ngIf="SESSION_COUNT_STATISTICS">
         <hr>
         <h4 style="text-align: center;">
             <span nz-icon nzType="login" nzTheme="outline"></span> Daily User Session
@@ -21,23 +29,15 @@
             class="demo-chart" [options]="SESSION_COUNT_STATISTICS">
         </div>
     </div>
-    <div nz-col [nzSpan]="4" *ngIf="APP_SETTING_STATISTICS">
+    <div nz-col [nzSpan]="6" *ngIf="SERVICE_SETTING_STATISTICS">
         <hr><h4 style="text-align: center;">
-            <span nz-icon nzType="pie-chart" nzTheme="outline"></span> Dashboard Setting
+            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
         </h4><hr>
-        <div id="DASHBOARD_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
-            class="demo-chart" [options]="DASHBOARD_SETTING_STATISTICS">
+        <div id="SERVICE_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
+            class="demo-chart" [options]="SERVICE_SETTING_STATISTICS">
         </div>
     </div>
-    <div nz-col [nzSpan]="4">
-        <hr><h4 style="text-align: center;">
-            <span nz-icon nzType="paper-clip" nzTheme="outline"></span> Report Setting
-        </h4><hr>
-        <div id="REPORT_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
-            class="demo-chart" [options]="REPORT_SETTING_STATISTICS">
-        </div>
-    </div>
-    <div nz-col [nzSpan]="4">
+    <div nz-col [nzSpan]="6">
         <hr><h4 style="text-align: center;">
             <span nz-icon nzType="database" nzTheme="outline"></span> Form Setting
         </h4><hr>

@@ -125,7 +125,10 @@ export class MgPlayGroundComponent implements OnInit {
     }
 
     public formInit(formJson: IFrom): void {
-        this.rootForm = this.fb.group({});
+        this.rootForm = this.fb.group({
+            id: new FormControl(formJson.id, Validators.required),
+            name: new FormControl(formJson.name, Validators.required),
+        });
         formJson.sections.forEach((section: any) => {
             let sectionGroup: FormGroup = this.fb.group({
                 id: new FormControl(section.id, Validators.required),
@@ -137,16 +140,17 @@ export class MgPlayGroundComponent implements OnInit {
             section.controls.forEach((control: any) => {
                 let field: FormGroup = this.fb.group({
                     id: new FormControl(control.id, Validators.required),
+                    name: new FormControl(control.name, Validators.required),
                     order: new FormControl(control.order, Validators.required),    
                 });
                 if (control.type.lookupCode === FILED_TYPE.MULTI_SELECT || control.type.lookupCode === FILED_TYPE.SELECT) {
-                    field.addControl('name', new FormControl(
+                    field.addControl('value', new FormControl(
                         control.value !== '' ? control.value : null, this.controlValidators(control.validators)));
                 } else if (control.type.lookupCode === FILED_TYPE.DATE) {
-                    field.addControl('name', new FormControl(
+                    field.addControl('value', new FormControl(
                         control.value !== '' ? control.value : null, this.controlValidators(control.validators)));
                 } else {
-                    field.addControl('name', new FormControl(control.value, this.controlValidators(control.validators)));
+                    field.addControl('value', new FormControl(control.value, this.controlValidators(control.validators)));
                 }
                 fieldsControls.addControl(control.name, field);
             });
@@ -198,7 +202,7 @@ export class MgPlayGroundComponent implements OnInit {
     }
 
     public submit(value: any): void {
-        console.log(value);
+        console.log(JSON.stringify(value));
     }
 
 }
