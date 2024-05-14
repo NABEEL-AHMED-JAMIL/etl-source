@@ -123,7 +123,10 @@ export interface ICredential extends IBaseEntity {
 }
 
 export interface ISourceTask extends IBaseEntity {
-
+    taskName: string;
+    description: string;
+    sourceTaskType: ISTT;
+    formData: any;
 } 
 
 export interface ISTT extends IBaseEntity {

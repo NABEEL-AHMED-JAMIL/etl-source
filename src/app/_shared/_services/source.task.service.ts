@@ -33,9 +33,12 @@ export class SourceTaskService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/source_task.json/fetchAllSourceTask`, payload);
     }
 
-
     public fetchSourceTaskById(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/source_task.json/fetchSourceTaskById`, payload);
+    }
+
+    public fetchAllSTT(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/source_task.json/fetchAllSTT`, payload);
     }
 
 }
