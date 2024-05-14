@@ -33,7 +33,9 @@ import {
     MgSourceTaskTypeComponent,
     MgReportComponent,
     MgDashboardComponent,
-    MgOLAPComponent
+    MgOLAPComponent,
+    ViewReportComponent,
+    ViewDashboardComponent
 } from './_pages';
 
 
@@ -344,9 +346,29 @@ const routes: Routes = [
         data: {
             breadcrumb: 'Report',
             roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER', 'ROLE_DEV'],
-            permission: ['ADMIN_PAGE_PERMISSION'],
+            permission: ['REPORT_PAGE_PERMISSION'],
         },
         children: [
+            {
+                path: 'viewReport',
+                canActivate: [AuthGuard],
+                component: ViewReportComponent,
+                data: {
+                    breadcrumb: 'View Report',
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                    permission: ['VIEW_REPORT_PERMISSION']
+                }
+            },
+            {
+                path: 'viewDashboard',
+                canActivate: [AuthGuard],
+                component: ViewDashboardComponent,
+                data: {
+                    breadcrumb: 'View Dashboard',
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                    permission: ['VIEW_DASHBOARD_PERMISSION']
+                }
+            }
         ]
     },
     {

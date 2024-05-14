@@ -122,6 +122,10 @@ export interface ICredential extends IBaseEntity {
     content?: any;
 }
 
+export interface ISourceTask extends IBaseEntity {
+
+} 
+
 export interface ISTT extends IBaseEntity {
     serviceName?: any;
     description?: any;
@@ -453,6 +457,14 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
                 permission: ['SOURCE_CREDENTAIL_PERMISSION']
             }
+        ]
+    },
+    {
+        name: 'Asset Store',
+        icon: 'folder-open',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+        permission: ['ASSET_STORE_PERMISSION'],
+        childLinks: [
         ]
     },
     {

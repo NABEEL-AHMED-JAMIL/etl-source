@@ -1,0 +1,29 @@
+.ant-card-body {
+    padding: 0px !important;
+}
+
+/* nz-card .ant-card-head {
+    background: #8A1538;
+    color: white;
+} */
+
+.ant-card-type-inner .ant-card-extra {
+    margin-left: -12px;
+}
+
+.my-ads-content .card-content {
+    display: flex;
+    flex-flow: wrap;
+}
+
+@media (min-width: 992px) {
+    .ant-col-lg-6 {
+        display: block;
+        flex: 1 0 24%;
+        max-width: 25%;
+    }
+}
+
+.ant-card-head {
+    padding: 0 10px !important;
+}

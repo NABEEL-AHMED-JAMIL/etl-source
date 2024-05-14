@@ -1,23 +1,47 @@
 <nz-layout class="app-layout">
-    <nz-sider class="menu-sidebar"         
-        [nzWidth]="isCollapsed ? '80px' : '200px'" nzBreakpoint="sm" 
-        nzCollapsible [(nzCollapsed)]="isCollapsed"
-        [nzTrigger]="null" [style.max-width.px]="300">
+    <nz-sider class="menu-sidebar" [nzWidth]="isCollapsed ? '85px' : '240px'"
+        [(nzCollapsed)]="isCollapsed" [nzTrigger]="null"
+        nzBreakpoint="sm" nzCollapsible
+        [style.max-width.px]="300">
         <div class="sidebar-logo">
             <a routerLink="/setting">
                 <h1 style="margin: 0 0 0 00px;">{{title}}</h1>
             </a>
         </div>
-        <ul nz-menu nzTheme="dark" nzMode="inline">
-            <ng-container *ngFor="let sidebar of sidebars">
-                <li *ngIf="hasPermissionAccess(sidebar.permission)"
-                    nz-submenu nzTitle="{{sidebar.name}}" nzIcon="{{sidebar.icon}}">
-                    <ul *ngIf="sidebar?.childLinks">
-                        <ng-container *ngFor="let childLink of sidebar?.childLinks">
-                            <li *ngIf="hasPermissionAccess(childLink.permission)" nz-menu-item nzMatchRouter>
-                                <a routerLink="{{childLink.link}}">
-                                    <span nz-icon nzType="{{childLink.icon}}" nzTheme="outline"></span>
-                                    {{childLink.name}}
+        <!-- hr -->
+        <ul *ngIf="reportList && dashboardList" nz-menu nzTheme="dark" nzMode="inline">
+            <!-- Dashboard -->
+            <hr style="margin-top: 0px;">
+            <h3 style="color: white;text-align: center;">Dashboard</h3>
+            <hr style="margin-top: 0px;">
+            <ng-container *ngFor="let title of getDashboardKeys()">
+                <li nz-submenu nzTitle="{{title}}" nzIcon="pie-chart">
+                    <ul *ngIf="getDashboardValue(title)">
+                        <ng-container *ngFor="let dashboard of getDashboardValue(title)">
+                            <li nz-menu-item nzMatchRouter style="padding-left: 25px !important;">
+                                <a [routerLink]="['/report/viewDashboard']" 
+                                   [queryParams]="{ dashboardId: dashboard.id }">
+                                    <span nz-icon nzType="line-chart" nzTheme="outline"></span>
+                                    &nbsp;{{dashboard.name}}    
+                                </a>
+                            </li>
+                        </ng-container>
+                    </ul>
+                </li>
+            </ng-container>
+            <!-- Report -->
+            <hr style="margin-top: 0px;">
+            <h3 style="color: white;text-align: center;">Report</h3>
+            <hr style="margin-top: 0px;">
+            <ng-container *ngFor="let title of getReportKeys()">
+                <li nz-submenu nzTitle="{{title}}" nzIcon="paper-clip">
+                    <ul *ngIf="getReportValue(title)">
+                        <ng-container *ngFor="let report of getReportValue(title)">
+                            <li nz-menu-item nzMatchRouter style="padding-left: 25px !important;">
+                                <a [routerLink]="['/report/viewReport']"
+                                    [queryParams]="{ reportId: report.id }">
+                                    <span nz-icon nzType="file-text" nzTheme="outline"></span>
+                                    &nbsp;{{report.name}}
                                 </a>
                             </li>
                         </ng-container>
@@ -25,6 +49,7 @@
                 </li>
             </ng-container>
         </ul>
+        <!-- hr -->
     </nz-sider>
     <nz-layout>
         <nz-header>
@@ -49,7 +74,6 @@
         </nz-header>
         <nz-content>
             <app-breadcrumb></app-breadcrumb>
-            <div class="content" *ngIf="displayMainContent">Admin</div>
             <router-outlet></router-outlet>
         </nz-content>
     </nz-layout>

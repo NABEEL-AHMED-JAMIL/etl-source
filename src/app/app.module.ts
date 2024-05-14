@@ -84,7 +84,8 @@ import {
     MgDashboardComponent,
     MgReportComponent,
     CUOLAPComponent,
-    MgOLAPComponent
+    MgOLAPComponent,
+    ViewReportComponent
 } from './_pages';
 
 // dynamic fileds
@@ -157,6 +158,7 @@ export const APP_COMPONENT = [
     MgReportComponent,
     CUOLAPComponent,
     MgOLAPComponent,
+    ViewReportComponent,
     // dynamic fileds
     DynamicInputComponent,
     DynamicTextAreaComponent,

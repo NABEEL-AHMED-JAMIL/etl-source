@@ -63,3 +63,6 @@ export * from './setting/report-setting/mg-report/mg-report.component';
 export * from './setting/dashboard-setting/mg-dashboard/mg-dashboard.component';
 // update profile
 export * from './update-profile/update-profile.component';
+// view-report
+export * from './view-report/view-report.component';
+export * from './view-dashboard/view-dashboard.component';

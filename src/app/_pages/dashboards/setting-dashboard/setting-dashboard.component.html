@@ -1,53 +1,63 @@
 <div nz-row class="content">
     <div nz-col [nzSpan]="24" 
         style="text-align: center;padding-top: 10px;">
-        <h4>(DashBoard ETL Source 2023)</h4>
+        <h4>ETL Source (2023)</h4>
     </div>
-    <div nz-col [nzSpan]="8" *ngIf="SERVICE_SETTING_STATISTICS">
-        <hr><h4 style="text-align: center;">
-            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
-        </h4><hr>
-        <div id="SERVICE_SETTING_STATISTICS" echarts theme="macarons" style="height: 150px;"
-            class="demo-chart" [options]="SERVICE_SETTING_STATISTICS">
-        </div>
-    </div>
-    <div nz-col [nzSpan]="8" *ngIf="APP_SETTING_STATISTICS">
+    <div nz-col [nzSpan]="6" *ngIf="APP_SETTING_STATISTICS">
         <hr><h4 style="text-align: center;">
             <span nz-icon nzType="pie-chart" nzTheme="outline"></span> Dashboard Setting
         </h4><hr>
-        <div id="DASHBOARD_SETTING_STATISTICS" echarts theme="macarons" style="height: 150px;"
+        <div id="DASHBOARD_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
             class="demo-chart" [options]="DASHBOARD_SETTING_STATISTICS">
         </div>
     </div>
-    <div nz-col [nzSpan]="8">
+    <div nz-col [nzSpan]="6">
         <hr><h4 style="text-align: center;">
             <span nz-icon nzType="paper-clip" nzTheme="outline"></span> Report Setting
         </h4><hr>
-        <div id="REPORT_SETTING_STATISTICS" echarts theme="macarons" style="height: 150px;"
+        <div id="REPORT_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
             class="demo-chart" [options]="REPORT_SETTING_STATISTICS">
         </div>
     </div>
-    <div nz-col [nzSpan]="8">
+    <div nz-col [nzSpan]="12" *ngIf="SESSION_COUNT_STATISTICS">
+        <hr>
+        <h4 style="text-align: center;">
+            <span nz-icon nzType="login" nzTheme="outline"></span> Daily User Session
+        </h4>
+        <hr>
+        <div id="SESSION_COUNT_STATISTICS" echarts theme="macarons" style="height: 200px;"
+            class="demo-chart" [options]="SESSION_COUNT_STATISTICS">
+        </div>
+    </div>
+    <div nz-col [nzSpan]="6" *ngIf="SERVICE_SETTING_STATISTICS">
+        <hr><h4 style="text-align: center;">
+            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
+        </h4><hr>
+        <div id="SERVICE_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
+            class="demo-chart" [options]="SERVICE_SETTING_STATISTICS">
+        </div>
+    </div>
+    <div nz-col [nzSpan]="6">
         <hr><h4 style="text-align: center;">
             <span nz-icon nzType="database" nzTheme="outline"></span> Form Setting
         </h4><hr>
-        <div id="FORM_SETTING_STATISTICS" echarts theme="macarons" style="height: 150px;"
+        <div id="FORM_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
             class="demo-chart" [options]="FORM_SETTING_STATISTICS">
         </div>
     </div>
-    <div nz-col [nzSpan]="8" *ngIf="PROFILE_SETTING_STATISTICS">
+    <div nz-col [nzSpan]="6" *ngIf="PROFILE_SETTING_STATISTICS">
         <hr><h4 style="text-align: center;">
             <span nz-icon nzType="profile" nzTheme="outline"></span> Profile Setting
         </h4><hr>
-        <div id="PROFILE_SETTING_STATISTICS" echarts theme="macarons" style="height: 150px;"
+        <div id="PROFILE_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
             class="demo-chart" [options]="PROFILE_SETTING_STATISTICS">
         </div>
     </div>
-    <div nz-col [nzSpan]="8" *ngIf="APP_SETTING_STATISTICS">
+    <div nz-col [nzSpan]="6" *ngIf="APP_SETTING_STATISTICS">
         <hr><h4 style="text-align: center;">
             <span nz-icon nzType="appstore" nzTheme="outline"></span> App Setting
         </h4><hr>
-        <div id="APP_SETTING_STATISTICS" echarts theme="macarons" style="height: 150px;"
+        <div id="APP_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
             class="demo-chart" [options]="APP_SETTING_STATISTICS">
         </div>
     </div>

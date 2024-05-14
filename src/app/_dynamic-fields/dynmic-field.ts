@@ -22,7 +22,7 @@ export abstract class DynamicFieldComponent {
 
     public getErrorMessage(control: IControlFiled): any {
         for (let validation of control.validators) {
-            if (this.getFiledControl('name').hasError(validation.validator)) {
+            if (this.getFiledControl('value').hasError(validation.validator)) {
                 return validation.message;
             }
         }

@@ -48,7 +48,15 @@
 <!-- source job-menu -->
 <nz-dropdown-menu #menu="nzDropdownMenu">
     <ul nz-menu nzSelectable>
-        <li nz-menu-item>Running Jobs</li>
-        <li nz-menu-item>Queue Jobs</li>
+        <li nz-menu-item>
+            <span nz-icon nzType="play-circle"
+                nzTheme="outline"></span>&nbsp; 
+            Running Jobs
+        </li>
+        <li nz-menu-item>
+            <span nz-icon nzType="history"
+                nzTheme="outline"></span>&nbsp; 
+            Jobs History
+        </li>
     </ul>
 </nz-dropdown-menu>

@@ -5,14 +5,14 @@
     <!-- date picker with date -->
     <nz-form-control>
         <nz-date-picker
-            formControlName="name"
+            formControlName="value"
             [nzFormat]="control.pattern"
             [nzMode]="control.type.lookupValue.toLowerCase()"
             [disabled]="control.disabledPattern">
         </nz-date-picker>
     </nz-form-control>
     <div style="color: red !important;">
-        <span *ngIf="field.get('name')!.dirty">
+        <span *ngIf="field.get('value')!.dirty">
             {{ getErrorMessage(control)}}
         </span>
     </div>
