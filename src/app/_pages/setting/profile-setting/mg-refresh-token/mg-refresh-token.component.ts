@@ -93,15 +93,6 @@ export class MgRefreshTokenComponent implements OnInit {
                 header: 'Status',
                 type: 'tag'
             }
-        ],
-        actionType: [
-            {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            }
         ]
     };
 

@@ -17,7 +17,8 @@ import {
     ApiCode,
     AuthResponse,
     AuthenticationService,
-    SourceTaskService
+    SourceTaskService,
+    IStaticTable
 } from 'src/app/_shared';
 
 @Component({
@@ -30,34 +31,119 @@ export class MgSourceTaskComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
-    public searchDetails: any;
-    public headerButton: any = [
-        {
-            type: 'plus-circle',
-            color: 'red',
-            spin: false,
-            tooltipTitle: 'Add',
-            action: ActionType.ADD
-        },
-        {
-            type: 'reload',
-            color: 'red',
-            spin: false,
-            tooltipTitle: 'Refresh',
-            action: ActionType.RE_FRESH
-        }
-    ];
-    // session user
-    public sessionUser: AuthResponse;
+    public setOfCheckedId = new Set<any>();
 
-    // test loop
-    public iterationArray: number[] = Array(12).fill(0).map((x, i) => i);
+    public sessionUser: AuthResponse;
+    public sourceTaskTable: IStaticTable = {
+        tableId: 'st_id',
+        title: 'Mg Source Task',
+        bordered: true,
+        checkbox: true,
+        size: 'small',
+        headerButton: [
+            {
+                type: 'plus-circle',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Add',
+                action: ActionType.ADD
+            },
+            {
+                type: 'reload',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Refresh',
+                action: ActionType.RE_FRESH
+            }
+        ],
+        dataColumn: [
+            {
+                field: 'taskName',
+                header: 'Task Name',
+                type: 'data'
+            },
+            {
+                field: 'sourceTaskType',
+                header: 'Task Type',
+                type: 'combine',
+                subfield: ['id', 'serviceName']
+            },
+            {
+                field: 'formData',
+                header: 'Form',
+                type: 'combine',
+                subfield: ['id', 'name']
+            },
+            {
+                field: 'totalJob',
+                header: 'Total Job',
+                type: 'tag'
+            },
+            {
+                field: 'dateCreated',
+                header: 'Created',
+                type: 'date'
+            },
+            {
+                field: 'createdBy',
+                header: 'Created By',
+                type: 'combine',
+                subfield: ['id', 'username']
+            },
+            {
+                field: 'dateUpdated',
+                header: 'Updated',
+                type: 'date'
+            },
+            {
+                field: 'updatedBy',
+                header: 'Updated By',
+                type: 'combine',
+                subfield: ['id', 'username']
+            },
+            {
+                field: 'status',
+                header: 'Status',
+                type: 'tag'
+            }
+        ],
+        extraHeaderButton: [
+            {
+                title: 'Delete All',
+                type: 'delete',
+                action: ActionType.DELETE
+            }
+        ],
+        actionType: [
+            {
+                type: 'edit',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
+            },
+            {
+                type: 'delete',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Delete',
+                action: ActionType.DELETE
+            }
+        ],
+        moreActionType: [
+            {
+                type: 'link',
+                title: 'Link With Form',
+                action: ActionType.LINK_FROM
+            }
+        ]
+    };
 
     constructor(
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
         private alertService: AlertService,
-        private commomService: CommomService,
+        public commomService: CommomService,
         private spinnerService: SpinnerService,
         private sourceTaskService: SourceTaskService,
         private authenticationService: AuthenticationService) {
@@ -90,6 +176,7 @@ export class MgSourceTaskComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
+                this.sourceTaskTable.dataSource = response.data;
             }, (error: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(error.message, ApiCode.ERROR);
@@ -167,11 +254,31 @@ export class MgSourceTaskComponent implements OnInit {
         });
     }
 
+    public extraActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteAllSourceTask(
+                        {
+                            ids: payload.checked,
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                }
+            });
+        }
+    }
+
     public openCuLookup(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
-            nzTitle: actionType === ActionType.ADD ? 'Add STT' : 'Edit STT',
-            nzFooter: 'Once Source Task Created, Task Type Will Not Change',
+            nzTitle: actionType === ActionType.ADD ? 'Add Source Task' : 'Edit Source Task',
+            nzFooter: 'Note: Once Source Task Created, Task Type Will Not Change',
             nzPlacement: 'right',
             nzWidth: 800,
             nzMaskClosable: false,
@@ -190,6 +297,31 @@ export class MgSourceTaskComponent implements OnInit {
                 }
             });
         });
+    }
+
+    public deleteAllSourceTask(payload: any): void {
+        this.spinnerService.show();
+        this.sourceTaskService.deleteAllSourceTask(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.fetchAllSourceTask({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+                this.setOfCheckedId = new Set<any>();
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error, ApiCode.ERROR);
+            });
     }
 
 }
