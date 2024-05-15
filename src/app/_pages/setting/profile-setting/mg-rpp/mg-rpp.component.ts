@@ -130,13 +130,13 @@ export class MgRPPComponent implements OnInit {
                 tooltipTitle: 'Edit',
                 action: ActionType.EDIT
             },
-            {
-                type: 'link',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'Link With User',
-                action: ActionType.LINK
-            },
+            // {
+            //     type: 'link',
+            //     color: 'orange',
+            //     spin: false,
+            //     tooltipTitle: 'Link With User',
+            //     action: ActionType.LINK
+            // },
             {
                 type: 'delete',
                 color: 'red',
@@ -238,13 +238,13 @@ export class MgRPPComponent implements OnInit {
                 tooltipTitle: 'Edit',
                 action: ActionType.EDIT
             },
-            {
-                type: 'link',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'Link With User',
-                action: ActionType.LINK
-            },
+            // {
+            //     type: 'link',
+            //     color: 'orange',
+            //     spin: false,
+            //     tooltipTitle: 'Link With User',
+            //     action: ActionType.LINK
+            // },
             {
                 type: 'delete',
                 color: 'red',
