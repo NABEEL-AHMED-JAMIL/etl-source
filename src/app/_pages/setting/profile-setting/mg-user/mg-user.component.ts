@@ -85,17 +85,12 @@ export class MgUserComponent implements OnInit {
                 field: 'profile',
                 header: 'Profile',
                 type: 'combine',
-                subfield: ['profileName']
+                subfield: ['description']
             },
             {
                 field: 'ipAddress',
                 header: 'Ip Address',
                 type: 'data'
-            },
-            {
-                field: 'totalSubUser',
-                header: 'SubUser',
-                type: 'tag'
             },
             {
                 field: 'dateCreated',
