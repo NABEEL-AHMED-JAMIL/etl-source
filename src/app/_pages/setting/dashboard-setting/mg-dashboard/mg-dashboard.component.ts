@@ -17,6 +17,7 @@ import {
     IDashboardSetting,
     IStaticTable
 } from 'src/app/_shared';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -117,6 +118,13 @@ export class MgDashboardComponent implements OnInit {
                 action: ActionType.EDIT
             },
             {
+                type: 'eye',
+                color: 'orange',
+                spin: false,
+                tooltipTitle: 'View Report',
+                action: ActionType.VIEW
+            },
+            {
                 type: 'delete',
                 color: 'red',
                 spin: false,
@@ -127,6 +135,7 @@ export class MgDashboardComponent implements OnInit {
     };
 
     constructor(
+        private router: Router,
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
         private alertService: AlertService,
@@ -197,6 +206,12 @@ export class MgDashboardComponent implements OnInit {
     public tableActionReciver(payload: any): void {
         if (ActionType.EDIT === payload.action) {
             this.openCuEnVariable(ActionType.EDIT, payload);
+        } else if (ActionType.VIEW === payload.action) {
+            if (payload.data.groupType) {
+                this.router.navigate(['/report/viewDashboard'], { queryParams: { dashboardId: payload.data.id } });
+            } else {
+                this.alertService.showInfo('Please Link Dashboard Group.', ApiCode.SUCCESS);
+            }
         } else if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
                 nzOkText: 'Ok',
