@@ -464,10 +464,17 @@ export const SETTING_SIDEBAR: SideBar[] = [
     },
     {
         name: 'Asset Store',
-        icon: 'folder-open',
+        icon: 'folder',
         roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
         permission: ['ASSET_STORE_PERMISSION'],
         childLinks: [
+            {
+                name: 'Manage Bucket',
+                icon: 'folder-open',
+                link: '/setting/mgDashboard',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['BUCKET_SETTING_PERMISSION']
+            }
         ]
     },
     {

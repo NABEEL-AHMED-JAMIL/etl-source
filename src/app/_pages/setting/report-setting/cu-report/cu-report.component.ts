@@ -22,7 +22,8 @@ import {
     E_VARAIABLE,
     IGenFrom,
     FormSettingService,
-    PAYLOAD_REF
+    PAYLOAD_REF,
+    ILookupData
 } from 'src/app/_shared';
 
 
@@ -46,6 +47,7 @@ export class CUReportComponent implements OnInit {
     public sessionUser: AuthResponse;
     // ilookup
     public genForms: IGenFrom[] = [];
+    public parentLookup: ILookupData[] = [];
     public APPLICATION_STATUS: ILookups;
     public REPORT_GROUP: ILookups;
     public PAYLOAD_REF: ILookups;
@@ -99,6 +101,11 @@ export class CUReportComponent implements OnInit {
                 username: this.sessionUser.username
             }
         });
+        this.findAllParentLookupByUsername({
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
     }
 
     // fetch all lookup
@@ -118,7 +125,7 @@ export class CUReportComponent implements OnInit {
                 this.alertService.showError(error.message, ApiCode.ERROR);
             });
     }
-    
+
     public fetchUserEnvByEnvKey(): any {
         this.spinnerService.show();
         let payload = {
@@ -319,6 +326,24 @@ export class CUReportComponent implements OnInit {
                 this.loading = false;
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);;
+            });
+    }
+
+    // fetch all lookup
+    public findAllParentLookupByUsername(payload: any): any {
+        this.spinnerService.show();
+        this.lookupService.findAllParentLookupByUsername(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.parentLookup = response.data
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

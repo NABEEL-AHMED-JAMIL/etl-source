@@ -60,7 +60,7 @@
                             </th>
                             <th style="text-align: center;">Lookup Value
                                 <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
-                                    nzTooltipTitle="Enter The Valid Lookup For DropDown Show In Report."
+                                    nzTooltipTitle="Select Valid Lookup For DropDown Show In Report."
                                         nzTooltipPlacement="top" nz-tooltip>
                                 </span>
                             </th>
@@ -87,7 +87,7 @@
                                     name="dataApiToken" placeholder="Enter API Token"
                                     formControlName="dataApiToken">
                             </td>
-                            <td style="text-align: center;">NO LOOKUP</td>
+                            <td style="text-align: center;">-------</td>
                             <td>
                                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select DATA"
                                     formControlName="isData" style="width: 100%;">
@@ -110,10 +110,15 @@
                                     formControlName="firstDimensionApiToken">
                             </td>
                             <td>
-                                <input nz-input type="text" class="form-control input-sm"
-                                    name="firstDimensionLKValue" placeholder="Enter Lookup Key"
-                                    formControlName="firstDimensionLKValue"
-                                    (ngModelChange)="onChangefieldLkValue($event)">
+                                <nz-form-control nzErrorTip="First Dimension LookupKey Required">
+                                    <nz-select nzShowSearch nzAllowClear formControlName="firstDimensionLKValue"
+                                        nzPlaceHolder="Select Second Dimension LookupKey">
+                                        <nz-option *ngFor="let lookup of parentLookup"
+                                            [nzLabel]="lookup.lookupValue"
+                                            [nzValue]="lookup.lookupType">
+                                        </nz-option>
+                                    </nz-select>
+                                </nz-form-control>
                             </td>
                             <td>
                                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select First Dimention"
@@ -137,10 +142,15 @@
                                     formControlName="secondDimensionApiToken">
                             </td>
                             <td>
-                                <input nz-input type="text" class="form-control input-sm"
-                                    name="secondDimensionLKValue" placeholder="Enter Lookup Key"
-                                    formControlName="secondDimensionLKValue"
-                                    (ngModelChange)="onChangefieldLkValue($event)">
+                                <nz-form-control nzErrorTip="Second Dimension LookupKey Required">
+                                    <nz-select nzShowSearch nzAllowClear formControlName="secondDimensionLKValue" 
+                                        nzPlaceHolder="Select Second Dimension LookupKey">
+                                        <nz-option *ngFor="let lookup of parentLookup" 
+                                            [nzLabel]="lookup.lookupValue"
+                                            [nzValue]="lookup.lookupType">
+                                        </nz-option>
+                                    </nz-select>
+                                </nz-form-control>
                             </td>
                             <td>
                                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select CSV"
@@ -158,13 +168,13 @@
         <!-- download detail -->
         <div nz-col nzSpan="24">
             <nz-form-item>
-                <nz-form-label nzRequired>Want Downalod File?</nz-form-label>
+                <nz-form-label nzRequired>Want Download File?</nz-form-label>
                 <nz-table [nzData]="['']" nzSize="small" [nzFrontPagination]="false" 
                     [nzBordered]="false" [nzShowPagination]="false"
                     class="table-setting">
                     <thead>
                         <tr>
-                            <th style="width: 15%;text-align: center;">Downalod Type</th>
+                            <th style="width: 15%;text-align: center;">Download Type</th>
                             <th style="text-align: center;">Service Url
                                 <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
                                 nzTooltipTitle="Your Application Service Url Must Be Post Type."
@@ -187,20 +197,23 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><nz-badge nzStatus="processing"></nz-badge> Want Pdf?</td>
+                            <td><nz-badge nzStatus="processing"></nz-badge> Want PDF?</td>
                             <td>
                                 <input nz-input type="url" class="form-control input-sm"
-                                    name="pdfUrl" placeholder="Enter API URL" formControlName="pdfUrl">
+                                    name="pdfUrl" placeholder="Enter API URL"
+                                        formControlName="pdfUrl">
                             </td>
                             <td>
                                 <input nz-input type="text" class="form-control input-sm"
-                                    name="pdfApiToken" placeholder="Enter API Token" formControlName="pdfApiToken">
+                                    name="pdfApiToken" placeholder="Enter API Token"
+                                        formControlName="pdfApiToken">
                             </td>
                             <td>
-                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select PDF" formControlName="isPdf"
-                                    style="width: 100%;">
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select PDF"
+                                    formControlName="isPdf" style="width: 100%;">
                                     <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
-                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                        [nzLabel]="lookupChildren.lookupValue"
+                                        [nzValue]="lookupChildren.lookupCode">
                                     </nz-option>
                                 </nz-select>
                             </td>
@@ -209,17 +222,20 @@
                             <td><nz-badge nzStatus="processing"></nz-badge> Want XLSX?</td>
                             <td>
                                 <input nz-input type="url" class="form-control input-sm"
-                                    name="xlsxUrl" placeholder="Enter API URL" formControlName="xlsxUrl">
+                                    name="xlsxUrl" placeholder="Enter API URL"
+                                        formControlName="xlsxUrl">
                             </td>
                             <td>
                                 <input nz-input type="text" class="form-control input-sm"
-                                    name="xlsxApiToken" placeholder="Enter API Token" formControlName="xlsxApiToken">
+                                    name="xlsxApiToken" placeholder="Enter API Token"
+                                        formControlName="xlsxApiToken">
                             </td>
                             <td>
-                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select XLSX" formControlName="isXlsx"
-                                    style="width: 100%;">
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select XLSX"
+                                    formControlName="isXlsx" style="width: 100%;">
                                     <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
-                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                        [nzLabel]="lookupChildren.lookupValue"
+                                        [nzValue]="lookupChildren.lookupCode">
                                     </nz-option>
                                 </nz-select>
                             </td>
@@ -228,15 +244,17 @@
                             <td><nz-badge nzStatus="processing"></nz-badge> Want CSV?</td>
                             <td>
                                 <input nz-input type="url" class="form-control input-sm"
-                                    name="csvUrl" placeholder="Enter API URL" formControlName="csvUrl">
+                                    name="csvUrl" placeholder="Enter API URL"
+                                        formControlName="csvUrl">
                             </td>
                             <td>
                                 <input nz-input type="text" class="form-control input-sm"
-                                    name="csvApiToken" placeholder="Enter API Token" formControlName="csvApiToken">
+                                    name="csvApiToken" placeholder="Enter API Token"
+                                        formControlName="csvApiToken">
                             </td>
                             <td>
-                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select CSV" formControlName="isCsv"
-                                    style="width: 100%;">
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select CSV"
+                                    formControlName="isCsv" style="width: 100%;">
                                     <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
                                         [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
                                     </nz-option>
@@ -250,20 +268,28 @@
         <div nz-col [nzSpan]="formRefShow ? 6 : 8">
             <nz-form-item>
                 <nz-form-label>Distinct LookupKey</nz-form-label>
-                <nz-form-control nzErrorTip="Profile Name Required">
-                    <input nz-input formControlName="distinctLKValue"
-                        placeholder="Enter Distinct Lookup"
-                        (ngModelChange)="onChangefieldLkValue($event)"/>
+                <nz-form-control nzErrorTip="Distinct LookupKey Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="distinctLKValue" 
+                        nzPlaceHolder="Select Distinct LookupKey">
+                        <nz-option *ngFor="let lookup of parentLookup" 
+                            [nzLabel]="lookup.lookupValue"
+                            [nzValue]="lookup.lookupType">
+                        </nz-option>
+                    </nz-select>
                 </nz-form-control>
             </nz-form-item>
         </div>
         <div nz-col [nzSpan]="formRefShow ? 6 : 8">
             <nz-form-item>
-                <nz-form-label>Aggreation LookupKey</nz-form-label>
-                <nz-form-control nzErrorTip="Profile Name Required">
-                    <input nz-input formControlName="aggLKValue"
-                        placeholder="Enter Aggreation Lookup"
-                        (ngModelChange)="onChangefieldLkValue($event)"/>
+                <nz-form-label>Aggregation LookupKey</nz-form-label>
+                <nz-form-control nzErrorTip="Aggregation LookupKey Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="aggLKValue" 
+                        nzPlaceHolder="Select Aggregation LookupKey">
+                        <nz-option *ngFor="let lookup of parentLookup" 
+                            [nzLabel]="lookup.lookupValue"
+                            [nzValue]="lookup.lookupType">
+                        </nz-option>
+                    </nz-select>
                 </nz-form-control>
             </nz-form-item>
         </div>

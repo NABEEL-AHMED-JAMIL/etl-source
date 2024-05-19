@@ -114,8 +114,8 @@ export class CUControlComponent implements OnInit {
             pattern: [],
             minLength: [''],
             maxLength: [''],
-            fieldLkValue: [''],
-            apiLkValue: ['']
+            fieldLkValue: [],
+            apiLkValue: []
         });
         this.spinnerService.hide();
     }
