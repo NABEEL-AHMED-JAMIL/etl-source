@@ -97,7 +97,7 @@ export class MgEVariableComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'dateUpdated',
@@ -108,7 +108,7 @@ export class MgEVariableComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'status',

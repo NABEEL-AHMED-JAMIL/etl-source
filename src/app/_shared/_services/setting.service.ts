@@ -28,14 +28,8 @@ export class SettingService {
             });
     }
 
-    // xml
-    public getXmlData(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/xmlCreateChecker`, payload);
-    }
-
-    // template
-    public addTemplateReg(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/addTemplateReg`, payload);
+    public dynamicPaylaod(payload: any, switchValue: any): Observable<ApiResponse>{
+        return this.http.post<ApiResponse>(switchValue ? `${config.apiBaseUrl}/setting.json/jsonCreateChecker` : `${config.apiBaseUrl}/setting.json/xmlCreateChecker`, payload);        
     }
 
     public deleteTemplateReg(payload: any): Observable<ApiResponse> {

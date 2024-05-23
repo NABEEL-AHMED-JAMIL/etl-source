@@ -92,6 +92,10 @@
                 <td *ngIf="col.type === 'combine'">
                     <nz-tag>
                         {{commomService.getMultiDataFromObject(row[col?.field], col?.subfield)}}
+                        <span *ngIf="col?.status" nz-icon nzType="info-circle" nzTheme="outline" style="border-radius: 6px;"
+                            class="{{commomService.getDataFromObjectV3(row[col?.field], col?.status)?.lookupType}}"
+                            nz-tooltip nzTooltipTitle="{{commomService.getDataFromObjectV3(row[col?.field], col?.status)?.lookupValue}}">
+                        </span>
                     </nz-tag>
                 </td>
             </ng-container>
@@ -100,7 +104,8 @@
                     <a [routerLink]="" nz-tooltip nzTooltipTitle="{{ action?.tooltipTitle }}"
                         (click)="actionEvent(action.action, row)">
                         <span nz-icon [nzType]="action.type" nzTheme="outline"
-                            [ngStyle]="{'color': action.color}"></span>
+                            [ngStyle]="{'color': action.color}">
+                        </span>
                     </a>&nbsp;
                 </ng-container>
                 <!-- more action -->
@@ -120,7 +125,8 @@
             </td>
             <td *ngIf="staticTable.enableAction" style="width: 1px;text-align: center;">
                 <nz-switch nzSize="small" [nzId]="row.id" [nzSize]="'small'"
-                    [nzDisabled]="row?.linkStatus?.lookupCode === 0 ? true : false" [ngModel]="row.linked"
+                    [nzDisabled]="row?.linkStatus?.lookupCode === 0 ? true : false"
+                    [ngModel]="row.linked"
                     (ngModelChange)="onEnableActionChange(row)">
                 </nz-switch>
             </td>

@@ -4,10 +4,6 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { registerLocaleData } from '@angular/common';
-import {
-    ReactiveFormsModule,
-    FormsModule
-} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import en from '@angular/common/locales/en';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -17,6 +13,10 @@ import { DatePipe } from '@angular/common';
 import { IconsProviderModule } from './icons-provider.module';
 import { LayoutModule } from './_layout/layout.module';
 import { SpinnerComponent } from './_layout/index';
+import {
+    ReactiveFormsModule,
+    FormsModule
+} from '@angular/forms';
 import {
     HttpClientModule,
     HTTP_INTERCEPTORS
@@ -35,7 +35,7 @@ import {
     ForgotPassComponent,
     ResetPassComponent,
     PageNotFoundComponent,
-    XMLQueryComponent,
+    DynamicPayloadQueryComponent,
     DBQueryComponent,
     BatchComponent,
     GenTableComponent,
@@ -77,7 +77,7 @@ import {
     MgSourceTaskComponent,
     CuSourceTaskComponent,
     MgSourceTaskTypeComponent,
-    CuSourceTTaskComponent,
+    CuSourceTTypeComponent,
     SttLinkFormComponent,
     CUDashboardComponent,
     CUReportComponent,
@@ -85,7 +85,9 @@ import {
     MgReportComponent,
     CUOLAPComponent,
     MgOLAPComponent,
-    ViewReportComponent
+    ViewReportComponent,
+    CUWebHookComponent,
+    MgWebHookComponent
 } from './_pages';
 
 // dynamic fileds
@@ -113,7 +115,7 @@ export const APP_COMPONENT = [
     ForgotPassComponent,
     ResetPassComponent,
     PageNotFoundComponent,
-    XMLQueryComponent,
+    DynamicPayloadQueryComponent,
     DBQueryComponent,
     MGLookupComponent,
     CULookupComponent,
@@ -150,7 +152,7 @@ export const APP_COMPONENT = [
     MgSourceTaskComponent,
     CuSourceTaskComponent,
     MgSourceTaskTypeComponent,
-    CuSourceTTaskComponent,
+    CuSourceTTypeComponent,
     SttLinkFormComponent,
     CUDashboardComponent,
     CUReportComponent,
@@ -159,6 +161,8 @@ export const APP_COMPONENT = [
     CUOLAPComponent,
     MgOLAPComponent,
     ViewReportComponent,
+    CUWebHookComponent,
+    MgWebHookComponent,
     // dynamic fileds
     DynamicInputComponent,
     DynamicTextAreaComponent,

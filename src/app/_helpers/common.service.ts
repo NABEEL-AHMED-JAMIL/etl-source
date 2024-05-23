@@ -83,6 +83,12 @@ export class CommomService {
         return payload ? payload : 'No Data';
     }
 
+    public getDataFromObjectV3(parent: any, child: any): any {
+        if (parent && typeof parent == 'object') {
+            return parent[child];
+        }
+    }
+
     public getMultiDataFromObject(payload: any, fieldList: any): any {
         if (payload && typeof payload == 'object') {
             const filteredFields = Object.keys(payload)

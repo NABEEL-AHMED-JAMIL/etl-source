@@ -1,13 +1,15 @@
 <div class="content">
     <nz-tabset nzSize="small" nzTabPosition="left">
-        <nz-tab [nzTitle]="userTemplate">
+        <nz-tab [nzTitle]="userTemplate" *ngIf="appUser">
             <ng-template #userTemplate>
                 <span nz-icon nzType="user"></span>
                 User Info
             </ng-template>
-            <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> User Info</h3>
+            <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> 
+                User Info (IP:{{appUser.ipAddress}})
+            </h3>
             <hr>
-            <div class="content" *ngIf="appUser">
+            <div class="content">
                 <nz-descriptions nzSize="small">
                     <nz-descriptions-item nzTitle="Name">
                         {{appUser.firstName}} {{appUser.lastName}}
@@ -18,28 +20,13 @@
                     <nz-descriptions-item nzTitle="Email">
                         {{appUser.email}}
                     </nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="IP Address">
-                        ({{appUser.ipAddress}})
-                    </nz-descriptions-item>
-                </nz-descriptions>
-            </div>
-            <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> Role & Permission</h3>
-            <hr>
-            <div class="content" *ngIf="appUser">
-                <nz-descriptions *ngIf="appUser" nzSize="small" [nzColumn]="3">
-                    <nz-descriptions-item nzTitle="Profile" [nzSpan]="3">
+                    <nz-descriptions-item nzTitle="Profile">
                         ({{appUser.profile?.id}}) {{appUser.profile?.profileName}}
                     </nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Role" [nzSpan]="3">
+                    <nz-descriptions-item nzTitle="Role">
                         <div style="display: block;">
-                            <nz-tag *ngFor="let role of appUser.roles" [nzColor]="'red'">{{role}}
-                            </nz-tag>
-                        </div>
-                    </nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Permission" [nzSpan]="3">
-                        <div style="display: block;">
-                            <nz-tag *ngFor="let permission of appUser.profile.permission"
-                                [nzColor]="'geekblue'">{{permission}}
+                            <nz-tag *ngFor="let role of appUser.roles" 
+                                [nzColor]="'red'">{{role}}
                             </nz-tag>
                         </div>
                     </nz-descriptions-item>
@@ -126,6 +113,19 @@
                 Environment Variable
             </ng-template>
             <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> Environment Variable</h3>
+            <hr>
+            <div style="margin-top: 10px;">
+                <app-gen-table *ngIf="eVariableTable" [staticTable]="eVariableTable"
+                    (actionEventEmitter)="tableActionReciver($event)">
+                </app-gen-table>
+            </div>
+        </nz-tab>
+        <nz-tab [nzTitle]="webHook">
+            <ng-template #webHook>
+                <span nz-icon nzType="group" nzTheme="outline"></span>
+                My WebHook
+            </ng-template>
+            <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> My WebHook</h3>
             <hr>
             <div style="margin-top: 10px;">
                 <app-gen-table *ngIf="eVariableTable" [staticTable]="eVariableTable"

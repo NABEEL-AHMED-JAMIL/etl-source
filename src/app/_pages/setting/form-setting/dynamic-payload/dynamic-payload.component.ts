@@ -19,17 +19,18 @@ import { first } from 'rxjs';
 
 
 @Component({
-    selector: 'app-xml-query',
-    templateUrl: './xml-query.component.html',
-    styleUrls: ['./xml-query.component.css']
+    selector: 'app-dynamic-payload',
+    templateUrl: './dynamic-payload.component.html',
+    styleUrls: ['./dynamic-payload.component.css']
 })
-export class XMLQueryComponent implements OnInit {
+export class DynamicPayloadQueryComponent implements OnInit {
 
-    public visible = false;
-    public loading: any = false;
-    public xmlString: any;
-    public xmlInfo: any;
-    public xmlForm!: FormGroup;
+    public switchValue:boolean = true;
+    public visible:boolean = false;
+    public loading:boolean = false;
+    public dynamicString: any;
+    public dynamicInfo: any;
+    public dynamicForm!: FormGroup;
 
     constructor(private fb: FormBuilder,
         private alertService: AlertService,
@@ -38,7 +39,7 @@ export class XMLQueryComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.xmlForm = this.fb.group({
+        this.dynamicForm = this.fb.group({
             tagsInfo: this.fb.array([
                 this.buildItem(),
                 this.buildItem()
@@ -55,7 +56,7 @@ export class XMLQueryComponent implements OnInit {
     }
 
     public get tageForms(): FormArray {
-        return this.xmlForm.get('tagsInfo') as FormArray;
+        return this.dynamicForm.get('tagsInfo') as FormArray;
     }
 
     public tageFormsAddItem(): void {
@@ -78,35 +79,35 @@ export class XMLQueryComponent implements OnInit {
         this.visible = false;
     }
 
-    public submintTageForms(xmlInfo: any): void {
+    public submintTageForms(dynamicInfo: any): void {
         this.spinnerService.show();
         this.loading = true;
-        this.xmlInfo = {
-            xmlTagsInfo: xmlInfo?.tagsInfo
+        this.dynamicInfo = {
+            [this.switchValue ? 'jsonTagsInfo' : 'xmlTagsInfo']: dynamicInfo?.tagsInfo
         }
-        this.settingService.getXmlData(this.xmlInfo)
+        this.settingService.dynamicPaylaod(this.dynamicInfo, this.switchValue)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;
                 if (response.status === ApiCode.SUCCESS) {
-                    this.xmlString = response.message;
+                    this.dynamicString = response.message;
                     this.visible = true;
                     this.spinnerService.hide();
                 } else {
                     this.spinnerService.hide();
-                    this.alertService.showError(response.message, 'Error');
+                    this.alertService.showError(response.message, ApiCode.ERROR);
                 }
             }, (error: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, 'Error');
+                this.alertService.showError(error, ApiCode.ERROR);
             });
     }
 
     public createFile(): any {
         this.loading = true;
-        const file = new Blob([this.xmlString], { type: 'application/xml' });
-        saveAs(file, 'ETL-XML-Config ' + this.uuid() + '.xml');
+        const file = new Blob([this.dynamicString]);
+        saveAs(file, 'ETL-dynamic-Config ' + this.uuid() +  (this.switchValue ? '.json': '.xml'));
         this.loading = false;
     }
 
