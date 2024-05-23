@@ -35,13 +35,13 @@ export class ResetPassComponent implements OnInit {
                 try {
                     if (!params?.get('token')) {
                         // redirect to forgot password with message token not there
-                        this.alertService.showError('Invlaid url\n please enter email again.', 'Error');
+                        this.alertService.showError('Invlaid url\n please enter email again.', ApiCode.ERROR);
                         this.router.navigate(['/forgotpass']);
                     }
                     this.tokenPayload = jwt_decode(params?.get('token'), { header: false });
                     this.tokenPayload = JSON.parse(this.tokenPayload.sub);
                 } catch (exception) {
-                    this.alertService.showError('Invlaid token\n please enter email again.', 'Error');
+                    this.alertService.showError('Invlaid token\n please enter email again.', ApiCode.ERROR);
                     this.router.navigate(['/forgotpass']);
                 }
             });
@@ -113,7 +113,7 @@ export class ResetPassComponent implements OnInit {
                 this.loading = false;
                 this.submitted = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, 'Error');
+                this.alertService.showError(error.message, ApiCode.ERROR);
             });
     }
 

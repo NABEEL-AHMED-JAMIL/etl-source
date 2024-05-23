@@ -15,7 +15,7 @@ import {
     ETLSourceComponent,
     PageNotFoundComponent,
     SettingDashboardComponent,
-    XMLQueryComponent,
+    DynamicPayloadQueryComponent,
     DBQueryComponent,
     MGLookupComponent,
     MgTemplateComponent,
@@ -35,7 +35,8 @@ import {
     MgDashboardComponent,
     MgOLAPComponent,
     ViewReportComponent,
-    ViewDashboardComponent
+    ViewDashboardComponent,
+    MgWebHookComponent
 } from './_pages';
 
 
@@ -136,18 +137,6 @@ const routes: Routes = [
                     breadcrumb: 'Mg Source Task Type',
                 }
             },
-            // service-setting => credentail
-            {
-                path: 'mgCredentail',
-                component: CredentialComponent,
-                canActivate: [AuthGuard],
-                data: {
-                    parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                    permission: ['SOURCE_CREDENTAIL_PERMISSION'],
-                    breadcrumb: 'Mg Credentail',
-                }
-            },
             {
                 path: 'mgDashboard',
                 component: MgDashboardComponent,
@@ -220,7 +209,7 @@ const routes: Routes = [
             // profile-setting => mg-refresh token
             {
                 path: 'dynamicPayload',
-                component: XMLQueryComponent,
+                component: DynamicPayloadQueryComponent,
                 canActivate: [AuthGuard],
                 data: {
                     admin: true,
@@ -277,6 +266,18 @@ const routes: Routes = [
                     breadcrumb: 'Refresh Token',
                 }
             },
+            // service-setting => credentail
+            {
+                path: 'mgCredentail',
+                component: CredentialComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                    permission: ['SOURCE_CREDENTAIL_PERMISSION'],
+                    breadcrumb: 'Mg Credentail',
+                }
+            },
             // app-setting -> lookup
             {
                 path: 'mgLookup',
@@ -311,6 +312,17 @@ const routes: Routes = [
                     roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
                     permission: ['TEMPLATE_PERMISSION'],
                     breadcrumb: 'Template',
+                }
+            },
+            {
+                path: 'mgWebHook',
+                component: MgWebHookComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                    permission: ['WEB_HOOK_PERMISSION'],
+                    breadcrumb: 'Mg WebHook',
                 }
             },
             // app-setting -> evariable

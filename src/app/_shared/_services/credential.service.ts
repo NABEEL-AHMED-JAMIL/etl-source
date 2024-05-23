@@ -28,6 +28,10 @@ export class CredentailService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/credential.json/fetchAllCredential`, payload);
     }
 
+    public fetchAllCredentialByType(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/credential.json/fetchAllCredentialByType`, payload);
+    }
+
     public deleteCredential(payload: any): Observable<ApiResponse> {
         return this.http.put<ApiResponse>(`${config.apiBaseUrl}/credential.json/deleteCredential`, payload);
     }

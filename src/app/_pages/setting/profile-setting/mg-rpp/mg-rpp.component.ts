@@ -28,6 +28,7 @@ import {
     RUCroseTableComponent
 } from 'src/app/_pages';
 
+
 @Component({
     selector: 'app-mg-rpp',
     templateUrl: './mg-rpp.component.html',

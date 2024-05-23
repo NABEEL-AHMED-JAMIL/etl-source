@@ -16,7 +16,8 @@
                     <nz-select nzShowSearch nzAllowClear formControlName="taskType" nzPlaceHolder="Select TaskType"
                         (ngModelChange)="onTaskTypeSelected($event)">
                         <nz-option *ngFor="let lookupChildren of TASK_TYPE?.SUB_LOOKUP_DATA"
-                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                            [nzLabel]="lookupChildren.lookupValue"
+                            [nzValue]="lookupChildren.lookupCode">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>
@@ -31,14 +32,15 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="12" *ngIf="credentails">
+        <div nz-col nzSpan="12" *ngIf="credentials">
             <nz-form-item>
                 <nz-form-label>Credential</nz-form-label>
                 <nz-form-control>
-                    <nz-select nzShowSearch nzAllowClear formControlName="credentialId"
+                    <nz-select nzShowSearch nzAllowClear formControlName="credentialId" 
                         nzPlaceHolder="Select Credential">
-                        <nz-option *ngFor="let credentail of credentails" [nzLabel]="credentail.name"
-                            [nzValue]="credentail.id">
+                        <nz-option *ngFor="let credential of credentials" 
+                            nzLabel="{{credential.name}} [{{commomService.getDataFromObject(credential.status)}}]"
+                            [nzValue]="credential.id">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>

@@ -326,6 +326,7 @@ export interface IColumn {
     color?: any;
     compare?: any;
     priority?: any;
+    status?: any; // this will check the status in the table for icon
 }
 
 export interface INotifaction {
@@ -452,13 +453,6 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 link: '/setting/mgSourceTaskType',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
                 permission: ['SOURCE_TASKTYPE_PERMISSION']
-            },
-            {
-                name: 'Source Credential',
-                icon: 'key',
-                link: '/setting/mgCredentail',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['SOURCE_CREDENTAIL_PERMISSION']
             }
         ]
     },
@@ -593,10 +587,17 @@ export const SETTING_SIDEBAR: SideBar[] = [
         permission: ['APP_SETTING_PERMISSION'],
         childLinks: [
             {
+                name: 'Source Credential',
+                icon: 'key',
+                link: '/setting/mgCredentail',
+                roles: ['ROLE_DEV'],
+                permission: ['SOURCE_CREDENTAIL_PERMISSION']
+            },
+            {
                 name: 'Manage Lookups',
                 icon: 'control',
                 link: '/setting/mgLookup',
-                roles: ['ROLE_DEV'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['LOOKUP_PERMISSION']
             },
             {
@@ -605,6 +606,13 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 link: '/setting/mgTemplate',
                 roles: ['ROLE_DEV'],
                 permission: ['TEMPLATE_PERMISSION']
+            },
+            {
+                name: 'Manage WebHook',
+                icon: 'group',
+                link: '/setting/mgWebHook',
+                roles: ['ROLE_DEV'],
+                permission: ['WEB_HOOK_PERMISSION']
             },
             {
                 name: 'Manage EVariable',

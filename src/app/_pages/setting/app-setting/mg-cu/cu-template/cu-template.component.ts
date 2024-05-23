@@ -9,7 +9,8 @@ import {
     TemplateRegService,
     AuthResponse,
     AuthenticationService,
-    LookupService
+    LookupService,
+    APPLICATION_STATUS
 } from '../../../../../_shared';
 import {
     AlertService,
@@ -64,7 +65,7 @@ export class CUTemplateComponent implements OnInit {
         }).subscribe((data) => {
             this.APPLICATION_STATUS = data;
             this.APPLICATION_STATUS.SUB_LOOKUP_DATA = this.APPLICATION_STATUS.SUB_LOOKUP_DATA
-                .filter((data) => data.lookupType !== 'DELETE');
+                .filter((data) => data.lookupCode !== APPLICATION_STATUS.DELETE);
         });
         if (this.actionType === ActionType.ADD) {
             this.addTemplateForm();

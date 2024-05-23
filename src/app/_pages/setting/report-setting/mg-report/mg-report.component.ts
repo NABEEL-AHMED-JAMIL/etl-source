@@ -311,7 +311,7 @@ export class MgReportComponent implements OnInit {
             nzSize: 'large',
             nzWidth: 1100,
             nzTitle: actionType === ActionType.ADD ? 'Add Report' : 'Edit Report',
-            nzFooter: 'For Service OutPut Pattern Please Download The Above Documentation.',
+            nzFooter: '*Note: For Service Output Pattern Please Download The Above Documentation.',
             nzPlacement: 'right',
             nzMaskClosable: false,
             nzContent: CUReportComponent,

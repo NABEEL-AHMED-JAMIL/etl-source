@@ -64,6 +64,11 @@ export class CredentialComponent implements OnInit {
                 type: 'tag'
             },
             {
+                field: 'totalCount',
+                header: 'Total Linked',
+                type: 'tag'
+            },
+            {
                 field: 'dateCreated',
                 header: 'Created',
                 type: 'date'
@@ -72,7 +77,7 @@ export class CredentialComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'dateUpdated',
@@ -83,7 +88,7 @@ export class CredentialComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'status',
@@ -105,6 +110,13 @@ export class CredentialComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Edit',
                 action: ActionType.EDIT
+            },
+            {
+                type: 'download',
+                color: '#11315f',
+                spin: false,
+                tooltipTitle: 'Download',
+                action: ActionType.DOWNLOAD
             },
             {
                 type: 'delete',
@@ -203,6 +215,16 @@ export class CredentialComponent implements OnInit {
                     });
                 }
             });
+        } else if (ActionType.DOWNLOAD === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to download?',
+                nzContent: 'Press \'Ok\' file will download.',
+                nzOnOk: () => {
+                    this.fetchCredentialById(payload.data);
+                }
+            });
         }
     }
 
@@ -273,6 +295,29 @@ export class CredentialComponent implements OnInit {
                 }
             });
         });
+    }
+
+    public fetchCredentialById(data: any): void {
+        this.spinnerService.show();
+        let payload = {
+            id: data.id,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        }
+        this.credentailService.fetchCredentialById(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.commomService.createFile(response.data);
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error.message, ApiCode.ERROR);
+            });
     }
 
     public deleteAllCredential(payload: any): void {

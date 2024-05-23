@@ -24,8 +24,8 @@ import {
 } from 'src/app/_helpers';
 import { first } from 'rxjs';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
-import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { EnvVariableValueComponent } from '..';
+import { NzIconService } from 'ng-zorro-antd/icon';
 
 
 @Component({
@@ -85,7 +85,6 @@ export class UpdateProfileComponent implements OnInit {
         public commomService: CommomService,
         public storageService: StorageService,
         private appUserService: AppUserService,
-        private drawerService: NzDrawerService,
         private modalService: NzModalService,
         private authenticationService: AuthenticationService) {
         this.currentUser = this.authenticationService.currentUserValue;

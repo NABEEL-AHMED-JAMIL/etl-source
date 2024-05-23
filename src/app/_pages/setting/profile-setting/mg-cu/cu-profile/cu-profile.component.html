@@ -1,6 +1,6 @@
 <form nz-form [nzLayout]="'vertical'" [formGroup]="profileForm" (ngSubmit)="submit()">
     <div nz-row [nzGutter]="16">
-        <div nz-col nzSpan="16">
+        <div nz-col [nzSpan]="(actionType !== editAction ? 24 : 16)">
             <nz-form-item>
                 <nz-form-label nzRequired>Profile Name</nz-form-label>
                 <nz-form-control nzErrorTip="Profile Name Required">

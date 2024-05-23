@@ -8,7 +8,7 @@ import {
     SpinnerService
 } from 'src/app/_helpers';
 import {
-    CuSourceTTaskComponent,
+    CuSourceTTypeComponent,
     SttLinkFormComponent
 } from 'src/app/_pages';
 import {
@@ -19,6 +19,7 @@ import {
     FormSettingService,
     ApiCode
 } from 'src/app/_shared';
+
 
 @Component({
     selector: 'app-source-ttype',
@@ -69,7 +70,8 @@ export class MgSourceTaskTypeComponent implements OnInit {
                 field: 'credential',
                 header: 'Credential',
                 type: 'combine',
-                subfield: ['id', 'name']
+                subfield: ['name'],
+                status: 'status'
             },
             {
                 field: 'totalTask',
@@ -90,7 +92,7 @@ export class MgSourceTaskTypeComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'dateUpdated',
@@ -101,7 +103,7 @@ export class MgSourceTaskTypeComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'status',
@@ -306,7 +308,7 @@ export class MgSourceTaskTypeComponent implements OnInit {
             nzPlacement: 'right',
             nzWidth: 800,
             nzMaskClosable: false,
-            nzContent: CuSourceTTaskComponent,
+            nzContent: CuSourceTTypeComponent,
             nzContentParams: {
                 actionType: actionType,
                 editPayload: editPayload?.data

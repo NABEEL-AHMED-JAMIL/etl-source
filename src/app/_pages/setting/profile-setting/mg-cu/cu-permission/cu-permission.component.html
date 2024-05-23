@@ -1,6 +1,6 @@
 <form nz-form [nzLayout]="'vertical'" [formGroup]="permissionForm" (ngSubmit)="submit()">
     <div nz-row [nzGutter]="16">
-        <div nz-col nzSpan="14">
+        <div nz-col [nzSpan]="(actionType !== editAction ? 24 : 14)">
             <nz-form-item>
                 <nz-form-label nzRequired>Permission Name</nz-form-label>
                 <nz-form-control nzErrorTip="Permission Name Required">

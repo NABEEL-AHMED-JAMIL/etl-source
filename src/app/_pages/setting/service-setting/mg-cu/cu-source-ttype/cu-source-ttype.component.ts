@@ -8,13 +8,16 @@ import {
 } from '@angular/forms';
 import {
     AlertService,
+    CommomService,
     SpinnerService
 } from 'src/app/_helpers';
 import {
+    APPLICATION_STATUS,
     ActionType,
     ApiCode,
     AuthResponse,
     AuthenticationService,
+    CREDENTIAL_TYPE,
     CredentailService,
     FormSettingService,
     ICredential,
@@ -28,11 +31,11 @@ import {
 
 
 @Component({
-    selector: 'cu-source-ttask',
-    templateUrl: 'cu-source-ttask.component.html',
-    styleUrls: ['cu-source-ttask.component.css']
+    selector: 'cu-source-ttype',
+    templateUrl: 'cu-source-ttype.component.html',
+    styleUrls: ['cu-source-ttype.component.css']
 })
-export class CuSourceTTaskComponent implements OnInit {
+export class CuSourceTTypeComponent implements OnInit {
 
     @Input()
     public actionType: ActionType;
@@ -51,12 +54,13 @@ export class CuSourceTTaskComponent implements OnInit {
     public APPLICATION_STATUS: ILookups;
     public REQUEST_METHOD: ILookups;
 
-    public credentails: ICredential[] = [];
+    public credentials: ICredential[] = [];
 
     public sttForm: FormGroup;
     public sessionUser: AuthResponse;
 
     constructor(private fb: FormBuilder,
+        public commomService: CommomService,
         private drawerRef: NzDrawerRef<void>,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
@@ -86,9 +90,9 @@ export class CuSourceTTaskComponent implements OnInit {
         }).subscribe((data) => {
             this.APPLICATION_STATUS = data;
             this.APPLICATION_STATUS.SUB_LOOKUP_DATA = this.APPLICATION_STATUS.SUB_LOOKUP_DATA
-                .filter((data) => data.lookupType !== 'DELETE');
+                .filter((data) => data.lookupCode !== APPLICATION_STATUS.DELETE);
         });
-        this.fetchAllCredential();
+        this.fetchAllCredentialByType();
         if (this.actionType === ActionType.ADD) {
             this.sttForm = this.fb.group({
                 serviceName: ['', [Validators.required]],
@@ -130,14 +134,15 @@ export class CuSourceTTaskComponent implements OnInit {
         return this.sttForm.get('apiTaskType');
     }
 
-    public fetchAllCredential(): any {
+    public fetchAllCredentialByType(): any {
         this.spinnerService.show();
         let payload = {
             sessionUser: {
                 username: this.sessionUser.username
-            }
+            },
+            types: [CREDENTIAL_TYPE.BASIC_AUTH, CREDENTIAL_TYPE.AUTHORIZATION_CODE]
         }
-        this.credentailService.fetchAllCredential(payload)
+        this.credentailService.fetchAllCredentialByType(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -145,7 +150,7 @@ export class CuSourceTTaskComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.credentails = response.data;
+                this.credentials = response.data;
             }, (error: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(error.message, ApiCode.ERROR);

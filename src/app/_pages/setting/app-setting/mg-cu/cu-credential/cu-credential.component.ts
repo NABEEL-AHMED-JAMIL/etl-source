@@ -7,6 +7,7 @@ import {
     SpinnerService
 } from 'src/app/_helpers';
 import {
+    APPLICATION_STATUS,
     ActionType,
     ApiCode,
     AuthResponse,
@@ -74,12 +75,12 @@ export class CuCredentialComponent implements OnInit {
         }).subscribe((data) => {
             this.APPLICATION_STATUS = data;
             this.APPLICATION_STATUS.SUB_LOOKUP_DATA = this.APPLICATION_STATUS.SUB_LOOKUP_DATA
-                .filter((data) => data.lookupType !== 'DELETE');
+                .filter((data) => data.lookupCode !== APPLICATION_STATUS.DELETE);
         });
         if (this.actionType === ActionType.ADD) {
             this.credentialForm = this.fb.group({
                 name: ['', Validators.required],
-                type: ['', Validators.required]
+                type: [, Validators.required]
             });
         } else if (this.actionType === ActionType.EDIT) {
             this.fetchCredentialById(this.editPayload);
@@ -152,18 +153,16 @@ export class CuCredentialComponent implements OnInit {
     public addCertificate(): void {
         this.credentialForm.addControl('content',
             this.fb.group({
-                certificate: ['', [Validators.required]],
-                certKey: ['', [Validators.required]],
-                certKeyPassword: ['', [Validators.required]]
+                pubKey: ['', [Validators.required]],
+                priKey: ['', [Validators.required]]
             }));
     }
 
     public editCertificate(payload: any): void {
         this.credentialForm.addControl('content',
             this.fb.group({
-                certificate: [payload?.certificate, [Validators.required]],
-                certKey: [payload?.certKey, [Validators.required]],
-                certKeyPassword: [payload?.certKeyPassword, [Validators.required]]
+                pubKey: [payload?.pubKey, [Validators.required]],
+                priKey: [payload?.priKey, [Validators.required]]
             }));
     }
 
