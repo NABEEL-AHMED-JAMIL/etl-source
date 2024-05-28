@@ -116,7 +116,7 @@
             <hr>
             <div style="margin-top: 10px;">
                 <app-gen-table *ngIf="eVariableTable" [staticTable]="eVariableTable"
-                    (actionEventEmitter)="tableActionReciver($event)">
+                    (actionEventEmitter)="tableEVariableActionReciver($event)">
                 </app-gen-table>
             </div>
         </nz-tab>
@@ -128,8 +128,8 @@
             <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> My WebHook</h3>
             <hr>
             <div style="margin-top: 10px;">
-                <app-gen-table *ngIf="eVariableTable" [staticTable]="eVariableTable"
-                    (actionEventEmitter)="tableActionReciver($event)">
+                <app-gen-table *ngIf="webHookTable" [staticTable]="webHookTable"
+                    (actionEventEmitter)="tableWebHookActionReciver($event)">
                 </app-gen-table>
             </div>
         </nz-tab>

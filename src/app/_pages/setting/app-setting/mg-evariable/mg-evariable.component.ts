@@ -30,8 +30,6 @@ import {
 })
 export class MgEVariableComponent implements OnInit {
 
-    public startDate: any;
-    public endDate: any;
     public setOfCheckedId = new Set<any>();
     public sessionUser: AuthResponse;
     public eVariableTable: IStaticTable = {
@@ -149,8 +147,6 @@ export class MgEVariableComponent implements OnInit {
         private spinnerService: SpinnerService,
         private eVariableService: EVariableService,
         private authenticationService: AuthenticationService) {
-        this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
@@ -159,8 +155,6 @@ export class MgEVariableComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetchAllEnVariable({
-            startDate: this.startDate,
-            endDate: this.endDate,
             sessionUser: {
                 username: this.sessionUser.username
             }
@@ -196,8 +190,6 @@ export class MgEVariableComponent implements OnInit {
                     return;
                 }
                 this.fetchAllEnVariable({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -214,8 +206,6 @@ export class MgEVariableComponent implements OnInit {
             this.openCuEnVariable(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchAllEnVariable({
-                startDate: this.startDate,
-                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -224,8 +214,6 @@ export class MgEVariableComponent implements OnInit {
             this.spinnerService.show();
             this.eVariableService.downloadEnVariable({
                 ids: payload.checked,
-                startDate: this.startDate,
-                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 },
@@ -251,8 +239,6 @@ export class MgEVariableComponent implements OnInit {
             });
             drawerRef.afterClose.subscribe(data => {
                 this.fetchAllEnVariable({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -297,18 +283,6 @@ export class MgEVariableComponent implements OnInit {
         } 
     }
 
-    public filterActionReciver(payload: any): void {
-        this.startDate = payload.startDate;
-        this.endDate = payload.endDate;
-        this.fetchAllEnVariable({
-            startDate: this.startDate,
-            endDate: this.endDate,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
-    }
-
     public extraActionReciver(payload: any): void {
         if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
@@ -343,8 +317,6 @@ export class MgEVariableComponent implements OnInit {
         });
         drawerRef.afterClose.subscribe(data => {
             this.fetchAllEnVariable({
-                startDate: this.startDate,
-                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -363,8 +335,6 @@ export class MgEVariableComponent implements OnInit {
                     return;
                 }
                 this.fetchAllEnVariable({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }

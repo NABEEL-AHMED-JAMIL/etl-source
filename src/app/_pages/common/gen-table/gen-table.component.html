@@ -59,7 +59,7 @@
                 Action
             </th>
             <th *ngIf="staticTable.enableAction" style="width: 1px;text-align: center;">
-                Action
+                EXT
             </th>
         </tr>
     </thead>
@@ -99,7 +99,7 @@
                     </nz-tag>
                 </td>
             </ng-container>
-            <td *ngIf="(staticTable.actionType || staticTable.moreActionType) && !staticTable.enableAction">
+            <td *ngIf="(staticTable.actionType || staticTable.moreActionType)">
                 <ng-container *ngFor='let action of staticTable.actionType'>
                     <a [routerLink]="" nz-tooltip nzTooltipTitle="{{ action?.tooltipTitle }}"
                         (click)="actionEvent(action.action, row)">

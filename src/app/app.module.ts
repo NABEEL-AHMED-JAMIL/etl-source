@@ -87,7 +87,8 @@ import {
     MgOLAPComponent,
     ViewReportComponent,
     CUWebHookComponent,
-    MgWebHookComponent
+    MgWebHookComponent,
+    HKUCroseTableComponent
 } from './_pages';
 
 // dynamic fileds
@@ -163,6 +164,7 @@ export const APP_COMPONENT = [
     ViewReportComponent,
     CUWebHookComponent,
     MgWebHookComponent,
+    HKUCroseTableComponent,
     // dynamic fileds
     DynamicInputComponent,
     DynamicTextAreaComponent,

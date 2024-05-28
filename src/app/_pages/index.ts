@@ -35,6 +35,7 @@ export * from './setting/service-setting/linking/stt-link-sttf/stt-link-sttf.com
 export * from './setting/support-setting/db-query/db-query.component';
 // app-setting
 export * from './setting/app-setting/evu-crose-table/evu-crose-table.component';
+export * from './setting/app-setting/hku-crose-table/hku-crose-table.component';
 export * from './setting/app-setting/mg-cu/cu-webhook/cu-webhook.component';
 export * from './setting/app-setting/mg-cu/cu-credential/cu-credential.component';
 export * from './setting/app-setting/mg-cu/cu-evariable/cu-evariable.component';

@@ -190,7 +190,8 @@ export class CuSourceTTypeComponent implements OnInit {
 
     public editKafkaTaskType(payload: any): void {
         this.changeOnTopicNameValue(payload.topicName);
-        this.changeOnToppicPartition(payload.partitions);
+        this.changeOnToppicPartition(payload.numPartitions);
+        this.topicPartition = payload.numPartitions;
         this.sttForm.addControl('kafkaTaskType',
             this.fb.group({
                 numPartitions: [payload.numPartitions, [Validators.required, Validators.min(1), Validators.max(5)]],

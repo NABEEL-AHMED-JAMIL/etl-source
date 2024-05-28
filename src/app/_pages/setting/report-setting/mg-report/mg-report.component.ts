@@ -9,6 +9,7 @@ import {
     SpinnerService
 } from 'src/app/_helpers';
 import {
+    APPLICATION_STATUS,
     ActionType,
     ApiCode,
     AuthResponse,
@@ -232,10 +233,12 @@ export class MgReportComponent implements OnInit {
         if (ActionType.EDIT === payload.action) {
             this.openCuEnVariable(ActionType.EDIT, payload);
         } else if (ActionType.VIEW === payload.action) {
-            if (payload.data.groupType) {
+            if (payload.data.groupType && payload.data.status.lookupCode === APPLICATION_STATUS.ACTIVE) {
                 this.router.navigate(['/report/viewReport'], { queryParams: { reportId: payload.data.id } });
+            } else if (payload.data.status.lookupCode !== APPLICATION_STATUS.ACTIVE) {
+                this.alertService.showInfo('Please Activ Report.', ApiCode.ERROR);                
             } else {
-                this.alertService.showInfo('Please Link Report Group.', ApiCode.SUCCESS);
+                this.alertService.showInfo('Please Link Report Group.', ApiCode.ERROR);
             }
         } else if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({

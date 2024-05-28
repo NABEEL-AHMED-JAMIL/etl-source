@@ -8,7 +8,8 @@ import {
     AuthResponse,
     AuthenticationService,
     IAppUser,
-    IStaticTable
+    IStaticTable,
+    WebHookService
 } from '../../_shared';
 import {
     FormBuilder,
@@ -25,7 +26,6 @@ import {
 import { first } from 'rxjs';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { EnvVariableValueComponent } from '..';
-import { NzIconService } from 'ng-zorro-antd/icon';
 
 
 @Component({
@@ -77,6 +77,64 @@ export class UpdateProfileComponent implements OnInit {
         ]
     };
 
+    // geneate token
+    public webHookTable: IStaticTable = {
+        tableId: 'hook_id',
+        title: 'WebHook',
+        bordered: true,
+        checkbox: false,
+        size: 'small',
+        dataColumn: [
+            {
+                field: 'name',
+                header: 'Name',
+                type: 'data'
+            },
+            {
+                field: 'hookUrl',
+                header: 'Url',
+                type: 'data'
+            },
+            {
+                field: 'hookType',
+                header: 'Type',
+                type: 'tag'
+            },
+            {
+                field: 'description',
+                header: 'Description',
+                type: 'data'
+            },
+            {
+                
+                field: 'tokenId',
+                header: 'Token Id',
+                type: 'data'
+            },
+            {
+                field: 'expireTime',
+                header: 'Expire Time',
+                type: 'date'
+            }
+        ],
+        actionType: [
+            {
+                type: 'download',
+                color: '#11315f',
+                spin: false,
+                tooltipTitle: 'Download',
+                action: ActionType.DOWNLOAD
+            },
+            {
+                type: 'sync',
+                color: 'orange',
+                spin: false,
+                tooltipTitle: 'Gernate Token',
+                action: ActionType.GEN_TOKEN
+            }
+        ]
+    };
+
     constructor(
         private router: Router,
         private fb: FormBuilder,
@@ -85,6 +143,7 @@ export class UpdateProfileComponent implements OnInit {
         public commomService: CommomService,
         public storageService: StorageService,
         private appUserService: AppUserService,
+        private webHookService: WebHookService,
         private modalService: NzModalService,
         private authenticationService: AuthenticationService) {
         this.currentUser = this.authenticationService.currentUserValue;
@@ -106,6 +165,7 @@ export class UpdateProfileComponent implements OnInit {
                 }
                 this.appUser = response.data;
                 this.eVariableTable.dataSource = this.appUser.enVariables;
+                this.webHookTable.dataSource = this.appUser.webHooks;
                 this.fillAppUserPasswordDetail(this.appUser);
             }, (error: any) => {
                 this.spinnerService.hide();
@@ -174,7 +234,7 @@ export class UpdateProfileComponent implements OnInit {
             });
     }
 
-    public tableActionReciver(payload: any): void {
+    public tableEVariableActionReciver(payload: any): void {
         if (ActionType.EDIT === payload.action) {
             const drawerRef = this.modalService.create({
                 nzTitle: 'Environment Variable',
@@ -190,6 +250,51 @@ export class UpdateProfileComponent implements OnInit {
                 this.fetchAppUserProfile(this.currentUser.username);
             });
         }
+    }
+
+    public tableWebHookActionReciver(payload: any): void {
+        if (ActionType.GEN_TOKEN === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to genrate the token?',
+                nzContent: 'Press \'Ok\' will generate the new token.',
+                nzOnOk: () => {
+                    this.genWebHookToken(payload);
+                }
+            });
+        } else if (ActionType.DOWNLOAD === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to genrate the token file?',
+                nzContent: 'Press \'Ok\' will generate the file.',
+                nzOnOk: () => {
+                    this.commomService.createFile(payload.data);
+                }
+            });
+        }
+    }
+
+    public genWebHookToken(payload: any): void {
+        this.spinnerService.show();
+        this.webHookService.genWebHookToken({
+            tokenId: payload.data.tokenId
+        })
+        .pipe(first())
+        .subscribe((response: any) => {
+            this.spinnerService.hide();
+            if (response.status === ApiCode.ERROR) {
+                this.alertService.showError(response.message, ApiCode.ERROR);
+                return;
+            }
+            payload.data.tokenId = response.data.tokenId;
+            payload.data.expireTime = response.data.expireTime;
+            payload.data.accessToken = response.data.accessToken;
+        }, (response: any) => {
+            this.spinnerService.hide();
+            this.alertService.showError(response.error.message, ApiCode.ERROR);;
+        });
     }
 
 }

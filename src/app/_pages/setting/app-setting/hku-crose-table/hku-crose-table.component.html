@@ -1,0 +1,8 @@
+<div class="content">
+    <app-gen-table *ngIf="webHookLinkUserTable"
+        [isDateFilter]="false"
+        [staticTable]="webHookLinkUserTable"
+        (enableActionEventEmitter)="enableActionReciver($event)"
+        (actionEventEmitter)="tableActionReciver($event)">
+    </app-gen-table>
+</div>
