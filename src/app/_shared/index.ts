@@ -18,6 +18,7 @@ export * from './_services/source.job.service';
 export * from './_services/source.task.service';
 export * from './_services/play-ground.service';
 export * from './_services/common.service';
+export * from './_services/web-hook.service';
 // model
 export * from './_model/object';
 export * from './_model/dynamic-controls';

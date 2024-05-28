@@ -48,7 +48,7 @@
         </div>
     </div>
     <div nz-row [nzGutter]="16" *ngIf="selectedTaskType === 3" formGroupName="kafkaTaskType">
-        <div nz-col nzSpan="24">
+        <div nz-col nzSpan="12">
             <nz-form-item>
                 <nz-form-label nzRequired>Kafka Url</nz-form-label>
                 <nz-form-control nzErrorTip="Kafka Url Is Required">
@@ -56,7 +56,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="8">
+        <div nz-col nzSpan="5">
             <nz-form-item>
                 <nz-form-label nzRequired>Topic Name</nz-form-label>
                 <nz-form-control [nzErrorTip]="numPartitionsErrorTpl">
@@ -73,7 +73,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="8">
+        <div nz-col nzSpan="2">
             <nz-form-item>
                 <nz-form-label nzRequired>Partitions</nz-form-label>
                 <nz-form-control [nzErrorTip]="numPartitionsErrorTpl">
@@ -93,7 +93,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="8">
+        <div nz-col nzSpan="5">
             <nz-form-item>
                 <nz-form-label>Topic Pattern</nz-form-label>
                 <nz-form-control>

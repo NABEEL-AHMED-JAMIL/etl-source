@@ -81,6 +81,14 @@ export interface IEnVariables extends IBaseEntity {
     description?: any;
 }
 
+export interface IWebHook extends IBaseEntity {
+    name?: any;
+    hookUrl?: any;
+    description?: any;
+    hookType?: any;
+    credential?: any;
+}
+
 export interface IPermission extends IBaseEntity {
     permissionName?: any;
     description?: any;
@@ -114,6 +122,7 @@ export interface IAppUser extends IBaseEntity {
     roles?: any;
     profile?: any;
     enVariables?: any;
+    webHooks?: any;
 }
 
 export interface ICredential extends IBaseEntity {
@@ -376,7 +385,9 @@ export enum ActionType {
     LINK_STT = 13,
     LINK_FROM = 14,
     LINK_SECTION = 15,
-    LINK_CONTROL = 16
+    LINK_CONTROL = 16,
+    LINK_HOOK = 17,
+    GEN_TOKEN
 }
 
 export enum IProfileSetting {
@@ -652,7 +663,8 @@ export const LOOKUP_TYPE = {
     TASK_TYPE: 'TASK_TYPE',
     REQUEST_METHOD: 'REQUEST_METHOD',
     DASHBOARD_TYPE: 'DASHBOARD_TYPE',
-    PAYLOAD_REF: 'PAYLOAD_REF'
+    PAYLOAD_REF: 'PAYLOAD_REF',
+    HOOK_TYPE: 'HOOK_TYPE'
 }
 
 export const enum APPLICATION_STATUS {

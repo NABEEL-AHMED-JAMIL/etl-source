@@ -1,0 +1,84 @@
+<form nz-form [nzLayout]="'vertical'" [formGroup]="webHookForm" (ngSubmit)="onSubmit()">
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>Name</nz-form-label>
+                <nz-form-control nzErrorTip="Profile Name Required">
+                    <input nz-input formControlName="name"
+                        oninput="this.value = this.value.toUpperCase()"
+                        placeholder="Enter WebHook Name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>Hook Url</nz-form-label>
+                <nz-form-control nzErrorTip="Profile Hook Url Required">
+                    <input nz-input formControlName="hookUrl"
+                        placeholder="Enter HookUrl Name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label nzRequired>WebHook Type</nz-form-label>
+                <nz-form-control nzErrorTip="WebHook Type Required">
+                    <nz-select nzShowSearch nzAllowClear
+                        formControlName="hookType"
+                        nzPlaceHolder="Select WebHook Type">
+                        <nz-option *ngFor="let lookupChildren of HOOK_TYPE?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12" *ngIf="credentials">
+            <nz-form-item>
+                <nz-form-label>Credential</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear formControlName="credentialId"
+                        nzPlaceHolder="Select Credential">
+                        <nz-option *ngFor="let credential of credentials"
+                            nzLabel="{{credential.name}} [{{commomService.getDataFromObject(credential.status)}}]"
+                            [nzValue]="credential.id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24" *ngIf="actionType === editAction">
+            <nz-form-item>
+                <nz-form-label nzRequired>WebHook Status</nz-form-label>
+                <nz-form-control nzErrorTip="WebHook Status Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="status"
+                        nzPlaceHolder="Select WebHook Status">
+                        <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue"
+                            [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label>WebHook Description</nz-form-label>
+                <nz-form-control nzErrorTip="WebHook Description Required">
+                    <textarea nz-input formControlName="description"
+                        [nzAutosize]="{ minRows: 2}"
+                        placeholder="Enter WebHook Description"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button type="reset">Clear</button>
+            <button nz-button [nzType]="'primary'"
+                [disabled]="!webHookForm.valid"
+                [nzLoading]="loading" type="submit"
+                style="float: right;">
+                Submit
+            </button>
+        </div>
+    </div>
+</form>
