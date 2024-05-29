@@ -5,13 +5,13 @@ import {
 } from '@angular/core';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { CuSourceTaskComponent } from 'src/app/_pages';
 import { first } from 'rxjs';
 import {
     AlertService,
     CommomService,
     SpinnerService
 } from 'src/app/_helpers';
-import { CuSourceTaskComponent } from 'src/app/_pages';
 import {
     ActionType,
     ApiCode,
@@ -66,13 +66,13 @@ export class MgSourceTaskComponent implements OnInit {
                 field: 'sourceTaskType',
                 header: 'Task Type',
                 type: 'combine',
-                subfield: ['id', 'serviceName']
+                subfield: ['serviceName']
             },
             {
                 field: 'formData',
                 header: 'Form',
                 type: 'combine',
-                subfield: ['id', 'name']
+                subfield: ['name']
             },
             {
                 field: 'totalJob',
@@ -88,7 +88,7 @@ export class MgSourceTaskComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'dateUpdated',
@@ -99,7 +99,7 @@ export class MgSourceTaskComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'status',

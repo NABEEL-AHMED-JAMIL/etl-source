@@ -17,7 +17,8 @@
                     <nz-select nzShowSearch nzAllowClear formControlName="groupType"
                         nzPlaceHolder="Select Dashboard Type">
                         <nz-option *ngFor="let lookupChildren of REPORT_GROUP?.SUB_LOOKUP_DATA"
-                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupType">
+                            [nzLabel]="lookupChildren.lookupValue"
+                            [nzValue]="lookupChildren.lookupType">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>
@@ -30,7 +31,8 @@
                     <nz-select nzShowSearch nzAllowClear formControlName="status"
                         nzPlaceHolder="Select Report Status">
                         <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
-                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                            [nzLabel]="lookupChildren.lookupValue"
+                            [nzValue]="lookupChildren.lookupCode">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>
@@ -40,34 +42,29 @@
         <div nz-col nzSpan="24">
             <nz-form-item>
                 <nz-form-label nzRequired>Report Config Detail</nz-form-label>
-                <nz-table [nzData]="['']" nzSize="small" [nzFrontPagination]="false" 
-                    [nzBordered]="false" [nzShowPagination]="false"
-                    class="table-setting">
+                <nz-table [nzData]="['']" nzSize="small" class="table-setting"
+                    [nzFrontPagination]="false"
+                    [nzBordered]="false"
+                    [nzShowPagination]="false">
                     <thead>
                         <tr>
                             <th style="width: 15%;text-align: center;">Data Type</th>
-                            <th style="text-align: center;">Service Url
+                            <th style="text-align: center;">Event Bridge Url
                                 <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
-                                nzTooltipTitle="Your Application Service Url Must Be Post Type."
+                                    nzTooltipTitle="Your Application Service Url Must Be Post Type."
                                     nzTooltipPlacement="top" nz-tooltip>
-                                </span>
-                            </th>
-                            <th style="text-align: center;">Service Token
-                                <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
-                                    nzTooltipTitle="Your Application Service Token, If Any Access Url."
-                                        nzTooltipPlacement="top" nz-tooltip>
                                 </span>
                             </th>
                             <th style="text-align: center;">Lookup Value
                                 <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
                                     nzTooltipTitle="Select Valid Lookup For DropDown Show In Report."
-                                        nzTooltipPlacement="top" nz-tooltip>
+                                    nzTooltipPlacement="top" nz-tooltip>
                                 </span>
                             </th>
                             <th style="text-align: center;width: 10%;">Hide/Show
                                 <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
                                     nzTooltipTitle="Enable Check, Will Show The Setting On Report Screen"
-                                        nzTooltipPlacement="top" nz-tooltip>
+                                    nzTooltipPlacement="top" nz-tooltip>
                                 </span>
                             </th>
                         </tr>
@@ -78,36 +75,38 @@
                                 <nz-badge nzStatus="processing"></nz-badge> Want Data?
                             </td>
                             <td>
-                                <input nz-input type="url" class="form-control input-sm"
-                                    name="dataUrl" placeholder="Enter API URL"
-                                    formControlName="dataUrl">
-                            </td>
-                            <td>
-                                <input nz-input type="text" class="form-control input-sm"
-                                    name="dataApiToken" placeholder="Enter API Token"
-                                    formControlName="dataApiToken">
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Data Bridge"
+                                    formControlName="dataBridgeId" style="width: 100%;">
+                                    <nz-option *ngFor="let eventBridge of eventBridges"
+                                        [nzLabel]="eventBridge.name"
+                                        [nzValue]="eventBridge.id">
+                                    </nz-option>
+                                </nz-select>
                             </td>
                             <td style="text-align: center;">-------</td>
                             <td>
                                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select DATA"
                                     formControlName="isData" style="width: 100%;">
                                     <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
-                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                        [nzLabel]="lookupChildren.lookupValue"
+                                        [nzValue]="lookupChildren.lookupCode">
                                     </nz-option>
                                 </nz-select>
                             </td>
                         </tr>
                         <tr>
-                            <td><nz-badge nzStatus="processing"></nz-badge> Want First Dimension?</td>
                             <td>
-                                <input nz-input type="url" class="form-control input-sm"
-                                    name="firstDimensionUrl" placeholder="Enter API URL"
-                                    formControlName="firstDimensionUrl">
+                                <nz-badge nzStatus="processing"></nz-badge> 
+                                Want First Dimension?
                             </td>
                             <td>
-                                <input nz-input type="text" class="form-control input-sm"
-                                    name="firstDimensionApiToken" placeholder="Enter API Token"
-                                    formControlName="firstDimensionApiToken">
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Data Bridge"
+                                    formControlName="firstDimensionBridgeId" style="width: 100%;">
+                                    <nz-option *ngFor="let eventBridge of eventBridges"
+                                        [nzLabel]="eventBridge.name"
+                                        [nzValue]="eventBridge.id">
+                                    </nz-option>
+                                </nz-select>
                             </td>
                             <td>
                                 <nz-form-control nzErrorTip="First Dimension LookupKey Required">
@@ -124,28 +123,31 @@
                                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select First Dimention"
                                     formControlName="isFirstDimension" style="width: 100%;">
                                     <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
-                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                        [nzLabel]="lookupChildren.lookupValue"
+                                        [nzValue]="lookupChildren.lookupCode">
                                     </nz-option>
                                 </nz-select>
                             </td>
                         </tr>
                         <tr>
-                            <td><nz-badge nzStatus="processing"></nz-badge> Want Second Dimension?</td>
                             <td>
-                                <input nz-input type="url" class="form-control input-sm"
-                                    name="secondDimensionUrl" placeholder="Enter API URL"
-                                    formControlName="secondDimensionUrl">
+                                <nz-badge nzStatus="processing"></nz-badge>
+                                Want Second Dimension?
                             </td>
                             <td>
-                                <input nz-input type="text" class="form-control input-sm"
-                                    name="secondDimensionApiToken" placeholder="Enter API Token"
-                                    formControlName="secondDimensionApiToken">
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Data Bridge"
+                                    formControlName="secondDimensionBridgeId" style="width: 100%;">
+                                    <nz-option *ngFor="let eventBridge of eventBridges"
+                                        [nzLabel]="eventBridge.name"
+                                        [nzValue]="eventBridge.id">
+                                    </nz-option>
+                                </nz-select>
                             </td>
                             <td>
                                 <nz-form-control nzErrorTip="Second Dimension LookupKey Required">
-                                    <nz-select nzShowSearch nzAllowClear formControlName="secondDimensionLKValue" 
+                                    <nz-select nzShowSearch nzAllowClear formControlName="secondDimensionLKValue"
                                         nzPlaceHolder="Select Second Dimension LookupKey">
-                                        <nz-option *ngFor="let lookup of parentLookup" 
+                                        <nz-option *ngFor="let lookup of parentLookup"
                                             [nzLabel]="lookup.lookupValue"
                                             [nzValue]="lookup.lookupType">
                                         </nz-option>
@@ -156,7 +158,8 @@
                                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select CSV"
                                     formControlName="isSecondDimension" style="width: 100%;">
                                     <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
-                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                        [nzLabel]="lookupChildren.lookupValue"
+                                        [nzValue]="lookupChildren.lookupCode">
                                     </nz-option>
                                 </nz-select>
                             </td>
@@ -169,48 +172,49 @@
         <div nz-col nzSpan="24">
             <nz-form-item>
                 <nz-form-label nzRequired>Want Download File?</nz-form-label>
-                <nz-table [nzData]="['']" nzSize="small" [nzFrontPagination]="false" 
-                    [nzBordered]="false" [nzShowPagination]="false"
-                    class="table-setting">
+                <nz-table [nzData]="['']" nzSize="small" class="table-setting"
+                    [nzFrontPagination]="false" [nzBordered]="false"
+                    [nzShowPagination]="false">
                     <thead>
                         <tr>
-                            <th style="width: 15%;text-align: center;">Download Type</th>
-                            <th style="text-align: center;">Service Url
-                                <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
-                                nzTooltipTitle="Your Application Service Url Must Be Post Type."
-                                    nzTooltipPlacement="top" nz-tooltip>
-                                </span>
+                            <th style="width: 15%;text-align: center;">
+                                Download Type
                             </th>
-                            <th style="text-align: center;">Service Token
-                                <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
-                                    nzTooltipTitle="Your Application Service Token, If Any Access Url."
-                                        nzTooltipPlacement="top" nz-tooltip>
+                            <th style="text-align: center;">
+                                Service Url
+                                <span nz-icon nzType="info-circle" nzTheme="outline"
+                                    style="color: red;"
+                                    nzTooltipTitle="Your Application Service Url Must Be Post Type."
+                                    nzTooltipPlacement="top" nz-tooltip>
                                 </span>
                             </th>
                             <th style="text-align: center;width: 10%;">Hide/Show
                                 <span nz-icon nzType="info-circle" nzTheme="outline" style="color: red;"
                                     nzTooltipTitle="Enable Check, Will Show The Setting On Report Screen"
-                                        nzTooltipPlacement="top" nz-tooltip>
+                                    nzTooltipPlacement="top" nz-tooltip>
                                 </span>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><nz-badge nzStatus="processing"></nz-badge> Want PDF?</td>
                             <td>
-                                <input nz-input type="url" class="form-control input-sm"
-                                    name="pdfUrl" placeholder="Enter API URL"
-                                        formControlName="pdfUrl">
+                                <nz-badge nzStatus="processing"></nz-badge>
+                                Want PDF?
                             </td>
                             <td>
-                                <input nz-input type="text" class="form-control input-sm"
-                                    name="pdfApiToken" placeholder="Enter API Token"
-                                        formControlName="pdfApiToken">
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Data Bridge"
+                                    formControlName="pdfBridgeId" style="width: 100%;">
+                                    <nz-option *ngFor="let eventBridge of eventBridges"
+                                        [nzLabel]="eventBridge.name"
+                                        [nzValue]="eventBridge.id">
+                                    </nz-option>
+                                </nz-select>
                             </td>
                             <td>
-                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select PDF"
-                                    formControlName="isPdf" style="width: 100%;">
+                                <nz-select nzShowSearch nzAllowClear style="width: 100%;"
+                                    nzPlaceHolder="Select PDF"
+                                    formControlName="isPdf">
                                     <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
                                         [nzLabel]="lookupChildren.lookupValue"
                                         [nzValue]="lookupChildren.lookupCode">
@@ -219,16 +223,18 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><nz-badge nzStatus="processing"></nz-badge> Want XLSX?</td>
                             <td>
-                                <input nz-input type="url" class="form-control input-sm"
-                                    name="xlsxUrl" placeholder="Enter API URL"
-                                        formControlName="xlsxUrl">
+                                <nz-badge nzStatus="processing"></nz-badge> 
+                                Want XLSX?
                             </td>
                             <td>
-                                <input nz-input type="text" class="form-control input-sm"
-                                    name="xlsxApiToken" placeholder="Enter API Token"
-                                        formControlName="xlsxApiToken">
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Data Bridge"
+                                    formControlName="xlsxBridgeId" style="width: 100%;">
+                                    <nz-option *ngFor="let eventBridge of eventBridges"
+                                        [nzLabel]="eventBridge.name"
+                                        [nzValue]="eventBridge.id">
+                                    </nz-option>
+                                </nz-select>
                             </td>
                             <td>
                                 <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select XLSX"
@@ -241,22 +247,26 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><nz-badge nzStatus="processing"></nz-badge> Want CSV?</td>
                             <td>
-                                <input nz-input type="url" class="form-control input-sm"
-                                    name="csvUrl" placeholder="Enter API URL"
-                                        formControlName="csvUrl">
+                                <nz-badge nzStatus="processing"></nz-badge> 
+                                Want CSV?
                             </td>
                             <td>
-                                <input nz-input type="text" class="form-control input-sm"
-                                    name="csvApiToken" placeholder="Enter API Token"
-                                        formControlName="csvApiToken">
+                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Data Bridge"
+                                    formControlName="csvBridgeId" style="width: 100%;">
+                                    <nz-option *ngFor="let eventBridge of eventBridges"
+                                        [nzLabel]="eventBridge.name"
+                                        [nzValue]="eventBridge.id">
+                                    </nz-option>
+                                </nz-select>
                             </td>
                             <td>
-                                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select CSV"
-                                    formControlName="isCsv" style="width: 100%;">
+                                <nz-select nzShowSearch nzAllowClear style="width: 100%;"
+                                    nzPlaceHolder="Select CSV"
+                                    formControlName="isCsv">
                                     <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
-                                        [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                                        [nzLabel]="lookupChildren.lookupValue"
+                                        [nzValue]="lookupChildren.lookupCode">
                                     </nz-option>
                                 </nz-select>
                             </td>
@@ -269,9 +279,9 @@
             <nz-form-item>
                 <nz-form-label>Distinct LookupKey</nz-form-label>
                 <nz-form-control nzErrorTip="Distinct LookupKey Required">
-                    <nz-select nzShowSearch nzAllowClear formControlName="distinctLKValue" 
+                    <nz-select nzShowSearch nzAllowClear formControlName="distinctLKValue"
                         nzPlaceHolder="Select Distinct LookupKey">
-                        <nz-option *ngFor="let lookup of parentLookup" 
+                        <nz-option *ngFor="let lookup of parentLookup"
                             [nzLabel]="lookup.lookupValue"
                             [nzValue]="lookup.lookupType">
                         </nz-option>
@@ -283,9 +293,9 @@
             <nz-form-item>
                 <nz-form-label>Aggregation LookupKey</nz-form-label>
                 <nz-form-control nzErrorTip="Aggregation LookupKey Required">
-                    <nz-select nzShowSearch nzAllowClear formControlName="aggLKValue" 
+                    <nz-select nzShowSearch nzAllowClear formControlName="aggLKValue"
                         nzPlaceHolder="Select Aggregation LookupKey">
-                        <nz-option *ngFor="let lookup of parentLookup" 
+                        <nz-option *ngFor="let lookup of parentLookup"
                             [nzLabel]="lookup.lookupValue"
                             [nzValue]="lookup.lookupType">
                         </nz-option>
@@ -297,11 +307,13 @@
             <nz-form-item>
                 <nz-form-label nzRequired>Payload Ref</nz-form-label>
                 <nz-form-control nzErrorTip="Payload Ref Required">
-                    <nz-select nzShowSearch nzAllowClear formControlName="payloadRef"
+                    <nz-select nzShowSearch nzAllowClear
+                        formControlName="payloadRef"
                         nzPlaceHolder="Select Payload Ref"
                         (ngModelChange)="onChangePayloadRefValue($event)">
                         <nz-option *ngFor="let lookupChildren of PAYLOAD_REF?.SUB_LOOKUP_DATA"
-                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                            [nzLabel]="lookupChildren.lookupValue"
+                            [nzValue]="lookupChildren.lookupCode">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>
@@ -311,10 +323,12 @@
             <nz-form-item>
                 <nz-form-label nzRequired>Form Reference</nz-form-label>
                 <nz-form-control nzErrorTip="Form Reference Required">
-                    <nz-select nzShowSearch nzAllowClear formControlName="formRequestId"
+                    <nz-select nzShowSearch nzAllowClear
+                        formControlName="formRequestId"
                         nzPlaceHolder="Select Form Reference">
                         <nz-option *ngFor="let genForm of genForms"
-                            [nzLabel]="genForm.formName" [nzValue]="genForm.id">
+                            [nzLabel]="genForm.formName"
+                            [nzValue]="genForm.id">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>
@@ -329,12 +343,15 @@
                         placeholder="Enter Description"></textarea>
                 </nz-form-control>
             </nz-form-item>
-        </div>      
+        </div>
         <div nz-col [nzSpan]="24" class="search-area">
             <button nz-button type="reset">Clear</button>
-            <button nz-button [nzType]="'primary'" [nzLoading]="loading"
+            <button nz-button [nzType]="'primary'"
+                [nzLoading]="loading"
                 [disabled]="!reportSettingForm.valid"
-                type="submit" style="float: right;">Submit</button>
+                type="submit" style="float: right;">
+                Submit
+            </button>
         </div>
     </div>
 </form>

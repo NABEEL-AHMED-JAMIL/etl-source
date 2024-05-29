@@ -18,7 +18,7 @@ import {
     IStaticTable,
     ReportSettingService
 } from 'src/app/_shared';
-import { CUReportComponent } from '../cu-report/cu-report.component';
+import { CUReportComponent } from '../mg-cu/cu-report/cu-report.component';
 
 
 @Component({
@@ -116,7 +116,7 @@ export class MgReportComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'dateUpdated',
@@ -127,7 +127,7 @@ export class MgReportComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'status',
@@ -137,18 +137,18 @@ export class MgReportComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
                 type: 'eye',
                 color: 'orange',
                 spin: false,
                 tooltipTitle: 'View Report',
                 action: ActionType.VIEW
+            },
+            {
+                type: 'edit',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
             },
             {
                 type: 'delete',
@@ -312,7 +312,7 @@ export class MgReportComponent implements OnInit {
     public openCuEnVariable(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
-            nzWidth: 1100,
+            nzWidth: 900,
             nzTitle: actionType === ActionType.ADD ? 'Add Report' : 'Edit Report',
             nzFooter: '*Note: For Service Output Pattern Please Download The Above Documentation.',
             nzPlacement: 'right',

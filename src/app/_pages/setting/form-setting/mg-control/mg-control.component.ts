@@ -118,7 +118,7 @@ export class MgControlComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'dateUpdated',
@@ -129,7 +129,7 @@ export class MgControlComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'status',
@@ -139,18 +139,18 @@ export class MgControlComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
                 type: 'link',
                 color: 'orange',
                 spin: false,
                 tooltipTitle: 'Link With Section',
                 action: ActionType.LINK_SECTION
+            },
+            {
+                type: 'edit',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
             },
             {
                 type: 'delete',

@@ -10,29 +10,29 @@ import {
     ApiCode,
     AuthResponse,
     AuthenticationService,
-    IWebHook,
+    IEventBridge,
     IStaticTable,
-    WebHookService,
+    EvenBridgeService,
     ActionType
 } from 'src/app/_shared';
 
 
 @Component({
-    selector: 'app-hku-crose-table',
-    templateUrl: './hku-crose-table.component.html',
-    styleUrls: ['./hku-crose-table.component.css']
+    selector: 'app-ebu-crose-table',
+    templateUrl: './ebu-crose-table.component.html',
+    styleUrls: ['./ebu-crose-table.component.css']
 })
-export class HKUCroseTableComponent implements OnInit {
+export class EBUCroseTableComponent implements OnInit {
 
     public searchDetails: any;
     public sessionUser: AuthResponse;
 
     @Input()
-    public webHook: IWebHook;
+    public eventBridge: IEventBridge;
 
-    public webHookLinkUserTable: IStaticTable = {
-        tableId: 'webhook_link_user_id',
-        title: 'WebHook Link User',
+    public eventBridgeLinkUserTable: IStaticTable = {
+        tableId: 'eventBridge_link_user_id',
+        title: 'Event Bridge Link User',
         bordered: true,
         checkbox: false,
         enableAction: true,
@@ -96,7 +96,7 @@ export class HKUCroseTableComponent implements OnInit {
     constructor(
         private alertService: AlertService,
         private spinnerService: SpinnerService,
-        private webHookService: WebHookService,
+        private evenBridgeService: EvenBridgeService,
         private commomService: CommomService,
         private modalService: NzModalService,
         private authenticationService: AuthenticationService) {
@@ -107,14 +107,14 @@ export class HKUCroseTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchLinkWebHookWitUser({
-            id: this.webHook.id
+        this.fetchLinkEventBridgeWitUser({
+            id: this.eventBridge.id
         });
     }
 
-    public fetchLinkWebHookWitUser(payload: any): any {
+    public fetchLinkEventBridgeWitUser(payload: any): any {
         this.spinnerService.show();
-        this.webHookService.fetchLinkWebHookWitUser(payload)
+        this.evenBridgeService.fetchLinkEventBridgeWitUser(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -122,7 +122,7 @@ export class HKUCroseTableComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.webHookLinkUserTable.dataSource = response.data;
+                this.eventBridgeLinkUserTable.dataSource = response.data;
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);;
@@ -131,8 +131,8 @@ export class HKUCroseTableComponent implements OnInit {
 
     public enableActionReciver(payload: any): void {
         this.spinnerService.show();
-        this.webHookService.linkWebHookWithUser({
-            id: this.webHook.id,
+        this.evenBridgeService.linkEventBridgeWithUser({
+            id: this.eventBridge.id,
             appUserId: payload.id,
             linked: payload.linked
         })
@@ -161,7 +161,7 @@ export class HKUCroseTableComponent implements OnInit {
                 nzTitle: 'Do you want to genrate the token?',
                 nzContent: 'Press \'Ok\' will generate the new token.',
                 nzOnOk: () => {
-                    this.genWebHookToken(payload);
+                    this.genEventBridgeToken(payload);
                 }
             });
         } else if (ActionType.DOWNLOAD === payload.action) {
@@ -177,9 +177,9 @@ export class HKUCroseTableComponent implements OnInit {
         }
     }
 
-    public genWebHookToken(payload: any): void {
+    public genEventBridgeToken(payload: any): void {
         this.spinnerService.show();
-        this.webHookService.genWebHookToken({
+        this.evenBridgeService.genEventBridgeToken({
             tokenId: payload.data.tokenId
         })
         .pipe(first())

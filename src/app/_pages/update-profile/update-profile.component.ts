@@ -9,7 +9,7 @@ import {
     AuthenticationService,
     IAppUser,
     IStaticTable,
-    WebHookService
+    EvenBridgeService
 } from '../../_shared';
 import {
     FormBuilder,
@@ -78,9 +78,9 @@ export class UpdateProfileComponent implements OnInit {
     };
 
     // geneate token
-    public webHookTable: IStaticTable = {
-        tableId: 'hook_id',
-        title: 'WebHook',
+    public eventBridgeTable: IStaticTable = {
+        tableId: 'eventBridge_id',
+        title: 'Event Bridge',
         bordered: true,
         checkbox: false,
         size: 'small',
@@ -91,12 +91,12 @@ export class UpdateProfileComponent implements OnInit {
                 type: 'data'
             },
             {
-                field: 'hookUrl',
+                field: 'bridgeUrl',
                 header: 'Url',
                 type: 'data'
             },
             {
-                field: 'hookType',
+                field: 'bridgeType',
                 header: 'Type',
                 type: 'tag'
             },
@@ -143,7 +143,7 @@ export class UpdateProfileComponent implements OnInit {
         public commomService: CommomService,
         public storageService: StorageService,
         private appUserService: AppUserService,
-        private webHookService: WebHookService,
+        private evenBridgeService: EvenBridgeService,
         private modalService: NzModalService,
         private authenticationService: AuthenticationService) {
         this.currentUser = this.authenticationService.currentUserValue;
@@ -151,6 +151,10 @@ export class UpdateProfileComponent implements OnInit {
     }
 
     ngOnInit() {
+    }
+
+    public refresh() {
+        this.fetchAppUserProfile(this.currentUser.username);
     }
 
     public fetchAppUserProfile(payload: any): void {
@@ -165,7 +169,7 @@ export class UpdateProfileComponent implements OnInit {
                 }
                 this.appUser = response.data;
                 this.eVariableTable.dataSource = this.appUser.enVariables;
-                this.webHookTable.dataSource = this.appUser.webHooks;
+                this.eventBridgeTable.dataSource = this.appUser.eventBridge;
                 this.fillAppUserPasswordDetail(this.appUser);
             }, (error: any) => {
                 this.spinnerService.hide();
@@ -252,7 +256,7 @@ export class UpdateProfileComponent implements OnInit {
         }
     }
 
-    public tableWebHookActionReciver(payload: any): void {
+    public tableEventBridgeActionReciver(payload: any): void {
         if (ActionType.GEN_TOKEN === payload.action) {
             this.modalService.confirm({
                 nzOkText: 'Ok',
@@ -260,7 +264,7 @@ export class UpdateProfileComponent implements OnInit {
                 nzTitle: 'Do you want to genrate the token?',
                 nzContent: 'Press \'Ok\' will generate the new token.',
                 nzOnOk: () => {
-                    this.genWebHookToken(payload);
+                    this.genEventBridgeToken(payload);
                 }
             });
         } else if (ActionType.DOWNLOAD === payload.action) {
@@ -276,9 +280,9 @@ export class UpdateProfileComponent implements OnInit {
         }
     }
 
-    public genWebHookToken(payload: any): void {
+    public genEventBridgeToken(payload: any): void {
         this.spinnerService.show();
-        this.webHookService.genWebHookToken({
+        this.evenBridgeService.genEventBridgeToken({
             tokenId: payload.data.tokenId
         })
         .pipe(first())

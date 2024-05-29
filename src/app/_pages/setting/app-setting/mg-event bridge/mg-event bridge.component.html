@@ -1,0 +1,24 @@
+<div class="content">
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="8">
+            <h3>
+                <span nz-icon nzType="link" nzTheme="outline"></span>
+                {{eventBridgeTable.title}}
+            </h3>
+        </div>
+        <div nz-col nzSpan="16">
+            <nz-alert nzType="info" nzShowIcon 
+                nzMessage="KEY:[[Header Reciver:- XRHK-Authorization], [Header Sender:- XSHK-Authorization]], Value:[[BEARER:- Bearer Token]]">
+            </nz-alert>
+        </div>
+    </div>
+    <nz-divider style="margin: 5px 0;"></nz-divider>
+    <app-gen-table 
+        *ngIf="eventBridgeTable"
+        [setOfCheckedId]="setOfCheckedId"
+        [staticTable]="eventBridgeTable"
+        (actionEventEmitter)="tableActionReciver($event)"
+        (buttonEventEmitter)="buttonActionReciver($event)"
+        (extraEventEmitter)="extraActionReciver($event)">
+    </app-gen-table>
+</div>

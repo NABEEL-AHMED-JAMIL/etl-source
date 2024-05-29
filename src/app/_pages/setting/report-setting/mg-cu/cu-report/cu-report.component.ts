@@ -1,7 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { first } from 'rxjs';
+import {
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    Validators
+} from '@angular/forms';
 import {
     AlertService,
     SpinnerService,
@@ -23,7 +28,10 @@ import {
     IGenFrom,
     FormSettingService,
     PAYLOAD_REF,
-    ILookupData
+    ILookupData,
+    EvenBridgeService,
+    IEventBridge,
+    EVENT_BRIDGE_TYPE
 } from 'src/app/_shared';
 
 
@@ -47,6 +55,7 @@ export class CUReportComponent implements OnInit {
     public sessionUser: AuthResponse;
     // ilookup
     public genForms: IGenFrom[] = [];
+    public eventBridges: IEventBridge[] = [];
     public parentLookup: ILookupData[] = [];
     public APPLICATION_STATUS: ILookups;
     public REPORT_GROUP: ILookups;
@@ -62,6 +71,7 @@ export class CUReportComponent implements OnInit {
         private envVarService: EVariableService,
         private formSettingService: FormSettingService,
         private reportSettingService: ReportSettingService,
+        private evenBridgeService: EvenBridgeService,
         public commomService: CommomService,
         private authenticationService: AuthenticationService) {
         this.authenticationService.currentUser
@@ -71,6 +81,7 @@ export class CUReportComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.fetchEventBridgeByBridgeType();
         this.fetchUserEnvByEnvKey();
         this.lookupService.fetchLookupDataByLookupType({
             lookupType: LOOKUP_TYPE.UI_LOOKUP
@@ -126,6 +137,22 @@ export class CUReportComponent implements OnInit {
             });
     }
 
+    public fetchEventBridgeByBridgeType() {
+        this.spinnerService.show();
+        let payload = {
+            bridgeType: EVENT_BRIDGE_TYPE.API_SENDER
+        };
+        this.evenBridgeService.fetchEventBridgeByBridgeType(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.eventBridges = response.data;
+                this.spinnerService.hide();
+            }, (error: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(error, ApiCode.ERROR);
+            });
+    }
+
     public fetchUserEnvByEnvKey(): any {
         this.spinnerService.show();
         let payload = {
@@ -153,24 +180,18 @@ export class CUReportComponent implements OnInit {
             description: ['', Validators.required],
             payloadRef: ['', Validators.required],
             isPdf: [0, Validators.required],
-            pdfUrl: [],
-            pdfApiToken: [],
+            pdfBridgeId: [],
             isXlsx: [0, Validators.required],
-            xlsxUrl: [],
-            xlsxApiToken: [],
+            xlsxBridgeId: [],
             isCsv: [0, Validators.required],
-            csvUrl: [],
-            csvApiToken: [],
+            csvBridgeId: [],
             isData: [0, Validators.required],
-            dataUrl: [],
-            dataApiToken: [],
+            dataBridgeId: [],
             isFirstDimension: [0, Validators.required],
-            firstDimensionUrl: ['', Validators.required],
-            firstDimensionApiToken: [],
+            firstDimensionBridgeId: ['', Validators.required],
             firstDimensionLKValue: ['', Validators.required],
             isSecondDimension: [0, Validators.required],
-            secondDimensionUrl: ['', Validators.required],
-            secondDimensionApiToken: [],
+            secondDimensionBridgeId: ['', Validators.required],
             secondDimensionLKValue: ['', Validators.required],
             distinctLKValue: [],
             aggLKValue: []
@@ -187,31 +208,25 @@ export class CUReportComponent implements OnInit {
             description: [this.editPayload.description, Validators.required],
             payloadRef: [this.editPayload.payloadRef?.lookupCode, Validators.required],
             isPdf: [this.editPayload.isPdf?.lookupCode, Validators.required],
-            pdfUrl: [this.editPayload.pdfUrl],
-            pdfApiToken: [this.editPayload.pdfApiToken],
+            pdfBridgeId: [this.editPayload.pdfBridge?.id],
             isXlsx: [this.editPayload.isXlsx?.lookupCode, Validators.required],
-            xlsxUrl: [this.editPayload.xlsxUrl],
-            xlsxApiToken: [this.editPayload.xlsxApiToken],
+            xlsxBridgeId: [this.editPayload.xlsxBridge?.id],
             isCsv: [this.editPayload.isCsv?.lookupCode, Validators.required],
-            csvUrl: [this.editPayload.csvUrl],
-            csvApiToken: [this.editPayload.csvApiToken],
+            csvBridgeId: [this.editPayload.dataBridge?.id],
             isData: [this.editPayload.isData?.lookupCode, Validators.required],
-            dataUrl: [this.editPayload.dataUrl],
-            dataApiToken: [this.editPayload.dataApiToken],
+            dataBridgeId: [this.editPayload.dataBridge?.id],
             isFirstDimension: [this.editPayload.isFirstDimension?.lookupCode, Validators.required],
-            firstDimensionUrl: [this.editPayload.firstDimensionUrl, Validators.required],
-            firstDimensionApiToken: [this.editPayload.firstDimensionApiToken],
+            firstDimensionBridgeId: [this.editPayload.firstDimensionBridge?.id, Validators.required],
             firstDimensionLKValue: [this.editPayload.firstDimensionLKValue?.lookupType, Validators.required],
             isSecondDimension: [this.editPayload.isSecondDimension?.lookupCode, Validators.required],
-            secondDimensionUrl: [this.editPayload.secondDimensionUrl, Validators.required],
-            secondDimensionApiToken: [this.editPayload.secondDimensionApiToken],
+            secondDimensionBridgeId: [this.editPayload.secondDimensionBridge?.id, Validators.required],
             secondDimensionLKValue: [this.editPayload.secondDimensionLKValue?.lookupType, Validators.required],
             distinctLKValue: [this.editPayload.distinctLKValue?.lookupType],
             aggLKValue: [this.editPayload.aggLKValue?.lookupType],
             status: [this.editPayload.status?.lookupCode, Validators.required]
         });
         if (this.editPayload.payloadRef?.lookupCode == PAYLOAD_REF.REF_REPORT_FORM) {
-            this.reportSettingForm.addControl('formRequestId', new FormControl(this.editPayload.formRequestId, Validators.required));
+            this.reportSettingForm.addControl('formRequestId', new FormControl(this.editPayload.formResponse?.id, Validators.required));
             this.formRefShow = true;
         }
         this.spinnerService.hide();

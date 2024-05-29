@@ -1,5 +1,8 @@
 <div class="content">
-    <h3>{{subUserTable.title}}</h3>
+    <h3>
+        <span nz-icon nzType="link" nzTheme="outline"></span>
+        {{subUserTable.title}}
+    </h3>
     <nz-divider style="margin: 5px 0;"></nz-divider>
     <app-gen-table *ngIf="subUserTable"
         [isDateFilter]="true"

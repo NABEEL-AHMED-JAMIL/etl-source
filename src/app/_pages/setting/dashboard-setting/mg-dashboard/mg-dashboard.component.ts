@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { first } from 'rxjs';
-import { CUDashboardComponent } from '../cu-dashboard/cu-dashboard.component';
 import {
     AlertService,
     CommomService,
@@ -18,6 +17,7 @@ import {
     IStaticTable
 } from 'src/app/_shared';
 import { Router } from '@angular/router';
+import { CUDashboardComponent } from 'src/app/_pages';
 
 
 @Component({
@@ -90,7 +90,7 @@ export class MgDashboardComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'dateUpdated',
@@ -101,7 +101,7 @@ export class MgDashboardComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'status',

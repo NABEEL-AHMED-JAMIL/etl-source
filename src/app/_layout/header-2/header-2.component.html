@@ -23,7 +23,7 @@
         </div>
         <div nz-col nzMd="5" style="text-align: end;padding-right: 20px">
             <nz-badge nzSize="small" style="margin-right: 20px;" nzShowZero
-                [nzCount]="jobNotifactionData.length + userNotifactionData.length">
+                [nzCount]="jobNotificationData.length + userNotificationData.length">
                 <nz-avatar class="bell-notification" nzIcon="bell" nz-dropdown
                     [nzDropdownMenu]="bellAction">
                 </nz-avatar>
@@ -41,8 +41,8 @@
 <!-- notifaction -->
 <nz-dropdown-menu #bellAction="nzDropdownMenu">
     <app-notifaction-action
-        [jobNotifactionData]="jobNotifactionData"
-        [userNotifactionData]="userNotifactionData">
+        [jobNotificationData]="jobNotificationData"
+        [userNotificationData]="userNotificationData">
     </app-notifaction-action>
 </nz-dropdown-menu>
 <!-- source job-menu -->

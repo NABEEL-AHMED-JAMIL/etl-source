@@ -1,8 +1,8 @@
 <ul nz-menu>
     <nz-tabset style="padding-left: 10px;">
-        <nz-tab nzTitle="Job Notifaction {{jobNotifactionData.length}}">
+        <nz-tab nzTitle="Job Notifaction {{jobNotificationData.length}}">
             <nz-list nzItemLayout="horizontal">
-                <nz-list-item *ngFor="let item of jobNotifactionData; let i = index">
+                <nz-list-item *ngFor="let item of jobNotificationData; let i = index">
                     <nz-list-item-meta (click)="changeJobNotifactionStatus(item, i)">
                         <nz-list-item-meta-avatar [nzSrc]="item.avatar"></nz-list-item-meta-avatar>
                         <nz-list-item-meta-title>
@@ -15,12 +15,12 @@
                         </nz-list-item-meta-description>
                     </nz-list-item-meta>
                 </nz-list-item>
-                <nz-list-empty *ngIf="jobNotifactionData.length === 0"></nz-list-empty>
+                <nz-list-empty *ngIf="jobNotificationData.length === 0"></nz-list-empty>
             </nz-list>
         </nz-tab>
-        <nz-tab nzTitle="User Notifaction {{userNotifactionData.length}}">
+        <nz-tab nzTitle="User Notifaction {{userNotificationData.length}}">
             <nz-list nzItemLayout="horizontal">
-                <nz-list-item *ngFor="let item of userNotifactionData; let i = index">
+                <nz-list-item *ngFor="let item of userNotificationData; let i = index">
                     <nz-list-item-meta (click)="changeUserNotifactionStatus(item, i)">
                         <nz-list-item-meta-avatar [nzSrc]="item.avatar"></nz-list-item-meta-avatar>
                         <nz-list-item-meta-title>
@@ -33,7 +33,7 @@
                         </nz-list-item-meta-description>
                     </nz-list-item-meta>
                 </nz-list-item>
-                <nz-list-empty *ngIf="userNotifactionData.length === 0"></nz-list-empty>
+                <nz-list-empty *ngIf="userNotificationData.length === 0"></nz-list-empty>
             </nz-list>
         </nz-tab>
     </nz-tabset>
