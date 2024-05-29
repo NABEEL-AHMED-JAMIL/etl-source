@@ -36,7 +36,7 @@ import {
     MgOLAPComponent,
     ViewReportComponent,
     ViewDashboardComponent,
-    MgWebHookComponent
+    MgEventBridgeComponent
 } from './_pages';
 
 
@@ -315,14 +315,14 @@ const routes: Routes = [
                 }
             },
             {
-                path: 'mgWebHook',
-                component: MgWebHookComponent,
+                path: 'mgEventBridge',
+                component: MgEventBridgeComponent,
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
                     roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                    permission: ['WEB_HOOK_PERMISSION'],
-                    breadcrumb: 'Mg WebHook',
+                    permission: ['EVENT_BRIDGE_PERMISSION'],
+                    breadcrumb: 'Mg Event Bridge',
                 }
             },
             // app-setting -> evariable

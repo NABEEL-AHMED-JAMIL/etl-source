@@ -21,34 +21,34 @@ import {
     CredentailService,
     ICredential,
     ILookups,
-    IWebHook,
+    IEventBridge,
     LOOKUP_TYPE,
     LookupService,
-    WebHookService
+    EvenBridgeService
 } from 'src/app/_shared';
 
 
 @Component({
-    selector: 'app-cu-webhook',
-    templateUrl: './cu-webhook.component.html',
-    styleUrls: ['./cu-webhook.component.css']
+    selector: 'app-cu-event-bridge',
+    templateUrl: './cu-event-bridge.component.html',
+    styleUrls: ['./cu-event-bridge.component.css']
 })
-export class CUWebHookComponent implements OnInit {
+export class CUEventBridgeComponent implements OnInit {
 
     @Input()
     public actionType: ActionType;
     @Input()
-    public editPayload: IWebHook;
+    public editPayload: IEventBridge;
 
     public credentials: ICredential[] = [];
 
     public APPLICATION_STATUS: ILookups;
-    public HOOK_TYPE: ILookups;
+    public EVENT_BRIDGE_TYPE: ILookups;
 
     public loading: boolean = false;
     public editAction = ActionType.EDIT;
     
-    public webHookForm: FormGroup;
+    public eventBridgeForm: FormGroup;
     public sessionUser: AuthResponse;
 
     constructor(private fb: FormBuilder,
@@ -58,7 +58,7 @@ export class CUWebHookComponent implements OnInit {
         private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private credentailService: CredentailService,
-        private webHookService: WebHookService,
+        private evenBridgeService: EvenBridgeService,
         private authenticationService: AuthenticationService) {
         this.authenticationService.currentUser
             .subscribe(currentUser => {
@@ -75,37 +75,37 @@ export class CUWebHookComponent implements OnInit {
                 .filter((data) => data.lookupCode !== APPLICATION_STATUS.DELETE);
         });
         this.lookupService.fetchLookupDataByLookupType({
-            lookupType: LOOKUP_TYPE.HOOK_TYPE
+            lookupType: LOOKUP_TYPE.EVENT_BRIDGE_TYPE
         }).subscribe((data) => {
-            this.HOOK_TYPE = data;
+            this.EVENT_BRIDGE_TYPE = data;
         });
         this.fetchAllCredentialByType();
         if (this.actionType === ActionType.ADD) {
-            this.addWebHookForm();
+            this.addEventBridgeForm();
         } else if (this.actionType === ActionType.EDIT) {
-            this.editWebHookForm();
+            this.editEventBridgeForm();
         }
     }
 
-    public addWebHookForm(): any {
+    public addEventBridgeForm(): any {
         this.spinnerService.show();
-        this.webHookForm = this.fb.group({
+        this.eventBridgeForm = this.fb.group({
             name: ['', Validators.required],
-            hookUrl: ['', Validators.required],
-            hookType: ['', Validators.required],
+            bridgeUrl: ['', Validators.required],
+            bridgeType: ['', Validators.required],
             description: ['', Validators.required],
             credentialId: ['', Validators.required],
         });
         this.spinnerService.hide();
     }
 
-    public editWebHookForm(): void {
+    public editEventBridgeForm(): void {
         this.spinnerService.show();
-        this.webHookForm = this.fb.group({
+        this.eventBridgeForm = this.fb.group({
             id: [this.editPayload.id, Validators.required],
             name: [this.editPayload.name, Validators.required],
-            hookUrl: [this.editPayload.hookUrl, Validators.required],
-            hookType: [this.editPayload?.hookType?.lookupCode, Validators.required],
+            bridgeUrl: [this.editPayload.bridgeUrl, Validators.required],
+            bridgeType: [this.editPayload?.bridgeType?.lookupCode, Validators.required],
             description: [this.editPayload.description, Validators.required],
             credentialId: [this.editPayload.credential ? this.editPayload?.credential.id : '', Validators.required],
             status: [this.editPayload.status?.lookupCode, Validators.required]
@@ -138,30 +138,30 @@ export class CUWebHookComponent implements OnInit {
 
     // convenience getter for easy access to form fields
     get f() {
-        return this.webHookForm.controls;
+        return this.eventBridgeForm.controls;
     }
 
     public onSubmit(): void {
         if (this.actionType === ActionType.ADD) {
-            this.addWebHook();
+            this.addEventBridge();
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateWebHook();
+            this.updateEventBridge();
         }
     }
 
-    public addWebHook(): void {
+    public addEventBridge(): void {
         this.spinnerService.show();
-        if (this.webHookForm.invalid) {
+        if (this.eventBridgeForm.invalid) {
             this.spinnerService.hide();
             return;
         }
         let payload = {
-            ...this.webHookForm.getRawValue(),
+            ...this.eventBridgeForm.getRawValue(),
             sessionUser: {
                 username: this.sessionUser.username
             }
         }
-        this.webHookService.addWebHook(payload)
+        this.evenBridgeService.addEventBridge(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -177,19 +177,19 @@ export class CUWebHookComponent implements OnInit {
             });
     }
 
-    public updateWebHook(): void {
+    public updateEventBridge(): void {
         this.spinnerService.show();
-        if (this.webHookForm.invalid) {
+        if (this.eventBridgeForm.invalid) {
             this.spinnerService.hide();
             return;
         }
         let payload = {
-            ...this.webHookForm.getRawValue(),
+            ...this.eventBridgeForm.getRawValue(),
             sessionUser: {
                 username: this.sessionUser.username
             }
         }
-        this.webHookService.updateWebHook(payload)
+        this.evenBridgeService.updateEventBridge(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();

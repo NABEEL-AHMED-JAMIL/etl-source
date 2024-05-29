@@ -35,13 +35,13 @@ export * from './setting/service-setting/linking/stt-link-sttf/stt-link-sttf.com
 export * from './setting/support-setting/db-query/db-query.component';
 // app-setting
 export * from './setting/app-setting/evu-crose-table/evu-crose-table.component';
-export * from './setting/app-setting/hku-crose-table/hku-crose-table.component';
-export * from './setting/app-setting/mg-cu/cu-webhook/cu-webhook.component';
+export * from './setting/app-setting/ebu-crose-table/ebu-crose-table.component';
+export * from './setting/app-setting/mg-cu/cu-event-bridge/cu-event-bridge.component';
 export * from './setting/app-setting/mg-cu/cu-credential/cu-credential.component';
 export * from './setting/app-setting/mg-cu/cu-evariable/cu-evariable.component';
 export * from './setting/app-setting/mg-cu/cu-template/cu-template.component';
 export * from './setting/app-setting/mg-cu/cu-lookup/cu-lookup.component';
-export * from './setting/app-setting/mg-webhook/mg-webhook.component';
+export * from './setting/app-setting/mg-event bridge/mg-event bridge.component';
 export * from './setting/app-setting/credential/credential.component';
 export * from './setting/app-setting/mg-evariable/mg-evariable.component';
 export * from './setting/app-setting/mg-lookup/mg-lookup.component';
@@ -58,10 +58,10 @@ export * from './setting/profile-setting/mg-user/mg-user.component';
 export * from './setting/profile-setting/mg-rpp/mg-rpp.component';
 export * from './setting/profile-setting/mg-refresh-token/mg-refresh-token.component';
 // report-setting
-export * from './setting/report-setting/cu-report/cu-report.component';
+export * from './setting/report-setting/mg-cu/cu-report/cu-report.component';
 export * from './setting/dashboard-setting/cu-dashboard/cu-dashboard.component';
 export * from './setting/report-setting/mg-olap/mg-olap.component';
-export * from './setting/report-setting/cu-olap/cu-olap.component';
+export * from './setting/report-setting/mg-cu/cu-olap/cu-olap.component';
 export * from './setting/report-setting/mg-report/mg-report.component';
 export * from './setting/dashboard-setting/mg-dashboard/mg-dashboard.component';
 // update profile

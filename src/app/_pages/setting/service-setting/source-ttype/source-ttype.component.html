@@ -1,5 +1,8 @@
 <div class="content">
-    <h3>{{sttTable.title}}</h3>
+    <h3>
+        <span nz-icon nzType="link" nzTheme="outline"></span>
+        {{sttTable.title}}
+    </h3>
     <nz-divider style="margin: 5px 0;"></nz-divider>
     <app-gen-table 
         *ngIf="sttTable"

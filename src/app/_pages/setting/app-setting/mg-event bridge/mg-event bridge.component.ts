@@ -7,8 +7,8 @@ import {
     SpinnerService
 } from 'src/app/_helpers';
 import {
-    CUWebHookComponent,
-    HKUCroseTableComponent
+    CUEventBridgeComponent,
+    EBUCroseTableComponent
 } from 'src/app/_pages';
 import {
     ActionType,
@@ -16,25 +16,25 @@ import {
     AuthResponse,
     AuthenticationService,
     IStaticTable,
-    IWebHook,
-    WebHookService
+    IEventBridge,
+    EvenBridgeService
 } from 'src/app/_shared';
 
 
 @Component({
-    selector: 'app-mg-webhook',
-    templateUrl: './mg-webhook.component.html',
-    styleUrls: ['./mg-webhook.component.css']
+    selector: 'app-mg-event bridge',
+    templateUrl: './mg-event bridge.component.html',
+    styleUrls: ['./mg-event bridge.component.css']
 })
-export class MgWebHookComponent implements OnInit {
+export class MgEventBridgeComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
     public setOfCheckedId = new Set<any>();
     public sessionUser: AuthResponse;
-    public webHookTable: IStaticTable = {
-        tableId: 'webhook_id',
-        title: 'Mg WebHook',
+    public eventBridgeTable: IStaticTable = {
+        tableId: 'eventBridge_id',
+        title: 'Mg Event Bridge',
         bordered: true,
         checkbox: true,
         size: 'small',
@@ -68,13 +68,13 @@ export class MgWebHookComponent implements OnInit {
                 type: 'data'
             },
             {
-                field: 'hookUrl',
-                header: 'Hook Url',
+                field: 'bridgeUrl',
+                header: 'Bridg Url',
                 type: 'data'
             },
             {
-                field: 'hookType',
-                header: 'Hook Type',
+                field: 'bridgeType',
+                header: 'Bridg Type',
                 type: 'tag'
             },
             {
@@ -116,29 +116,6 @@ export class MgWebHookComponent implements OnInit {
                 header: 'Status',
                 type: 'tag'
             }
-        ],
-        actionType: [
-            {
-                type: 'edit',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
-                type: 'link',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'Link With User',
-                action: ActionType.LINK
-            },
-            {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            }
         ]
     };
 
@@ -147,7 +124,7 @@ export class MgWebHookComponent implements OnInit {
         private modalService: NzModalService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
-        private webHookService: WebHookService,
+        private evenBridgeService: EvenBridgeService,
         private authenticationService: AuthenticationService) {
         this.authenticationService.currentUser
             .subscribe(currentUser => {
@@ -156,7 +133,7 @@ export class MgWebHookComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchAllWebHook({
+        this.fetchAllEventBridge({
             sessionUser: {
                 username: this.sessionUser.username
             }
@@ -164,9 +141,9 @@ export class MgWebHookComponent implements OnInit {
     }
 
     // fetch all lookup
-    public fetchAllWebHook(payload: any): any {
+    public fetchAllEventBridge(payload: any): any {
         this.spinnerService.show();
-        this.webHookService.fetchAllWebHook(payload)
+        this.evenBridgeService.fetchAllEventBridge(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -174,16 +151,46 @@ export class MgWebHookComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.webHookTable.dataSource = response.data;
+                this.eventBridgeTable.dataSource = response.data;
+                const commonActions = [
+                    {
+                        type: 'edit',
+                        color: 'green',
+                        spin: false,
+                        tooltipTitle: 'Edit',
+                        action: ActionType.EDIT
+                    },
+                    {
+                        type: 'delete',
+                        color: 'red',
+                        spin: false,
+                        tooltipTitle: 'Delete',
+                        action: ActionType.DELETE
+                    }
+                ];
+                if (!this.hasAccess(this.sessionUser.roles, ['ROLE_MASTER_ADMIN'])) {
+                    this.eventBridgeTable.actionType = commonActions;
+                } else {
+                    this.eventBridgeTable.actionType = [
+                        {
+                            type: 'link',
+                            color: 'orange',
+                            spin: false,
+                            tooltipTitle: 'Link With User',
+                            action: ActionType.LINK
+                        },
+                        ...commonActions
+                    ];
+                }
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
-    public deleteWebHookById(payload: any): void {
+    public deleteEventBridgeById(payload: any): void {
         this.spinnerService.show();
-        this.webHookService.deleteWebHookById(payload)
+        this.evenBridgeService.deleteEventBridgeById(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -191,7 +198,7 @@ export class MgWebHookComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllWebHook({
+                this.fetchAllEventBridge({
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -205,15 +212,15 @@ export class MgWebHookComponent implements OnInit {
     
     public tableActionReciver(payload: any): void {
         if (ActionType.EDIT === payload.action) {
-            this.openCuEnVariable(ActionType.EDIT, payload);
+            this.openCuEventBridge(ActionType.EDIT, payload);
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
                 nzTitle: '[' + payload.data.id + '] ' + payload.data.name,
                 nzWidth: 800,
                 nzFooter: null, // Optional footer
-                nzContent: HKUCroseTableComponent,
+                nzContent: EBUCroseTableComponent,
                 nzContentParams: {
-                    webHook: payload.data
+                    eventBridge: payload.data
                 }
             });
         }else if (ActionType.DELETE === payload.action) {
@@ -223,12 +230,12 @@ export class MgWebHookComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    let webhook: IWebHook = {
+                    let eventBridge: IEventBridge = {
                         id: payload.data.id,
                         name: payload.data.name
                     }
-                    this.deleteWebHookById({
-                        ...webhook,
+                    this.deleteEventBridgeById({
+                        ...eventBridge,
                         sessionUser: {
                             username: this.sessionUser.username
                         }
@@ -246,7 +253,7 @@ export class MgWebHookComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    this.deleteAllWebHook(
+                    this.deleteAllEventBridge(
                         {
                             ids: payload.checked,
                             sessionUser: {
@@ -260,9 +267,9 @@ export class MgWebHookComponent implements OnInit {
 
     public buttonActionReciver(payload: any): void {
         if (ActionType.ADD === payload.action) {
-            this.openCuEnVariable(ActionType.ADD, null);
+            this.openCuEventBridge(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchAllWebHook({
+            this.fetchAllEventBridge({
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -270,20 +277,20 @@ export class MgWebHookComponent implements OnInit {
         }
     }
 
-    public openCuEnVariable(actionType: ActionType, editPayload: any): void {
+    public openCuEventBridge(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
-            nzTitle: actionType === ActionType.ADD ? 'Add EVariable' : 'Edit EVariable',
+            nzTitle: actionType === ActionType.ADD ? 'Add Event Bridge' : 'Edit Event Bridge',
             nzPlacement: 'right',
             nzMaskClosable: false,
-            nzContent: CUWebHookComponent,
+            nzContent: CUEventBridgeComponent,
             nzContentParams: {
                 actionType: actionType,
                 editPayload: editPayload?.data
             }
         });
         drawerRef.afterClose.subscribe(data => {
-            this.fetchAllWebHook({
+            this.fetchAllEventBridge({
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -291,9 +298,9 @@ export class MgWebHookComponent implements OnInit {
         });
     }
 
-    public deleteAllWebHook(payload: any): void {
+    public deleteAllEventBridge(payload: any): void {
         this.spinnerService.show();
-        this.webHookService.deleteAllWebHook(payload)
+        this.evenBridgeService.deleteAllEventBridge(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -301,7 +308,7 @@ export class MgWebHookComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllWebHook({
+                this.fetchAllEventBridge({
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -312,6 +319,10 @@ export class MgWebHookComponent implements OnInit {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
+    }
+
+    public hasAccess(userRoles: any, targetRole: any) {
+        return userRoles.some((role: any) => targetRole.includes(role));
     }
 
 }

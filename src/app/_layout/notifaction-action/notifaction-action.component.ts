@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import {
     ApiCode,
-    INotifaction,
+    INotification,
     NotificationService
 } from '../../_shared';
 import { first } from 'rxjs';
@@ -18,9 +18,9 @@ import { first } from 'rxjs';
 export class NotifactionActionComponent implements OnInit {
 
     @Input()
-    public jobNotifactionData: INotifaction[];
+    public jobNotificationData: INotification[];
     @Input()
-    public userNotifactionData: INotifaction[];
+    public userNotificationData: INotification[];
 
     constructor(private notificationService: NotificationService) {
     }
@@ -28,25 +28,25 @@ export class NotifactionActionComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    public changeUserNotifactionStatus(notifaction: INotifaction, index: any) {
+    public changeUserNotifactionStatus(notifaction: INotification, index: any) {
         this.notificationService.updateNotification({id: notifaction.id})
             .pipe(first())
             .subscribe((data: any) => {
                 if (data.status === ApiCode.ERROR) {
                     return;
                 }
-                this.userNotifactionData[index].status = "yellow";
+                this.userNotificationData[index].status = "yellow";
             });
     }
 
-    public changeJobNotifactionStatus(notifaction: INotifaction, index: any) {
+    public changeJobNotifactionStatus(notifaction: INotification, index: any) {
         this.notificationService.updateNotification({id: notifaction.id})
             .pipe(first())
             .subscribe((data: any) => {
                 if (data.status === ApiCode.ERROR) {
                     return;
                 }
-                this.jobNotifactionData[index].status = "yellow";
+                this.jobNotificationData[index].status = "yellow";
             });
     }
 

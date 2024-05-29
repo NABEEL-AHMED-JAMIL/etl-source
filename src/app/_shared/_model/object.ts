@@ -81,11 +81,11 @@ export interface IEnVariables extends IBaseEntity {
     description?: any;
 }
 
-export interface IWebHook extends IBaseEntity {
+export interface IEventBridge extends IBaseEntity {
     name?: any;
-    hookUrl?: any;
+    bridgeUrl?: any;
     description?: any;
-    hookType?: any;
+    bridgeType?: any;
     credential?: any;
 }
 
@@ -122,7 +122,7 @@ export interface IAppUser extends IBaseEntity {
     roles?: any;
     profile?: any;
     enVariables?: any;
-    webHooks?: any;
+    eventBridge?: any;
 }
 
 export interface ICredential extends IBaseEntity {
@@ -286,28 +286,25 @@ export interface IReportSetting extends IBaseEntity {
     description?: any;
     payloadRef?: any;
     isPdf?: any;
-    pdfUrl?: any;
-    pdfApiToken?: any;	
+    pdfBridge?: any;
     isXlsx?: any;
-    xlsxUrl?: any;
-    xlsxApiToken?: any;
+    xlsxBridge?: any;
     isCsv?: any;
-    csvUrl?: any;
-    csvApiToken?: any;
+    csvBridge?: any;
     isData?: any;
-    dataUrl?: any;
-    dataApiToken?: any;
+    dataBridge?: any;
     isFirstDimension?: any;
-    firstDimensionUrl?: any;
+    firstDimensionBridge?: any;
     firstDimensionLKValue?: any;
-    firstDimensionApiToken?: any;
     isSecondDimension?: any;
-    secondDimensionUrl?: any;
+    secondDimensionBridge?: any;
     secondDimensionLKValue?: any;
-    secondDimensionApiToken?: any;
+    isThirdDimension?: any;
+    thirdDimensionBridge?: any;
+    thirdDimensionLKValue?: any;
     distinctLKValue?: any;
-    aggLKValue?: any;    
-    formRequestId?: any;
+    aggLKValue?: any;
+    formResponse?: any;
 }
 
 export interface IStaticTable {
@@ -338,7 +335,7 @@ export interface IColumn {
     status?: any; // this will check the status in the table for icon
 }
 
-export interface INotifaction {
+export interface INotification {
     id: any;
     title: any;
     data?: any;
@@ -386,8 +383,8 @@ export enum ActionType {
     LINK_FROM = 14,
     LINK_SECTION = 15,
     LINK_CONTROL = 16,
-    LINK_HOOK = 17,
-    GEN_TOKEN
+    LINK_EVENT_BRIDGE = 17,
+    GEN_TOKEN = 18
 }
 
 export enum IProfileSetting {
@@ -619,11 +616,11 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 permission: ['TEMPLATE_PERMISSION']
             },
             {
-                name: 'Manage WebHook',
+                name: 'Manage Event Bridge',
                 icon: 'group',
-                link: '/setting/mgWebHook',
+                link: '/setting/mgEventBridge',
                 roles: ['ROLE_DEV'],
-                permission: ['WEB_HOOK_PERMISSION']
+                permission: ['EVENT_BRIDGE_PERMISSION']
             },
             {
                 name: 'Manage EVariable',
@@ -664,7 +661,7 @@ export const LOOKUP_TYPE = {
     REQUEST_METHOD: 'REQUEST_METHOD',
     DASHBOARD_TYPE: 'DASHBOARD_TYPE',
     PAYLOAD_REF: 'PAYLOAD_REF',
-    HOOK_TYPE: 'HOOK_TYPE'
+    EVENT_BRIDGE_TYPE: 'EVENT_BRIDGE_TYPE'
 }
 
 export const enum APPLICATION_STATUS {
@@ -743,4 +740,10 @@ export const enum PAYLOAD_REF {
 export const enum IS_DEFAULT {
     NO_DEFAULT = 0,
     YES_DEFAULT = 1
+}
+
+export const enum EVENT_BRIDGE_TYPE {
+    WEB_HOOK_SENDER = 0,
+    WEB_HOOK_RECEIVER = 1,
+    API_SENDER = 2
 }
