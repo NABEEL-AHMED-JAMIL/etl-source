@@ -9,7 +9,8 @@ import {
     AuthenticationService,
     RPPService,
     EVariableService,
-    FormSettingService
+    FormSettingService,
+    EvenBridgeService
 } from '../../../_shared';
 import {
     AlertService,
@@ -37,6 +38,7 @@ export class BatchComponent implements OnInit {
     constructor(
         private rppService: RPPService,
         private lookupService: LookupService,
+        private evenBridgeService: EvenBridgeService,
         private alertService: AlertService,
         private eVariableService: EVariableService,
         private formSettingService: FormSettingService,
@@ -183,6 +185,29 @@ export class BatchComponent implements OnInit {
             }
             formData.append("data", JSON.stringify(payload));
             this.formSettingService.uploadSTTCommon(formData)
+                .pipe(first())
+                .subscribe((response: any) => {
+                    this.spinnerService.hide();
+                    this.uploading = false;
+                    if (response?.status === ApiCode.ERROR) {
+                        this.errors = response.data;
+                        this.alertService.showError(response.message, ApiCode.ERROR);
+                        return;
+                    }
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                }, (error: any) => {
+                    this.spinnerService.hide();
+                    this.uploading = false;
+                    this.alertService.showError(error, ApiCode.ERROR);
+                });
+        } else if (this.action === 'EventBridge') {
+            let payload = {
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            }
+            formData.append("data", JSON.stringify(payload));
+            this.evenBridgeService.uploadEventBridge(formData)
                 .pipe(first())
                 .subscribe((response: any) => {
                     this.spinnerService.hide();
