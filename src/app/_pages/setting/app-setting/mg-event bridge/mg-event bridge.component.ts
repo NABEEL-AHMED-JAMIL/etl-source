@@ -4,9 +4,11 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { first } from 'rxjs';
 import {
     AlertService,
+    CommomService,
     SpinnerService
 } from 'src/app/_helpers';
 import {
+    BatchComponent,
     CUEventBridgeComponent,
     EBUCroseTableComponent
 } from 'src/app/_pages';
@@ -52,6 +54,20 @@ export class MgEventBridgeComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Refresh',
                 action: ActionType.RE_FRESH
+            },
+            {
+                type: 'upload',
+                color: 'balck',
+                spin: false,
+                tooltipTitle: 'Upload',
+                action: ActionType.UPLOAD
+            },
+            {
+                type: 'download',
+                color: 'balck',
+                spin: false,
+                tooltipTitle: 'Download',
+                action: ActionType.DOWNLOAD
             }
         ],
         extraHeaderButton: [
@@ -125,6 +141,7 @@ export class MgEventBridgeComponent implements OnInit {
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private evenBridgeService: EvenBridgeService,
+        private commomService: CommomService,
         private authenticationService: AuthenticationService) {
         this.authenticationService.currentUser
             .subscribe(currentUser => {
@@ -274,7 +291,37 @@ export class MgEventBridgeComponent implements OnInit {
                     username: this.sessionUser.username
                 }
             });
+        } else if (ActionType.DOWNLOAD === payload.action) {
+            this.downloadEventBridge({
+                ids: payload.checked,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        } else if (ActionType.UPLOAD === payload.action) {
+            payload.action = 'EventBridge'
+            this.openBatchTemplate(payload);
         }
+    }
+
+    public openBatchTemplate(payload: any): void {
+        const drawerRef = this.drawerService.create({
+            nzTitle: 'Batch Operation',
+            nzSize: 'default',
+            nzMaskClosable: false,
+            nzFooter: 'Note :- Add Xlsx File For Process, Once File Upload Successfully Click the Refresh Button',
+            nzContent: BatchComponent,
+            nzContentParams: {
+                batchDetail: payload
+            }
+        });
+        drawerRef.afterClose.subscribe(data => {
+            this.fetchAllEventBridge({
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        });
     }
 
     public openCuEventBridge(actionType: ActionType, editPayload: any): void {
@@ -296,6 +343,19 @@ export class MgEventBridgeComponent implements OnInit {
                 }
             });
         });
+    }
+
+    public downloadEventBridge(payload: any): void {
+        this.spinnerService.show();
+        this.evenBridgeService.downloadEventBridge(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.commomService.downLoadFile(response);
+                this.spinnerService.hide();
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
     }
 
     public deleteAllEventBridge(payload: any): void {

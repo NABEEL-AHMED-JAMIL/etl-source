@@ -51,6 +51,24 @@ export class EvenBridgeService {
 
     public genEventBridgeToken(payload: any): Observable<ApiResponse> {
 		return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eventBridge.json/genEventBridgeToken`, payload);
-	}    
+	}
+
+    public downloadEventBridgeTemplateFile(payload: any): Observable<any> {
+        return this.http.get(`${config.apiBaseUrl}/eventBridge.json/downloadEventBridgeTemplateFile`,
+        {
+            responseType: 'blob'
+        });
+	}
+
+    public downloadEventBridge(payload: any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/eventBridge.json/downloadEventBridge`, payload,
+        {
+            responseType: 'blob'
+        });
+	}
+
+    public uploadEventBridge(payload: any): Observable<ApiResponse> {
+		return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eventBridge.json/uploadEventBridge`, payload);
+	}
     
 }
