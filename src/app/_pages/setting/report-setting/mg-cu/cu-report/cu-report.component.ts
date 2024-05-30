@@ -212,7 +212,7 @@ export class CUReportComponent implements OnInit {
             isXlsx: [this.editPayload.isXlsx?.lookupCode, Validators.required],
             xlsxBridgeId: [this.editPayload.xlsxBridge?.id],
             isCsv: [this.editPayload.isCsv?.lookupCode, Validators.required],
-            csvBridgeId: [this.editPayload.dataBridge?.id],
+            csvBridgeId: [this.editPayload.csvBridge?.id],
             isData: [this.editPayload.isData?.lookupCode, Validators.required],
             dataBridgeId: [this.editPayload.dataBridge?.id],
             isFirstDimension: [this.editPayload.isFirstDimension?.lookupCode, Validators.required],
