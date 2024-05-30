@@ -94,6 +94,11 @@ export class MgEventBridgeComponent implements OnInit {
                 type: 'tag'
             },
             {
+                field: 'totalLinkCount',
+                header: 'Total Linked',
+                type: 'tag'
+            },
+            {
                 field: 'credential',
                 header: 'Credential',
                 type: 'combine',
