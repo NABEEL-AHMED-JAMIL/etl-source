@@ -55,12 +55,11 @@
         <nz-header>
             <div class="app-header">
                 <div nz-row>
-                    <div nz-col nzMd="21">
-                        <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-                            style="margin-left: 15px;" (click)="isCollapsed = !isCollapsed"></span>
-                    </div>
-                    <div nz-col nzMd="3">
-                        <ul nz-menu nzMode="horizontal" style="text-align: end;margin-right: 10px;">
+                    <div nz-col nzMd="24">
+                        <ul nz-menu nzMode="horizontal">
+                            <span class="trigger" nz-icon style="margin-left: 15px;"
+                                [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+                                (click)="isCollapsed = !isCollapsed"></span>&nbsp;
                             <li nz-menu-item (click)="home()" style="font-size: 15px !important;">
                                 <span nz-icon nzType="home" nzTheme="outline"></span> Home
                             </li>

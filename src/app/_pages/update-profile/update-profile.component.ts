@@ -101,11 +101,6 @@ export class UpdateProfileComponent implements OnInit {
                 type: 'tag'
             },
             {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
-            },
-            {
                 
                 field: 'tokenId',
                 header: 'Token Id',

@@ -58,8 +58,8 @@ export class Header2Component implements OnInit, OnDestroy {
                         this.alertService.showError(response.message, ApiCode.ERROR);
                         return;
                     }
-                    this.userNotificationData = this.processNotifications(response.data, NOTIFICATION_TYPE.USER_NOTIFICATION, './assets/notification/mail.png');
-                    this.jobNotificationData = this.processNotifications(response.data, NOTIFICATION_TYPE.JOB_NOTIFICATION, './assets/notification/job.png');
+                    this.userNotificationData = this.processNotifications(response.data, NOTIFICATION_TYPE.USER_NOTIFICATION, '../../../assets/notifaction/mail.png');
+                    this.jobNotificationData = this.processNotifications(response.data, NOTIFICATION_TYPE.JOB_NOTIFICATION, '../../../assets/notifaction/job.png');
                 },
                 (error: any) => {
                     this.spinnerService.hide();

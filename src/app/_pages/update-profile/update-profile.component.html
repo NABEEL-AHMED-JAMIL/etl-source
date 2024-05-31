@@ -1,14 +1,14 @@
 <div class="content">
-    <nz-tabset nzSize="small" nzTabPosition="left">
+    <nz-tabset nzSize="small" nzTabPosition="top">
         <nz-tab [nzTitle]="userTemplate" *ngIf="appUser">
             <ng-template #userTemplate>
                 <span nz-icon nzType="user"></span>
                 User Info
             </ng-template>
-            <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> 
+            <!-- <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> 
                 User Info (IP:{{appUser.ipAddress}})
             </h3>
-            <hr>
+            <hr> -->
             <div class="content">
                 <nz-descriptions nzSize="small">
                     <nz-descriptions-item nzTitle="Name">
@@ -38,8 +38,8 @@
                 <span nz-icon nzType="key"></span>
                 Change Password
             </ng-template>
-            <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> Change Password</h3>
-            <hr>
+            <!-- <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> Change Password</h3>
+            <hr> -->
             <div style="margin-top: 10px;">
                 <form nz-form *ngIf="resetPasswordForm" [nzLayout]="'vertical'" [formGroup]="resetPasswordForm"
                     (ngSubmit)="submitResetPassword()">
@@ -112,7 +112,7 @@
                 <span nz-icon nzType="dropbox"></span>
                 Environment Variable
             </ng-template>
-            <div nz-row [nzGutter]="16">
+            <!-- <div nz-row [nzGutter]="16">
                 <div nz-col nzSpan="20">
                     <h3><span nz-icon nzType="pushpin" 
                         nzTheme="outline"></span> Environment Variable</h3>
@@ -124,7 +124,7 @@
                     </button>
                 </div>
             </div>
-            <hr>
+            <hr> -->
             <div style="margin-top: 10px;">
                 <app-gen-table *ngIf="eVariableTable" [staticTable]="eVariableTable"
                     (actionEventEmitter)="tableEVariableActionReciver($event)">
@@ -136,8 +136,8 @@
                 <span nz-icon nzType="group" nzTheme="outline"></span>
                 My Event Bridge
             </ng-template>
-            <div class="tab-content">
-                <div nz-row [nzGutter]="16">
+            <div class="tab-content" style="margin-top: 10px;">
+                <!-- <div nz-row [nzGutter]="16">
                     <div nz-col nzSpan="20">
                         <h3><span nz-icon nzType="pushpin"
                                 nzTheme="outline"></span> My Event Bridge</h3>
@@ -149,7 +149,7 @@
                         </button>
                     </div>
                 </div>
-                <hr>
+                <hr> -->
                 <div class="content-wrapper">
                     <div class="table-container">
                         <app-gen-table *ngIf="eventBridgeTable" [staticTable]="eventBridgeTable"
