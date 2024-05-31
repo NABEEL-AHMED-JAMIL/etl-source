@@ -602,20 +602,6 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 permission: ['SOURCE_CREDENTAIL_PERMISSION']
             },
             {
-                name: 'Manage Lookups',
-                icon: 'control',
-                link: '/setting/mgLookup',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['LOOKUP_PERMISSION']
-            },
-            {
-                name: 'Manage Template',
-                icon: 'mail',
-                link: '/setting/mgTemplate',
-                roles: ['ROLE_DEV'],
-                permission: ['TEMPLATE_PERMISSION']
-            },
-            {
                 name: 'Manage Event Bridge',
                 icon: 'group',
                 link: '/setting/mgEventBridge',
@@ -628,6 +614,20 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 link: '/setting/mgEvariable',
                 roles: ['ROLE_DEV'],
                 permission: ['EVARIABL_PERMISSION']
+            },
+            {
+                name: 'Manage Lookups',
+                icon: 'control',
+                link: '/setting/mgLookup',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['LOOKUP_PERMISSION']
+            },
+            {
+                name: 'Manage Template',
+                icon: 'mail',
+                link: '/setting/mgTemplate',
+                roles: ['ROLE_DEV'],
+                permission: ['TEMPLATE_PERMISSION']
             }
         ]
     },

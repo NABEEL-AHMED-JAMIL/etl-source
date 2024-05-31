@@ -1,11 +1,11 @@
 <nz-header>
     <div nz-row class="app-header">
-        <div nz-col nzMd="2" style="text-align: center;">
+        <div nz-col nzMd="3" style="text-align: center;">
             <a routerLink="/dashboard" style="color: black;">
-                ETL Source 2023
+                <b>ETL Source 2023</b>
             </a>
         </div>
-        <div nz-col nzMd="17">
+        <div nz-col nzMd="16">
             <ul nz-menu nzMode="horizontal">
                 <li *ngIf="hasPermissionAccess(['SOURCE_JOB_PERMISSION'])" class="hli" nz-menu-item>
                     <a nz-dropdown [nzDropdownMenu]="menu">
@@ -48,6 +48,11 @@
 <!-- source job-menu -->
 <nz-dropdown-menu #menu="nzDropdownMenu">
     <ul nz-menu nzSelectable>
+        <li nz-menu-item>
+            <span nz-icon nzType="heat-map"
+                nzTheme="outline"></span>&nbsp;
+            Jobs Statistic
+        </li>
         <li nz-menu-item>
             <span nz-icon nzType="play-circle"
                 nzTheme="outline"></span>&nbsp; 
