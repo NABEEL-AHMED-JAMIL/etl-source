@@ -39,9 +39,9 @@ export class DynamicSelectComponent extends DynamicFieldComponent implements OnI
                     return;
                 }
                 this.control.selectMenuOptions = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

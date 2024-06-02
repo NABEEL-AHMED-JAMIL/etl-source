@@ -89,10 +89,10 @@ export class BatchComponent implements OnInit {
                         return;
                     }
                     this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                }, (error: any) => {
+                }, (response: any) => {
                     this.spinnerService.hide();
                     this.uploading = false;
-                    this.alertService.showError(error, ApiCode.ERROR);
+                    this.alertService.showError(response.error.message, ApiCode.ERROR);
                 });
         } else if (this.action === 'Role' || this.action === 'Profile' || this.action === 'Permission') {
             let payload = {
@@ -113,10 +113,10 @@ export class BatchComponent implements OnInit {
                             return;
                         }
                         this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (error: any) => {
+                    }, (response: any) => {
                         this.spinnerService.hide();
                         this.uploading = false;
-                        this.alertService.showError(error, ApiCode.ERROR);
+                        this.alertService.showError(response.error.message, ApiCode.ERROR);
                     });
             } else if (this.action === 'Profile') {
                 this.rppService.uploadProfile(formData)
@@ -130,10 +130,10 @@ export class BatchComponent implements OnInit {
                             return;
                         }
                         this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (error: any) => {
+                    }, (response: any) => {
                         this.spinnerService.hide();
                         this.uploading = false;
-                        this.alertService.showError(error, ApiCode.ERROR);
+                        this.alertService.showError(response.error.message, ApiCode.ERROR);
                     });
             } else if (this.action === 'Permission') {
                 this.rppService.uploadPermission(formData)
@@ -147,10 +147,10 @@ export class BatchComponent implements OnInit {
                             return;
                         }
                         this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (error: any) => {
+                    }, (response: any) => {
                         this.spinnerService.hide();
                         this.uploading = false;
-                        this.alertService.showError(error, ApiCode.ERROR);
+                        this.alertService.showError(response.error.message, ApiCode.ERROR);
                     });
             }
         } else if (this.action === 'EVariable') {
@@ -171,10 +171,10 @@ export class BatchComponent implements OnInit {
                         return;
                     }
                     this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                }, (error: any) => {
+                }, (response: any) => {
                     this.spinnerService.hide();
                     this.uploading = false;
-                    this.alertService.showError(error, ApiCode.ERROR);
+                    this.alertService.showError(response.error.message, ApiCode.ERROR);
                 });
         } else if (this.action === 'STT_FORM' || this.action === 'STT_SECTION' || this.action === 'STT_CONTROL') {
             let payload = {
@@ -195,10 +195,10 @@ export class BatchComponent implements OnInit {
                         return;
                     }
                     this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                }, (error: any) => {
+                }, (response: any) => {
                     this.spinnerService.hide();
                     this.uploading = false;
-                    this.alertService.showError(error, ApiCode.ERROR);
+                    this.alertService.showError(response.error.message, ApiCode.ERROR);
                 });
         } else if (this.action === 'EventBridge') {
             let payload = {
@@ -218,10 +218,10 @@ export class BatchComponent implements OnInit {
                         return;
                     }
                     this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                }, (error: any) => {
+                }, (response: any) => {
                     this.spinnerService.hide();
                     this.uploading = false;
-                    this.alertService.showError(error, ApiCode.ERROR);
+                    this.alertService.showError(response.error.message, ApiCode.ERROR);
                 });
         }
     }

@@ -101,9 +101,9 @@ export class SttfLinkSttsComponent implements OnInit {
                     this.formLinkSectionTable = tableData;
                     this.updateEditCache();
                 }
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -142,9 +142,9 @@ export class SttfLinkSttsComponent implements OnInit {
                     return;
                 }
                 this.refresh();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -184,9 +184,9 @@ export class SttfLinkSttsComponent implements OnInit {
                 Object.assign(this.formLinkSectionTable[index], this.editCache[id].data);
                 this.editCache[id].edit = false;
                 this.refresh();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

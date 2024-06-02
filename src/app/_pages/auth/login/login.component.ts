@@ -57,7 +57,8 @@ export class LoginComponent implements OnInit {
         this.spinnerService.show();
         // stop here if form is invalid
         if (this.loginForm.invalid) {
-            Object.values(this.loginForm.controls).forEach(control => {
+            Object.values(this.loginForm.controls)
+            .forEach(control => {
                 if (control.invalid) {
                     control.markAsDirty();
                     control.updateValueAndValidity({ onlySelf: true });
@@ -77,10 +78,10 @@ export class LoginComponent implements OnInit {
                     return;
                 }
                 this.router.navigate([this.returnUrl]);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

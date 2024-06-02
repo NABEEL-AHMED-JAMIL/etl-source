@@ -401,9 +401,9 @@ export class MgRPPComponent implements OnInit {
                     return;
                 }
                 this.roleTable.dataSource = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -931,9 +931,9 @@ export class MgRPPComponent implements OnInit {
             .subscribe((response: any) => {
                 this.commomService.downLoadFile(response);
                 this.spinnerService.hide();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

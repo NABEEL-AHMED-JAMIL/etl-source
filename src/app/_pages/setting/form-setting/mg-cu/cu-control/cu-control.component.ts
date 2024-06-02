@@ -255,9 +255,9 @@ export class CUControlComponent implements OnInit {
                         this.alertService.showError('Lookup not valid', ApiCode.ERROR);
                         return;
                     }
-                }, (error: any) => {
+                }, (response: any) => {
                     this.spinnerService.hide();
-                    this.alertService.showError(error.message, ApiCode.ERROR);
+                    this.alertService.showError(response.error.message, ApiCode.ERROR);
                 });
         }
     }
@@ -294,10 +294,10 @@ export class CUControlComponent implements OnInit {
                 }
                 this.closeDrawer();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -325,10 +325,10 @@ export class CUControlComponent implements OnInit {
                 }
                 this.closeDrawer();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

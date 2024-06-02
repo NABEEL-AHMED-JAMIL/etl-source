@@ -90,9 +90,9 @@ export class SttLinkFormComponent implements OnInit {
                     }
                     this.sttLinkFormLink = sttLinkForm;
                 }
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -131,9 +131,9 @@ export class SttLinkFormComponent implements OnInit {
                     return;
                 }
                 this.refresh();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

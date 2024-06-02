@@ -204,9 +204,9 @@ export class MGFormComponent implements OnInit {
                     return;
                 }
                 this.genFormTable.dataSource = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -228,9 +228,9 @@ export class MGFormComponent implements OnInit {
                     }
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -384,25 +384,25 @@ export class MGFormComponent implements OnInit {
                             username: this.sessionUser.username
                         }
                     })
-                        .pipe(first())
-                        .subscribe((response: any) => {
-                            this.spinnerService.hide();
-                            if (response.status === ApiCode.ERROR) {
-                                this.alertService.showError(response.message, ApiCode.ERROR);
-                                return;
+                    .pipe(first())
+                    .subscribe((response: any) => {
+                        this.spinnerService.hide();
+                        if (response.status === ApiCode.ERROR) {
+                            this.alertService.showError(response.message, ApiCode.ERROR);
+                            return;
+                        }
+                        this.fetchForms({
+                            startDate: this.startDate,
+                            endDate: this.endDate,
+                            sessionUser: {
+                                username: this.sessionUser.username
                             }
-                            this.fetchForms({
-                                startDate: this.startDate,
-                                endDate: this.endDate,
-                                sessionUser: {
-                                    username: this.sessionUser.username
-                                }
-                            });
-                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                        }, (error: any) => {
-                            this.spinnerService.hide();
-                            this.alertService.showError(error, ApiCode.ERROR);
                         });
+                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    }, (response: any) => {
+                        this.spinnerService.hide();
+                        this.alertService.showError(response.error.message, ApiCode.ERROR);
+                    });
                 }
             });
         }

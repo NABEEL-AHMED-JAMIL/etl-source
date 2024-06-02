@@ -185,9 +185,9 @@ export class MGSectionComponent implements OnInit {
                     return;
                 }
                 this.genSectionTable.dataSource = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -209,9 +209,9 @@ export class MGSectionComponent implements OnInit {
                     }
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -380,9 +380,9 @@ export class MGSectionComponent implements OnInit {
                             }
                         });
                         this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (error: any) => {
+                    }, (response: any) => {
                         this.spinnerService.hide();
-                        this.alertService.showError(error, ApiCode.ERROR);
+                        this.alertService.showError(response.error.message, ApiCode.ERROR);
                     });
                 }
             });

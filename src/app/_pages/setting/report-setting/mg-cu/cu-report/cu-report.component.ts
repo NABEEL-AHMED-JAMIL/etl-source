@@ -131,9 +131,9 @@ export class CUReportComponent implements OnInit {
                     return;
                 }
                 this.genForms = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -147,9 +147,9 @@ export class CUReportComponent implements OnInit {
             .subscribe((response: any) => {
                 this.eventBridges = response.data;
                 this.spinnerService.hide();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -166,9 +166,9 @@ export class CUReportComponent implements OnInit {
             .subscribe((response: any) => {
                 this.REPORT_GROUP = response.data;
                 this.spinnerService.hide();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -257,9 +257,9 @@ export class CUReportComponent implements OnInit {
                         this.alertService.showError('Lookup not valid', ApiCode.ERROR);
                         return;
                     }
-                }, (error: any) => {
+                }, (response: any) => {
                     this.spinnerService.hide();
-                    this.alertService.showError(error.message, ApiCode.ERROR);
+                    this.alertService.showError(response.error.message, ApiCode.ERROR);
                 });
         }
     }
