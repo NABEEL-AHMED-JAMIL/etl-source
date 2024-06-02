@@ -29,7 +29,7 @@ export class WebSocketAPI {
                                 _this.onMessageReceived(sdkEvent);
                             });
                         _this.stompClient.reconnect_delay = 2000;
-                    }, this.errorCallBack);
+                    });
                 }
             });
     };
@@ -38,14 +38,6 @@ export class WebSocketAPI {
         if (this.stompClient !== null) {
             this.stompClient.disconnect();
         }
-    }
-
-    // on error, schedule a reconnection attempt
-    public errorCallBack(error: any): void {
-        console.log("errorCallBack -> " + error)
-        setTimeout(() => {
-            this.connect();
-        }, 5000);
     }
 
     public onMessageReceived(message: any): void {

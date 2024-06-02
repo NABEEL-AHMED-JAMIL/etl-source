@@ -105,9 +105,9 @@ export class CUDashboardComponent implements OnInit {
             .subscribe((response: any) => {
                 this.DASHBOARD_GROUP = response.data;
                 this.spinnerService.hide();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

@@ -59,10 +59,10 @@ export class ForgotPassComponent implements OnInit {
                 }
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 this.router.navigate(['/login']);
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

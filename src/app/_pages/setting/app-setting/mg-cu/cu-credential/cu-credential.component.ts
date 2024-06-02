@@ -286,9 +286,9 @@ export class CuCredentialComponent implements OnInit {
                 } else if (response?.type?.lookupCode === CREDENTIAL_TYPE.FTP) {
                     this.editFtp(response?.content);
                 }
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -324,10 +324,10 @@ export class CuCredentialComponent implements OnInit {
                 }
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 this.closeDrawer();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -355,10 +355,10 @@ export class CuCredentialComponent implements OnInit {
                 }
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 this.closeDrawer();
-            }, (error: any) => {
+            }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

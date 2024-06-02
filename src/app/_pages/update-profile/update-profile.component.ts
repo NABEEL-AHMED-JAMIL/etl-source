@@ -223,13 +223,13 @@ export class UpdateProfileComponent implements OnInit {
                         }
                         this.storageService.clear();
                         this.router.navigate(['/login']);
-                    }, (error: any) => {
+                    }, (response: any) => {
                         this.spinnerService.hide();
-                        this.alertService.showError(error.message, ApiCode.ERROR);
+                        this.alertService.showError(response.error.message, ApiCode.ERROR);
                     });
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 

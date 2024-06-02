@@ -91,9 +91,9 @@ export class MgPlayGroundComponent implements OnInit {
                     return;
                 }
                 this.dynamicForms = response.data;
-            }, (error: any) => {
+            }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(error.message, ApiCode.ERROR);
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
@@ -116,9 +116,9 @@ export class MgPlayGroundComponent implements OnInit {
                     }
                     this.selectedForm = response.data; 
                     this.formInit(response.data);
-                }, (error: any) => {
+                }, (response: any) => {
                     this.spinnerService.hide();
-                    this.alertService.showError(error.message, ApiCode.ERROR);
+                    this.alertService.showError(response.error.message, ApiCode.ERROR);
                 });
             this.spinnerService.hide();    
         }

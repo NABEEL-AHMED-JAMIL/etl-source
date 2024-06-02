@@ -35,7 +35,7 @@ export class LookupService {
                 return response.data;
             }),
             catchError((error: any) => {
-                return null;
+                return 'No Lookup Found';
             }));
     }
 
