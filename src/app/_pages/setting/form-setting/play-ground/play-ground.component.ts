@@ -125,10 +125,13 @@ export class MgPlayGroundComponent implements OnInit {
     }
 
     public formInit(formJson: IFrom): void {
+        // main fomr
         this.rootForm = this.fb.group({
             id: new FormControl(formJson.id, Validators.required),
             name: new FormControl(formJson.name, Validators.required),
         });
+        // sections
+        let sections: FormGroup = this.fb.group({});
         formJson.sections.forEach((section: any) => {
             let sectionGroup: FormGroup = this.fb.group({
                 id: new FormControl(section.id, Validators.required),
@@ -154,9 +157,13 @@ export class MgPlayGroundComponent implements OnInit {
                 }
                 fieldsControls.addControl(control.name, field);
             });
-            sectionGroup.addControl("fields", fieldsControls);
-            this.rootForm.addControl("section-" + section.id, sectionGroup);
+            // adding the controle in the section
+            sectionGroup.addControl('fields', fieldsControls);
+            // section adding into main sesction group
+            // form[sections[sesction-1[fileds],sesction-2[fileds],sesction-3[fileds]]]
+            sections.addControl('section-' + section.id, sectionGroup);
         });
+        this.rootForm.addControl('sections', sections);
     }
 
     private controlValidators(controlValidators: IValidation[]): any {
@@ -183,7 +190,7 @@ export class MgPlayGroundComponent implements OnInit {
     }
 
     public getFormSection(sectionId: any): FormGroup {
-        return this.rootForm.get(sectionId) as FormGroup;
+        return this.rootForm.get('sections').get(sectionId) as FormGroup;
     }
 
     public getFormSectionFiledsGroup(sectionId: any): FormGroup {
@@ -197,8 +204,8 @@ export class MgPlayGroundComponent implements OnInit {
      * section-1 => fileds => email
      * section-1 => fileds => username 
      */
-    public getFiledGroup(sectionId: any, control: IControlFiled): FormGroup {
-        return this.getFormSectionFiledsGroup(sectionId).get(control.name) as FormGroup;
+    public getFiledGroup(sectionId: any, controlName: any): FormGroup {
+        return this.getFormSectionFiledsGroup(sectionId).get(controlName) as FormGroup;
     }
 
     public submit(value: any): void {

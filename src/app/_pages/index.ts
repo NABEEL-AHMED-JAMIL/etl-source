@@ -24,6 +24,8 @@ export * from './setting/form-setting/mg-cu/cu-control/cu-control.component';
 export * from './setting/form-setting/mg-control/mg-control.component';
 export * from './setting/form-setting/play-ground/play-ground.component';
 export * from './setting/form-setting/dynamic-payload/dynamic-payload.component';
+// sc-visibility
+export * from './setting/form-setting/sc-visibility/sc-visibility.component';
 // linking
 export * from './setting/form-setting/linking/sttf-link-stt/sttf-link-stt.component';
 export * from './setting/form-setting/linking/sttc-link-stts/sttc-link-stts.component';

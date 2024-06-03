@@ -88,7 +88,8 @@ import {
     ViewReportComponent,
     CUEventBridgeComponent,
     MgEventBridgeComponent,
-    EBUCroseTableComponent
+    EBUCroseTableComponent,
+    SCVisibilityComponent
 } from './_pages';
 
 // dynamic fileds
@@ -165,6 +166,7 @@ export const APP_COMPONENT = [
     CUEventBridgeComponent,
     MgEventBridgeComponent,
     EBUCroseTableComponent,
+    SCVisibilityComponent,
     // dynamic fileds
     DynamicInputComponent,
     DynamicTextAreaComponent,

@@ -271,6 +271,22 @@ export interface IFormLinkSourceTaskType extends IBaseEntity {
     linkSourceTaskTypeId?: any;
 }
 
+export interface ISCVisibility {
+    visible?: IVisible;
+}
+
+export interface IVisible {
+    condition: any;
+    target: ITarget[];
+}
+
+export interface ITarget {
+    section: any;
+    filed: any;
+    visible: any;
+    description: any;
+}
+
 export interface IDashboardSetting extends IBaseEntity {
     name?: any;
     groupType?: any;
@@ -281,6 +297,8 @@ export interface IDashboardSetting extends IBaseEntity {
 }
 
 export interface IReportSetting extends IBaseEntity {
+    dateFilter?: any;
+    fetchRate?: any;
     name?: any;
     groupType?: any;
     description?: any;
@@ -649,6 +667,7 @@ export const SETTING_SIDEBAR: SideBar[] = [
 ];
 
 export const LOOKUP_TYPE = {
+    FETCH_LIMIT: 'FETCH_LIMIT',
     UI_LOOKUP: 'UI_LOOKUP',
     APPLICATION_STATUS: 'APPLICATION_STATUS',
     EMAIL_TEMPLATE: 'EMAIL_TEMPLATE',

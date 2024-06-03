@@ -44,7 +44,7 @@
 <form *ngIf="rootForm" nz-form [nzLayout]="'vertical'"
     [formGroup]="rootForm" ngNativeValidate
     (ngSubmit)="submit(rootForm.value)">
-    <nz-collapse>
+    <nz-collapse formGroupName="sections">
         <nz-collapse-panel *ngFor="let section of selectedForm.sections;" [id]="'section-' + section.id"
             [nzHeader]="section.name" [formGroupName]="'section-' + section.id">
             <div nz-row [nzGutter]="16">
@@ -53,22 +53,22 @@
                         style="margin-bottom: 8px;">
                         <!-- input -->
                         <dynamic-input *ngIf="commomService.isSupportedInputControl(control)"
-                            [field]="getFiledGroup('section-' + section.id, control)" [section]="section"
-                            [control]="control">
+                            [field]="getFiledGroup('section-' + section.id, control?.name)"
+                            [section]="section" [control]="control">
                         </dynamic-input>
                         <!-- textarea -->
                         <dynamic-textarea *ngIf="commomService.isSupportedTextControl(control)"
-                            [field]="getFiledGroup('section-' + section.id, control)" [section]="section"
-                            [control]="control">
+                            [field]="getFiledGroup('section-' + section.id, control?.name)"
+                            [section]="section" [control]="control">
                         </dynamic-textarea>
                         <!-- selection & multi selection -->
                         <dynamic-select *ngIf="commomService.isSupportedSelectControl(control)"
-                            [field]="getFiledGroup('section-' + section.id, control)" [section]="section"
-                            [control]="control">
+                            [field]="getFiledGroup('section-' + section.id, control?.name)"
+                            [section]="section" [control]="control">
                         </dynamic-select>
                         <dynamic-datepicker *ngIf="commomService.isSupportedDatePickerControl(control)"
-                            [field]="getFiledGroup('section-' + section.id, control)" [section]="section"
-                            [control]="control">
+                            [field]="getFiledGroup('section-' + section.id, control?.name)"
+                            [section]="section" [control]="control">
                         </dynamic-datepicker>
                     </div>
                 </ng-container>
@@ -79,7 +79,8 @@
     <div nz-row [nzGutter]="16">
         <div nz-col [nzSpan]="24" class="search-area">
             <button nz-button type="reset">Clear</button>
-            <button nz-button [nzType]="'primary'" [type]="'submit'" [disabled]="!rootForm.valid" style="float: right;">
+            <button nz-button [nzType]="'primary'" [type]="'submit'" 
+                [disabled]="!rootForm.valid" style="float: right;">
                 Submit
             </button>
         </div>
