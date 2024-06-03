@@ -25,7 +25,7 @@ import { first } from 'rxjs';
 })
 export class DynamicPayloadQueryComponent implements OnInit {
 
-    public switchValue:boolean = true;
+    public switchValue:boolean = false;
     public visible:boolean = false;
     public loading:boolean = false;
     public dynamicString: any;

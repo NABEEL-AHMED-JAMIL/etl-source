@@ -46,6 +46,7 @@ export class CUFormComponent implements OnInit {
     public genFormForm: FormGroup;
     public sessionUser: AuthResponse;
 
+    public SERVICE_FORM = FORM_TYPE.SERVICE_FORM;
     public APPLICATION_STATUS: ILookups;
     public FORM_TYPE: ILookups;
     public HOME_PAGE: ILookups;

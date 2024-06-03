@@ -18,7 +18,9 @@ import {
     IStaticTable,
     ReportSettingService
 } from 'src/app/_shared';
-import { CUReportComponent } from '../mg-cu/cu-report/cu-report.component';
+import {
+    CUReportComponent
+} from '../mg-cu/cu-report/cu-report.component';
 
 
 @Component({
@@ -75,6 +77,16 @@ export class MgReportComponent implements OnInit {
             {
                 field: 'payloadRef',
                 header: 'Payload Ref',
+                type: 'tag'
+            },
+            {
+                field: 'dateFilter',
+                header: 'Is Filter',
+                type: 'tag'
+            },
+            {
+                field: 'fetchRate',
+                header: 'Rate Limit',
                 type: 'tag'
             },
             {

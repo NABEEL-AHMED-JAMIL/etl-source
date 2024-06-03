@@ -410,7 +410,7 @@ export class MGFormComponent implements OnInit {
 
     public openCuForm(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'large',
+            nzSize: 'default',
             nzTitle: actionType === ActionType.ADD ? 'Add Form' : 'Edit Form',
             nzFooter: 'Once Form Created, Form Type Will Not Change',
             nzPlacement: 'right',

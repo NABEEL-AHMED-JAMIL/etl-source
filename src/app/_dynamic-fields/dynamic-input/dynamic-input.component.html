@@ -11,7 +11,7 @@
             [placeholder]="control.placeHolder"/>
     </nz-form-control>
     <div style="color: red !important;">
-        <span *ngIf="field.get('value')!.dirty">
+        <span *ngIf="field.get('value').dirty && field.get('value').invalid">
             {{ getErrorMessage(control)}}
         </span>
     </div>

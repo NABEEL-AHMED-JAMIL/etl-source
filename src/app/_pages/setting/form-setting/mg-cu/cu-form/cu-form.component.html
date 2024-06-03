@@ -1,6 +1,6 @@
 <form nz-form [nzLayout]="'vertical'" [formGroup]="genFormForm" (ngSubmit)="onSubmit()">
     <div nz-row [nzGutter]="16">
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="24">
             <nz-form-item>
                 <nz-form-label nzRequired>Form Name</nz-form-label>
                 <nz-form-control nzErrorTip="Form Name Required">
@@ -8,7 +8,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="12" *ngIf="FORM_TYPE">
+        <div nz-col nzSpan="24" *ngIf="FORM_TYPE">
             <nz-form-item>
                 <nz-form-label nzRequired>Form Type</nz-form-label>
                 <nz-form-control nzErrorTip="Form Type Required">
@@ -20,27 +20,33 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="12" *ngIf="HOME_PAGE">
+        <div nz-col nzSpan="12"
+            *ngIf="HOME_PAGE && genForm['formType'].value === SERVICE_FORM">
             <nz-form-item>
                 <nz-form-label>Home Page</nz-form-label>
                 <nz-form-control>
-                    <nz-select nzShowSearch nzAllowClear formControlName="homePage" nzPlaceHolder="Select Home Page">
+                    <nz-select nzShowSearch nzAllowClear
+                        formControlName="homePage"
+                        nzPlaceHolder="Select Home Page">
                         <nz-option *ngFor="let lookupChildren of HOME_PAGE?.SUB_LOOKUP_DATA"
-                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupType">
+                            [nzLabel]="lookupChildren.lookupValue"
+                            [nzValue]="lookupChildren.lookupType">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col [nzSpan]="actionType !== editAction ? 12 : 6">
+        <div nz-col nzSpan="12"
+            *ngIf="HOME_PAGE && genForm['formType'].value === SERVICE_FORM">
             <nz-form-item>
                 <nz-form-label>ServiceId</nz-form-label>
                 <nz-form-control>
-                    <input nz-input formControlName="serviceId" placeholder="Enter ServiceId" />
+                    <input nz-input formControlName="serviceId"
+                        placeholder="Enter ServiceId" />
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="6" *ngIf="actionType === editAction">
+        <div nz-col nzSpan="24" *ngIf="actionType === editAction">
             <nz-form-item>
                 <nz-form-label nzRequired>Form Status</nz-form-label>
                 <nz-form-control nzErrorTip="Form Status Required">

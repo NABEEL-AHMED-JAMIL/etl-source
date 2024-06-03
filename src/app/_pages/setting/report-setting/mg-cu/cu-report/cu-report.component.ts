@@ -61,6 +61,7 @@ export class CUReportComponent implements OnInit {
     public REPORT_GROUP: ILookups;
     public PAYLOAD_REF: ILookups;
     public UI_LOOKUP: ILookups;
+    public FETCH_LIMIT: ILookups;
 
     constructor(
         private fb: FormBuilder,
@@ -87,6 +88,11 @@ export class CUReportComponent implements OnInit {
             lookupType: LOOKUP_TYPE.UI_LOOKUP
         }).subscribe((data) => {
             this.UI_LOOKUP = data;
+        });
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.FETCH_LIMIT
+        }).subscribe((data) => {
+            this.FETCH_LIMIT = data;
         });
         this.lookupService.fetchLookupDataByLookupType({
             lookupType: LOOKUP_TYPE.PAYLOAD_REF
@@ -175,6 +181,8 @@ export class CUReportComponent implements OnInit {
     public addReportSettingForm(): any {
         this.spinnerService.show();
         this.reportSettingForm = this.fb.group({
+            dateFilter:[0, Validators.required],
+            fetchRate:[0, Validators.required],
             name: ['', Validators.required],
             groupType: ['', Validators.required],
             description: ['', Validators.required],
@@ -203,6 +211,8 @@ export class CUReportComponent implements OnInit {
         this.spinnerService.show();
         this.reportSettingForm = this.fb.group({
             id: [this.editPayload.id, Validators.required],
+            dateFilter:[this.editPayload.dateFilter?.lookupCode, Validators.required],
+            fetchRate:[this.editPayload.fetchRate?.lookupCode, Validators.required],
             name: [this.editPayload.name, Validators.required],
             groupType: [this.editPayload.groupType?.lookupType, Validators.required],
             description: [this.editPayload.description, Validators.required],
