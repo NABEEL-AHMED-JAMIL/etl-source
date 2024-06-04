@@ -16,6 +16,14 @@
     border-color: var(--primary);
 }
 
+.th-centrail {
+    text-align: center;
+}
+
+.td-centrail {
+    text-align: center;
+}
+
 .ant-btn-primary:hover {
     color: #fff;
     background-color: var(--primary);

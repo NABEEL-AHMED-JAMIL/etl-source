@@ -38,8 +38,8 @@
     <nz-tabset [nzTabBarExtraContent]="refreshTemplate">
         <nz-tab [nzTitle]="linkSection">
             <ng-template #linkSection>
-                <span nz-icon nzType="link"
-                    nzTheme="outline"></span>Section Link With Control
+                <span nz-icon nzType="link" nzTheme="outline"></span>
+                    Section Link With Control
             </ng-template>
             <div class="content"
                 style="padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
@@ -84,44 +84,49 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th nzWidth="10%" style="text-align: center;">Control Order</th>
-                            <th nzWidth="10%" style="text-align: center;">Control With</th>
-                            <th nzWidth="10%" style="text-align: center;">Action</th>
+                            <th nzWidth="10%" class="th-centrail">
+                                Control Order
+                            </th>
+                            <th nzWidth="10%" class="th-centrail">
+                                Control With
+                            </th>
+                            <th nzWidth="10%" class="th-centrail">
+                                Action
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of dynamicTable.data | searchdata: searchDetails;let i = index;">
                             <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
-                                <td>{{data.sectionName}} [{{data.description}}]</td>
-                                <td style="text-align: center;">{{data.controlOrder}}</td>
-                                <td style="text-align: center;">{{data.fieldWidth}}</td>
-                                <td style="text-align: center;">
+                                <td>
+                                    {{data.sectionName}} [{{data.description}}]
+                                </td>
+                                <td class="th-centrail">
+                                    {{data.controlOrder}}
+                                </td>
+                                <td class="th-centrail">
+                                    {{data.fieldWidth}}
+                                </td>
+                                <td class="th-centrail">
                                     <a (click)="startEdit(data.id)">
                                         <span nz-icon nzType="edit" nzTheme="outline"
                                             nz-tooltip nzTooltipTitle="Edit"></span>
-                                    </a>&nbsp;
-                                    <a (click)="startEdit(data.id)">
-                                        <span nz-icon nzType="eye-invisible" nzTheme="outline"
-                                            nz-tooltip nzTooltipTitle="Hide/Show"></span>
-                                        
-                                    </a>&nbsp;
-                                    <a (click)="startEdit(data.id)">
-                                        <span nz-icon nzType="disconnect" nzTheme="outline"
-                                            nz-tooltip nzTooltipTitle="Enable/Disabled"></span>
                                     </a>
                                 </td>
                             </ng-container>
                             <ng-template #editTemplate>
-                                <td>{{data.sectionName}} [{{data.description}}]</td>
-                                <td style="text-align: center;">
+                                <td>
+                                    {{data.sectionName}} [{{data.description}}]
+                                </td>
+                                <td class="td-centrail">
                                     <input type="number" [nzSize]="'small'" nz-input
                                         [(ngModel)]="editCache[data.id].data.controlOrder" />
                                 </td>
-                                <td style="text-align: center;">
+                                <td class="td-centrail">
                                     <input nz-input min="0" max="24"  type="number" [nzSize]="'small'"
                                         [(ngModel)]="editCache[data.id].data.fieldWidth"/>
                                 </td>
-                                <td style="text-align: center;">
+                                <td class="td-centrail">
                                     <a (click)="saveEdit(data.id)" class="save">Save</a>&nbsp;
                                     <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?"
                                         (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>

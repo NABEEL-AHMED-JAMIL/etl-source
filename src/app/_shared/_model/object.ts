@@ -275,6 +275,10 @@ export interface ISCVisibility {
     visible?: IVisible;
 }
 
+export interface ISCEnableability {
+    visible?: IVisible;
+}
+
 export interface IVisible {
     condition: any;
     target: ITarget[];
@@ -283,7 +287,8 @@ export interface IVisible {
 export interface ITarget {
     section: any;
     filed: any;
-    visible: any;
+    visible?: any; // if object ISCVisibility
+    enabled?: any; // if object ISCEnableability
     description: any;
 }
 
