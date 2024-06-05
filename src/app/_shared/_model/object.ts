@@ -275,6 +275,10 @@ export interface ISCVisibility {
     visible?: IVisible;
 }
 
+export interface ISCEnableability {
+    visible?: IVisible;
+}
+
 export interface IVisible {
     condition: any;
     target: ITarget[];
@@ -283,7 +287,8 @@ export interface IVisible {
 export interface ITarget {
     section: any;
     filed: any;
-    visible: any;
+    visible?: any; // if object ISCVisibility
+    enabled?: any; // if object ISCEnableability
     description: any;
 }
 
@@ -402,7 +407,8 @@ export enum ActionType {
     LINK_SECTION = 15,
     LINK_CONTROL = 16,
     LINK_EVENT_BRIDGE = 17,
-    GEN_TOKEN = 18
+    GEN_TOKEN = 18,
+    ELEMENT_CONTROL = 19
 }
 
 export enum IProfileSetting {
@@ -683,6 +689,11 @@ export const LOOKUP_TYPE = {
     EVENT_BRIDGE_TYPE: 'EVENT_BRIDGE_TYPE'
 }
 
+export const enum UI_LOOKUP {
+    FALSE = 0,
+    TRUE = 1
+} 
+
 export const enum APPLICATION_STATUS {
     INACTIVE, ACTIVE, DELETE
 }
@@ -735,7 +746,9 @@ export const enum TASK_TYPE {
     API = 0,
     AWS_SQS = 1,
     WEB_SOCKET = 2,
-    KAFKA = 3
+    KAFKA = 3,
+    AWS_S3 = 4,
+    AWS_LAMBDA = 5
 }
 
 export const enum REQUEST_METHOD {

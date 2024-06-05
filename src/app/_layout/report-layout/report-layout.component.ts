@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 import {
     ApiCode,
     AuthenticationService,
-    AuthResponse,
     DashboardService,
     ReportSettingService,
 } from '../../_shared';
@@ -13,6 +12,7 @@ import {
     SpinnerService
 } from 'src/app/_helpers';
 import { first } from 'rxjs';
+import { RootLayout } from '../root-layout';
 
 
 @Component({
@@ -20,7 +20,7 @@ import { first } from 'rxjs';
     templateUrl: './report-layout.component.html',
     styleUrls: ['./report-layout.component.css']
 })
-export class ReportLayoutComponent implements OnInit {
+export class ReportLayoutComponent extends RootLayout implements OnInit {
 
     public isCollapsed = false;
     public displayMainContent = false;
@@ -28,21 +28,15 @@ export class ReportLayoutComponent implements OnInit {
     public reportList: any[];
     public dashboardList: any[];
 
-    public userPermission: any;
-    public sessionUser: AuthResponse;
-
     constructor(
-        private router: Router,
-        private location: Location,
+        router: Router,
+        location: Location,
+        authenticationService: AuthenticationService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private reportSettingService: ReportSettingService,
-        private dashboardService: DashboardService,
-        private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        private dashboardService: DashboardService) {
+        super(router, location, authenticationService);
     }
 
     ngOnInit(): void {
@@ -109,14 +103,6 @@ export class ReportLayoutComponent implements OnInit {
 
     public getDashboardValue(key: any): any {
         return this.dashboardList[key];
-    }
-
-    public back(): any {
-        this.location.back();
-    }
-
-    public home(): any {
-        this.router.navigate(['/dashboard']);
     }
 
 }

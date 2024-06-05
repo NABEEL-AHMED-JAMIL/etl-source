@@ -1,11 +1,14 @@
 <nz-layout class="app-layout">
     <nz-sider class="menu-sidebar"         
-        [nzWidth]="isCollapsed ? '80px' : '200px'" nzBreakpoint="sm" 
-        nzCollapsible [(nzCollapsed)]="isCollapsed"
-        [nzTrigger]="null" [style.max-width.px]="300">
+        [nzWidth]="isCollapsed ? '80px' : '200px'"
+        [(nzCollapsed)]="isCollapsed"
+        [style.max-width.px]="300"
+        nzBreakpoint="sm" nzCollapsible>
         <div class="sidebar-logo">
             <a routerLink="/setting">
-                <h1 style="margin: 0 0 0 00px;">{{title}}</h1>
+                <h1 style="margin: 0 0 0 00px;">
+                    {{title}}
+                </h1>
             </a>
         </div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
@@ -28,21 +31,24 @@
     </nz-sider>
     <nz-layout>
         <nz-header>
-            <div class="app-header">
-                <div nz-row>
-                    <div nz-col nzMd="24">
-                        <ul nz-menu nzMode="horizontal">
-                            <span class="trigger" nz-icon style="margin-left: 15px;"
-                                [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-                                (click)="isCollapsed = !isCollapsed"></span>&nbsp;
-                            <li nz-menu-item (click)="home()" style="font-size: 15px !important;">
-                                <span nz-icon nzType="home" nzTheme="outline"></span> Home
-                            </li>
-                            <li nz-menu-item (click)="back()" style="font-size: 15px !important;">
-                                <span nz-icon nzType="rollback" nzTheme="outline"></span> Back
-                            </li>
-                        </ul>
-                    </div>
+            <div class="app-header" nz-row>
+                <div nz-col nzMd="20">
+                    <ul nz-menu nzMode="horizontal">
+                        <span class="trigger" nz-icon style="margin-left: 15px;"
+                            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+                            (click)="isCollapsed = !isCollapsed"></span>&nbsp;
+                        <li nz-menu-item (click)="home()" style="font-size: 15px !important;">
+                            <span nz-icon nzType="home" nzTheme="outline"></span> Home
+                        </li>
+                        <li nz-menu-item (click)="back()" style="font-size: 15px !important;">
+                            <span nz-icon nzType="rollback" nzTheme="outline"></span> Back
+                        </li>
+                    </ul>
+                </div>
+                <div nz-col nzMd="4" style="text-align: end;padding-right: 20px">
+                    <nz-avatar nzIcon="user" nz-dropdown [nzDropdownMenu]="userAction"
+                        nzSrc="{{'./assets/avatar/' + sessionUser.profileImage }}">
+                    </nz-avatar>
                 </div>
             </div>
         </nz-header>
@@ -52,3 +58,7 @@
         </nz-content>
     </nz-layout>
 </nz-layout>
+<!-- user -->
+<nz-dropdown-menu #userAction="nzDropdownMenu">
+    <app-user-action [sessionUser]="sessionUser"></app-user-action>
+</nz-dropdown-menu>

@@ -29,14 +29,14 @@
                 </nz-avatar>
             </nz-badge>
             <nz-avatar nzIcon="user" nz-dropdown [nzDropdownMenu]="userAction"
-                nzSrc="{{'./assets/avatar/' + currentUser.profileImage }}">
+                nzSrc="{{'./assets/avatar/' + sessionUser.profileImage }}">
             </nz-avatar>
         </div>
     </div>
 </nz-header>
 <!-- user -->
 <nz-dropdown-menu #userAction="nzDropdownMenu">
-    <app-user-action [currentUser]="currentUser"></app-user-action>
+    <app-user-action [sessionUser]="sessionUser"></app-user-action>
 </nz-dropdown-menu>
 <!-- notifaction -->
 <nz-dropdown-menu #bellAction="nzDropdownMenu">

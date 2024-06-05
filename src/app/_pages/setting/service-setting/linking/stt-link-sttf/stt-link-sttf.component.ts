@@ -80,7 +80,7 @@ export class SttLinkFormComponent implements OnInit {
                     while (index < linkData.length) {
                         let item: TransferItem = {
                             title: linkData[index].formName,
-                            description: linkData[index].formType,
+                            description: linkData[index].serviceId,
                             direction: linkData[index].linkStatus ? 'right' : 'left',
                             key: linkData[index].id,
                             payload: linkData[index]

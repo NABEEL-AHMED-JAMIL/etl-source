@@ -30,8 +30,7 @@
     <nz-tabset [nzTabBarExtraContent]="refreshTemplate">
         <nz-tab [nzTitle]="linkControl">
             <ng-template #linkControl>
-                <span nz-icon nzType="link"
-                    nzTheme="outline"></span>
+                <span nz-icon nzType="link" nzTheme="outline"></span>
                     Form Link With Section
             </ng-template>
             <div class="content"
@@ -48,8 +47,8 @@
         </nz-tab>
         <nz-tab [nzTitle]="orderLinkSection">
             <ng-template #orderLinkSection>
-                <span nz-icon nzType="ungroup" 
-                    nzTheme="outline"></span>Section Order In Form
+                <span nz-icon nzType="ungroup" nzTheme="outline"></span>
+                Section Order In Form
             </ng-template>
             <div class="content"
                 style="padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
@@ -76,27 +75,39 @@
                     class="table-setting">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th nzWidth="10%" 
-                                style="text-align: center;">Section Order</th>
-                            <th nzWidth="10%"
-                                style="text-align: center;">Action</th>
+                            <th>
+                                Name
+                            </th>
+                            <th nzWidth="10%" class="th-centrail">
+                                Section Order
+                            </th>
+                            <th nzWidth="10%" class="th-centrail">
+                                Action
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of dynamicTable.data | searchdata: searchDetails;let i = index;">
                             <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
-                                <td>{{data.formName}} [{{commomService.getDataFromObjectV2(data.formType)}}]</td>
-                                <td style="text-align: center;">{{data.sectionOrder}}</td>
-                                <td style="text-align: center;"><a (click)="startEdit(data.id)">Edit</a></td>
+                                <td>
+                                    {{data.formName}} [{{commomService.getDataFromObjectV2(data.formType)}}]
+                                </td>
+                                <td class="td-centrail">
+                                    {{data.sectionOrder}}
+                                </td>
+                                <td class="td-centrail">
+                                    <a (click)="startEdit(data.id)">Edit</a>
+                                </td>
                             </ng-container>
                             <ng-template #editTemplate>
-                                <td>{{data.formName}} [{{commomService.getDataFromObjectV2(data.formType)}}]</td>
-                                <td style="text-align: center;">
+                                <td>
+                                    {{data.formName}} [{{commomService.getDataFromObjectV2(data.formType)}}]
+                                </td>
+                                <td class="td-centrail">
                                     <input type="number" [nzSize]="'small'" nz-input
                                         [(ngModel)]="editCache[data.id].data.sectionOrder" />
                                 </td>
-                                <td style="text-align: center;">
+                                <td class="td-centrails">
                                     <a (click)="saveEdit(data.id)" class="save">Save</a>&nbsp;
                                     <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?"
                                         (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>

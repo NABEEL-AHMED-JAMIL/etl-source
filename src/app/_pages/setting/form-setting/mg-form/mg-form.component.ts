@@ -10,6 +10,7 @@ import {
 import {
     BatchComponent,
     CUFormComponent,
+    SCConditionPatternComponent,
     SttfLinkSttComponent,
     SttfLinkSttsComponent
 } from 'src/app/_pages';
@@ -111,6 +112,11 @@ export class MGFormComponent implements OnInit {
                 type: 'tag'
             },
             {
+                field: 'dateCreated',
+                header: 'Created',
+                type: 'date'
+            },
+            {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
@@ -162,6 +168,11 @@ export class MGFormComponent implements OnInit {
                 type: 'link',
                 title: 'Link With Section',
                 action: ActionType.LINK_SECTION
+            },
+            {
+                type: 'control',
+                title: 'Element Control',
+                action: ActionType.ELEMENT_CONTROL
             }
         ]
     };
@@ -298,6 +309,27 @@ export class MGFormComponent implements OnInit {
                     }
                 });
             });
+        } else if (ActionType.ELEMENT_CONTROL === payload.action) {
+            const drawerRef = this.drawerService.create({
+                nzTitle: '[Form] => [Element Control]',
+                nzSize: 'large',
+                nzWidth: 800,
+                nzPlacement: 'right',
+                nzMaskClosable: false,
+                nzContent: SCConditionPatternComponent,
+                nzContentParams: {
+                    editPayload: payload?.data
+                }
+            });
+            drawerRef.afterClose.subscribe(data => {
+                this.fetchForms({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+            });
         }
     }
 
@@ -412,7 +444,7 @@ export class MGFormComponent implements OnInit {
         const drawerRef = this.drawerService.create({
             nzSize: 'default',
             nzTitle: actionType === ActionType.ADD ? 'Add Form' : 'Edit Form',
-            nzFooter: 'Once Form Created, Form Type Will Not Change',
+            nzFooter: 'Note:- Once Form Created, Form Type Will Not Change',
             nzPlacement: 'right',
             nzMaskClosable: false,
             nzContent: CUFormComponent,

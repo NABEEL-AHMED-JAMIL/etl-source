@@ -15,7 +15,7 @@ import { AlertService, SpinnerService, CommomService } from 'src/app/_helpers';
 export class Header2Component implements OnInit, OnDestroy {
 
     public title: string = 'ETL 2023';
-    public currentUser: AuthResponse;
+    public sessionUser: AuthResponse;
     public userPermission: any;
 
     public jobNotificationData: INotification[] = [];
@@ -28,22 +28,20 @@ export class Header2Component implements OnInit, OnDestroy {
         private webSocketAPI: WebSocketAPI,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
-        public commomService: CommomService
-    ) {
-        this.authenticationService.currentUser.subscribe(currentUser => {
-            this.currentUser = currentUser;
-            if (this.currentUser) {
-                this.userPermission = currentUser.profile.permission;
-            }
-        });
-
-        this.webSocketAPI.connect();
-        this.onNewValueReceive();
+        public commomService: CommomService) {
+            this.authenticationService.currentUser.subscribe(currentUser => {
+                this.sessionUser = currentUser;
+                if (this.sessionUser) {
+                    this.userPermission = currentUser.profile.permission;
+                }
+            });
+            this.webSocketAPI.connect();
+            this.onNewValueReceive();
     }
 
     ngOnInit(): void {
-        if (this.currentUser?.username) {
-            this.fetchAllNotifications(this.currentUser.username);
+        if (this.sessionUser?.username) {
+            this.fetchAllNotifications(this.sessionUser.username);
         }
     }
 
@@ -58,8 +56,10 @@ export class Header2Component implements OnInit, OnDestroy {
                         this.alertService.showError(response.message, ApiCode.ERROR);
                         return;
                     }
-                    this.userNotificationData = this.processNotifications(response.data, NOTIFICATION_TYPE.USER_NOTIFICATION, '../../../assets/notifaction/mail.png');
-                    this.jobNotificationData = this.processNotifications(response.data, NOTIFICATION_TYPE.JOB_NOTIFICATION, '../../../assets/notifaction/job.png');
+                    this.userNotificationData = this.processNotifications(response.data,
+                        NOTIFICATION_TYPE.USER_NOTIFICATION, '../../../assets/notifaction/mail.png');
+                    this.jobNotificationData = this.processNotifications(response.data,
+                        NOTIFICATION_TYPE.JOB_NOTIFICATION, '../../../assets/notifaction/job.png');
                 },
                 (response: any) => {
                     this.spinnerService.hide();
@@ -68,7 +68,8 @@ export class Header2Component implements OnInit, OnDestroy {
             );
     }
 
-    private processNotifications(data: any[], type: NOTIFICATION_TYPE, avatarPath: string): INotification[] {
+    private processNotifications(data: any[], 
+        type: NOTIFICATION_TYPE, avatarPath: string): INotification[] {
         return data
             .filter(payload => payload?.notifyType.lookupCode === type)
             .map(payload => ({
@@ -111,8 +112,7 @@ export class Header2Component implements OnInit, OnDestroy {
                 message: payload.body.message,
             },
             avatar: payload.notifyType.lookupCode === NOTIFICATION_TYPE.USER_NOTIFICATION 
-                ? './assets/notification/mail.png' 
-                : './assets/notification/job.png',
+                ? './assets/notification/mail.png' : './assets/notification/job.png',
             status: payload.messageStatus.lookupCode === 0 ? 'success' : 'yellow',
             notifyType: payload.notifyType
         };

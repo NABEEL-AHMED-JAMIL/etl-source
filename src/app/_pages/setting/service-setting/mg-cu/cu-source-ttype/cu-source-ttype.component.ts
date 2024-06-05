@@ -43,6 +43,12 @@ export class CuSourceTTypeComponent implements OnInit {
     public editPayload: ISTT;
 
     public editAction = ActionType.EDIT;
+    public API = TASK_TYPE.API;
+    public AWS_SQS = TASK_TYPE.AWS_SQS;
+    public WEB_SOCKET = TASK_TYPE.WEB_SOCKET;
+    public KAFKA = TASK_TYPE.KAFKA;
+    public AWS_S3 = TASK_TYPE.AWS_S3;
+    public AWS_LAMBDA = TASK_TYPE.AWS_LAMBDA;
 
     public selectedTaskType: any = 3;
     public topicName: any = '%s';
@@ -140,7 +146,11 @@ export class CuSourceTTypeComponent implements OnInit {
             sessionUser: {
                 username: this.sessionUser.username
             },
-            types: [CREDENTIAL_TYPE.BASIC_AUTH, CREDENTIAL_TYPE.AUTHORIZATION_CODE]
+            types: [
+                CREDENTIAL_TYPE.BASIC_AUTH,
+                CREDENTIAL_TYPE.AUTHORIZATION_CODE,
+                CREDENTIAL_TYPE.AWS_AUTH
+            ]
         }
         this.credentailService.fetchAllCredentialByType(payload)
             .pipe(first())

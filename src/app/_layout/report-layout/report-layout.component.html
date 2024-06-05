@@ -1,52 +1,57 @@
 <nz-layout class="app-layout">
-    <nz-sider class="menu-sidebar" [nzWidth]="isCollapsed ? '85px' : '240px'"
-        [(nzCollapsed)]="isCollapsed" [nzTrigger]="null"
-        nzBreakpoint="sm" nzCollapsible
-        [style.max-width.px]="300">
+    <nz-sider class="menu-sidebar"
+        [nzWidth]="isCollapsed ? '85px' : '240px'"
+        [(nzCollapsed)]="isCollapsed"
+        [style.max-width.px]="300"
+        nzBreakpoint="sm" nzCollapsible>
         <div class="sidebar-logo">
             <a routerLink="/setting">
                 <h1 style="margin: 0 0 0 00px;">{{title}}</h1>
             </a>
         </div>
         <!-- hr -->
-        <ul *ngIf="reportList && dashboardList" nz-menu nzTheme="dark" nzMode="inline">
+        <ul nz-menu nzTheme="dark" nzMode="inline">
             <!-- Dashboard -->
-            <hr style="margin-top: 0px;">
-            <h3 style="color: white;text-align: center;">Dashboard</h3>
-            <hr style="margin-top: 0px;">
-            <ng-container *ngFor="let title of getDashboardKeys()">
-                <li nz-submenu nzTitle="{{title}}" nzIcon="pie-chart">
-                    <ul *ngIf="getDashboardValue(title)">
-                        <ng-container *ngFor="let dashboard of getDashboardValue(title)">
-                            <li nz-menu-item nzMatchRouter style="padding-left: 25px !important;">
-                                <a [routerLink]="['/report/viewDashboard']" 
-                                   [queryParams]="{ dashboardId: dashboard.id }">
-                                    <span nz-icon nzType="line-chart" nzTheme="outline"></span>
-                                    &nbsp;{{dashboard.name}}    
-                                </a>
-                            </li>
-                        </ng-container>
-                    </ul>
-                </li>
+            <ng-container *ngIf="dashboardList && hasPermissionAccess(['VIEW_DASHBOARD_PERMISSION'])">
+                <hr style="margin-top: 0px;">
+                <h3 style="color: white;text-align: center;">Dashboard</h3>
+                <hr style="margin-top: 0px;">
+                <ng-container *ngFor="let title of getDashboardKeys()">
+                    <li nz-submenu nzTitle="{{title}}" nzIcon="pie-chart">
+                        <ul *ngIf="getDashboardValue(title)">
+                            <ng-container *ngFor="let dashboard of getDashboardValue(title)">
+                                <li nz-menu-item nzMatchRouter style="padding-left: 25px !important;">
+                                    <a [routerLink]="['/report/viewDashboard']" 
+                                       [queryParams]="{ dashboardId: dashboard.id }">
+                                        <span nz-icon nzType="line-chart" nzTheme="outline"></span>
+                                        &nbsp;{{dashboard.name}}    
+                                    </a>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </li>
+                </ng-container>
             </ng-container>
             <!-- Report -->
-            <hr style="margin-top: 0px;">
-            <h3 style="color: white;text-align: center;">Report</h3>
-            <hr style="margin-top: 0px;">
-            <ng-container *ngFor="let title of getReportKeys()">
-                <li nz-submenu nzTitle="{{title}}" nzIcon="paper-clip">
-                    <ul *ngIf="getReportValue(title)">
-                        <ng-container *ngFor="let report of getReportValue(title)">
-                            <li nz-menu-item nzMatchRouter style="padding-left: 25px !important;">
-                                <a [routerLink]="['/report/viewReport']"
-                                    [queryParams]="{ reportId: report.id }">
-                                    <span nz-icon nzType="file-text" nzTheme="outline"></span>
-                                    &nbsp;{{report.name}}
-                                </a>
-                            </li>
-                        </ng-container>
-                    </ul>
-                </li>
+            <ng-container *ngIf="reportList && hasPermissionAccess(['VIEW_REPORT_PERMISSION'])">
+                <hr style="margin-top: 0px;">
+                <h3 style="color: white;text-align: center;">Report</h3>
+                <hr style="margin-top: 0px;">
+                <ng-container *ngFor="let title of getReportKeys()">
+                    <li nz-submenu nzTitle="{{title}}" nzIcon="paper-clip">
+                        <ul *ngIf="getReportValue(title)">
+                            <ng-container *ngFor="let report of getReportValue(title)">
+                                <li nz-menu-item nzMatchRouter style="padding-left: 25px !important;">
+                                    <a [routerLink]="['/report/viewReport']"
+                                        [queryParams]="{ reportId: report.id }">
+                                        <span nz-icon nzType="file-text" nzTheme="outline"></span>
+                                        &nbsp;{{report.name}}
+                                    </a>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </li>
+                </ng-container>
             </ng-container>
         </ul>
         <!-- hr -->
@@ -55,7 +60,7 @@
         <nz-header>
             <div class="app-header">
                 <div nz-row>
-                    <div nz-col nzMd="24">
+                    <div nz-col nzMd="20">
                         <ul nz-menu nzMode="horizontal">
                             <span class="trigger" nz-icon style="margin-left: 15px;"
                                 [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
@@ -68,6 +73,11 @@
                             </li>
                         </ul>
                     </div>
+                    <div nz-col nzMd="4" style="text-align: end;padding-right: 20px">
+                        <nz-avatar nzIcon="user" nz-dropdown [nzDropdownMenu]="userAction"
+                            nzSrc="{{'./assets/avatar/' + sessionUser.profileImage }}">
+                        </nz-avatar>
+                    </div>
                 </div>
             </div>
         </nz-header>
@@ -77,3 +87,7 @@
         </nz-content>
     </nz-layout>
 </nz-layout>
+<!-- user -->
+<nz-dropdown-menu #userAction="nzDropdownMenu">
+    <app-user-action [sessionUser]="sessionUser"></app-user-action>
+</nz-dropdown-menu>

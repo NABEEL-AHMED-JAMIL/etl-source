@@ -25,8 +25,7 @@ import {
     NgZorroAntdModule,
     ErrorInterceptor,
     JwtInterceptor,
-    SearchFilterPipe,
-    SearchFilterPipeV2
+    SearchFilterPipe
 } from './_helpers';
 // compoenet
 import {
@@ -89,7 +88,9 @@ import {
     CUEventBridgeComponent,
     MgEventBridgeComponent,
     EBUCroseTableComponent,
-    SCVisibilityComponent
+    SCVisibilityComponent,
+    SCConditionPatternComponent,
+    SCEnableabilityComponent
 } from './_pages';
 
 // dynamic fileds
@@ -110,7 +111,6 @@ export const APP_COMPONENT = [
     EnvVariableValueComponent,
     GenTableComponent,
     SearchFilterPipe,
-    SearchFilterPipeV2,
     SpinnerComponent,
     LoginComponent,
     RegisterComponent,
@@ -166,6 +166,10 @@ export const APP_COMPONENT = [
     CUEventBridgeComponent,
     MgEventBridgeComponent,
     EBUCroseTableComponent,
+    SCVisibilityComponent,
+    // dynamic-condition
+    SCConditionPatternComponent,
+    SCEnableabilityComponent,
     SCVisibilityComponent,
     // dynamic fileds
     DynamicInputComponent,

@@ -10,16 +10,20 @@
                         <img src="../../../../assets/logo.png" alt="logo" style="width: 200px;" />
                     </a>
                 </div>
-                <h1 style="margin-top: 14px;text-align: center;" class="title">Reset Password
+                <h1 style="margin-top: 14px;text-align: center;" class="title">
+                    Reset Password
                 </h1>
                 <div nz-row [nzGutter]="16">
                     <div nz-col nzSpan="12">
                         <nz-form-item>
                             <nz-form-label nzRequired>Username</nz-form-label>
                             <nz-form-control [nzErrorTip]="userErrorTpl">
-                                <input nz-input formControlName="username" [disabled]="true" placeholder="Enter Username" />
+                                <input nz-input formControlName="username" 
+                                    [disabled]="true" placeholder="Enter Username" />
                                 <ng-template #userErrorTpl let-control>
-                                    <ng-container *ngIf="control.hasError('required')">Username Required.</ng-container>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        Username Required.
+                                    </ng-container>
                                 </ng-template>
                             </nz-form-control>
                         </nz-form-item>
@@ -31,8 +35,12 @@
                                 <input nz-input type="email" formControlName="email" [disabled]="true"
                                     placeholder="Enter Email" />
                                 <ng-template #emailErrorTpl let-control>
-                                    <ng-container *ngIf="control.hasError('email')">Invalid Email.</ng-container>
-                                    <ng-container *ngIf="control.hasError('required')">Email Required.</ng-container>
+                                    <ng-container *ngIf="control.hasError('email')">
+                                        Invalid Email.
+                                    </ng-container>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        Email Required.
+                                    </ng-container>
                                 </ng-template>
                             </nz-form-control>
                         </nz-form-item>

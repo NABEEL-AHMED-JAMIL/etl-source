@@ -31,7 +31,8 @@ import {
     ILookupData,
     EvenBridgeService,
     IEventBridge,
-    EVENT_BRIDGE_TYPE
+    EVENT_BRIDGE_TYPE,
+    UI_LOOKUP
 } from 'src/app/_shared';
 
 
@@ -113,12 +114,13 @@ export class CUReportComponent implements OnInit {
         }
         // report form type
         this.fetchFormsByFormType({
-            formType: 1,
+            formType: UI_LOOKUP.TRUE,
             sessionUser: {
                 username: this.sessionUser.username
             }
         });
         this.findAllParentLookupByUsername({
+            uiLookup: 1,
             sessionUser: {
                 username: this.sessionUser.username
             }

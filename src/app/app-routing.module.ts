@@ -356,7 +356,7 @@ const routes: Routes = [
         component: ReportLayoutComponent,
         canActivate: [AuthGuard],
         data: {
-            breadcrumb: 'Report',
+            breadcrumb: 'Report & Dashboard',
             roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER', 'ROLE_DEV'],
             permission: ['REPORT_PAGE_PERMISSION'],
         },
