@@ -25,8 +25,7 @@ import {
     NgZorroAntdModule,
     ErrorInterceptor,
     JwtInterceptor,
-    SearchFilterPipe,
-    SearchFilterPipeV2
+    SearchFilterPipe
 } from './_helpers';
 // compoenet
 import {
@@ -112,7 +111,6 @@ export const APP_COMPONENT = [
     EnvVariableValueComponent,
     GenTableComponent,
     SearchFilterPipe,
-    SearchFilterPipeV2,
     SpinnerComponent,
     LoginComponent,
     RegisterComponent,

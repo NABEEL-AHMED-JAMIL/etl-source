@@ -1,14 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { AlertService, SpinnerService } from '../../../_helpers';
-import { ApiCode, AuthenticationService } from '../../../_shared';
+import {
+    AlertService,
+    SpinnerService
+} from '../../../_helpers';
+import {
+    ApiCode,
+    AuthenticationService
+} from '../../../_shared';
 import {
     UntypedFormBuilder,
     UntypedFormControl,
     UntypedFormGroup,
     Validators
 } from '@angular/forms';
-import { Router } from '@angular/router';
 
 
 @Component({

@@ -1,4 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import {
+    ActionType,
+    AuthResponse
+} from 'src/app/_shared';
+import {
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    Validators
+} from '@angular/forms';
+import {
+    AlertService,
+    SpinnerService
+} from 'src/app/_helpers';
 
 
 @Component({
@@ -8,10 +22,65 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SCVisibilityComponent implements OnInit {
 
-    constructor() {
+    @Input()
+    public actionType: ActionType;
+    @Input()
+    public editPayload: any;
+
+    public visibilityForm: FormGroup;
+    public sessionUser: AuthResponse;
+
+    constructor(private fb: FormBuilder,
+        private alertService: AlertService,
+        private spinnerService: SpinnerService) {
     }
 
     ngOnInit(): void {
+        if (this.actionType === ActionType.ADD) {
+            this.addForm();
+        } else if (this.actionType === ActionType.EDIT) {
+            this.editForm();
+        }
     }
+
+    public addForm(): any {
+        this.spinnerService.show();
+        this.visibilityForm = this.fb.group({
+            visibles: this.fb.array([this.buildVisibility()])
+        });
+        console.log(this.visibilityForm.value);
+    }
+
+    public editForm(): void {
+        this.spinnerService.show();
+        this.spinnerService.hide();
+    }
+
+    public buildVisibility(): any {
+        return new FormGroup({
+            case: this.buildCase(),
+            then: this.fb.array([ this.buildThen() ], Validators.required)
+        });
+    }
+
+    public buildCase(): any {
+        return new FormGroup({
+            pattern: new FormControl('', Validators.required),
+            sectionId: new FormControl('', Validators.required),
+            controlId: new FormControl('', Validators.required),
+            condition: new FormControl('', Validators.required),
+            value: new FormControl('', Validators.required)
+        });
+    }
+
+    // method use to create the the build
+    public buildThen(): any {
+        return new FormGroup({
+            sectionId: new FormControl('', Validators.required),
+            controlId: new FormControl('', Validators.required),
+            visibility: new FormControl('', Validators.required)
+        });
+    }
+
 
 }

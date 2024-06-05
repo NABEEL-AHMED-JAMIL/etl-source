@@ -35,7 +35,7 @@
                     [nzListStyle]="{ 'width.px': 500, 'height.px': 325 }" [nzRender]="render"
                     (nzChange)="onChange($event)">
                     <ng-template #render let-item>
-                        {{ item.title }} [{{commomService.getDataFromObjectV2(item.description)}}]
+                       [{{ item.description }}] {{ item.title }} 
                     </ng-template>
                 </nz-transfer>
             </div>
@@ -43,7 +43,10 @@
     </nz-tabset>
     <!-- refreshTemplate -->
     <ng-template #refreshTemplate>
-        <button nz-button [nzSize]="'small'" (click)="refresh()" nzType="default">
+        <button nz-button
+            [nzSize]="'small'"
+            nzType="default"
+            (click)="refresh()">
             Refresh
         </button>
     </ng-template>

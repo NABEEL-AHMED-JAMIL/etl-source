@@ -115,6 +115,11 @@ export class MgControlComponent implements OnInit {
                 type: 'tag'
             },
             {
+                field: 'dateCreated',
+                header: 'Created',
+                type: 'date'
+            },
+            {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',

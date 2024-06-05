@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { IGenFrom } from 'src/app/_shared';
 
 
 @Component({
@@ -7,6 +8,9 @@ import { Component, Input, OnInit } from '@angular/core';
     styleUrls: ['./sc-condition-pattern.component.css']
 })
 export class SCConditionPatternComponent implements OnInit {
+
+    @Input()
+    public editPayload: IGenFrom;
 
     constructor() {
     }

@@ -9,7 +9,10 @@ import {
     AlertService,
     SpinnerService
 } from '../../../_helpers';
-import { ApiCode, AuthenticationService } from '../../../_shared';
+import {
+    ApiCode,
+    AuthenticationService
+} from '../../../_shared';
 import { first } from 'rxjs/operators';
 
 

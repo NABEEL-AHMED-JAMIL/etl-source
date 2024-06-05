@@ -120,6 +120,13 @@ export class MgSourceTaskTypeComponent implements OnInit {
         ],
         actionType: [
             {
+                type: 'link',
+                color: 'orange',
+                spin: false,
+                tooltipTitle: 'Link With Form',
+                action: ActionType.LINK_FROM
+            },
+            {
                 type: 'edit',
                 color: 'green',
                 spin: false,
@@ -132,13 +139,6 @@ export class MgSourceTaskTypeComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Delete',
                 action: ActionType.DELETE
-            }
-        ],
-        moreActionType: [
-            {
-                type: 'link',
-                title: 'Link With Form',
-                action: ActionType.LINK_FROM
             }
         ]
     };

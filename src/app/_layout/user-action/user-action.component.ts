@@ -11,7 +11,6 @@ import {
     SpinnerService,
     StorageService
 } from '../../_helpers';
-import { NzDrawerService } from 'ng-zorro-antd/drawer';
 
 
 @Component({
@@ -22,12 +21,11 @@ import { NzDrawerService } from 'ng-zorro-antd/drawer';
 export class UserActionComponent implements OnInit {
 
     @Input()
-    public currentUser: AuthResponse;
+    public sessionUser: AuthResponse;
 
     constructor(private router: Router,
         private spinnerService: SpinnerService,
         private alertService: AlertService,
-        private drawerService: NzDrawerService,
         private storageService: StorageService,
         private authenticationService: AuthenticationService) {
     }
