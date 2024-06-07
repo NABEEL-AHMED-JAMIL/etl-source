@@ -111,18 +111,18 @@ export class MgDashboardComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
                 type: 'eye',
                 color: 'orange',
                 spin: false,
                 tooltipTitle: 'View Report',
                 action: ActionType.VIEW
+            },
+            {
+                type: 'edit',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
             },
             {
                 type: 'delete',

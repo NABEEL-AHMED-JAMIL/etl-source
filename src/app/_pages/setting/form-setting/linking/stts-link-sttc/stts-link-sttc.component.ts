@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { TransferItem } from 'ng-zorro-antd/transfer';
 import { first } from 'rxjs';
 import {
@@ -7,13 +8,18 @@ import {
     SpinnerService
 } from 'src/app/_helpers';
 import {
+    SCEnableabilityComponent,
+    SCVisibilityComponent
+} from 'src/app/_pages';
+import {
     ActionType,
     ApiCode,
     AuthResponse,
     AuthenticationService,
     FormSettingService,
     IGenSection,
-    ISectionLinkControl
+    ISectionLinkControl,
+    SERVER_ACTION
 } from 'src/app/_shared';
 
 
@@ -41,6 +47,7 @@ export class SttsLinkSttcComponent implements OnInit {
     constructor(
         private alertService: AlertService,
         public commomService: CommomService,
+        private modalService: NzModalService,
         private spinnerService: SpinnerService,
         private formSettingService: FormSettingService,
         private authenticationService: AuthenticationService) {
@@ -112,7 +119,7 @@ export class SttsLinkSttcComponent implements OnInit {
         if (ret['from'] === 'right') {
             // deleting =-> from table
             this.linkSectionControl({
-                action: 5,
+                action: SERVER_ACTION.UNLINK,
                 sectionLinkControl: ret['list']
                     .map((item: any) => item?.payload?.linkControlId),
                 sessionUser: {
@@ -122,7 +129,7 @@ export class SttsLinkSttcComponent implements OnInit {
         } else if (ret['from'] === 'left') {
             // inserting => active | in-active state
             this.linkSectionControl({
-                action: 4,
+                action: SERVER_ACTION.LINK,
                 id: this.editPayload.id, // sectionid
                 controlId: ret['list'].map((item: any) => item?.key),
                 sessionUser: {
@@ -153,6 +160,65 @@ export class SttsLinkSttcComponent implements OnInit {
     //
     public startEdit(id: string): void {
         this.editCache[id].edit = true;
+    }
+
+    /**
+     * Method use to send the section and itme detaail
+     * in the child compoent => pop-up => multi array but data strore as json
+     * */
+    public editScVisiBility(data: ISectionLinkControl): any {
+        const modal = this.modalService.create({
+            nzWidth: 850,
+            nzTitle: 'Visibility [Section] => [Control]',
+            nzContent: SCVisibilityComponent,
+            nzComponentParams: {
+
+            },
+            nzFooter: [
+                {
+                    label: 'Cancel',
+                    onClick: () => modal.destroy()
+                },
+                {
+                    label: 'OK',
+                    type: 'primary',
+                    onClick: (componentInstance) => {
+                        // action call if its sucess 
+                        // we cloase this from the component with ref
+                        componentInstance.onSubmit();
+                    }
+                }
+            ]
+        });
+    }
+
+    /**
+     * Method use to send the section and itme detaail
+     * in the child compoent => pop-up => multi array but data strore as json
+     * */
+    public editEnableability(data: ISectionLinkControl): any {
+        const modal = this.modalService.create({
+            nzWidth: 850,
+            nzTitle: 'Enableability [Section] => [Control]',
+            nzContent: SCEnableabilityComponent,
+            nzComponentParams: {
+                
+            },
+            nzFooter: [
+                {
+                    label: 'Cancel',
+                    onClick: () => modal.destroy()
+                },
+                {
+                    label: 'OK',
+                    type: 'primary',
+                    onClick: (componentInstance) => {
+                        // action call if its sucess we cloase this from the component with ref
+                        componentInstance.onSubmit();
+                    }
+                }
+            ]
+        });
     }
 
     public cancelEdit(id: string): void {

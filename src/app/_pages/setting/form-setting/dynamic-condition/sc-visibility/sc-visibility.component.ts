@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 import {
     ActionType,
-    AuthResponse
+    AuthResponse,
+    IGenSection,
+    ISectionLinkControl
 } from 'src/app/_shared';
 import {
     FormBuilder,
@@ -25,12 +28,15 @@ export class SCVisibilityComponent implements OnInit {
     @Input()
     public actionType: ActionType;
     @Input()
-    public editPayload: any;
+    public section: IGenSection;
+    @Input()
+    public control: ISectionLinkControl;
 
     public visibilityForm: FormGroup;
     public sessionUser: AuthResponse;
 
     constructor(private fb: FormBuilder,
+        private modalRef: NzModalRef<void>,
         private alertService: AlertService,
         private spinnerService: SpinnerService) {
     }
@@ -82,5 +88,13 @@ export class SCVisibilityComponent implements OnInit {
         });
     }
 
+    public onSubmit(): void {
 
-}
+    }
+
+    // Just close the modal without passing any data
+    public close(): void {
+        this.modalRef.destroy();
+    }
+
+} 

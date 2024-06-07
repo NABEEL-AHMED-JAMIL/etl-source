@@ -13,7 +13,8 @@ import {
     AuthenticationService,
     FormSettingService,
     IGenSection,
-    ISectionLinkFrom
+    ISectionLinkFrom,
+    SERVER_ACTION
 } from 'src/app/_shared';
 
 
@@ -112,7 +113,7 @@ export class SttsLinkSttfComponent implements OnInit {
         if (ret['from'] === 'right') {
             // deleting =-> from table
             this.linkSectionForm({
-                action: 5,
+                action: SERVER_ACTION.UNLINK,
                 sectionLinkForm: ret['list'].map((item: any) => item?.payload?.sectionLinkForm),
                 sessionUser: {
                     username: this.sessionUser.username
@@ -121,7 +122,7 @@ export class SttsLinkSttfComponent implements OnInit {
         } else if (ret['from'] === 'left') {
             // inserting => active | in-active state
             this.linkSectionForm({
-                action: 4,
+                action: SERVER_ACTION.LINK,
                 id: this.editPayload.id, // sectionid
                 formId: ret['list'].map((item: any) => item?.key),
                 sessionUser: {

@@ -67,7 +67,7 @@
                     [nzPaginationPosition]="'bottom'"
                     [nzShowSizeChanger]='true'
                     [nzPageSize]="10"
-                    [nzPageSizeOptions]="[10,15]"
+                    [nzPageSizeOptions]="[10,15,25,50]"
                     [nzFrontPagination]="true"
                     [nzShowPagination]="true"
                     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
@@ -104,6 +104,16 @@
                                     <a (click)="startEdit(data.id)">
                                         <span nz-icon nzType="edit" nzTheme="outline"
                                             nz-tooltip nzTooltipTitle="Edit"></span>
+                                    </a>&nbsp;
+                                    <a (click)="editScVisiBility(data)">
+                                        <span nz-icon nzType="eye-invisible" nzTheme="outline"
+                                            nz-tooltip nzTooltipTitle="Hide/Show" 
+                                            style="color: orange;"></span>
+                                    </a>&nbsp;
+                                    <a (click)="editEnableability(data)">
+                                        <span nz-icon nzType="lock" nzTheme="outline"
+                                            nz-tooltip nzTooltipTitle="Enable/Disabled"
+                                            style="color: red"></span>
                                     </a>
                                 </td>
                             </ng-container>

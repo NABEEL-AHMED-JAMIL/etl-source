@@ -89,7 +89,6 @@ import {
     MgEventBridgeComponent,
     EBUCroseTableComponent,
     SCVisibilityComponent,
-    SCConditionPatternComponent,
     SCEnableabilityComponent
 } from './_pages';
 
@@ -168,7 +167,6 @@ export const APP_COMPONENT = [
     EBUCroseTableComponent,
     SCVisibilityComponent,
     // dynamic-condition
-    SCConditionPatternComponent,
     SCEnableabilityComponent,
     SCVisibilityComponent,
     // dynamic fileds
