@@ -12,7 +12,8 @@ import {
     AuthenticationService,
     FormSettingService,
     IControlLinkSection,
-    IGenControl
+    IGenControl,
+    SERVER_ACTION
 } from 'src/app/_shared';
 import { first } from 'rxjs';
 
@@ -113,7 +114,7 @@ export class SttcLinkSttsComponent implements OnInit {
         if (ret['from'] === 'right') {
             // deleting =-> from table
             this.linkControlSection({
-                action: 5,
+                action: SERVER_ACTION.UNLINK,
                 controlLinkSection: ret['list']
                     .map((item: any) => item?.payload?.linkSectionId),
                 sessionUser: {
@@ -123,7 +124,7 @@ export class SttcLinkSttsComponent implements OnInit {
         } else if (ret['from'] === 'left') {
             // inserting => active | in-active state
             this.linkControlSection({
-                action: 4,
+                action: SERVER_ACTION.LINK,
                 id: this.editPayload.id, // controlId
                 sectionId: ret['list'].map((item: any) => item?.key),
                 sessionUser: {

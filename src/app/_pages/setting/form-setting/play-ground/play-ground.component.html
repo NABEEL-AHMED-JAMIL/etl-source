@@ -53,21 +53,21 @@
                         style="margin-bottom: 8px;">
                         <!-- input -->
                         <dynamic-input *ngIf="commomService.isSupportedInputControl(control)"
-                            [field]="getFiledGroup('section-' + section.id, control?.name)"
+                            [field]="getSectionFiled('section-' + section.id, control?.name)"
                             [section]="section" [control]="control">
                         </dynamic-input>
                         <!-- textarea -->
                         <dynamic-textarea *ngIf="commomService.isSupportedTextControl(control)"
-                            [field]="getFiledGroup('section-' + section.id, control?.name)"
+                            [field]="getSectionFiled('section-' + section.id, control?.name)"
                             [section]="section" [control]="control">
                         </dynamic-textarea>
                         <!-- selection & multi selection -->
                         <dynamic-select *ngIf="commomService.isSupportedSelectControl(control)"
-                            [field]="getFiledGroup('section-' + section.id, control?.name)"
+                            [field]="getSectionFiled('section-' + section.id, control?.name)"
                             [section]="section" [control]="control">
                         </dynamic-select>
                         <dynamic-datepicker *ngIf="commomService.isSupportedDatePickerControl(control)"
-                            [field]="getFiledGroup('section-' + section.id, control?.name)"
+                            [field]="getSectionFiled('section-' + section.id, control?.name)"
                             [section]="section" [control]="control">
                         </dynamic-datepicker>
                     </div>

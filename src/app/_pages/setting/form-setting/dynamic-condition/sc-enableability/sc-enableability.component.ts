@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 import {
     FormBuilder,
     FormControl,
@@ -13,7 +14,9 @@ import {
     FormSettingService,
     AuthenticationService,
     AuthResponse,
-    ActionType
+    ActionType,
+    IGenSection,
+    ISectionLinkControl
 } from 'src/app/_shared';
 
 
@@ -27,12 +30,16 @@ export class SCEnableabilityComponent implements OnInit {
     @Input()
     public actionType: ActionType;
     @Input()
-    public editPayload: any;
+    public section: IGenSection;
+    @Input()
+    public control: ISectionLinkControl;
+
 
     public enableabilityForm: FormGroup;
     public sessionUser: AuthResponse;
 
     constructor(private fb: FormBuilder,
+        private modalRef: NzModalRef<void>,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private formSettingService: FormSettingService,
@@ -92,6 +99,15 @@ export class SCEnableabilityComponent implements OnInit {
             controlId: new FormControl('', Validators.required),
             enableability: new FormControl('', Validators.required)
         });
+    }
+
+    public onSubmit(): void {
+
+    }
+
+    // Just close the modal without passing any data
+    public close(): void {
+        this.modalRef.destroy();
     }
 
 }

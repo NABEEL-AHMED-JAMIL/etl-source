@@ -204,7 +204,7 @@ export class MgPlayGroundComponent implements OnInit {
      * section-1 => fileds => email
      * section-1 => fileds => username 
      */
-    public getFiledGroup(sectionId: any, controlName: any): FormGroup {
+    public getSectionFiled(sectionId: any, controlName: any): FormGroup {
         return this.getFormSectionFiledsGroup(sectionId).get(controlName) as FormGroup;
     }
 
