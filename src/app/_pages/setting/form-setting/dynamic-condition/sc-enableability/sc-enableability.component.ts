@@ -14,9 +14,12 @@ import {
     FormSettingService,
     AuthenticationService,
     AuthResponse,
-    ActionType,
     IGenSection,
-    ISectionLinkControl
+    ISectionLinkControl,
+    IGenControl,
+    ILookups,
+    LookupService,
+    LOOKUP_TYPE
 } from 'src/app/_shared';
 
 
@@ -28,12 +31,20 @@ import {
 export class SCEnableabilityComponent implements OnInit {
 
     @Input()
-    public actionType: ActionType;
-    @Input()
-    public section: IGenSection;
-    @Input()
-    public control: ISectionLinkControl;
+    public sectionLinkControl: ISectionLinkControl;
 
+    public COMPARISON_OPERATORS: ILookups;
+    public LOGICAL_OPERATORS: ILookups;
+    public DYNAMIC_CONDITION: ILookups;
+
+    // we have to get the current section and control which are link in the section link control
+    public section: IGenSection;
+    public control: IGenControl;
+
+    // use case is we will select all section and base on select section we will
+    // fetch control
+    public sections: IGenSection[] = [];
+    public controls: IGenControl[] = [];
 
     public enableabilityForm: FormGroup;
     public sessionUser: AuthResponse;
@@ -41,37 +52,43 @@ export class SCEnableabilityComponent implements OnInit {
     constructor(private fb: FormBuilder,
         private modalRef: NzModalRef<void>,
         private alertService: AlertService,
+        private lookupService: LookupService,
         private spinnerService: SpinnerService,
         private formSettingService: FormSettingService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+            console.log(this.sectionLinkControl);
+            this.authenticationService.currentUser
+                .subscribe(currentUser => {
+                    this.sessionUser = currentUser;
+                });
 
     }
 
     ngOnInit(): void {
-        this.addForm();
-        if (this.actionType === ActionType.ADD) {
-            this.addForm();
-            console.log(this.enableabilityForm.value);
-        } else if (this.actionType === ActionType.EDIT) {
-            this.editForm();
-        }
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.COMPARISON_OPERATORS
+        }).subscribe((data) => {
+            this.COMPARISON_OPERATORS = data;
+        });
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.LOGICAL_OPERATORS
+        }).subscribe((data) => {
+            this.LOGICAL_OPERATORS = data;
+        });
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.DYNAMIC_CONDITION
+        }).subscribe((data) => {
+            this.DYNAMIC_CONDITION = data;
+        });
+        this.enableabForm();
+        console.log(this.sectionLinkControl);
     }
 
-    public addForm(): any {
+    public enableabForm(): any {
         this.spinnerService.show();
         this.enableabilityForm = this.fb.group({
             enableabilitys: this.fb.array([this.buildEnableability()])
         });
-        this.spinnerService.hide();
-        console.log(this.enableabilityForm.value);
-    }
-
-    public editForm(): void {
-        this.spinnerService.show();
         this.spinnerService.hide();
     }
 

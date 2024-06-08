@@ -8,10 +8,6 @@ import {
     SpinnerService
 } from 'src/app/_helpers';
 import {
-    SCEnableabilityComponent,
-    SCVisibilityComponent
-} from 'src/app/_pages';
-import {
     ActionType,
     ApiCode,
     AuthResponse,
@@ -162,65 +158,6 @@ export class SttsLinkSttcComponent implements OnInit {
         this.editCache[id].edit = true;
     }
 
-    /**
-     * Method use to send the section and itme detaail
-     * in the child compoent => pop-up => multi array but data strore as json
-     * */
-    public editScVisiBility(data: ISectionLinkControl): any {
-        const modal = this.modalService.create({
-            nzWidth: 850,
-            nzTitle: 'Visibility [Section] => [Control]',
-            nzContent: SCVisibilityComponent,
-            nzComponentParams: {
-
-            },
-            nzFooter: [
-                {
-                    label: 'Cancel',
-                    onClick: () => modal.destroy()
-                },
-                {
-                    label: 'OK',
-                    type: 'primary',
-                    onClick: (componentInstance) => {
-                        // action call if its sucess 
-                        // we cloase this from the component with ref
-                        componentInstance.onSubmit();
-                    }
-                }
-            ]
-        });
-    }
-
-    /**
-     * Method use to send the section and itme detaail
-     * in the child compoent => pop-up => multi array but data strore as json
-     * */
-    public editEnableability(data: ISectionLinkControl): any {
-        const modal = this.modalService.create({
-            nzWidth: 850,
-            nzTitle: 'Enableability [Section] => [Control]',
-            nzContent: SCEnableabilityComponent,
-            nzComponentParams: {
-                
-            },
-            nzFooter: [
-                {
-                    label: 'Cancel',
-                    onClick: () => modal.destroy()
-                },
-                {
-                    label: 'OK',
-                    type: 'primary',
-                    onClick: (componentInstance) => {
-                        // action call if its sucess we cloase this from the component with ref
-                        componentInstance.onSubmit();
-                    }
-                }
-            ]
-        });
-    }
-
     public cancelEdit(id: string): void {
         const index = this.sectionLinkControlTable
             .findIndex(item => item.id === id);
@@ -235,8 +172,6 @@ export class SttsLinkSttcComponent implements OnInit {
         let payload = {
             sectionLinkControl: [this.editCache[id].data.linkControlId],
             controlOrder: this.editCache[id].data.controlOrder,
-            disabledPattern: this.editCache[id].data.disabledPattern,
-            visiblePattern: this.editCache[id].data.visiblePattern,
             fieldWidth: this.editCache[id].data.fieldWidth,
             sessionUser: {
                 username: this.sessionUser.username

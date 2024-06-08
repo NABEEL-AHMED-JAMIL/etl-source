@@ -86,6 +86,11 @@ export class MGFormComponent implements OnInit {
                 type: 'data'
             },
             {
+                field: 'description',
+                header: 'Description',
+                type: 'data'
+            },
+            {
                 field: 'homePage',
                 header: 'Land Page',
                 type: 'tag'

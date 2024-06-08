@@ -85,6 +85,11 @@ export class MGSectionComponent implements OnInit {
                 type: 'data'
             },
             {
+                field: 'description',
+                header: 'Description',
+                type: 'data'
+            },
+            {
                 field: 'totalForm',
                 header: 'Total Form',
                 type: 'tag'
