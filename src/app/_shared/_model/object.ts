@@ -216,8 +216,6 @@ export interface IControlLinkSection extends IBaseEntity {
     linkedControl?: any;
     linkSectionId?: any;
     controlOrder?: any;
-    visiblePattern?: any;
-    disabledPattern?: any;
     fieldWidth: any;
 }
 
@@ -227,8 +225,6 @@ export interface ISectionLinkControl extends IBaseEntity {
     fieldTitle?: any;
     fieldName?: any;
     controlOrder?: any;
-    visiblePattern?: any;
-    disabledPattern?: any;
     fieldWidth: any;
     linkedSection?: any;
     linkControlId?: any;
@@ -407,8 +403,7 @@ export enum ActionType {
     LINK_SECTION = 15,
     LINK_CONTROL = 16,
     LINK_EVENT_BRIDGE = 17,
-    GEN_TOKEN = 18,
-    ELEMENT_CONTROL = 19
+    GEN_TOKEN = 18
 }
 
 export enum IProfileSetting {
@@ -543,42 +538,49 @@ export const SETTING_SIDEBAR: SideBar[] = [
     {
         name: 'Form Setting',
         icon: 'database',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
         permission: ['FORM_SETTING_PERMISSION'],
         childLinks: [
             {
                 name: 'Manage Form',
                 icon: 'form',
                 link: '/setting/mgForm',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['FORM_PERMISSION']
             },
             {
                 name: 'Manage Section',
                 icon: 'highlight',
                 link: '/setting/mgSection',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['SECTION_PERMISSION']
             },
             {
                 name: 'Manage Control',
                 icon: 'control',
                 link: '/setting/mgControl',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['CONTROL_PERMISSION']
+            },
+            {
+                name: 'Enable & Visible',
+                icon: 'mac-command',
+                link: '/setting/evConfig',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['ENABLE_AND_VISIBLE_CONTROL_PERMISSION']
             },
             {
                 name: 'Dynamic Payload',
                 icon: 'partition',
                 link: '/setting/dynamicPayload',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['DYNAMIC_PAYLOAD_PERMISSION']
             },
             {
                 name: 'Play Ground',
                 icon: 'html5',
                 link: '/setting/mgPlayGround',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['PLAY_GROUND_PERMISSION']
             }
         ]

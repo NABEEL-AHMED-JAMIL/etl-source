@@ -36,7 +36,8 @@ import {
     MgOLAPComponent,
     ViewReportComponent,
     ViewDashboardComponent,
-    MgEventBridgeComponent
+    MgEventBridgeComponent,
+    EVConfigComponent
 } from './_pages';
 
 
@@ -204,6 +205,17 @@ const routes: Routes = [
                     roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['CONTROL_PERMISSION'],
                     breadcrumb: 'Mg Control',
+                }
+            },
+            {
+                path: 'evConfig',
+                component: EVConfigComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                    permission: ['ENABLE_AND_VISIBLE_CONTROL_PERMISSION'],
+                    breadcrumb: 'Enable & Visible',
                 }
             },
             // profile-setting => mg-refresh token

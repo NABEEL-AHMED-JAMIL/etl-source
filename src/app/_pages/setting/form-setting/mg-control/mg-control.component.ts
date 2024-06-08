@@ -85,6 +85,11 @@ export class MgControlComponent implements OnInit {
                 type: 'data'
             },
             {
+                field: 'description',
+                header: 'Description',
+                type: 'data'
+            },
+            {
                 field: 'fieldName',
                 header: 'Field Name',
                 type: 'data'

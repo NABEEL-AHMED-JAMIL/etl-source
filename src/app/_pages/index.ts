@@ -25,6 +25,7 @@ export * from './setting/form-setting/mg-control/mg-control.component';
 export * from './setting/form-setting/play-ground/play-ground.component';
 export * from './setting/form-setting/dynamic-payload/dynamic-payload.component';
 // sc-visibility
+export * from './setting/form-setting/dynamic-condition/ev-config/ev-config.component';
 export * from './setting/form-setting/dynamic-condition/sc-visibility/sc-visibility.component';
 export * from './setting/form-setting/dynamic-condition/sc-enableability/sc-enableability.component';
 // linking

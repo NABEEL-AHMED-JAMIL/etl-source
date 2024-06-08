@@ -1,10 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import {
-    ActionType,
     AuthResponse,
+    AuthenticationService,
+    FormSettingService,
+    IGenControl,
     IGenSection,
-    ISectionLinkControl
+    ILookups,
+    ISectionLinkControl,
+    LOOKUP_TYPE,
+    LookupService
 } from 'src/app/_shared';
 import {
     FormBuilder,
@@ -26,40 +31,65 @@ import {
 export class SCVisibilityComponent implements OnInit {
 
     @Input()
-    public actionType: ActionType;
-    @Input()
+    public sectionLinkControl: ISectionLinkControl;
+
+    public COMPARISON_OPERATORS: ILookups;
+    public LOGICAL_OPERATORS: ILookups;
+    public DYNAMIC_CONDITION: ILookups;
+
+    // we have to get the current section and control which are link in the section link control
     public section: IGenSection;
-    @Input()
-    public control: ISectionLinkControl;
+    public control: IGenControl;
+
+    // use case is we will select all section and base on select section we will
+    // fetch control
+    public sections: IGenSection[] = [];
+    public controls: IGenControl[] = [];
 
     public visibilityForm: FormGroup;
     public sessionUser: AuthResponse;
 
     constructor(private fb: FormBuilder,
         private modalRef: NzModalRef<void>,
+        private lookupService: LookupService,
         private alertService: AlertService,
-        private spinnerService: SpinnerService) {
+        private spinnerService: SpinnerService,
+        private formSettingService: FormSettingService,
+        private authenticationService: AuthenticationService) {
+            this.authenticationService.currentUser
+            .subscribe(currentUser => {
+                this.sessionUser = currentUser;
+            });
+
     }
 
     ngOnInit(): void {
-        if (this.actionType === ActionType.ADD) {
-            this.addForm();
-        } else if (this.actionType === ActionType.EDIT) {
-            this.editForm();
-        }
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.COMPARISON_OPERATORS
+        }).subscribe((data) => {
+            this.COMPARISON_OPERATORS = data;
+        });
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.LOGICAL_OPERATORS
+        }).subscribe((data) => {
+            this.LOGICAL_OPERATORS = data;
+        });
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.DYNAMIC_CONDITION
+        }).subscribe((data) => {
+            this.DYNAMIC_CONDITION = data;
+        });
+        this.visibalForm();
+        console.log(this.sectionLinkControl);
     }
 
-    public addForm(): any {
+    public visibalForm(): any {
         this.spinnerService.show();
         this.visibilityForm = this.fb.group({
             visibles: this.fb.array([this.buildVisibility()])
         });
-        console.log(this.visibilityForm.value);
-    }
-
-    public editForm(): void {
-        this.spinnerService.show();
         this.spinnerService.hide();
+        console.log(this.visibilityForm.value);
     }
 
     public buildVisibility(): any {
