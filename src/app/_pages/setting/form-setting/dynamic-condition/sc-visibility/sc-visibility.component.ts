@@ -1,13 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { Component, OnInit } from '@angular/core';
+import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import {
     AuthResponse,
     AuthenticationService,
+    EnableAndVisibilityService,
     FormSettingService,
     IGenControl,
     IGenSection,
     ILookups,
-    ISectionLinkControl,
     LOOKUP_TYPE,
     LookupService
 } from 'src/app/_shared';
@@ -30,9 +30,6 @@ import {
 })
 export class SCVisibilityComponent implements OnInit {
 
-    @Input()
-    public sectionLinkControl: ISectionLinkControl;
-
     public COMPARISON_OPERATORS: ILookups;
     public LOGICAL_OPERATORS: ILookups;
     public DYNAMIC_CONDITION: ILookups;
@@ -50,11 +47,12 @@ export class SCVisibilityComponent implements OnInit {
     public sessionUser: AuthResponse;
 
     constructor(private fb: FormBuilder,
-        private modalRef: NzModalRef<void>,
+        private drawerRef: NzDrawerRef<void>,
         private lookupService: LookupService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private formSettingService: FormSettingService,
+        private enableAndVisibilityService: EnableAndVisibilityService,
         private authenticationService: AuthenticationService) {
             this.authenticationService.currentUser
             .subscribe(currentUser => {
@@ -79,8 +77,6 @@ export class SCVisibilityComponent implements OnInit {
         }).subscribe((data) => {
             this.DYNAMIC_CONDITION = data;
         });
-        this.visibalForm();
-        console.log(this.sectionLinkControl);
     }
 
     public visibalForm(): any {
@@ -124,7 +120,7 @@ export class SCVisibilityComponent implements OnInit {
 
     // Just close the modal without passing any data
     public close(): void {
-        this.modalRef.destroy();
+        this.drawerRef.close();
     }
 
 } 
