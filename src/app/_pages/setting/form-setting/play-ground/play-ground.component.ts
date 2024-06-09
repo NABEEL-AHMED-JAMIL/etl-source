@@ -120,7 +120,6 @@ export class MgPlayGroundComponent implements OnInit {
                     this.spinnerService.hide();
                     this.alertService.showError(response.error.message, ApiCode.ERROR);
                 });
-            this.spinnerService.hide();    
         }
     }
 
