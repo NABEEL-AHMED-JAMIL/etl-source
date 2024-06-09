@@ -41,7 +41,9 @@ export class DynamicPayloadQueryComponent implements OnInit {
     ngOnInit(): void {
         this.dynamicForm = this.fb.group({
             tagsInfo: this.fb.array([
-                this.buildItem(),
+                this.buildItem(), this.buildItem(), this.buildItem(),
+                this.buildItem(), this.buildItem(), this.buildItem(),
+                this.buildItem(), this.buildItem(), this.buildItem(),
                 this.buildItem()
             ])
         });

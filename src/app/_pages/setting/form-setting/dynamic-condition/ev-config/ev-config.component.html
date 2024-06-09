@@ -1,0 +1,39 @@
+<div class="content">
+    <h3>
+        <span nz-icon nzType="link"
+            nzTheme="outline"></span>
+        Enable & Visible
+    </h3>
+    <nz-tabset nzSize="small" nzTabPosition="top">
+        <nz-tab [nzTitle]="visibility">
+            <ng-template #visibility>
+                <span nz-icon nzType="apartment" nzTheme="outline"></span>
+                {{visibilityTable.title}}
+            </ng-template>
+            <app-gen-table class="content"
+                *ngIf="visibilityTable"
+                [isDateFilter]="false"
+                [staticTable]="visibilityTable"
+                [setOfCheckedId]="setOfVisibilityCheckedId"
+                (buttonEventEmitter)="buttonVisibilityActionReciver($event)"
+                (actionEventEmitter)="tableVisibilityActionReciver($event)"
+                (extraEventEmitter)="extraVisibilityActionReciver($event)">
+            </app-gen-table>
+        </nz-tab>
+        <nz-tab [nzTitle]="enableAbility">
+            <ng-template #enableAbility>
+                <span nz-icon nzType="apartment" nzTheme="outline"></span>
+                {{enableAbilityTable.title}}
+            </ng-template>
+            <app-gen-table class="content"
+                *ngIf="enableAbilityTable"
+                [isDateFilter]="false"
+                [staticTable]="enableAbilityTable"
+                [setOfCheckedId]="setOfEnableCheckedId"
+                (buttonEventEmitter)="buttonEnableActionReciver($event)"
+                (actionEventEmitter)="tableEnableActionReciver($event)"
+                (extraEventEmitter)="extraEnableActionReciver($event)">
+            </app-gen-table>
+        </nz-tab>
+    </nz-tabset>
+</div>
