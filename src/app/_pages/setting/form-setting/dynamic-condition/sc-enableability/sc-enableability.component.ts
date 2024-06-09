@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import {
     FormBuilder,
@@ -12,10 +12,10 @@ import {
 } from 'src/app/_helpers';
 import {
     FormSettingService,
+    EnableAndVisibilityService,
     AuthenticationService,
     AuthResponse,
     IGenSection,
-    ISectionLinkControl,
     IGenControl,
     ILookups,
     LookupService,
@@ -30,16 +30,9 @@ import {
 })
 export class SCEnableabilityComponent implements OnInit {
 
-    @Input()
-    public sectionLinkControl: ISectionLinkControl;
-
     public COMPARISON_OPERATORS: ILookups;
     public LOGICAL_OPERATORS: ILookups;
     public DYNAMIC_CONDITION: ILookups;
-
-    // we have to get the current section and control which are link in the section link control
-    public section: IGenSection;
-    public control: IGenControl;
 
     // use case is we will select all section and base on select section we will
     // fetch control
@@ -52,11 +45,11 @@ export class SCEnableabilityComponent implements OnInit {
     constructor(private fb: FormBuilder,
         private modalRef: NzModalRef<void>,
         private alertService: AlertService,
-        private lookupService: LookupService,
         private spinnerService: SpinnerService,
+        private lookupService: LookupService,
         private formSettingService: FormSettingService,
+        private enableAndVisibilityService: EnableAndVisibilityService,
         private authenticationService: AuthenticationService) {
-            console.log(this.sectionLinkControl);
             this.authenticationService.currentUser
                 .subscribe(currentUser => {
                     this.sessionUser = currentUser;
@@ -80,8 +73,6 @@ export class SCEnableabilityComponent implements OnInit {
         }).subscribe((data) => {
             this.DYNAMIC_CONDITION = data;
         });
-        this.enableabForm();
-        console.log(this.sectionLinkControl);
     }
 
     public enableabForm(): any {

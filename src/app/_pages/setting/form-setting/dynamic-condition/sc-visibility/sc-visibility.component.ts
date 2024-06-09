@@ -1,13 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import {
     AuthResponse,
     AuthenticationService,
+    EnableAndVisibilityService,
     FormSettingService,
     IGenControl,
     IGenSection,
     ILookups,
-    ISectionLinkControl,
     LOOKUP_TYPE,
     LookupService
 } from 'src/app/_shared';
@@ -29,9 +29,6 @@ import {
     styleUrls: ['./sc-visibility.component.css']
 })
 export class SCVisibilityComponent implements OnInit {
-
-    @Input()
-    public sectionLinkControl: ISectionLinkControl;
 
     public COMPARISON_OPERATORS: ILookups;
     public LOGICAL_OPERATORS: ILookups;
@@ -55,6 +52,7 @@ export class SCVisibilityComponent implements OnInit {
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private formSettingService: FormSettingService,
+        private enableAndVisibilityService: EnableAndVisibilityService,
         private authenticationService: AuthenticationService) {
             this.authenticationService.currentUser
             .subscribe(currentUser => {
@@ -79,8 +77,6 @@ export class SCVisibilityComponent implements OnInit {
         }).subscribe((data) => {
             this.DYNAMIC_CONDITION = data;
         });
-        this.visibalForm();
-        console.log(this.sectionLinkControl);
     }
 
     public visibalForm(): any {
