@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import {
     FormBuilder,
     FormControl,
@@ -43,7 +43,7 @@ export class SCEnableabilityComponent implements OnInit {
     public sessionUser: AuthResponse;
 
     constructor(private fb: FormBuilder,
-        private modalRef: NzModalRef<void>,
+        private drawerRef: NzDrawerRef<void>,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private lookupService: LookupService,
@@ -115,7 +115,7 @@ export class SCEnableabilityComponent implements OnInit {
 
     // Just close the modal without passing any data
     public close(): void {
-        this.modalRef.destroy();
+        this.drawerRef.close();
     }
 
 }

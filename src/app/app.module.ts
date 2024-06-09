@@ -166,7 +166,6 @@ export const APP_COMPONENT = [
     CUEventBridgeComponent,
     MgEventBridgeComponent,
     EBUCroseTableComponent,
-    SCVisibilityComponent,
     // dynamic-condition
     EVConfigComponent,
     SCEnableabilityComponent,

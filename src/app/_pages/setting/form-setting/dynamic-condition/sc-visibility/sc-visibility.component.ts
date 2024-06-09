@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import {
     AuthResponse,
     AuthenticationService,
@@ -47,7 +47,7 @@ export class SCVisibilityComponent implements OnInit {
     public sessionUser: AuthResponse;
 
     constructor(private fb: FormBuilder,
-        private modalRef: NzModalRef<void>,
+        private drawerRef: NzDrawerRef<void>,
         private lookupService: LookupService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
@@ -120,7 +120,7 @@ export class SCVisibilityComponent implements OnInit {
 
     // Just close the modal without passing any data
     public close(): void {
-        this.modalRef.destroy();
+        this.drawerRef.close();
     }
 
 } 
