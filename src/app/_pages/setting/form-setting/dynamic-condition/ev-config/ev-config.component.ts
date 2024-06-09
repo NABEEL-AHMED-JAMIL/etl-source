@@ -365,7 +365,7 @@ export class EVConfigComponent implements OnInit {
 
     public openCuVisibilityForm(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'default',
+            nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add Visibility Logic' : 'Edit Visibility Logic',
             nzPlacement: 'right',
             nzMaskClosable: false,
@@ -427,7 +427,6 @@ export class EVConfigComponent implements OnInit {
     }
 
     public buttonEnableActionReciver(payload: any): void {
-        debugger
         if (ActionType.ADD === payload.action) {
             this.openCuEnableForm(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
@@ -503,7 +502,7 @@ export class EVConfigComponent implements OnInit {
 
     public openCuEnableForm(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'default',
+            nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add Enable Logic' : 'Edit Enable Logic',
             nzPlacement: 'right',
             nzMaskClosable: false,

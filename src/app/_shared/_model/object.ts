@@ -246,6 +246,42 @@ export interface IFormLinkSection extends IBaseEntity {
     formLinkSection?: any;
 }
 
+export interface IEnableAbilityConfig extends IBaseEntity {
+    name?: any;
+    description?: any;
+    enableLogic?: IConditionalLogic[];
+}
+
+export interface IVisibilityConfig extends IBaseEntity {
+    name?: string;
+    description?: string;
+    enableLogic?: IConditionalLogic[];
+}
+
+export interface IConditionalLogic extends IBaseEntity {
+    caseConditions?: ICaseCondition[];
+    thenConditions?: IThenCondition[];
+}
+
+export interface ICaseCondition extends IBaseEntity {
+    name?: any;
+    description?: any;
+    dynamicCondition?: any;
+    logicalOperators?: any;
+    comparisonOperators?: any;
+    genSection?: any;
+    genControl?: any;
+    caseValue?: any;
+}
+
+export interface IThenCondition extends IBaseEntity {
+    name?: any;
+    description?: any;
+    section?: any;
+    genControl?: any;
+    action?: any;
+}
+
 export interface ISourceTaskTypeLinkForm extends IBaseEntity {
     formName?: any;
     formType?: any;
