@@ -335,6 +335,7 @@ export class MgEventBridgeComponent implements OnInit {
             nzTitle: actionType === ActionType.ADD ? 'Add Event Bridge' : 'Edit Event Bridge',
             nzPlacement: 'right',
             nzMaskClosable: false,
+            nzFooter: 'Note :- Once The Event Bridge Save You Can\t Change The Event Type.',
             nzContent: CUEventBridgeComponent,
             nzContentParams: {
                 actionType: actionType,

@@ -816,9 +816,9 @@ export const enum IS_DEFAULT {
 }
 
 export const enum EVENT_BRIDGE_TYPE {
-    WEB_HOOK_SENDER = 0,
-    WEB_HOOK_RECEIVER = 1,
-    API_SENDER = 2
+    WEB_HOOK_SEND = 0,
+    WEB_HOOK_RECEIVE = 1,
+    REPORT_API_SEND = 2
 }
 
 export const enum SERVER_ACTION {

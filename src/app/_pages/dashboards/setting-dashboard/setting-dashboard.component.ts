@@ -90,7 +90,7 @@ export class SettingDashboardComponent implements OnInit {
                 this.DASHBOARD_SETTING_STATISTICS = this.fillChartByPayloadId(
                     'Dashboard Setting', response.data['DASHBOARD_SETTING_STATISTICS']['data']);
                 this.SERVICE_SETTING_STATISTICS = this.fillChartByPayloadId(
-                    'Form Setting', response.data['SERVICE_SETTING_STATISTICS']['data']);
+                    'Service Setting', response.data['SERVICE_SETTING_STATISTICS']['data']);
                 this.SESSION_COUNT_STATISTICS = this.SESSION_COUNT_STATISTICS = 
                     this.fillChartBySessionCount(response.data['SESSION_COUNT_STATISTICS']['data']);
                     

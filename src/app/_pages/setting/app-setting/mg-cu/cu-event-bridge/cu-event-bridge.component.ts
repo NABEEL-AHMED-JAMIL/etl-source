@@ -110,6 +110,7 @@ export class CUEventBridgeComponent implements OnInit {
             credentialId: [this.editPayload.credential ? this.editPayload?.credential.id : '', Validators.required],
             status: [this.editPayload.status?.lookupCode, Validators.required]
         });
+        this.eventBridgeForm.get('bridgeType').disable();
         this.spinnerService.hide();
     }
 

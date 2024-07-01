@@ -140,6 +140,7 @@ export class EBUCroseTableComponent implements OnInit {
         .subscribe((response: any) => {
             this.spinnerService.hide();
             if (response.status === ApiCode.ERROR) {
+                payload.linked = !payload.linked;
                 this.alertService.showError(response.message, ApiCode.ERROR);
                 return;
             }
