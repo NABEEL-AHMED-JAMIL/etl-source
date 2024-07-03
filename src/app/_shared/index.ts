@@ -19,7 +19,7 @@ export * from './_services/source.task.service';
 export * from './_services/play-ground.service';
 export * from './_services/common.service';
 export * from './_services/event bridge.service';
-export * from './_services/enable-visibility';
+export * from './_services/enable-visibility.service';
 // model
 export * from './_model/object';
 export * from './_model/dynamic-controls';
