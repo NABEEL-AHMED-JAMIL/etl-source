@@ -11,14 +11,14 @@ export * from './_services/evariable.service';
 export * from './_services/refresh.token.service';
 export * from './_services/websocketapi.service';
 export * from './_services/websocketshare.service';
-export * from './_services/notifaction.service';
+export * from './_services/notification.service';
 export * from './_services/dashboard.service';
 export * from './_services/report.setting.service';
 export * from './_services/source.job.service';
 export * from './_services/source.task.service';
-export * from './_services/play-ground.service';
+export * from './_services/play.ground.service';
 export * from './_services/common.service';
-export * from './_services/event bridge.service';
+export * from './_services/eventbridge.service';
 export * from './_services/enable-visibility.service';
 // model
 export * from './_model/object';
