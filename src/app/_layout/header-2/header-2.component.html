@@ -9,7 +9,7 @@
             <ul nz-menu nzMode="horizontal">
                 <li *ngIf="hasPermissionAccess(['SOURCE_JOB_PERMISSION'])" class="hli" nz-menu-item>
                     <a nz-dropdown [nzDropdownMenu]="menu">
-                        <span nz-icon nzType="appstore"></span> Source Job</a>
+                        <span nz-icon nzType="fire"></span> Source Job</a>
                 </li>
                 <li *ngIf="hasPermissionAccess(['REPORT_PAGE_PERMISSION'])" nz-menu-item
                     class="hli" routerLink="/report">
@@ -18,6 +18,10 @@
                 <li *ngIf="hasPermissionAccess(['ADMIN_PAGE_PERMISSION'])" nz-menu-item
                     class="hli" routerLink="/setting">
                     <span nz-icon nzType="setting" nzTheme="outline"></span> Source & App Setting
+                </li>
+                <li *ngIf="hasPermissionAccess(['FAKE_DATA_PAGE_PERMISSION'])" nz-menu-item
+                    class="hli" routerLink="/setting">
+                    <span nz-icon nzType="file-sync" nzTheme="outline"></span> Faker Data Setting
                 </li>
             </ul>
         </div>
