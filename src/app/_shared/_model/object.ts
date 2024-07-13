@@ -84,6 +84,7 @@ export interface IEnVariables extends IBaseEntity {
 export interface IEventBridge extends IBaseEntity {
     name?: any;
     bridgeUrl?: any;
+    httpMethod?: any;
     description?: any;
     bridgeType?: any;
     credential?: any;

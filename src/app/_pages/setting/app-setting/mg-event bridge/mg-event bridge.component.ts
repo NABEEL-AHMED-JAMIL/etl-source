@@ -89,6 +89,11 @@ export class MgEventBridgeComponent implements OnInit {
                 type: 'data'
             },
             {
+                field: 'httpMethod',
+                header: 'Method Type',
+                type: 'tag'
+            },
+            {
                 field: 'bridgeType',
                 header: 'Bridg Type',
                 type: 'tag'
@@ -331,7 +336,6 @@ export class MgEventBridgeComponent implements OnInit {
 
     public openCuEventBridge(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add Event Bridge' : 'Edit Event Bridge',
             nzPlacement: 'right',
             nzMaskClosable: false,

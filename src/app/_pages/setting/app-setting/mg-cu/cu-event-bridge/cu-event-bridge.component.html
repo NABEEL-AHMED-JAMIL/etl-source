@@ -1,6 +1,6 @@
 <form nz-form [nzLayout]="'vertical'" [formGroup]="eventBridgeForm" (ngSubmit)="onSubmit()">
     <div nz-row [nzGutter]="16">
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="24">
             <nz-form-item>
                 <nz-form-label nzRequired>Name</nz-form-label>
                 <nz-form-control nzErrorTip="Event Bridge Name Required">
@@ -10,7 +10,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="24">
             <nz-form-item>
                 <nz-form-label nzRequired>Event Bridge Url</nz-form-label>
                 <nz-form-control nzErrorTip="Event Bridge Url Required">
@@ -19,7 +19,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="14">
             <nz-form-item>
                 <nz-form-label nzRequired>Event Bridge Type</nz-form-label>
                 <nz-form-control nzErrorTip="Event Bridge Type Required">
@@ -33,7 +33,21 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="12" *ngIf="credentials">
+        <div nz-col nzSpan="10">
+            <nz-form-item>
+                <nz-form-label nzRequired>Request Method</nz-form-label>
+                <nz-form-control nzErrorTip="Request Method Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="httpMethod"
+                        nzPlaceHolder="Select Request Method">
+                        <nz-option *ngFor="let lookupChildren of REQUEST_METHOD?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue"
+                            [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="actionType === editAction ? 14 : 24" *ngIf="credentials">
             <nz-form-item>
                 <nz-form-label nzRequired>Credential</nz-form-label>
                 <nz-form-control>
@@ -47,9 +61,9 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="24" *ngIf="actionType === editAction">
+        <div nz-col nzSpan="10" *ngIf="actionType === editAction">
             <nz-form-item>
-                <nz-form-label nzRequired>Event Bridge Status</nz-form-label>
+                <nz-form-label nzRequired>Bridge Status</nz-form-label>
                 <nz-form-control nzErrorTip="Event Bridge Status Required">
                     <nz-select nzShowSearch nzAllowClear formControlName="status"
                         nzPlaceHolder="Select Event Bridge Status">

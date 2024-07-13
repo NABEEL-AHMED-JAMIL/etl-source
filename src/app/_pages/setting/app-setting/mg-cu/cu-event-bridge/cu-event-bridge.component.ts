@@ -24,7 +24,8 @@ import {
     IEventBridge,
     LOOKUP_TYPE,
     LookupService,
-    EvenBridgeService
+    EvenBridgeService,
+    REQUEST_METHOD
 } from 'src/app/_shared';
 
 
@@ -44,6 +45,7 @@ export class CUEventBridgeComponent implements OnInit {
 
     public APPLICATION_STATUS: ILookups;
     public EVENT_BRIDGE_TYPE: ILookups;
+    public REQUEST_METHOD: ILookups;
 
     public loading: boolean = false;
     public editAction = ActionType.EDIT;
@@ -79,6 +81,11 @@ export class CUEventBridgeComponent implements OnInit {
         }).subscribe((data) => {
             this.EVENT_BRIDGE_TYPE = data;
         });
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.REQUEST_METHOD
+        }).subscribe((data) => {
+            this.REQUEST_METHOD = data;
+        });
         this.fetchAllCredentialByType();
         if (this.actionType === ActionType.ADD) {
             this.addEventBridgeForm();
@@ -92,6 +99,7 @@ export class CUEventBridgeComponent implements OnInit {
         this.eventBridgeForm = this.fb.group({
             name: ['', Validators.required],
             bridgeUrl: ['', Validators.required],
+            httpMethod: [REQUEST_METHOD.POST, [Validators.required]],
             bridgeType: ['', Validators.required],
             description: ['', Validators.required],
             credentialId: ['', Validators.required],
@@ -105,6 +113,7 @@ export class CUEventBridgeComponent implements OnInit {
             id: [this.editPayload.id, Validators.required],
             name: [this.editPayload.name, Validators.required],
             bridgeUrl: [this.editPayload.bridgeUrl, Validators.required],
+            httpMethod: [this.editPayload.httpMethod.lookupCode, [Validators.required]],
             bridgeType: [this.editPayload?.bridgeType?.lookupCode, Validators.required],
             description: [this.editPayload.description, Validators.required],
             credentialId: [this.editPayload.credential ? this.editPayload?.credential.id : '', Validators.required],
