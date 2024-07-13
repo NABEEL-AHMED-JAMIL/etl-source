@@ -13,6 +13,7 @@ export * from './_services/websocketapi.service';
 export * from './_services/websocketshare.service';
 export * from './_services/notification.service';
 export * from './_services/dashboard.service';
+export * from './_services/dynamic.payload.service';
 export * from './_services/report.setting.service';
 export * from './_services/source.job.service';
 export * from './_services/source.task.service';

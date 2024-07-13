@@ -11,8 +11,8 @@ import {
     SpinnerService
 } from '../../../../_helpers';
 import {
-    SettingService,
-    ApiCode
+    ApiCode,
+    DynamicPayloadService
 } from '../../../../_shared';
 import { saveAs } from 'file-saver';
 import { first } from 'rxjs';
@@ -35,7 +35,7 @@ export class DynamicPayloadQueryComponent implements OnInit {
     constructor(private fb: FormBuilder,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
-        private settingService: SettingService) {
+        private dynamicPayloadService: DynamicPayloadService) {
     }
 
     ngOnInit(): void {
@@ -87,10 +87,11 @@ export class DynamicPayloadQueryComponent implements OnInit {
         this.dynamicInfo = {
             [this.switchValue ? 'jsonTagsInfo' : 'xmlTagsInfo']: dynamicInfo?.tagsInfo
         }
-        this.settingService.dynamicPaylaod(this.dynamicInfo, this.switchValue)
+        this.dynamicPayloadService.dynamicPaylaod(this.dynamicInfo, this.switchValue)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;
+                debugger
                 if (response.status === ApiCode.SUCCESS) {
                     this.dynamicString = response.message;
                     this.visible = true;
@@ -109,7 +110,7 @@ export class DynamicPayloadQueryComponent implements OnInit {
     public createFile(): any {
         this.loading = true;
         const file = new Blob([this.dynamicString]);
-        saveAs(file, 'ETL-dynamic-Config ' + this.uuid() +  (this.switchValue ? '.json': '.xml'));
+        saveAs(file, 'ETL-Dynamic-Config ' + this.uuid() +  (this.switchValue ? '.json': '.xml'));
         this.loading = false;
     }
 

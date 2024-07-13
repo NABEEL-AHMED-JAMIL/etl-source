@@ -28,10 +28,6 @@ export class SettingService {
             });
     }
 
-    public dynamicPaylaod(payload: any, switchValue: any): Observable<ApiResponse>{
-        return this.http.post<ApiResponse>(switchValue ? `${config.apiBaseUrl}/setting.json/jsonCreateChecker` : `${config.apiBaseUrl}/setting.json/xmlCreateChecker`, payload);        
-    }
-
     public deleteTemplateReg(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/deleteTemplateReg`, payload);
     }
