@@ -84,6 +84,7 @@ export interface IEnVariables extends IBaseEntity {
 export interface IEventBridge extends IBaseEntity {
     name?: any;
     bridgeUrl?: any;
+    httpMethod?: any;
     description?: any;
     bridgeType?: any;
     credential?: any;
@@ -244,6 +245,42 @@ export interface IFormLinkSection extends IBaseEntity {
     linkStatus?: any;
     sectionOrder?: any;
     formLinkSection?: any;
+}
+
+export interface IEnableAbilityConfig extends IBaseEntity {
+    name?: any;
+    description?: any;
+    enableLogic?: IConditionalLogic[];
+}
+
+export interface IVisibilityConfig extends IBaseEntity {
+    name?: string;
+    description?: string;
+    enableLogic?: IConditionalLogic[];
+}
+
+export interface IConditionalLogic extends IBaseEntity {
+    caseConditions?: ICaseCondition[];
+    thenConditions?: IThenCondition[];
+}
+
+export interface ICaseCondition extends IBaseEntity {
+    name?: any;
+    description?: any;
+    dynamicCondition?: any;
+    logicalOperators?: any;
+    comparisonOperators?: any;
+    genSection?: any;
+    genControl?: any;
+    caseValue?: any;
+}
+
+export interface IThenCondition extends IBaseEntity {
+    name?: any;
+    description?: any;
+    section?: any;
+    genControl?: any;
+    action?: any;
 }
 
 export interface ISourceTaskTypeLinkForm extends IBaseEntity {
@@ -780,9 +817,9 @@ export const enum IS_DEFAULT {
 }
 
 export const enum EVENT_BRIDGE_TYPE {
-    WEB_HOOK_SENDER = 0,
-    WEB_HOOK_RECEIVER = 1,
-    API_SENDER = 2
+    WEB_HOOK_SEND = 0,
+    WEB_HOOK_RECEIVE = 1,
+    REPORT_API_SEND = 2
 }
 
 export const enum SERVER_ACTION {

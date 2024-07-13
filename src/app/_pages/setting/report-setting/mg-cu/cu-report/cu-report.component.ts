@@ -148,7 +148,7 @@ export class CUReportComponent implements OnInit {
     public fetchEventBridgeByBridgeType() {
         this.spinnerService.show();
         let payload = {
-            bridgeType: EVENT_BRIDGE_TYPE.API_SENDER
+            bridgeType: EVENT_BRIDGE_TYPE.REPORT_API_SEND
         };
         this.evenBridgeService.fetchEventBridgeByBridgeType(payload)
             .pipe(first())

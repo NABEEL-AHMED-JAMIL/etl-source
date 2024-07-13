@@ -304,7 +304,7 @@ export class MgSourceTaskTypeComponent implements OnInit {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add STT' : 'Edit STT',
-            nzFooter: 'Once Source Task Type Created, Task Type Will Not Change',
+            nzFooter: 'Note :- Once Source Task Type Created, Task Type Will Not Change',
             nzPlacement: 'right',
             nzWidth: 800,
             nzMaskClosable: false,

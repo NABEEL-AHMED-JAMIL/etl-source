@@ -25,10 +25,7 @@ import {
 })
 export class CredentialComponent implements OnInit {
 
-    public startDate: any;
-    public endDate: any;
     public setOfCheckedId = new Set<any>();
-
     public sessionUser: AuthResponse;
     public credentialTable: IStaticTable = {
         tableId: 'credential_id',
@@ -136,8 +133,6 @@ export class CredentialComponent implements OnInit {
         private commomService: CommomService,
         private credentailService: CredentailService,
         private authenticationService: AuthenticationService) {
-        this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
@@ -147,8 +142,6 @@ export class CredentialComponent implements OnInit {
 
     ngOnInit() {
         this.fetchAllCredential({
-            startDate: this.startDate,
-            endDate: this.endDate,
             sessionUser: {
                 username: this.sessionUser.username
             }
@@ -184,8 +177,6 @@ export class CredentialComponent implements OnInit {
                     return;
                 }
                 this.fetchAllCredential({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -233,25 +224,11 @@ export class CredentialComponent implements OnInit {
             this.openCuLookup(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchAllCredential({
-                startDate: this.startDate,
-                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
             });
         }
-    }
-
-    public filterActionReciver(payload: any): void {
-        this.startDate = payload.startDate;
-        this.endDate = payload.endDate;
-        this.fetchAllCredential({
-            startDate: this.startDate,
-            endDate: this.endDate,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
     }
 
     public extraActionReciver(payload: any): void {
@@ -288,8 +265,6 @@ export class CredentialComponent implements OnInit {
         });
         drawerRef.afterClose.subscribe(data => {
             this.fetchAllCredential({
-                startDate: this.startDate,
-                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -331,8 +306,6 @@ export class CredentialComponent implements OnInit {
                     return;
                 }
                 this.fetchAllCredential({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
