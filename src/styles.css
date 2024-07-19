@@ -1,19 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-:root {
-    --primary: #6788ff;
-}
-
 /* same globel styling  */
 .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item,
 .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu {
     margin-top: 0px;
     margin-bottom: 0;
     padding: 0 10px;
-}
-
-.ant-btn:hover {
-    color: var(--primary);
-    border-color: var(--primary);
 }
 
 .th-centrail {
@@ -24,15 +15,8 @@
     text-align: center;
 }
 
-.ant-btn-primary:hover {
-    color: #fff;
-    background-color: var(--primary);
-}
-
-.ant-btn-primary {
-    background-color: var(--primary);
-    border-color: var(--primary);
-    color: #fff;
+.ant-form-item-explain-error {
+    color: red !important;
 }
 
 nz-content {
@@ -314,7 +298,7 @@ app-confirmation-popup .ant-result-icon {
 }
 
 .form form {
-    background-color: #808080ab;
+    background-color: rgba(0, 0, 0, 0.08);
     border-radius: 12px;
 }
 

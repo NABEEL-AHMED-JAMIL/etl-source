@@ -78,6 +78,7 @@ export class CUTemplateComponent implements OnInit {
         this.spinnerService.show();
         this.templateForm = this.formBuilder.group({
             templateName: ['', Validators.required],
+            description: ['', Validators.required],
             templateContent: ['', Validators.required]
         });
         this.spinnerService.hide();
@@ -88,6 +89,7 @@ export class CUTemplateComponent implements OnInit {
         this.templateForm = this.formBuilder.group({
             id: [this.editPayload.id, Validators.required],
             templateName: [this.editPayload.templateName, Validators.required],
+            description: [this.editPayload.description, Validators.required],
             templateContent: [this.editPayload.templateContent, Validators.required],
             status: [this.editPayload.status?.lookupCode, Validators.required]
         });

@@ -77,6 +77,17 @@ export class MgReportComponent implements OnInit {
             {
                 field: 'payloadRef',
                 header: 'Payload Ref',
+                type: 'tag',
+                showImg: true
+            },
+            {
+                field: 'distinctLKValue',
+                header: 'Distinct Value',
+                type: 'tag'
+            },
+            {
+                field: 'aggLKValue',
+                header: 'Aggregation',
                 type: 'tag'
             },
             {
@@ -182,7 +193,7 @@ export class MgReportComponent implements OnInit {
         private reportSettingService: ReportSettingService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;

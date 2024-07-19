@@ -34,7 +34,7 @@ export class MgEVariableComponent implements OnInit {
     public sessionUser: AuthResponse;
     public eVariableTable: IStaticTable = {
         tableId: 'variable_id',
-        title: 'E-Variable',
+        title: 'Mg E-Variable',
         bordered: true,
         checkbox: true,
         size: 'small',

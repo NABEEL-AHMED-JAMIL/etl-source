@@ -1,14 +1,16 @@
 <div class="content">
     <div nz-row [nzGutter]="16">
-        <div nz-col nzSpan="8">
+        <div nz-col nzSpan="24">
             <h3>
                 <span nz-icon nzType="link" nzTheme="outline"></span>
                 {{eventBridgeTable.title}}
             </h3>
         </div>
-        <div nz-col nzSpan="16">
-            <nz-alert nzType="info" nzShowIcon 
-                nzMessage="KEY:[[Header Reciver:- XRHK-Authorization], [Header Sender:- XSHK-Authorization]], Value:[[BEARER:- Bearer Token]]">
+        <div nz-col nzSpan="24">
+            <nz-alert nzType="info" nzShowIcon
+                nzMessage="FOR :- WebHook (Receive) & Report API (Send),
+                Use Header KEY: [[Reciver:- XRHK-Authorization], [Send:- XSHK-Authorization]] & Token-Id,
+                Value:[[BEARER:- Bearer Token], [token-id]]">
             </nz-alert>
         </div>
     </div>

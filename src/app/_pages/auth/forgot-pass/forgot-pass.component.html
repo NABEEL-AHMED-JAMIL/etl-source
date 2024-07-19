@@ -7,7 +7,7 @@
                     <img src="../../../../assets/logo.png" alt="logo" style="width: 200px;" />
                 </a>
             </div>
-            <h1 style="text-align: center;margin: 25px 0px" class="title">Forgot Password</h1>
+            <h3 style="text-align: center;margin: 25px 0px" class="title">Forgot Password</h3>
             <nz-form-item>
                 <nz-form-control nzErrorTip="Please input your Email!">
                     <nz-input-group nzPrefixIcon="user">
@@ -17,13 +17,14 @@
             </nz-form-item>
             <div nz-row>
                 <div nz-col [nzSpan]="12">
-                    <button nz-button nzDanger nzType="default"
+                    <button nz-button nzType="default"
                         style="width: fit-content"
                         routerLink="/login">Back</button>
                 </div>
                 <div nz-col [nzSpan]="12" style="text-align: end;">
-                    <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'"
-                        [nzLoading]="loading" style="width: fit-content;">Submit
+                    <button nz-button class="login-form-button login-form-margin"
+                        [nzType]="'primary'" [nzLoading]="loading"
+                        style="width: fit-content;">Submit
                     </button>
                 </div>
             </div>

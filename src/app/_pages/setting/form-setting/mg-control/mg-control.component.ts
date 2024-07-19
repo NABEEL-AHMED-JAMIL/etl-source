@@ -181,7 +181,7 @@ export class MgControlComponent implements OnInit {
         private formSettingService: FormSettingService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
@@ -265,7 +265,7 @@ export class MgControlComponent implements OnInit {
             });
         } else if (ActionType.LINK_SECTION === payload.action) {
             const drawerRef = this.drawerService.create({
-                nzTitle: '[Control] => [Section]',
+                nzTitle: '[Control] x [Section]',
                 nzSize: 'large',
                 nzWidth: 800,
                 nzPlacement: 'right',

@@ -74,23 +74,23 @@ export class MGLookupComponent implements OnInit {
         ],
         dataColumn: [
             {
-                field: 'lookupType',
-                header: 'Lookup Type',
-                type: 'data'
-            },
-            {
                 field: 'lookupCode',
                 header: 'Code',
                 type: 'data'
             },
             {
-                field: 'lookupValue',
-                header: 'Lookup Value',
+                field: 'lookupType',
+                header: 'Lookup Type',
                 type: 'data'
             },
             {
                 field: 'description',
                 header: 'Description',
+                type: 'data'
+            },
+            {
+                field: 'lookupValue',
+                header: 'Lookup Value',
                 type: 'data'
             },
             {

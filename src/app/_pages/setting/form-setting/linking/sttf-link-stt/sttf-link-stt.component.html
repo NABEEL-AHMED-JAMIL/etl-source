@@ -46,7 +46,7 @@
                     [nzListStyle]="{ 'width.px': 500, 'height.px': 325 }"
                     [nzRender]="render" (nzChange)="onChange($event)">
                     <ng-template #render let-item>
-                        {{ item.title }} [{{commomService.getDataFromObjectV2(item.description)}}]
+                        {{ item.title }}
                     </ng-template>
                 </nz-transfer>
             </div>

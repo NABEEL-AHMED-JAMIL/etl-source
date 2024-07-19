@@ -16,7 +16,7 @@ import {
     IStaticTable,
     ActionType,
     AuthenticationService,
-    FormSettingService,
+    SourceTaskTypeService,
     ApiCode
 } from 'src/app/_shared';
 
@@ -149,10 +149,10 @@ export class MgSourceTaskTypeComponent implements OnInit {
         private alertService: AlertService,
         private commomService: CommomService,
         private spinnerService: SpinnerService,
-        private formSettingService: FormSettingService,
+        private sourceTaskTypeService: SourceTaskTypeService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
@@ -172,7 +172,7 @@ export class MgSourceTaskTypeComponent implements OnInit {
     // fetch all lookup
     public fetchAllSTT(payload: any): any {
         this.spinnerService.show();
-        this.formSettingService.fetchAllSTT(payload)
+        this.sourceTaskTypeService.fetchAllSTT(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -189,7 +189,7 @@ export class MgSourceTaskTypeComponent implements OnInit {
 
     public deleteSTT(payload: any): void {
         this.spinnerService.show();
-        this.formSettingService.deleteSTT(payload)
+        this.sourceTaskTypeService.deleteSTT(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -327,7 +327,7 @@ export class MgSourceTaskTypeComponent implements OnInit {
 
     public deleteAllSTT(payload: any): void {
         this.spinnerService.show();
-        this.formSettingService.deleteAllSTT(payload)
+        this.sourceTaskTypeService.deleteAllSTT(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();

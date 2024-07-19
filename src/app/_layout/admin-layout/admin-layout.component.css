@@ -74,5 +74,14 @@ nz-header {
     box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
 }
 
+.bell-notification {
+    color: red;
+    background-color: white;
+    font-size: 20px;
+}
 
-
+.bell {
+    margin-right: 15px;
+    border: 1px solid;
+    border-radius: 16px;
+}

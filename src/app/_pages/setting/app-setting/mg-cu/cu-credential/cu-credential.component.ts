@@ -80,6 +80,7 @@ export class CuCredentialComponent implements OnInit {
         if (this.actionType === ActionType.ADD) {
             this.credentialForm = this.fb.group({
                 name: ['', Validators.required],
+                description: ['', Validators.required],
                 type: [, Validators.required]
             });
         } else if (this.actionType === ActionType.EDIT) {
@@ -181,8 +182,8 @@ export class CuCredentialComponent implements OnInit {
     public editAuthorizationCode(payload: any): void {
         this.credentialForm.addControl('content',
             this.fb.group({
-                clientId: [payload?.clientId, [Validators.required]],
-                clientSecret: [payload?.clientSecret, [Validators.required]],
+                awsKey: [payload?.awsKey, [Validators.required]],
+                awsSecret: [payload?.awsSecret, [Validators.required]],
                 authenticationUrl: [payload?.authenticationUrl, [Validators.required]],
                 tokenUrl: [payload?.tokenUrl, [Validators.required]],
                 scope: [payload?.scope, [Validators.required]]
@@ -193,8 +194,8 @@ export class CuCredentialComponent implements OnInit {
     public addAwsAuth(): void {
         this.credentialForm.addControl('content',
             this.fb.group({
-                clientId: ['', [Validators.required]],
-                clientSecret: ['', [Validators.required]],
+                awsKey: ['', [Validators.required]],
+                awsSecret: ['', [Validators.required]],
                 region: [''],
                 bucket: [''],
                 other: ['']
@@ -204,9 +205,9 @@ export class CuCredentialComponent implements OnInit {
     public editAwsAuth(payload: any): void {
         this.credentialForm.addControl('content',
             this.fb.group({
+                awsKey: [payload?.awsKey, [Validators.required]],
+                awsSecret: [payload?.awsSecret, [Validators.required]],
                 region: [payload?.region, [Validators.required]],
-                clientId: [payload?.clientId, [Validators.required]],
-                clientSecret: [payload?.clientSecret, [Validators.required]],
                 bucket: [payload?.bucket],
                 other: [payload?.other]
             }));
@@ -270,6 +271,7 @@ export class CuCredentialComponent implements OnInit {
                 this.credentialForm = this.fb.group({
                     id: [response?.id, Validators.required],
                     name: [response?.name, Validators.required],
+                    description: [response?.description, Validators.required],
                     type: [response?.type?.lookupCode, Validators.required],
                     status: [response?.status?.lookupCode, [Validators.required]],
                 });

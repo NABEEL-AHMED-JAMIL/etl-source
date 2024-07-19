@@ -11,22 +11,22 @@
                     <a nz-dropdown [nzDropdownMenu]="menu">
                         <span nz-icon nzType="fire"></span> Source Job</a>
                 </li>
+                <li *ngIf="hasPermissionAccess(['FAKE_DATA_PAGE_PERMISSION'])" nz-menu-item
+                    class="hli" routerLink="/setting">
+                    <span nz-icon nzType="file-sync" nzTheme="outline"></span> Generate Faker Data
+                </li>
                 <li *ngIf="hasPermissionAccess(['REPORT_PAGE_PERMISSION'])" nz-menu-item
                     class="hli" routerLink="/report">
                     <span nz-icon nzType="line-chart" nzTheme="outline"></span> Report & Dashboard
                 </li>
                 <li *ngIf="hasPermissionAccess(['ADMIN_PAGE_PERMISSION'])" nz-menu-item
                     class="hli" routerLink="/setting">
-                    <span nz-icon nzType="setting" nzTheme="outline"></span> Source & App Setting
-                </li>
-                <li *ngIf="hasPermissionAccess(['FAKE_DATA_PAGE_PERMISSION'])" nz-menu-item
-                    class="hli" routerLink="/setting">
-                    <span nz-icon nzType="file-sync" nzTheme="outline"></span> Faker Data Setting
+                    <span nz-icon nzType="setting" nzTheme="outline"></span> App Setting
                 </li>
             </ul>
         </div>
         <div nz-col nzMd="5" style="text-align: end;padding-right: 20px">
-            <nz-badge nzSize="small" style="margin-right: 20px;" nzShowZero
+            <nz-badge nzShowZero nzSize="small" class="bell"
                 [nzCount]="jobNotificationData.length + userNotificationData.length">
                 <nz-avatar class="bell-notification" nzIcon="bell" nz-dropdown
                     [nzDropdownMenu]="bellAction">

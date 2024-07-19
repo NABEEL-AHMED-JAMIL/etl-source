@@ -91,3 +91,10 @@
 <nz-dropdown-menu #userAction="nzDropdownMenu">
     <app-user-action [sessionUser]="sessionUser"></app-user-action>
 </nz-dropdown-menu>
+<!-- notifaction -->
+<nz-dropdown-menu #bellAction="nzDropdownMenu">
+    <app-notifaction-action
+        [jobNotificationData]="jobNotificationData"
+        [userNotificationData]="userNotificationData">
+    </app-notifaction-action>
+</nz-dropdown-menu>

@@ -13,38 +13,6 @@ export class FormSettingService {
     constructor(private http: HttpClient) {
     }
 
-    public addSTT(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/addSTT`, payload);
-    }
-
-    public editSTT(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/editSTT`, payload);
-    }
-
-    public deleteSTT(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/deleteSTT`, payload);
-    }
-
-    public fetchAllSTTLinkForm(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchAllSTTLinkForm`, payload);
-    }
-
-    public linkSTTForm(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/linkSTTForm`, payload);
-    }
-
-    public fetchSTTBySttId(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchSTTBySttId`, payload);
-    }
-
-    public fetchAllSTT(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/fetchAllSTT`, payload);
-    }
-
-    public deleteAllSTT(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/deleteAllSTT`, payload);
-    }
-
     public addForm(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/addForm`, payload);
     }

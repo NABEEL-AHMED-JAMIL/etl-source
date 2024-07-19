@@ -40,7 +40,7 @@
                     [nzListStyle]="{ 'width.px': 500, 'height.px': 325 }"
                     [nzRender]="render" (nzChange)="onChange($event)">
                     <ng-template #render let-item>
-                        {{ item.title }} [{{commomService.getDataFromObjectV2(item.description)}}]
+                        {{ item.title }}
                     </ng-template>
                 </nz-transfer>
             </div>
@@ -92,7 +92,7 @@
                         <tr *ngFor="let data of dynamicTable.data | searchdata: searchDetails;let i = index;">
                             <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
                                 <td>
-                                    {{data.controlName}} [{{commomService.getDataFromObjectV2(data.fieldType)}}]
+                                    {{data.controlName}}
                                 </td>
                                 <td class="td-centrail">
                                     {{data.controlOrder}}
@@ -109,7 +109,7 @@
                             </ng-container>
                             <ng-template #editTemplate>
                                 <td>
-                                    {{data.controlName}} [{{commomService.getDataFromObjectV2(data.fieldType)}}]
+                                    {{data.controlName}}
                                 </td>
                                 <td class="td-centrail">
                                     <input type="number" [nzSize]="'small'" nz-input

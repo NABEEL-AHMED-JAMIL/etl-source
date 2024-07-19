@@ -11,6 +11,16 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label>Template Description</nz-form-label>
+                <nz-form-control nzErrorTip="Template Description Required">
+                    <textarea nz-input formControlName="description"
+                        [nzAutosize]="{ minRows: 3}"
+                        placeholder="Enter Template Description"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
         <div nz-col nzSpan="24" *ngIf="actionType === editAction">
             <nz-form-item>
                 <nz-form-label nzRequired>Template Status</nz-form-label>

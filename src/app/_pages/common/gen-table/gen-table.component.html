@@ -83,6 +83,9 @@
                 </td>
                 <td *ngIf="col.type === 'tag'" style="text-align: center;width: 1px;">
                     <nz-tag class="{{row[col?.field]?.lookupType}}">
+                        <img *ngIf="col.showImg" 
+                            src="./assets/lookup/{{row[col?.field]?.lookupType}}.svg" 
+                             alt="{{row[col?.field]?.lookupType}}" class="option-image"/>
                         {{commomService.getDataFromObjectV2(row[col?.field])}}
                     </nz-tag>
                 </td>

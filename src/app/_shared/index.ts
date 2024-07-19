@@ -21,6 +21,7 @@ export * from './_services/play.ground.service';
 export * from './_services/common.service';
 export * from './_services/eventbridge.service';
 export * from './_services/enable-visibility.service';
+export * from './_services/source.tasktype.service';
 // model
 export * from './_model/object';
 export * from './_model/dynamic-controls';

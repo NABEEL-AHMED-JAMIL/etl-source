@@ -7,7 +7,7 @@
                     <img src="../../../../assets/logo.png" alt="logo" style="width: 200px;" />
                 </a>
             </div>
-            <h1 style="text-align: center;margin: 25px 0px" class="title">LogIn</h1>
+            <h3 style="text-align: center;margin: 25px 0px" class="title">ETL Login</h3>
             <nz-form-item>
                 <nz-form-control nzErrorTip="Please input your username!">
                     <nz-input-group nzPrefixIcon="user" class="form-input-grp">
@@ -30,12 +30,12 @@
                 </nz-form-control>
             </nz-form-item>
             <div nz-row class="login-form-margin">
-                <div nz-col [nzSpan]="24" style="text-align: start">
-                    <a routerLink="/forgotpass" class="title">Forgot password</a>
+                <div nz-col [nzSpan]="24" style="text-align: start" class="title">
+                    <a routerLink="/forgotpass">Forgot password</a>
                 </div>
             </div>
-            <button nz-button class="login-form-button login-form-margin"
-                [nzType]="'primary'"
+            <button nz-button [nzType]="'primary'"
+                class="login-form-button login-form-margin"
                 [nzLoading]="loading">Login</button>
             <div>
                 <p nz-col [nzSpan]="24" class="text-center title"
