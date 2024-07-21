@@ -21,10 +21,15 @@ import {
     E_VARAIABLE,
     FORM_TYPE,
     FormSettingService,
+    IReportSetting,
     IGenFrom,
     ILookups,
     LOOKUP_TYPE,
-    LookupService
+    LookupService,
+    ReportSettingService,
+    IDashboardSetting,
+    DashboardService,
+    DASHBOARD_TYPE
 } from 'src/app/_shared';
 
 
@@ -46,6 +51,10 @@ export class CUFormComponent implements OnInit {
     public genFormForm: FormGroup;
     public sessionUser: AuthResponse;
 
+    // report and dashboard
+    private reportList: IReportSetting[] = [];
+    private dashboardList: IDashboardSetting[] = [];
+
     public SERVICE_FORM = FORM_TYPE.SERVICE_FORM;
     public APPLICATION_STATUS: ILookups;
     public FORM_TYPE: ILookups;
@@ -59,6 +68,8 @@ export class CUFormComponent implements OnInit {
         private lookupService: LookupService,
         private envVarService: EVariableService,
         public commomService: CommomService,
+        private dashboardService: DashboardService,
+        private reportSettingService: ReportSettingService,
         private formSettingService: FormSettingService,
         private authenticationService: AuthenticationService) {
         this.authenticationService.currentUser
@@ -69,6 +80,8 @@ export class CUFormComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetchUserEnvByEnvKey();
+        this.fetchAllReportSetting();
+        this.fetchAllDashboardSettingByType();
         // APPLICATION_STATUS
         this.lookupService.fetchLookupDataByLookupType({
             lookupType: LOOKUP_TYPE.APPLICATION_STATUS
@@ -103,6 +116,53 @@ export class CUFormComponent implements OnInit {
             .subscribe((response: any) => {
                 this.HOME_PAGE = response.data;
                 this.spinnerService.hide();
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
+    }
+
+    // fetch all lookup
+    public fetchAllReportSetting(): any {
+        let payload = {
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        }
+        this.spinnerService.show();
+        this.reportSettingService.fetchAllReportSetting(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.reportList = response.data;
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
+    }
+
+    // fetch all lookup
+    public fetchAllDashboardSettingByType(): any {
+        let payload = {
+            sessionUser: {
+                username: this.sessionUser.username
+            },
+            boardType: DASHBOARD_TYPE.CUSTOM_DASHBOARD
+        }
+        this.spinnerService.show();
+        this.dashboardService.fetchAllDashboardSettingByType(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.dashboardList = response.data;
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);

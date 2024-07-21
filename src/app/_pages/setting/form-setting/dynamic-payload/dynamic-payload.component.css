@@ -26,3 +26,13 @@ textarea+textarea {
 .ant-drawer-body {
     padding: 0px !important;
 }
+
+.dynamic-data {
+    font-size:12px;
+    font-family:monospace;
+    white-space:pre;
+    height: auto;
+    width: 100%;
+    border-color: #ddd;
+    background-color: #ddd;
+}

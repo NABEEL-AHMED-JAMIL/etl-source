@@ -28,6 +28,10 @@ export class DashboardService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/dashboardSetting.json/fetchDashboardSettingByDashboardId`, payload);
     }
 
+    public fetchAllDashboardSettingByType(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/dashboardSetting.json/fetchAllDashboardSettingByType`, payload);
+    }
+
     public fetchAllDashboardSettingByGroup(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/dashboardSetting.json/fetchAllDashboardSettingByGroup`, payload);
     }

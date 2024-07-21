@@ -826,6 +826,12 @@ export const enum EVENT_BRIDGE_TYPE {
     REPORT_API_SEND = 2
 }
 
+export const enum DASHBOARD_TYPE {
+    POWER_BI = 0,
+    TABLEAU = 1,
+    CUSTOM_DASHBOARD = 2
+}
+
 export const enum SERVER_ACTION {
     ADD,
     EDIT,

@@ -93,7 +93,7 @@ export class DynamicPayloadQueryComponent implements OnInit {
                 this.loading = false;
                 debugger
                 if (response.status === ApiCode.SUCCESS) {
-                    this.dynamicString = response.message;
+                    this.dynamicString = response.data;
                     this.visible = true;
                     this.spinnerService.hide();
                 } else {
