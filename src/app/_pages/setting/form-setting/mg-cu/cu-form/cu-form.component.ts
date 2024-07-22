@@ -52,8 +52,8 @@ export class CUFormComponent implements OnInit {
     public sessionUser: AuthResponse;
 
     // report and dashboard
-    private reportList: IReportSetting[] = [];
-    private dashboardList: IDashboardSetting[] = [];
+    public reportList: IReportSetting[] = [];
+    public dashboardList: IDashboardSetting[] = [];
 
     public SERVICE_FORM = FORM_TYPE.SERVICE_FORM;
     public APPLICATION_STATUS: ILookups;
@@ -176,6 +176,8 @@ export class CUFormComponent implements OnInit {
             description: ['', [Validators.required]],
             formType: [FORM_TYPE.SERVICE_FORM, [Validators.required]],
             homePage: [],
+            reportId: [],
+            dashboardId: [],
             serviceId: [],
         });
         this.spinnerService.hide();
@@ -190,6 +192,8 @@ export class CUFormComponent implements OnInit {
             status: [this.editPayload.status.lookupCode, [Validators.required]],
             formType: [this.editPayload.formType.lookupCode, [Validators.required]],
             homePage: [this.editPayload.homePage ? this.editPayload.homePage.lookupType : ''],
+            reportId: [this.editPayload.report ? this.editPayload.report.id : ''],
+            dashboardId: [this.editPayload.dashboard ? this.editPayload.dashboard.id : ''],
             serviceId: [this.editPayload.serviceId]
         });
         this.genFormForm.get('formType').disable();

@@ -182,6 +182,8 @@ export interface IGenFrom extends IBaseEntity {
     formName: any;
     description: any;
     homePage: any;
+    report?: IReportSetting;
+    dashboard?: IDashboardSetting
     serviceId: any;
     formType: any;
     totalSection: any;

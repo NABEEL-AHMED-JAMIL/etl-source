@@ -20,29 +20,50 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="24"
-            *ngIf="HOME_PAGE && genForm['formType'].value === SERVICE_FORM">
+        <div nz-col nzSpan="16" *ngIf="HOME_PAGE && genForm['formType'].value === SERVICE_FORM">
             <nz-form-item>
                 <nz-form-label>Home Page</nz-form-label>
                 <nz-form-control>
-                    <nz-select nzShowSearch nzAllowClear
-                        formControlName="homePage"
-                        nzPlaceHolder="Select Home Page">
+                    <nz-select nzShowSearch nzAllowClear formControlName="homePage" nzPlaceHolder="Select Home Page">
                         <nz-option *ngFor="let lookupChildren of HOME_PAGE?.SUB_LOOKUP_DATA"
-                            [nzLabel]="lookupChildren.lookupValue"
-                            [nzValue]="lookupChildren.lookupType">
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupType">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="24"
-            *ngIf="HOME_PAGE && genForm['formType'].value === SERVICE_FORM">
+        <div nz-col nzSpan="8" *ngIf="HOME_PAGE && genForm['formType'].value === SERVICE_FORM">
             <nz-form-item>
                 <nz-form-label>ServiceId</nz-form-label>
                 <nz-form-control>
-                    <input nz-input formControlName="serviceId"
-                        placeholder="Enter ServiceId" />
+                    <input nz-input formControlName="serviceId" placeholder="Enter ServiceId" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- report & dashboard -->
+        <div nz-col nzSpan="24" *ngIf="HOME_PAGE && genForm['formType'].value === SERVICE_FORM">
+            <nz-form-item>
+                <nz-form-label>Report</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear formControlName="reportId"
+                        nzPlaceHolder="Select Report if any">
+                        <nz-option *ngFor="let repor of reportList"
+                            [nzLabel]="repor.name" [nzValue]="repor.id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24" *ngIf="HOME_PAGE && genForm['formType'].value === SERVICE_FORM">
+            <nz-form-item>
+                <nz-form-label>Dashboard</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear formControlName="dashboardId" 
+                        nzPlaceHolder="Select Dashboard if any">
+                        <nz-option *ngFor="let dashboard of dashboardList"
+                            [nzLabel]="dashboard.name" [nzValue]="dashboard.id">
+                        </nz-option>
+                    </nz-select>
                 </nz-form-control>
             </nz-form-item>
         </div>
@@ -50,8 +71,7 @@
             <nz-form-item>
                 <nz-form-label nzRequired>Form Status</nz-form-label>
                 <nz-form-control nzErrorTip="Form Status Required">
-                    <nz-select nzShowSearch nzAllowClear formControlName="status"
-                        nzPlaceHolder="Select Form Status">
+                    <nz-select nzShowSearch nzAllowClear formControlName="status" nzPlaceHolder="Select Form Status">
                         <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
                             [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
                         </nz-option>
@@ -70,8 +90,8 @@
         </div>
         <div nz-col [nzSpan]="24" class="search-area">
             <button nz-button type="reset">Clear</button>
-            <button nz-button [nzType]="'primary'" [disabled]="!genFormForm.valid"
-                [nzLoading]="loading" type="submit" style="float: right;">
+            <button nz-button [nzType]="'primary'" [disabled]="!genFormForm.valid" [nzLoading]="loading" type="submit"
+                style="float: right;">
                 Submit
             </button>
         </div>

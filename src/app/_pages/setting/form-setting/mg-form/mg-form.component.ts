@@ -104,12 +104,14 @@ export class MGFormComponent implements OnInit {
             {
                 field: 'dashboard',
                 header: 'Dashboard',
-                type: 'tag'
+                type: 'combine',
+                subfield: ['name']
             },
             {
                 field: 'report',
                 header: 'Report',
-                type: 'tag'
+                type: 'combine',
+                subfield: ['name']
             },
             {
                 field: 'serviceId',
