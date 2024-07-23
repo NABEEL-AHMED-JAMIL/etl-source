@@ -86,11 +86,6 @@ export class MGFormComponent implements OnInit {
                 type: 'data'
             },
             {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
-            },
-            {
                 field: 'formType',
                 header: 'Form Type',
                 type: 'tag',

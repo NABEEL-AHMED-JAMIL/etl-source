@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { EChartsOption } from 'echarts';
+import * as echarts from 'echarts';
 import { first } from 'rxjs';
 import {
     AlertService,
@@ -12,7 +14,6 @@ import {
     SettingService
 } from 'src/app/_shared';
 
-
 @Component({
     selector: 'app-setting-dashboard',
     templateUrl: './setting-dashboard.component.html',
@@ -22,26 +23,29 @@ export class SettingDashboardComponent implements OnInit {
 
     public currentUser: AuthResponse;
 
-    public APP_SETTING_STATISTICS: EChartsOption;
-    public PROFILE_SETTING_STATISTICS: EChartsOption;
-    public FORM_SETTING_STATISTICS: EChartsOption;
-    public REPORT_SETTING_STATISTICS: EChartsOption;
-    public DASHBOARD_SETTING_STATISTICS: EChartsOption;
     public SERVICE_SETTING_STATISTICS: EChartsOption;
+    public DASHBOARD_AND_REPORT_SETTING_STATISTICS: EChartsOption;
+    public FORM_SETTING_STATISTICS: EChartsOption;
+    public PROFILE_SETTING_STATISTICS: EChartsOption;
+    public APP_SETTING_STATISTICS: EChartsOption;
     public SESSION_COUNT_STATISTICS: EChartsOption;
+
     // daily session detail
     public fromdate: any;
     public todate: any;
 
     constructor(
+        private http: HttpClient,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private settingService: SettingService,
         private authenticationService: AuthenticationService) {
+        this.loadTheme();
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.currentUser = currentUser;
             });
+
     }
 
     ngOnInit(): void {
@@ -50,23 +54,29 @@ export class SettingDashboardComponent implements OnInit {
         });
     }
 
-    public generateRandomData(count: number): { key: string[], value: string[] } {
-        const key: string[] = [];
-        const value: string[] = [];
-        for (let i = 0; i < count; i++) {
-          const randomYear = Math.floor(Math.random() * (2025 - 2010)) + 2010;
-          const randomMonth = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
-          const randomDay = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
-          const formattedDate = `${randomYear}-${randomMonth}-${randomDay}`;
-          key.push(formattedDate);
-          value.push((Math.random() * 1000).toFixed(2));
-        }
-        return {
-            key: key,
-            value: value
-        };
+    public loadTheme(): void {
+        this.http.get('assets/shine-theme.json')
+            .subscribe((theme: any) => {
+                echarts.registerTheme('shine', theme);
+            });
     }
-      
+
+    public initCharts(): void {
+        this.initChart('SERVICE_SETTING_STATISTICS', this.SERVICE_SETTING_STATISTICS);
+        this.initChart('DASHBOARD_AND_REPORT_SETTING_STATISTICS', this.DASHBOARD_AND_REPORT_SETTING_STATISTICS);
+        this.initChart('FORM_SETTING_STATISTICS', this.FORM_SETTING_STATISTICS);
+        this.initChart('PROFILE_SETTING_STATISTICS', this.PROFILE_SETTING_STATISTICS);
+        this.initChart('APP_SETTING_STATISTICS', this.APP_SETTING_STATISTICS);
+        this.initChart('SESSION_COUNT_STATISTICS', this.SESSION_COUNT_STATISTICS);
+    }
+
+    public initChart(elementId: string, chartOptions: EChartsOption): void {
+        const chartDom = document.getElementById(elementId);
+        if (chartDom) {
+            const myChart = echarts.init(chartDom, 'shine');
+            myChart.setOption(chartOptions);
+        }
+    }
 
     // fetch all lookup
     public fetchSettingDashboard(payload: any): any {
@@ -79,28 +89,26 @@ export class SettingDashboardComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.APP_SETTING_STATISTICS = this.fillChartByPayloadId(
-                    'App Setting', response.data['APP_SETTING_STATISTICS']['data']);
-                this.PROFILE_SETTING_STATISTICS = this.fillChartByPayloadId(
-                    'Profile Setting', response.data['PROFILE_SETTING_STATISTICS']['data']);
-                this.FORM_SETTING_STATISTICS = this.fillChartByPayloadId(
-                    'Form Setting', response.data['FORM_SETTING_STATISTICS']['data']);
-                this.REPORT_SETTING_STATISTICS = this.fillChartByPayloadId(
-                    'Report Setting', response.data['REPORT_SETTING_STATISTICS']['data']);
-                this.DASHBOARD_SETTING_STATISTICS = this.fillChartByPayloadId(
-                    'Dashboard Setting', response.data['DASHBOARD_SETTING_STATISTICS']['data']);
                 this.SERVICE_SETTING_STATISTICS = this.fillChartByPayloadId(
                     'Service Setting', response.data['SERVICE_SETTING_STATISTICS']['data']);
-                this.SESSION_COUNT_STATISTICS = this.SESSION_COUNT_STATISTICS = 
-                    this.fillChartBySessionCount(response.data['SESSION_COUNT_STATISTICS']['data']);
-                    
+                this.DASHBOARD_AND_REPORT_SETTING_STATISTICS = this.fillChartByPayloadId(
+                    'Service Setting', response.data['DASHBOARD_AND_REPORT_SETTING_STATISTICS']['data']);
+                this.APP_SETTING_STATISTICS = this.fillChartByPayloadId(
+                    'App Setting', response.data['APP_SETTING_STATISTICS']['data']);
+                this.FORM_SETTING_STATISTICS = this.fillChartByPayloadId(
+                    'Form Setting', response.data['FORM_SETTING_STATISTICS']['data']);
+                this.PROFILE_SETTING_STATISTICS = this.fillChartByPayloadId(
+                    'Profile Setting', response.data['PROFILE_SETTING_STATISTICS']['data']);
+                this.SESSION_COUNT_STATISTICS = this.fillChartBySessionCount(
+                    response.data['SESSION_COUNT_STATISTICS']['data']);
+                this.initCharts();  // Initialize charts after data is set
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
-    public fillChartByPayloadId(name: any, data: any): any {
+    public fillChartByPayloadId(name: any, data: any): EChartsOption {
         return {
             tooltip: {
                 trigger: 'item'
@@ -143,19 +151,7 @@ export class SettingDashboardComponent implements OnInit {
                 top: '12%',
                 bottom: '15%'
             },
-            dataZoom: [
-                // {
-                //     type: 'inside',
-                //     // Change size of the inside zoom area
-                //     width: 20, // Set the width
-                //     height: 20 // Set the height
-                // },
-                // {
-                //     type: 'slider',
-                //     height: 10, // Set the height
-                //     bottom: 10, // Set the position from the bottom
-                // }
-            ],
+            dataZoom: [],
             xAxis: {
                 data: data.map((object: any) => object.key),
                 silent: false,

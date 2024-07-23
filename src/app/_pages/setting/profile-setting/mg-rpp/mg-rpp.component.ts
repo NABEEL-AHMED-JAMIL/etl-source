@@ -36,6 +36,7 @@ import {
 })
 export class MgRPPComponent implements OnInit {
 
+    public title = 'Roler & Profile';
     public setOfRoleCheckedId = new Set<any>();
     public setOfProfileCheckedId = new Set<any>();
     public setOfPermissionCheckedId = new Set<any>();

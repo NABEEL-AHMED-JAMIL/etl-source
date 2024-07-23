@@ -30,13 +30,15 @@
         </nz-button-group>
     </div>
 </div>
-<nz-divider style="margin: 5px 0;"></nz-divider>
+<!-- <nz-divider style="margin: 5px 0;"></nz-divider> -->
 <nz-table #dynamicTable [id]="staticTable.tableId" [nzSize]="staticTable.size" [nzBordered]="staticTable.bordered"
     [nzNoResult]="'No Data'" [nzData]="staticTable.dataSource" [nzPaginationType]="'small'"
     [nzPaginationPosition]="'bottom'" [nzShowSizeChanger]='true'
-    [nzPageSize]="20" [nzPageSizeOptions]="[20,50,100]"
-    [nzFrontPagination]="true" [nzShowPagination]="true" (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
-    class="table-setting">
+    [nzPageSize]="15" [nzPageSizeOptions]="[15,30,50]"
+    [nzFrontPagination]="true" [nzShowPagination]="true"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+    class="table-setting"
+    style="margin: 5px 0;">
     <thead>
         <tr>
             <th>#</th>

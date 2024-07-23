@@ -2,16 +2,16 @@
 <div class="content">
     <h3>
         <span nz-icon nzType="link" nzTheme="outline"></span>
-        Roler & Profile
-    </h3>
-    <nz-tabset>
+        {{title}}</h3>
+    <nz-divider style="margin: 5px 0;"></nz-divider>
+    <nz-tabset nzSize="small" nzTabPosition="left">
         <nz-tab [nzTitle]="roleTemplate">
             <ng-template #roleTemplate>
                 <span nz-icon nzType="lock"
                     nzTheme="twotone"></span>
                 {{roleTable.title}}
             </ng-template>
-            <app-gen-table class="content"
+            <app-gen-table
                 *ngIf="roleTable"
                 [isDateFilter]="false"
                 [staticTable]="roleTable"
@@ -27,7 +27,7 @@
                     nzTheme="twotone"></span>
                 {{profileTable.title}}
             </ng-template>
-            <app-gen-table class="content"
+            <app-gen-table
                 *ngIf="profileTable"
                 [isDateFilter]="false"
                 [staticTable]="profileTable"
@@ -43,7 +43,7 @@
                     nzTheme="twotone"></span>
                 {{permissionTable.title}}
             </ng-template>
-            <app-gen-table class="content"
+            <app-gen-table
                 *ngIf="permissionTable"
                 [isDateFilter]="false"
                 [staticTable]="permissionTable"
@@ -59,7 +59,7 @@
                     nzTheme="twotone"></span>
                     Link Profile & Permission
             </ng-template>
-            <div class="content" style="padding-left: 0px;padding-right: 0px;">
+            <div style="padding-left: 0px;padding-right: 0px;">
                 <app-pp-crose-table></app-pp-crose-table>
             </div>
         </nz-tab>
