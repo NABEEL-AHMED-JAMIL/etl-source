@@ -9,7 +9,6 @@ import {
 } from '../../../../_shared';
 import {
     AlertService,
-    CommomService,
     SpinnerService
 } from '../../../../_helpers';
 import { CUTemplateComponent } from '../../../index';
@@ -64,6 +63,11 @@ export class MgTemplateComponent implements OnInit {
                 type: 'data'
             },
             {
+                field: 'description',
+                header: 'Description',
+                type: 'data'
+            },
+            {
                 field: 'dateCreated',
                 header: 'Created',
                 type: 'date'
@@ -114,13 +118,12 @@ export class MgTemplateComponent implements OnInit {
         private modalService: NzModalService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
-        private commomService: CommomService,
         private templateRegService: TemplateRegService,
         private authenticationService: AuthenticationService) {
-            this.authenticationService.currentUser
-                .subscribe(currentUser => {
-                    this.sessionUser = currentUser;
-                });
+        this.authenticationService.currentUser
+            .subscribe(currentUser => {
+                this.sessionUser = currentUser;
+            });
     }
 
     ngOnInit(): void {

@@ -72,6 +72,11 @@ export class MgUserComponent implements OnInit {
         ],
         dataColumn: [
             {
+                field: 'profileImg',
+                header: 'Img',
+                type: 'img'
+            },
+            {
                 field: 'email',
                 header: 'Email',
                 type: 'data'
@@ -101,7 +106,7 @@ export class MgUserComponent implements OnInit {
                 field: 'createdBy',
                 header: 'Created By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'dateUpdated',
@@ -112,7 +117,7 @@ export class MgUserComponent implements OnInit {
                 field: 'updatedBy',
                 header: 'Updated By',
                 type: 'combine',
-                subfield: ['id', 'username']
+                subfield: ['username']
             },
             {
                 field: 'status',
@@ -165,7 +170,7 @@ export class MgUserComponent implements OnInit {
         private appUserService: AppUserService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;

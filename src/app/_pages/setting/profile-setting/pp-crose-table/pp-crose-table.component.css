@@ -1,0 +1,7 @@
+.pp-crose-table {
+    font-size: 10px;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    height: 420px;
+}

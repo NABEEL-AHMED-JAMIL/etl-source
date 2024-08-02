@@ -4,15 +4,15 @@ import { Location } from '@angular/common';
 import {
     ApiCode,
     AuthenticationService,
+    AuthResponse,
     DashboardService,
-    ReportSettingService,
+    ReportSettingService
 } from '../../_shared';
 import {
     AlertService,
     SpinnerService
 } from 'src/app/_helpers';
 import { first } from 'rxjs';
-import { RootLayout } from '../root-layout';
 
 
 @Component({
@@ -20,23 +20,32 @@ import { RootLayout } from '../root-layout';
     templateUrl: './report-layout.component.html',
     styleUrls: ['./report-layout.component.css']
 })
-export class ReportLayoutComponent extends RootLayout implements OnInit {
+export class ReportLayoutComponent implements OnInit {
 
     public isCollapsed = false;
-    public displayMainContent = false;
-    public title: any = 'ETL Source 2023';
-    public reportList: any[];
-    public dashboardList: any[];
+
+    public title: any = 'ETL Source R&D 2023';
+    public sessionUser: AuthResponse;
+    public userPermission: any;
+
+    public reportList: any[] = [];
+    public dashboardList: any[] = [];
 
     constructor(
-        router: Router,
-        location: Location,
-        authenticationService: AuthenticationService,
+        private router: Router,
+        private location: Location,
+        private authenticationService: AuthenticationService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private reportSettingService: ReportSettingService,
         private dashboardService: DashboardService) {
-        super(router, location, authenticationService);
+        this.authenticationService.currentUser
+            .subscribe(currentUser => {
+                this.sessionUser = currentUser;
+                if (this.sessionUser) {
+                    this.userPermission = currentUser.profile.permission;
+                }
+            });
     }
 
     ngOnInit(): void {
@@ -82,11 +91,14 @@ export class ReportLayoutComponent extends RootLayout implements OnInit {
                     return;
                 }
                 this.dashboardList = response.data;
-                console.log(this.dashboardList);
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
+    }
+
+    public hasPermissionAccess(userProfile: any): boolean {
+        return this.userPermission.some((permission: any) => userProfile.includes(permission));
     }
 
     public getReportKeys(): any {
@@ -103,6 +115,14 @@ export class ReportLayoutComponent extends RootLayout implements OnInit {
 
     public getDashboardValue(key: any): any {
         return this.dashboardList[key];
+    }
+
+    public home(): any {
+        this.router.navigate(['/dashboard']);
+    }
+
+    public back(): any {
+        this.location.back();
     }
 
 }

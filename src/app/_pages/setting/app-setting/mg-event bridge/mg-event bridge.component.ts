@@ -84,23 +84,19 @@ export class MgEventBridgeComponent implements OnInit {
                 type: 'data'
             },
             {
-                field: 'bridgeUrl',
-                header: 'Bridg Url',
+                field: 'description',
+                header: 'Description',
                 type: 'data'
-            },
-            {
-                field: 'httpMethod',
-                header: 'Method Type',
-                type: 'tag'
             },
             {
                 field: 'bridgeType',
                 header: 'Bridg Type',
-                type: 'tag'
+                type: 'tag',
+                showImg: true
             },
             {
                 field: 'totalLinkCount',
-                header: 'Total Linked',
+                header: 'In Use',
                 type: 'tag'
             },
             {
@@ -109,11 +105,6 @@ export class MgEventBridgeComponent implements OnInit {
                 type: 'combine',
                 subfield: ['name'],
                 status: 'status'
-            },
-            {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
             },
             {
                 field: 'dateCreated',

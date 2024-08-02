@@ -56,13 +56,19 @@ export class CredentialComponent implements OnInit {
                 type: 'data'
             },
             {
+                field: 'description',
+                header: 'Description',
+                type: 'data'
+            },
+            {
                 field: 'type',
                 header: 'Type',
-                type: 'tag'
+                type: 'tag',
+                showImg: true
             },
             {
                 field: 'totalCount',
-                header: 'Total Linked',
+                header: 'Link To Event',
                 type: 'tag'
             },
             {

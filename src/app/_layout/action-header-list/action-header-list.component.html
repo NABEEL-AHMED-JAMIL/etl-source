@@ -1,0 +1,21 @@
+<nz-badge nzShowZero nzSize="small" class="bell"
+    [nzCount]="getTotalNotifacation()">
+    <nz-avatar class="bell-notification" nzIcon="bell"
+        nz-dropdown [nzDropdownMenu]="bellAction">
+    </nz-avatar>
+</nz-badge>&nbsp;
+<nz-avatar nzIcon="user" nz-dropdown [nzDropdownMenu]="userAction"
+    nzSrc="{{'./assets/avatar/' + sessionUser.profileImage }}">
+</nz-avatar>
+
+<!-- user -->
+<nz-dropdown-menu #userAction="nzDropdownMenu">
+    <app-user-action [sessionUser]="sessionUser"></app-user-action>
+</nz-dropdown-menu>
+<!-- notifaction -->
+<nz-dropdown-menu #bellAction="nzDropdownMenu">
+    <app-notifaction-action 
+        [jobNotificationData]="jobNotificationData"
+        [userNotificationData]="userNotificationData">
+    </app-notifaction-action>
+</nz-dropdown-menu>

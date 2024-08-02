@@ -45,7 +45,7 @@
                     [nzListStyle]="{ 'width.px': 500, 'height.px': 325 }"
                     [nzRender]="render" (nzChange)="onChange($event)">
                     <ng-template #render let-item>
-                        {{ item.title }} [{{commomService.getDataFromObjectV2(item.description)}}]
+                        {{ item.title }}
                     </ng-template>
                 </nz-transfer>
             </div>
@@ -77,7 +77,8 @@
                     [nzFrontPagination]="true"
                     [nzShowPagination]="true"
                     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
-                    class="table-setting">
+                    class="table-setting"
+                    style="margin: 5px 0;">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -93,7 +94,7 @@
                         <tr *ngFor="let data of dynamicTable.data | searchdata: searchDetails;let i = index;">
                             <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
                                 <td>
-                                    {{data.sectionName}} [{{data.description}}]
+                                    {{data.sectionName}}
                                 </td>
                                 <td class="td-centrail">
                                     {{data.sectionOrder}}
@@ -104,7 +105,7 @@
                             </ng-container>
                             <ng-template #editTemplate>
                                 <td>
-                                    {{data.sectionName}} [{{data.description}}]
+                                    {{data.sectionName}}
                                 </td>
                                 <td class="td-centrail">
                                     <input type="number" [nzSize]="'small'" nz-input

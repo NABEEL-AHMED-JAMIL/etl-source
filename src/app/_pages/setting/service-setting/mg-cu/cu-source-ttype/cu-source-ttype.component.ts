@@ -19,7 +19,7 @@ import {
     AuthenticationService,
     CREDENTIAL_TYPE,
     CredentailService,
-    FormSettingService,
+    SourceTaskTypeService,
     ICredential,
     ILookups,
     ISTT,
@@ -72,7 +72,7 @@ export class CuSourceTTypeComponent implements OnInit {
         private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private credentailService: CredentailService,
-        private formSettingService: FormSettingService,
+        private sourceTaskTypeService: SourceTaskTypeService,
         private authenticationService: AuthenticationService) {
         this.authenticationService.currentUser
             .subscribe(currentUser => {
@@ -248,7 +248,7 @@ export class CuSourceTTypeComponent implements OnInit {
                 username: this.sessionUser.username
             }
         }
-        this.formSettingService.addSTT(payload)
+        this.sourceTaskTypeService.addSTT(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -276,7 +276,7 @@ export class CuSourceTTypeComponent implements OnInit {
                 username: this.sessionUser.username
             }
         }
-        this.formSettingService.editSTT(payload)
+        this.sourceTaskTypeService.editSTT(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();

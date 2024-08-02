@@ -74,7 +74,8 @@ export class MgDashboardComponent implements OnInit {
             {
                 field: 'boardType',
                 header: 'Board Type',
-                type: 'tag'
+                type: 'tag',
+                showImg: true
             },
             {
                 field: 'iframe',
@@ -144,7 +145,7 @@ export class MgDashboardComponent implements OnInit {
         private dashboardService: DashboardService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;

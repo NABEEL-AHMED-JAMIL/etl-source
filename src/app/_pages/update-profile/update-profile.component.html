@@ -1,163 +1,196 @@
 <div class="content">
-    <nz-tabset nzSize="small" nzTabPosition="top">
+    <nz-tabset nzSize="small" nzTabPosition="left">
         <nz-tab [nzTitle]="userTemplate" *ngIf="appUser">
             <ng-template #userTemplate>
-                <span nz-icon nzType="user"></span>
-                User Info
+                <span nz-icon nzType="user"
+                nz-tooltip
+                nzTooltipTitle="User Info">
+            </span>    
             </ng-template>
-            <!-- <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> 
+            <h3><span nz-icon nzType="user" nzTheme="outline"></span>
                 User Info (IP:{{appUser.ipAddress}})
             </h3>
-            <hr> -->
-            <div class="content">
-                <nz-descriptions nzSize="small">
-                    <nz-descriptions-item nzTitle="Name">
-                        {{appUser.firstName}} {{appUser.lastName}}
-                    </nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="UserName">
-                        ({{appUser.id}}) {{appUser.username}}
-                    </nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Email">
-                        {{appUser.email}}
-                    </nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Profile">
-                        ({{appUser.profile?.id}}) {{appUser.profile?.profileName}}
-                    </nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Role">
-                        <div style="display: block;">
-                            <nz-tag *ngFor="let role of appUser.roles" 
-                                [nzColor]="'red'">{{role}}
-                            </nz-tag>
-                        </div>
-                    </nz-descriptions-item>
-                </nz-descriptions>
-            </div>
+            <hr>
+            <nz-descriptions nzSize="small">
+                <nz-descriptions-item nzTitle="Name">
+                    {{appUser.firstName}} {{appUser.lastName}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="UserName">
+                    {{appUser.username}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Email">
+                    {{appUser.email}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Account Type">
+                    {{commomService.getDataFromObjectV2(appUser.accountType)}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Profile">
+                    {{appUser.profile?.profileName}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Role">
+                    <div style="display: block;">
+                        <nz-tag *ngFor="let role of appUser.roles"
+                            [nzColor]="'red'">{{role}}
+                        </nz-tag>
+                    </div>
+                </nz-descriptions-item>
+            </nz-descriptions>
+            <h3>
+                <span nz-icon nzType="deployment-unit"
+                    nzTheme="outline"></span>
+                Org Info
+            </h3>
+            <hr>
+            <nz-descriptions nzSize="small" *ngIf="appUser?.organization">
+                <nz-descriptions-item nzTitle="Name">
+                    {{appUser?.organization.name}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Address">
+                    {{appUser?.organization.address}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Email">
+                    {{appUser?.organization.email}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Phone">
+                    {{appUser?.organization.phone}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Country">
+                    {{appUser?.organization?.country?.countryName}}
+                </nz-descriptions-item>
+            </nz-descriptions>
         </nz-tab>
         <nz-tab [nzTitle]="changePasswordTemplate">
             <ng-template #changePasswordTemplate>
-                <span nz-icon nzType="key"></span>
-                Change Password
+                <span nz-icon nzType="key"
+                    nz-tooltip
+                    nzTooltipTitle="Change Password"></span>
             </ng-template>
-            <!-- <h3><span nz-icon nzType="pushpin" nzTheme="outline"></span> Change Password</h3>
-            <hr> -->
-            <div style="margin-top: 10px;">
-                <form nz-form *ngIf="resetPasswordForm" [nzLayout]="'vertical'" [formGroup]="resetPasswordForm"
-                    (ngSubmit)="submitResetPassword()">
-                    <div nz-row [nzGutter]="16">
-                        <div nz-col nzSpan="12">
-                            <nz-form-item>
-                                <nz-form-label nzRequired>E-mail</nz-form-label>
-                                <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTpl">
-                                    <input nz-input formControlName="email" placeholder="Enter Email" type="email" />
-                                    <ng-template #emailErrorTpl let-control>
-                                        <ng-container *ngIf="control.hasError('email')">
-                                            The input is not valid E-mail!
-                                        </ng-container>
-                                        <ng-container *ngIf="control.hasError('required')">
-                                            Please input your E-mail!
-                                        </ng-container>
-                                    </ng-template>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                        <div nz-col nzSpan="12">
-                            <nz-form-item>
-                                <nz-form-label nzRequired>Old Password</nz-form-label>
-                                <nz-form-control nzHasFeedback nzErrorTip="Please input your old password!">
-                                    <input nz-input type="password" formControlName="oldPassword"
-                                        placeholder="Enter Old Password" />
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                        <div nz-col nzSpan="12">
-                            <nz-form-item>
-                                <nz-form-label nzRequired>New Password</nz-form-label>
-                                <nz-form-control nzHasFeedback nzErrorTip="Please input your new password!">
-                                    <input nz-input type="password" formControlName="newPassword"
-                                        placeholder="Enter New Password" (ngModelChange)="validateConfirmPassword()" />
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                        <div nz-col nzSpan="12">
-                            <nz-form-item>
-                                <nz-form-label nzRequired>Confirm Password</nz-form-label>
-                                <nz-form-control nzHasFeedback [nzErrorTip]="passwordErrorTpl">
-                                    <input nz-input type="password" formControlName="confirm"
-                                        placeholder="Enter Confirm Password" />
-                                    <ng-template #passwordErrorTpl let-control>
-                                        <ng-container *ngIf="control.hasError('required')">
-                                            Please confirm your password!
-                                        </ng-container>
-                                        <ng-container *ngIf="control.hasError('confirm')">
-                                            Password is inconsistent!
-                                        </ng-container>
-                                    </ng-template>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                        <div nz-col nzSpan="24" style="text-align: end;">
-                            <nz-form-item>
-                                <nz-form-control>
-                                    <button nz-button nzType="primary"
-                                        [disabled]="!resetPasswordForm.valid">Submit</button>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
+            <h3><span nz-icon nzType="key" 
+                nzTheme="outline"></span> Change Password</h3>
+            <hr>
+            <form nz-form *ngIf="resetPasswordForm" [nzLayout]="'vertical'"
+                [formGroup]="resetPasswordForm"
+                (ngSubmit)="submitResetPassword()">
+                <div nz-row [nzGutter]="16">
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>E-mail</nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTpl">
+                                <input nz-input formControlName="email"
+                                    placeholder="Enter Email" type="email"/>
+                                <ng-template #emailErrorTpl let-control>
+                                    <ng-container *ngIf="control.hasError('email')">
+                                        The input is not valid E-mail!
+                                    </ng-container>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        Please input your E-mail!
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
                     </div>
-                </form>
-            </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Old Password</nz-form-label>
+                            <nz-form-control nzHasFeedback
+                                nzErrorTip="Please input your old password!">
+                                <input nz-input type="password"
+                                    formControlName="oldPassword"
+                                    placeholder="Enter Old Password" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>New Password</nz-form-label>
+                            <nz-form-control nzHasFeedback
+                                nzErrorTip="Please input your new password!">
+                                <input nz-input type="password"
+                                    formControlName="newPassword"
+                                    placeholder="Enter New Password"
+                                    (ngModelChange)="validateConfirmPassword()" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired>Confirm Password</nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="passwordErrorTpl">
+                                <input nz-input type="password"
+                                    formControlName="confirm"
+                                    placeholder="Enter Confirm Password" />
+                                <ng-template #passwordErrorTpl let-control>
+                                    <ng-container *ngIf="control.hasError('required')">
+                                        Please confirm your password!
+                                    </ng-container>
+                                    <ng-container *ngIf="control.hasError('confirm')">
+                                        Password is inconsistent!
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="24" style="text-align: end;">
+                        <nz-form-item>
+                            <nz-form-control>
+                                <button nz-button nzType="primary"
+                                [disabled]="!resetPasswordForm.valid">Submit</button>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </form>
         </nz-tab>
         <nz-tab [nzTitle]="envTemplate">
             <ng-template #envTemplate>
-                <span nz-icon nzType="dropbox"></span>
-                Environment Variable
+                <span nz-icon nzType="dropbox"
+                    nz-tooltip
+                    nzTooltipTitle="Environment Variable"></span>                
             </ng-template>
-            <!-- <div nz-row [nzGutter]="16">
+            <div nz-row [nzGutter]="16">
                 <div nz-col nzSpan="20">
-                    <h3><span nz-icon nzType="pushpin" 
+                    <h3><span nz-icon nzType="dropbox" 
                         nzTheme="outline"></span> Environment Variable</h3>
                 </div>
                 <div nz-col nzSpan="4" style="text-align: end;">
-                    <button nz-button id="envVariable" (click)="refresh()">
+                    <button nz-button nzType="primary"
+                        id="envVariable" (click)="refresh()">
                         <span nz-icon nzType="sync"></span>
                         Refresh
                     </button>
                 </div>
             </div>
-            <hr> -->
-            <div style="margin-top: 10px;">
-                <app-gen-table *ngIf="eVariableTable" [staticTable]="eVariableTable"
-                    (actionEventEmitter)="tableEVariableActionReciver($event)">
-                </app-gen-table>
-            </div>
+            <hr>
+            <app-gen-table *ngIf="eVariableTable"
+                [staticTable]="eVariableTable"
+                (actionEventEmitter)="tableEVariableActionReciver($event)">
+            </app-gen-table>
         </nz-tab>
         <nz-tab [nzTitle]="eventBridge">
             <ng-template #eventBridge>
-                <span nz-icon nzType="group" nzTheme="outline"></span>
-                My Event Bridge
+                <span nz-icon nzType="group"
+                    nzTheme="outline"
+                    nz-tooltip
+                    nzTooltipTitle="My Event Bridge"></span>                
             </ng-template>
-            <div class="tab-content" style="margin-top: 10px;">
-                <!-- <div nz-row [nzGutter]="16">
-                    <div nz-col nzSpan="20">
-                        <h3><span nz-icon nzType="pushpin"
-                                nzTheme="outline"></span> My Event Bridge</h3>
-                    </div>
-                    <div nz-col nzSpan="4" style="text-align: end;">
-                        <button nz-button id="eventBridge" (click)="refresh()">
-                            <span nz-icon nzType="sync"></span>
-                            Refresh
-                        </button>
-                    </div>
+            <div nz-row [nzGutter]="16">
+                <div nz-col nzSpan="20">
+                    <h3><span nz-icon nzType="group"
+                        nzTheme="outline"></span> My Event Bridge</h3>
                 </div>
-                <hr> -->
-                <div class="content-wrapper">
-                    <div class="table-container">
-                        <app-gen-table *ngIf="eventBridgeTable" [staticTable]="eventBridgeTable"
-                            (actionEventEmitter)="tableEventBridgeActionReciver($event)">
-                        </app-gen-table>
-                    </div>
+                <div nz-col nzSpan="4" style="text-align: end;">
+                    <button nz-button nzType="primary"
+                        id="eventBridge" (click)="refresh()">
+                        <span nz-icon nzType="sync"></span>
+                        Refresh
+                    </button>
                 </div>
             </div>
-        </nz-tab>        
+            <hr>
+            <app-gen-table *ngIf="eventBridgeTable"
+                [staticTable]="eventBridgeTable"
+                (actionEventEmitter)="tableEventBridgeActionReciver($event)">
+            </app-gen-table>
+        </nz-tab>
     </nz-tabset>
 </div>

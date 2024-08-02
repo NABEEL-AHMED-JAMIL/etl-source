@@ -86,24 +86,32 @@ export class MGFormComponent implements OnInit {
                 type: 'data'
             },
             {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
+                field: 'formType',
+                header: 'Form Type',
+                type: 'tag',
+                showImg: true
             },
             {
                 field: 'homePage',
-                header: 'Land Page',
+                header: 'Home Page',
                 type: 'tag'
+            },
+            {
+                field: 'dashboard',
+                header: 'Dashboard',
+                type: 'combine',
+                subfield: ['name']
+            },
+            {
+                field: 'report',
+                header: 'Report',
+                type: 'combine',
+                subfield: ['name']
             },
             {
                 field: 'serviceId',
                 header: 'Service Id',
                 type: 'data'
-            },
-            {
-                field: 'formType',
-                header: 'Form Type',
-                type: 'tag'
             },
             {
                 field: 'totalStt',
@@ -185,7 +193,7 @@ export class MGFormComponent implements OnInit {
         private formSettingService: FormSettingService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
@@ -266,7 +274,7 @@ export class MGFormComponent implements OnInit {
             });
         } else if (ActionType.LINK_STT === payload.action) {
             const drawerRef = this.drawerService.create({
-                nzTitle: '[Form] => [STT]',
+                nzTitle: '[Form] x [STT]',
                 nzSize: 'large',
                 nzWidth: 800,
                 nzPlacement: 'right',
@@ -288,7 +296,7 @@ export class MGFormComponent implements OnInit {
             });
         } else if (ActionType.LINK_SECTION === payload.action) {
             const drawerRef = this.drawerService.create({
-                nzTitle: '[Form] => [Section]',
+                nzTitle: '[Form] x [Section]',
                 nzSize: 'large',
                 nzWidth: 800,
                 nzPlacement: 'right',

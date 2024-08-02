@@ -166,7 +166,7 @@ export class MGSectionComponent implements OnInit {
         private formSettingService: FormSettingService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
@@ -247,7 +247,7 @@ export class MGSectionComponent implements OnInit {
             });
         } else if (ActionType.LINK_FROM === payload.action) {
             const drawerRef = this.drawerService.create({
-                nzTitle: '[Section] => [Form]',
+                nzTitle: '[Section] x [Form]',
                 nzSize: 'large',
                 nzWidth: 800,
                 nzPlacement: 'right',
@@ -269,7 +269,7 @@ export class MGSectionComponent implements OnInit {
             });
         } else if (ActionType.LINK_CONTROL === payload.action) {
             const drawerRef = this.drawerService.create({
-                nzTitle: '[Section] => [Control]',
+                nzTitle: '[Section] x [Control]',
                 nzSize: 'large',
                 nzWidth: 800,
                 nzPlacement: 'right',

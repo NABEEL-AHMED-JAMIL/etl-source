@@ -256,14 +256,14 @@ const routes: Routes = [
             },
             // profile-setting => mg-rpp
             {
-                path: 'mgRPPToken',
+                path: 'mgRPP',
                 component: MgRPPComponent,
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DB', 'ROLE_DEV'],
                     permission: ['RPP_PERMISSION'],
-                    breadcrumb: 'Roler & Profile',
+                    breadcrumb: 'Role & Profile',
                 }
             },
             // profile-setting => mg-refresh token
@@ -288,6 +288,28 @@ const routes: Routes = [
                     roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                     permission: ['SOURCE_CREDENTAIL_PERMISSION'],
                     breadcrumb: 'Mg Credentail',
+                }
+            },
+            {
+                path: 'mgEventBridge',
+                component: MgEventBridgeComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                    permission: ['EVENT_BRIDGE_PERMISSION'],
+                    breadcrumb: 'Mg Event Bridge',
+                }
+            },
+            {
+                path: 'mgEvariable',
+                component: MgEVariableComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_DEV'],
+                    permission: ['EVARIABL_PERMISSION'],
+                    breadcrumb: 'Mg E-Variable',
                 }
             },
             // app-setting -> lookup
@@ -321,35 +343,11 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
+                    roles: ['ROLE_DEV'],
                     permission: ['TEMPLATE_PERMISSION'],
-                    breadcrumb: 'Template',
+                    breadcrumb: 'Mg Template',
                 }
             },
-            {
-                path: 'mgEventBridge',
-                component: MgEventBridgeComponent,
-                canActivate: [AuthGuard],
-                data: {
-                    parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                    permission: ['EVENT_BRIDGE_PERMISSION'],
-                    breadcrumb: 'Mg Event Bridge',
-                }
-            },
-            // app-setting -> evariable
-            {
-                path: 'mgEvariable',
-                component: MgEVariableComponent,
-                canActivate: [AuthGuard],
-                data: {
-                    parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
-                    permission: ['EVARIABL_PERMISSION'],
-                    breadcrumb: 'E-Variable',
-                }
-            },
-            // support -> inquery
             {
                 path: 'inquery',
                 component: DBQueryComponent,
@@ -357,7 +355,7 @@ const routes: Routes = [
                 data: {
                     admin: true,
                     breadcrumb: 'Query Inquiry',
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
+                    roles: [ 'ROLE_DEV'],
                     permission: ['QUERY_INQUIRY_PERMISSION']
                 }
             }

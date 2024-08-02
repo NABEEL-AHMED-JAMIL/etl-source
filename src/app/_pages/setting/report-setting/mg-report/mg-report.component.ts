@@ -77,6 +77,17 @@ export class MgReportComponent implements OnInit {
             {
                 field: 'payloadRef',
                 header: 'Payload Ref',
+                type: 'tag',
+                showImg: true
+            },
+            {
+                field: 'distinctLKValue',
+                header: 'Distinct Value',
+                type: 'tag'
+            },
+            {
+                field: 'aggLKValue',
+                header: 'Aggregation',
                 type: 'tag'
             },
             {
@@ -85,8 +96,8 @@ export class MgReportComponent implements OnInit {
                 type: 'tag'
             },
             {
-                field: 'fetchRate',
-                header: 'Rate Limit',
+                field: 'recordReport',
+                header: 'Recoard Report',
                 type: 'tag'
             },
             {
@@ -120,6 +131,11 @@ export class MgReportComponent implements OnInit {
                 type: 'tag'
             },
             {
+                field: 'fetchRate',
+                header: 'Rate Limit',
+                type: 'tag'
+            },
+            {
                 field: 'dateCreated',
                 header: 'Created',
                 type: 'date'
@@ -149,6 +165,13 @@ export class MgReportComponent implements OnInit {
         ],
         actionType: [
             {
+                type: 'edit',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
+            },
+            {
                 type: 'eye',
                 color: 'orange',
                 spin: false,
@@ -156,11 +179,11 @@ export class MgReportComponent implements OnInit {
                 action: ActionType.VIEW
             },
             {
-                type: 'edit',
-                color: 'green',
+                type: 'file-done',
+                color: 'black',
                 spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
+                tooltipTitle: 'View Recoard Report',
+                action: ActionType.LINK
             },
             {
                 type: 'delete',
@@ -182,7 +205,7 @@ export class MgReportComponent implements OnInit {
         private reportSettingService: ReportSettingService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;

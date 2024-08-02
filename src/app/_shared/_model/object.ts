@@ -11,6 +11,12 @@ export enum ApiCode {
     HTTP_404 = 'HTTP_404'
 }
 
+export interface IETLCountry {
+    countryCode?: any;
+    countryName?: any;
+    code?: any;
+}
+
 export interface AuthResponse {
     id: any;
     token: any;
@@ -27,9 +33,9 @@ export interface AuthResponse {
 }
 
 export interface IValueOption<T> {
-    lookupType: string;
+    lookupType: any;
     lookupCode: T;
-    lookupValue: string;
+    lookupValue: any;
     color?: any;
 }
 
@@ -103,6 +109,7 @@ export interface IRefreshToken extends IBaseEntity {
 
 export interface ITemplateReg extends IBaseEntity {
     templateName?: any;
+    description?: any;
     templateContent?: any;
     dateCreated?: any;
 }
@@ -122,19 +129,32 @@ export interface IAppUser extends IBaseEntity {
     ipAddress?: any;
     roles?: any;
     profile?: any;
+    accountType?: any;
+    organization?: IOrganization;
     enVariables?: any;
     eventBridge?: any;
 }
 
+export interface IOrganization extends IBaseEntity {
+    name?: any;
+    address?: any;
+    email?: any;
+    phone?: any;
+    country?: any;
+    website?: any;
+    logo?: any;
+}
+
 export interface ICredential extends IBaseEntity {
     name?: any;
+    description: any;
     type?: any;
     content?: any;
 }
 
 export interface ISourceTask extends IBaseEntity {
-    taskName: string;
-    description: string;
+    taskName: any;
+    description: any;
     sourceTaskType: ISTT;
     formData: any;
 } 
@@ -180,6 +200,8 @@ export interface IGenFrom extends IBaseEntity {
     formName: any;
     description: any;
     homePage: any;
+    report?: IReportSetting;
+    dashboard?: IDashboardSetting
     serviceId: any;
     formType: any;
     totalSection: any;
@@ -254,8 +276,8 @@ export interface IEnableAbilityConfig extends IBaseEntity {
 }
 
 export interface IVisibilityConfig extends IBaseEntity {
-    name?: string;
-    description?: string;
+    name?: any;
+    description?: any;
     enableLogic?: IConditionalLogic[];
 }
 
@@ -336,6 +358,7 @@ export interface IDashboardSetting extends IBaseEntity {
 
 export interface IReportSetting extends IBaseEntity {
     dateFilter?: any;
+    recordReport?: any;
     fetchRate?: any;
     name?: any;
     groupType?: any;
@@ -384,6 +407,7 @@ export interface IColumn {
     childe?: any;
     header?: any;
     type?: any;
+    showImg?: boolean;
     subfield?: any;
     color?: any;
     compare?: any;
@@ -395,7 +419,6 @@ export interface INotification {
     id: any;
     title: any;
     data?: any;
-    avatar: any;
     status?: any,
     statusType?: any
     notifyType?: any;
@@ -451,9 +474,9 @@ export enum IProfileSetting {
 }
 
 export interface SideBar {
-    name: string;
-    icon?: string;
-    link?: string;
+    name: any;
+    icon?: any;
+    link?: any;
     roles?: any[];
     permission?: any[];
     childLinks?: SideBar[];
@@ -529,7 +552,7 @@ export const SETTING_SIDEBAR: SideBar[] = [
             {
                 name: 'Manage Bucket',
                 icon: 'folder-open',
-                link: '/setting/mgDashboard',
+                link: '/setting/store',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['BUCKET_SETTING_PERMISSION']
             }
@@ -629,24 +652,31 @@ export const SETTING_SIDEBAR: SideBar[] = [
         permission: ['PROFILE_SETTING_PERMISSION'],
         childLinks: [
             {
-                name: 'Manage Users',
+                name: 'Users',
                 icon: 'user-add',
                 link: '/setting/mgUsers',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
                 permission: ['USER_PERMISSION']
             },
             {
-                name: 'Roler & Profile',
+                name: 'Organization',
+                icon: 'deployment-unit',
+                link: '/setting/mgOrganization',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
+                permission: ['ORGANIZATION_PERMISSION']
+            },
+            {
+                name: 'Role & Profile',
                 icon: 'pushpin',
-                link: '/setting/mgRPPToken',
-                roles: ['ROLE_DEV'],
+                link: '/setting/mgRPP',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DB', 'ROLE_DEV'],
                 permission: ['RPP_PERMISSION']
             },
             {
                 name: 'Refresh Token',
                 icon: 'euro',
                 link: '/setting/mgRefreshToken',
-                roles: ['ROLE_MASTER_ADMIN'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
                 permission: ['REFRESH_TOKEN_PERMISSION']
             }
         ]
@@ -658,35 +688,35 @@ export const SETTING_SIDEBAR: SideBar[] = [
         permission: ['APP_SETTING_PERMISSION'],
         childLinks: [
             {
-                name: 'Source Credential',
+                name: 'Credential',
                 icon: 'key',
                 link: '/setting/mgCredentail',
-                roles: ['ROLE_DEV'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['SOURCE_CREDENTAIL_PERMISSION']
             },
             {
-                name: 'Manage Event Bridge',
+                name: 'Event Bridge',
                 icon: 'group',
                 link: '/setting/mgEventBridge',
-                roles: ['ROLE_DEV'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['EVENT_BRIDGE_PERMISSION']
             },
             {
-                name: 'Manage EVariable',
+                name: 'E-Variable',
                 icon: 'font-colors',
                 link: '/setting/mgEvariable',
                 roles: ['ROLE_DEV'],
                 permission: ['EVARIABL_PERMISSION']
             },
             {
-                name: 'Manage Lookups',
+                name: 'Lookups',
                 icon: 'control',
                 link: '/setting/mgLookup',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
                 permission: ['LOOKUP_PERMISSION']
             },
             {
-                name: 'Manage Template',
+                name: 'Template',
                 icon: 'mail',
                 link: '/setting/mgTemplate',
                 roles: ['ROLE_DEV'],
@@ -782,6 +812,7 @@ export const enum FILED_TYPE {
     MULTI_SELECT = 18,
     KEY_VALUE = 19,
     YEAR = 20,
+    DYNAMIC_PAYLOAD = 21,
 }
 
 export const enum TASK_TYPE {
@@ -807,7 +838,7 @@ export const enum FORM_TYPE {
 }
 
 export const enum PAYLOAD_REF {
-    DYNAMIC_PAYLOAD = 0,
+    DYNAMIC_REPORT_PAYLOAD = 0,
     REF_REPORT_FORM = 1
 }
 
@@ -820,6 +851,12 @@ export const enum EVENT_BRIDGE_TYPE {
     WEB_HOOK_SEND = 0,
     WEB_HOOK_RECEIVE = 1,
     REPORT_API_SEND = 2
+}
+
+export const enum DASHBOARD_TYPE {
+    POWER_BI = 0,
+    TABLEAU = 1,
+    CUSTOM_DASHBOARD = 2
 }
 
 export const enum SERVER_ACTION {

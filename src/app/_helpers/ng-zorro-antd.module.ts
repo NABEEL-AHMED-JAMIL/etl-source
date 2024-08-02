@@ -36,6 +36,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTransferModule } from 'ng-zorro-antd/transfer';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 // npm install @kolkov/angular-editor --save
 @NgModule({
@@ -75,7 +76,8 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
         NzCheckboxModule,
         NzImageModule,
         NzStatisticModule,
-        NzTransferModule
+        NzTransferModule,
+        NzTypographyModule
     ],
     providers: [
     ]

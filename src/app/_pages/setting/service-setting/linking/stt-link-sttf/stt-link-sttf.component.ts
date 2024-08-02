@@ -12,7 +12,7 @@ import {
     ApiCode,
     AuthResponse,
     AuthenticationService,
-    FormSettingService
+    SourceTaskTypeService
 } from 'src/app/_shared';
 
 
@@ -36,7 +36,7 @@ export class SttLinkFormComponent implements OnInit {
         private alertService: AlertService,
         public commomService: CommomService,
         private spinnerService: SpinnerService,
-        private formSettingService: FormSettingService,
+        private sourceTaskTypeService: SourceTaskTypeService,
         private authenticationService: AuthenticationService) {
         this.authenticationService.currentUser
             .subscribe(currentUser => {
@@ -66,7 +66,7 @@ export class SttLinkFormComponent implements OnInit {
     public fetchAllSTTLinkForm(payload: any): any {
         this.spinnerService.show();
         const sttLinkForm: TransferItem[] = [];
-        this.formSettingService.fetchAllSTTLinkForm(payload)
+        this.sourceTaskTypeService.fetchAllSTTLinkForm(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -122,7 +122,7 @@ export class SttLinkFormComponent implements OnInit {
     // fetch all lookup
     public linkSTTForm(payload: any): any {
         this.spinnerService.show();
-        this.formSettingService.linkSTTForm(payload)
+        this.sourceTaskTypeService.linkSTTForm(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();

@@ -98,7 +98,8 @@ export class UpdateProfileComponent implements OnInit {
             {
                 field: 'bridgeType',
                 header: 'Type',
-                type: 'tag'
+                type: 'tag',
+                showImg: true
             },
             {
                 

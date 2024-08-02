@@ -1,8 +1,6 @@
 <nz-layout class="app-layout">
-    <nz-sider class="menu-sidebar"
-        [nzWidth]="isCollapsed ? '85px' : '240px'"
-        [(nzCollapsed)]="isCollapsed"
-        [style.max-width.px]="300"
+    <nz-sider class="menu-sidebar" [nzWidth]="isCollapsed ? '85px' : '240px'"
+        [(nzCollapsed)]="isCollapsed" [style.max-width.px]="300"
         nzBreakpoint="sm" nzCollapsible>
         <div class="sidebar-logo">
             <a routerLink="/setting">
@@ -60,7 +58,7 @@
         <nz-header>
             <div class="app-header">
                 <div nz-row>
-                    <div nz-col nzMd="20">
+                    <div nz-col [nzSpan]="16" [nzXs]="{span: 16}" [nzSm]="{span: 12}" [nzMd]="{span: 20}">
                         <ul nz-menu nzMode="horizontal">
                             <span class="trigger" nz-icon style="margin-left: 15px;"
                                 [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
@@ -73,21 +71,19 @@
                             </li>
                         </ul>
                     </div>
-                    <div nz-col nzMd="4" style="text-align: end;padding-right: 20px">
-                        <nz-avatar nzIcon="user" nz-dropdown [nzDropdownMenu]="userAction"
-                            nzSrc="{{'./assets/avatar/' + sessionUser.profileImage }}">
-                        </nz-avatar>
+                    <div nz-col [nzSpan]="16" [nzXs]="{span: 8}"
+                        [nzSm]="{span: 12}" [nzMd]="{span: 4}"
+                        style="text-align: end;padding-right: 20px">
+                        <action-header-list></action-header-list>
                     </div>
                 </div>
             </div>
         </nz-header>
         <nz-content>
+            <!-- breadcrumb -->
             <app-breadcrumb></app-breadcrumb>
+            <!-- inner layout -->
             <router-outlet></router-outlet>
         </nz-content>
     </nz-layout>
 </nz-layout>
-<!-- user -->
-<nz-dropdown-menu #userAction="nzDropdownMenu">
-    <app-user-action [sessionUser]="sessionUser"></app-user-action>
-</nz-dropdown-menu>

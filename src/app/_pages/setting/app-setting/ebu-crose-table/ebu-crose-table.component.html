@@ -2,6 +2,7 @@
     <app-gen-table *ngIf="eventBridgeLinkUserTable"
         [isDateFilter]="false"
         [staticTable]="eventBridgeLinkUserTable"
+        (buttonEventEmitter)="buttonActionReciver($event)"
         (enableActionEventEmitter)="enableActionReciver($event)"
         (actionEventEmitter)="tableActionReciver($event)">
     </app-gen-table>

@@ -19,7 +19,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="14">
+        <div nz-col nzSpan="18">
             <nz-form-item>
                 <nz-form-label nzRequired>Event Bridge Type</nz-form-label>
                 <nz-form-control nzErrorTip="Event Bridge Type Required">
@@ -33,12 +33,12 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="10">
+        <div nz-col nzSpan="6">
             <nz-form-item>
-                <nz-form-label nzRequired>Request Method</nz-form-label>
-                <nz-form-control nzErrorTip="Request Method Required">
+                <nz-form-label nzRequired>Method</nz-form-label>
+                <nz-form-control nzErrorTip="Method Required">
                     <nz-select nzShowSearch nzAllowClear formControlName="httpMethod"
-                        nzPlaceHolder="Select Request Method">
+                        nzPlaceHolder="Select Method">
                         <nz-option *ngFor="let lookupChildren of REQUEST_METHOD?.SUB_LOOKUP_DATA"
                             [nzLabel]="lookupChildren.lookupValue"
                             [nzValue]="lookupChildren.lookupCode">

@@ -1,19 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-:root {
-    --primary: #6788ff;
-}
-
 /* same globel styling  */
 .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item,
 .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu {
     margin-top: 0px;
     margin-bottom: 0;
     padding: 0 10px;
-}
-
-.ant-btn:hover {
-    color: var(--primary);
-    border-color: var(--primary);
 }
 
 .th-centrail {
@@ -24,15 +15,8 @@
     text-align: center;
 }
 
-.ant-btn-primary:hover {
-    color: #fff;
-    background-color: var(--primary);
-}
-
-.ant-btn-primary {
-    background-color: var(--primary);
-    border-color: var(--primary);
-    color: #fff;
+.ant-form-item-explain-error {
+    color: red !important;
 }
 
 nz-content {
@@ -46,6 +30,7 @@ nz-content {
 }
 
 .content {
+    border-radius: 10px;
     padding: 15px;
     background: #fff;
     height: auto;
@@ -138,8 +123,38 @@ nz-content {
     color: rgba(0, 0, 0, 0.85);
 }
 
+.ant-input {
+    border-radius: 10px;
+}
+
+.ant-input-affix-wrapper {
+    border-radius: 10px;
+}
+
+.ant-btn {
+    border-radius: 10px;
+}
+
+textarea {
+    border-radius: 10px;
+}
+
+.ant-tag {
+    border-radius: 5px;
+}
+
+.ant-select-show-search.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-radius: 10px;
+}
+
 .ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {
     color: rgba(0, 0, 0, 0.85);
+}
+
+.ant-tabs-left > .ant-tabs-content-holder > .ant-tabs-content > 
+.ant-tabs-tabpane, .ant-tabs-left > div > .ant-tabs-content-holder > 
+.ant-tabs-content > .ant-tabs-tabpane {
+    padding-left: 10px;
 }
 
 .h100vh {
@@ -314,7 +329,7 @@ app-confirmation-popup .ant-result-icon {
 }
 
 .form form {
-    background-color: #808080ab;
+    background-color: rgb(0 0 0 / 28%);
     border-radius: 12px;
 }
 
@@ -364,3 +379,16 @@ app-confirmation-popup .ant-result-icon {
     margin-top: 20px; /* Adjust as needed */
 }
 
+
+.app-header {
+    position: relative;
+    height: 64px;
+    padding: 0;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+}
+
+
+.ant-drawer-footer {
+    color: red;
+}

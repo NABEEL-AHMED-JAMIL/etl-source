@@ -1,5 +1,6 @@
 <div class="content">
-    <form nz-form [nzLayout]="'vertical'" [formGroup]="palyGroundForm">
+    <form nz-form [nzLayout]="'vertical'"
+        [formGroup]="palyGroundForm">
         <div nz-row [nzGutter]="16">
             <div nz-col [nzSpan]="24">
                 <h3><span nz-icon nzType="link" 
@@ -11,7 +12,8 @@
                 <nz-form-label>Start Data</nz-form-label>
                 <nz-form-item>
                     <nz-form-control>
-                        <input nz-input type="date" formControlName="startDate" 
+                        <input nz-input type="date"
+                            formControlName="startDate" 
                             (change)="onDateChangeEvent()" />
                     </nz-form-control>
                 </nz-form-item>
@@ -20,7 +22,9 @@
                 <nz-form-label>End Date</nz-form-label>
                 <nz-form-item>
                     <nz-form-control>
-                        <input nz-input type="date" formControlName="endDate" (change)="onDateChangeEvent()" />
+                        <input nz-input type="date"
+                            formControlName="endDate" 
+                            (change)="onDateChangeEvent()" />
                     </nz-form-control>
                 </nz-form-item>
             </div>
@@ -28,10 +32,13 @@
                 <nz-form-label>Forms</nz-form-label>
                 <nz-form-item>
                     <nz-form-control>
-                        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select Form To Render View"
-                            (ngModelChange)="onFormChange($event)" formControlName="formId">
+                        <nz-select nzShowSearch nzAllowClear
+                            nzPlaceHolder="Select Form To Render View"
+                            (ngModelChange)="onFormChange($event)"
+                            formControlName="formId">
                             <nz-option *ngFor="let dynamicForm of dynamicForms"
-                                [nzLabel]="dynamicForm.name" [nzValue]="dynamicForm.id">
+                                [nzLabel]="dynamicForm.name"
+                                [nzValue]="dynamicForm.id">
                             </nz-option>
                         </nz-select>
                     </nz-form-control>
@@ -41,34 +48,44 @@
     </form>
 </div>
 <!-- select form  -->
-<form *ngIf="rootForm" nz-form [nzLayout]="'vertical'"
+<form *ngIf="rootForm" nz-form
+    [nzLayout]="'vertical'"
     [formGroup]="rootForm" ngNativeValidate
     (ngSubmit)="submit(rootForm.value)">
     <nz-collapse formGroupName="sections">
-        <nz-collapse-panel *ngFor="let section of selectedForm.sections;" [id]="'section-' + section.id"
-            [nzHeader]="section.name" [formGroupName]="'section-' + section.id">
+        <nz-collapse-panel *ngFor="let section of selectedForm.sections;"
+            [id]="'section-' + section.id"
+            [formGroupName]="'section-' + section.id"
+            [nzHeader]="section.name">
             <div nz-row [nzGutter]="16">
-                <ng-container *ngFor="let control of section.controls" [formGroupName]="'fields'">
-                    <div nz-col [nzSpan]="control.width" [id]="control.id" [formGroupName]="control.name"
+                <ng-container *ngFor="let control of section.controls"
+                    [formGroupName]="'fields'">
+                    <div nz-col [nzSpan]="control.width"
+                        [id]="control.id"
+                        [formGroupName]="control.name"
                         style="margin-bottom: 8px;">
                         <!-- input -->
                         <dynamic-input *ngIf="commomService.isSupportedInputControl(control)"
                             [field]="getSectionFiled('section-' + section.id, control?.name)"
-                            [section]="section" [control]="control">
+                            [section]="section"
+                            [control]="control">
                         </dynamic-input>
                         <!-- textarea -->
                         <dynamic-textarea *ngIf="commomService.isSupportedTextControl(control)"
                             [field]="getSectionFiled('section-' + section.id, control?.name)"
-                            [section]="section" [control]="control">
+                            [section]="section"
+                            [control]="control">
                         </dynamic-textarea>
                         <!-- selection & multi selection -->
                         <dynamic-select *ngIf="commomService.isSupportedSelectControl(control)"
                             [field]="getSectionFiled('section-' + section.id, control?.name)"
-                            [section]="section" [control]="control">
+                            [section]="section"
+                            [control]="control">
                         </dynamic-select>
                         <dynamic-datepicker *ngIf="commomService.isSupportedDatePickerControl(control)"
                             [field]="getSectionFiled('section-' + section.id, control?.name)"
-                            [section]="section" [control]="control">
+                            [section]="section"
+                            [control]="control">
                         </dynamic-datepicker>
                     </div>
                 </ng-container>
@@ -79,8 +96,10 @@
     <div nz-row [nzGutter]="16">
         <div nz-col [nzSpan]="24" class="search-area">
             <button nz-button type="reset">Clear</button>
-            <button nz-button [nzType]="'primary'" [type]="'submit'" 
-                [disabled]="!rootForm.valid" style="float: right;">
+            <button nz-button [nzType]="'primary'"
+                [type]="'submit'" 
+                [disabled]="!rootForm.valid"
+                style="float: right;">
                 Submit
             </button>
         </div>

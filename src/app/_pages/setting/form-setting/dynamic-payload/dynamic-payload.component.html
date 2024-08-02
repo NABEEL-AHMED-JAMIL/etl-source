@@ -79,15 +79,16 @@
     </div>
 </div>
 <!-- drawer for show dynamic -->
-<nz-drawer nzTitle="Dynamic Result" [nzVisible]="visible" nzPlacement="right" [nzBodyStyle]="{ overflow: 'auto' }"
-    [nzMaskClosable]="false" [nzWidth]="800" [nzVisible]="visible" (nzOnClose)="close()">
+<nz-drawer nzTitle="Dynamic Result" [nzVisible]="visible" 
+    nzPlacement="right" [nzBodyStyle]="{ overflow: 'auto' }"
+    [nzMaskClosable]="false" [nzWidth]="800"
+    [nzVisible]="visible" (nzOnClose)="close()">
     <ng-container *nzDrawerContent>
-        <textarea class="form-control input-sm" rows="23" style="font-size:12px;font-family:monospace;
-            white-space:pre;height: auto;width: 100%;
-            border-color: #ddd;background-color: #ddd;">{{dynamicString}}</textarea>
-        <button nz-button nzType="primary" [nzLoading]="loading" class="add-button" style="width: 100%;"
-            (click)="createFile()">
-            <span nz-icon nzType="download" nzTheme="outline"></span> Download Dynamic
+        <textarea class="form-control input-sm dynamic-data" rows="23"></textarea>
+        <button nz-button nzType="primary" [nzLoading]="loading"
+            class="add-button" style="width: 100%;" (click)="createFile()">
+            <span nz-icon nzType="download" 
+                nzTheme="outline"></span> Download Dynamic
         </button>
     </ng-container>
 </nz-drawer>

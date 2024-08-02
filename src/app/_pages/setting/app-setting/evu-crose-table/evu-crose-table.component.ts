@@ -5,6 +5,7 @@ import {
     SpinnerService
 } from 'src/app/_helpers';
 import {
+    ActionType,
     ApiCode,
     AuthResponse,
     AuthenticationService,
@@ -34,6 +35,15 @@ export class EVUCroseTableComponent implements OnInit {
         checkbox: false,
         enableAction: true,
         size: 'small',
+        headerButton: [
+            {
+                type: 'reload',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Refresh',
+                action: ActionType.RE_FRESH
+            }
+        ],
         dataColumn: [
             {
                 field: 'fullName',
@@ -54,7 +64,7 @@ export class EVUCroseTableComponent implements OnInit {
                 field: 'profile',
                 header: 'Profile',
                 type: 'combine',
-                subfield: ['profileName']
+                subfield: ['description']
             },
             {
                 field: 'envValue',
@@ -101,6 +111,14 @@ export class EVUCroseTableComponent implements OnInit {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);;
             });
+    }
+
+    public buttonActionReciver(payload: any): void {
+        if (ActionType.RE_FRESH === payload.action) {
+            this.fetchLinkEVariableWitUser({
+                envId: this.enVariable.id
+            });
+        }
     }
 
     public enableActionReciver(payload: any): void {
