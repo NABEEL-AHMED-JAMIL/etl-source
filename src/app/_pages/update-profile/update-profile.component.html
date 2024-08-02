@@ -35,12 +35,12 @@
                     </div>
                 </nz-descriptions-item>
             </nz-descriptions>
-            <hr>
             <h3>
                 <span nz-icon nzType="deployment-unit"
                     nzTheme="outline"></span>
                 Org Info
             </h3>
+            <hr>
             <nz-descriptions nzSize="small" *ngIf="appUser?.organization">
                 <nz-descriptions-item nzTitle="Name">
                     {{appUser?.organization.name}}
