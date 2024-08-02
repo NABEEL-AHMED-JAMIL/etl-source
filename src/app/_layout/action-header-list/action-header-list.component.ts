@@ -1,23 +1,33 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { first } from 'rxjs/operators';
-import { 
-    AuthenticationService, AuthResponse,
-    WebSocketShareService, WebSocketAPI,
-    NotificationService, ApiCode, NOTIFICATION_TYPE, INotification
-} from '../../_shared';
-import { AlertService, SpinnerService, CommomService } from 'src/app/_helpers';
+import { Component, OnInit } from '@angular/core';
+import { first } from 'rxjs';
+import {
+    AlertService,
+    SpinnerService,
+    CommomService
+} from 'src/app/_helpers';
+import {
+    ApiCode,
+    AuthenticationService,
+    AuthResponse,
+    INotification,
+    NOTIFICATION_TYPE,
+    NotificationService,
+    WebSocketAPI,
+    WebSocketShareService
+} from 'src/app/_shared';
+
 
 @Component({
-    selector: 'app-header-2',
-    templateUrl: './header-2.component.html',
-    styleUrls: ['./header-2.component.css']
+    selector: 'action-header-list',
+    templateUrl: './action-header-list.component.html',
+    styleUrls: ['./action-header-list.component.css']
 })
-export class Header2Component implements OnInit, OnDestroy {
+export class ActionHeaderListComponent implements OnInit {
 
-    public title: string = 'ETL 2023';
     public sessionUser: AuthResponse;
     public userPermission: any;
 
+    public notificationTotla: number = 0;
     public jobNotificationData: INotification[] = [];
     public userNotificationData: INotification[] = [];
 
@@ -56,20 +66,15 @@ export class Header2Component implements OnInit, OnDestroy {
                         this.alertService.showError(response.message, ApiCode.ERROR);
                         return;
                     }
-                    this.userNotificationData = this.processNotifications(response.data,
-                        NOTIFICATION_TYPE.USER_NOTIFICATION, '../../../assets/notifaction/mail.png');
-                    this.jobNotificationData = this.processNotifications(response.data,
-                        NOTIFICATION_TYPE.JOB_NOTIFICATION, '../../../assets/notifaction/job.png');
-                },
-                (response: any) => {
+                    this.userNotificationData = this.processNotifications(response.data, NOTIFICATION_TYPE.USER_NOTIFICATION);
+                    this.jobNotificationData = this.processNotifications(response.data, NOTIFICATION_TYPE.JOB_NOTIFICATION);
+                },  (response: any) => {
                     this.spinnerService.hide();
                     this.alertService.showError(response.error.message, ApiCode.ERROR);
-                }
-            );
+                });
     }
 
-    private processNotifications(data: any[], 
-        type: NOTIFICATION_TYPE, avatarPath: string): INotification[] {
+    private processNotifications(data: any[], type: NOTIFICATION_TYPE): INotification[] {
         return data
             .filter(payload => payload?.notifyType.lookupCode === type)
             .map(payload => ({
@@ -79,27 +84,25 @@ export class Header2Component implements OnInit, OnDestroy {
                     date: payload.dateCreated || payload.createDate,
                     message: payload.body.message,
                 },
-                avatar: avatarPath,
                 status: payload.messageStatus.lookupCode === 0 ? 'success' : 'yellow',
                 notifyType: payload.notifyType
-            }))
-            .reverse();
+            })).reverse();
     }
 
     private onNewValueReceive(): void {
-        this.websocketService.getNewValue().subscribe(response => {
-            if (response) {
-                const payload = JSON.parse(response);
-                const notificationData = this.createNotificationData(payload);
-
-                if (payload.notifyType.lookupCode === NOTIFICATION_TYPE.USER_NOTIFICATION) {
-                    this.userNotificationData.push(notificationData);
-                    this.userNotificationData.reverse();
-                } else if (payload.notifyType.lookupCode === NOTIFICATION_TYPE.JOB_NOTIFICATION) {
-                    this.jobNotificationData.push(notificationData);
-                    this.jobNotificationData.reverse();
+        this.websocketService.getNewValue()
+            .subscribe(response => {
+                if (response) {
+                    const payload = JSON.parse(response);
+                    const notificationData = this.createNotificationData(payload);
+                    if (payload.notifyType.lookupCode === NOTIFICATION_TYPE.USER_NOTIFICATION) {
+                        this.userNotificationData.push(notificationData);
+                        this.userNotificationData.reverse();
+                    } else if (payload.notifyType.lookupCode === NOTIFICATION_TYPE.JOB_NOTIFICATION) {
+                        this.jobNotificationData.push(notificationData);
+                        this.jobNotificationData.reverse();
+                    }
                 }
-            }
         });
     }
 
@@ -111,11 +114,15 @@ export class Header2Component implements OnInit, OnDestroy {
                 date: payload.dateCreated || payload.createDate,
                 message: payload.body.message,
             },
-            avatar: payload.notifyType.lookupCode === NOTIFICATION_TYPE.USER_NOTIFICATION 
-                ? './assets/notification/mail.png' : './assets/notification/job.png',
             status: payload.messageStatus.lookupCode === 0 ? 'success' : 'yellow',
             notifyType: payload.notifyType
         };
+    }
+
+    public getTotalNotifacation() {
+        return 0 +
+            (this.jobNotificationData.filter(item => item.status === 'success').length +
+            this.userNotificationData.filter(item => item.status === 'success').length);
     }
 
     public hasPermissionAccess(userProfile: any): boolean {
@@ -125,4 +132,5 @@ export class Header2Component implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.webSocketAPI.disconnect();
     }
+
 }

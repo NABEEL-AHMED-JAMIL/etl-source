@@ -2,7 +2,7 @@
     [formGroup]="reportSettingForm"
     (ngSubmit)="submit()">
     <div nz-row [nzGutter]="16">
-        <div nz-col nzSpan="6">
+        <div nz-col nzSpan="8">
             <nz-form-item>
                 <nz-form-label nzRequired>Name</nz-form-label>
                 <nz-form-control nzErrorTip="Profile Name Required">
@@ -10,7 +10,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="6">
+        <div nz-col nzSpan="8">
             <nz-form-item>
                 <nz-form-label nzRequired>Group Type</nz-form-label>
                 <nz-form-control nzErrorTip="Group Type Required">
@@ -24,7 +24,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col [nzSpan]="actionType !== editAction ? 6 : 4">
+        <div nz-col nzSpan="8">
             <nz-form-item>
                 <nz-form-label nzRequired>Date Filter</nz-form-label>
                 <nz-form-control nzErrorTip="Date Filter Required">
@@ -38,7 +38,21 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col [nzSpan]="actionType !== editAction ? 6 : 4">
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+                <nz-form-label nzRequired>Record Report</nz-form-label>
+                <nz-form-control nzErrorTip="Record Report Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="recordReport"
+                        nzPlaceHolder="Select Record Report">
+                        <nz-option *ngFor="let lookupChildren of UI_LOOKUP?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue"
+                            [nzValue]="lookupChildren.lookupCode">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
             <nz-form-item>
                 <nz-form-label nzRequired>Fetch Limit</nz-form-label>
                 <nz-form-control nzErrorTip="Report Fetch Limit Required">
@@ -52,7 +66,7 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="4" *ngIf="actionType === editAction">
+        <div nz-col nzSpan="8" *ngIf="actionType === editAction">
             <nz-form-item>
                 <nz-form-label nzRequired>Report Status</nz-form-label>
                 <nz-form-control nzErrorTip="Report Status Required">
@@ -63,6 +77,16 @@
                             [nzValue]="lookupChildren.lookupCode">
                         </nz-option>
                     </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24">
+            <nz-form-item>
+                <nz-form-label nzRequired>Description</nz-form-label>
+                <nz-form-control nzErrorTip="Description Required">
+                    <textarea nz-input formControlName="description"
+                        [nzAutosize]="{ minRows: 3}"
+                        placeholder="Enter Description"></textarea>
                 </nz-form-control>
             </nz-form-item>
         </div>
@@ -359,16 +383,6 @@
                             [nzValue]="genForm.id">
                         </nz-option>
                     </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzSpan="24">
-            <nz-form-item>
-                <nz-form-label nzRequired>Description</nz-form-label>
-                <nz-form-control nzErrorTip="Description Required">
-                    <textarea nz-input formControlName="description"
-                        [nzAutosize]="{ minRows: 3}"
-                        placeholder="Enter Description"></textarea>
                 </nz-form-control>
             </nz-form-item>
         </div>

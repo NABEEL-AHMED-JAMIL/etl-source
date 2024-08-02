@@ -21,3 +21,8 @@
     padding-right: 150px;
     padding-top: 60px;
 }
+
+.title-align {
+    text-align: center;
+    margin: 25px 0px
+}

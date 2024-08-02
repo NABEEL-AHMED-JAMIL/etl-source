@@ -329,7 +329,7 @@ app-confirmation-popup .ant-result-icon {
 }
 
 .form form {
-    background-color: rgba(0, 0, 0, 0.08);
+    background-color: rgb(0 0 0 / 28%);
     border-radius: 12px;
 }
 
@@ -379,3 +379,16 @@ app-confirmation-popup .ant-result-icon {
     margin-top: 20px; /* Adjust as needed */
 }
 
+
+.app-header {
+    position: relative;
+    height: 64px;
+    padding: 0;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+}
+
+
+.ant-drawer-footer {
+    color: red;
+}

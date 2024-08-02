@@ -50,3 +50,10 @@
     .ant-tabs-right > div > .ant-tabs-nav .ant-tabs-tab {
     padding-left: 1px !important;
 }
+
+.ant-tabs-left > .ant-tabs-nav, .ant-tabs-right > .ant-tabs-nav, 
+.ant-tabs-left > div > .ant-tabs-nav, .ant-tabs-right > div > .ant-tabs-nav {
+    flex-direction: column;
+    min-width: 35px !important;
+    width: 35px !important;
+}

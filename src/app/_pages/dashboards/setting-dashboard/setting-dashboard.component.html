@@ -20,16 +20,6 @@
         </div>
     </div>
     <div nz-col [nzSpan]="8">
-        <hr>
-        <h4 style="text-align: center;">
-            <span nz-icon nzType="login" nzTheme="outline"></span> Daily User Session
-        </h4>
-        <hr>
-        <div id="SESSION_COUNT_STATISTICS" echarts theme="macarons" style="height: 200px;"
-            class="demo-chart" [options]="SESSION_COUNT_STATISTICS">
-        </div>
-    </div>
-    <div nz-col [nzSpan]="8">
         <hr><h4 style="text-align: center;">
             <span nz-icon nzType="database" nzTheme="outline"></span> Form Setting
         </h4><hr>
@@ -51,6 +41,16 @@
         </h4><hr>
         <div id="APP_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
             class="demo-chart" [options]="APP_SETTING_STATISTICS">
+        </div>
+    </div>
+    <div nz-col [nzSpan]="8">
+        <hr>
+        <h4 style="text-align: center;">
+            <span nz-icon nzType="login" nzTheme="outline"></span> Daily User Session
+        </h4>
+        <hr>
+        <div id="SESSION_COUNT_STATISTICS" echarts theme="macarons" style="height: 200px;"
+            class="demo-chart" [options]="SESSION_COUNT_STATISTICS">
         </div>
     </div>
 </div>

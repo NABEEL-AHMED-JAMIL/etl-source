@@ -1,0 +1,9 @@
+.bell-notification {
+    color: red;
+    background-color: white;
+}
+
+.bell {
+    border: 1px solid;
+    border-radius: 16px;
+}

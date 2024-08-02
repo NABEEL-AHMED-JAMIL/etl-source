@@ -184,6 +184,7 @@ export class CUReportComponent implements OnInit {
         this.spinnerService.show();
         this.reportSettingForm = this.fb.group({
             dateFilter:[0, Validators.required],
+            recordReport:[0, Validators.required],
             fetchRate:[0, Validators.required],
             name: ['', Validators.required],
             groupType: ['', Validators.required],
@@ -214,6 +215,7 @@ export class CUReportComponent implements OnInit {
         this.reportSettingForm = this.fb.group({
             id: [this.editPayload.id, Validators.required],
             dateFilter:[this.editPayload.dateFilter?.lookupCode, Validators.required],
+            recordReport:[this.editPayload.recordReport?.lookupCode, Validators.required],
             fetchRate:[this.editPayload.fetchRate?.lookupCode, Validators.required],
             name: [this.editPayload.name, Validators.required],
             groupType: [this.editPayload.groupType?.lookupType, Validators.required],

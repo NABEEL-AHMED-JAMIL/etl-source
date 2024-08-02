@@ -256,14 +256,14 @@ const routes: Routes = [
             },
             // profile-setting => mg-rpp
             {
-                path: 'mgRPPToken',
+                path: 'mgRPP',
                 component: MgRPPComponent,
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
                     roles: ['ROLE_MASTER_ADMIN', 'ROLE_DB', 'ROLE_DEV'],
                     permission: ['RPP_PERMISSION'],
-                    breadcrumb: 'Roler & Profile',
+                    breadcrumb: 'Role & Profile',
                 }
             },
             // profile-setting => mg-refresh token

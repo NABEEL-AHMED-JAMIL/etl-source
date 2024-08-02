@@ -1,9 +1,57 @@
 <nz-layout class="layout">
-    <app-header-2></app-header-2>
-    <nz-content>
-        <app-breadcrumb></app-breadcrumb>
-        <div class="inner-content">
-            <router-outlet></router-outlet>
+    <nz-header>
+        <div nz-row class="app-header">
+            <div nz-col [nzSpan]="16" [nzXs]="{span: 2}" [nzSm]="{span: 2}" [nzMd]="{span: 2}"
+                style="text-align: center;">
+                <a routerLink="/dashboard" style="color: black;">
+                    <b>{{title}}</b>
+                </a>
+            </div>
+            <div nz-col [nzSpan]="16" [nzXs]="{span: 14}" [nzSm]="{span: 10}" [nzMd]="{span: 18}">
+                <ul nz-menu nzMode="horizontal">
+                    <li *ngIf="hasPermissionAccess(['SOURCE_ACTION_PERMISSION'])" class="hli" nz-menu-item>
+                        <a nz-dropdown [nzDropdownMenu]="menu">
+                            <span nz-icon nzType="fire"></span> Source Action</a>
+                    </li>
+                    <li *ngIf="hasPermissionAccess(['ADMIN_PAGE_PERMISSION'])" nz-menu-item
+                        class="hli" routerLink="/setting">
+                        <span nz-icon nzType="setting" nzTheme="outline"></span> App Setting
+                    </li>
+                </ul>
+            </div>
+            <div nz-col [nzSpan]="16" [nzXs]="{span: 8}"
+                [nzSm]="{span: 12}" [nzMd]="{span: 4}"
+                style="text-align: end;padding-right: 20px">
+                <action-header-list></action-header-list>
+            </div>
         </div>
+    </nz-header>
+    <nz-content style="margin-top: 75px;">
+        <!-- breadcrumb -->
+        <app-breadcrumb></app-breadcrumb>
+        <router-outlet></router-outlet>
     </nz-content>
 </nz-layout>
+<!-- source job-menu -->
+<nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu nzSelectable>
+        <li *ngIf="hasPermissionAccess(['RUNNING_SOURCE_JOB_PERMISSION'])" nz-menu-item>
+            <span nz-icon nzType="play-circle" nzTheme="outline"></span>&nbsp; 
+            Running Source Jobs
+        </li>
+        <li *ngIf="hasPermissionAccess(['SOURCE_JOB_HISTORY_PERMISSION'])" nz-menu-item>
+            <span nz-icon nzType="history" nzTheme="outline"></span>&nbsp; 
+            Source Jobs History
+        </li>
+        <li *ngIf="hasPermissionAccess(['REPORT_PAGE_PERMISSION'])" nz-menu-item
+            class="hli" routerLink="/report">
+            <span nz-icon nzType="line-chart" nzTheme="outline"></span>&nbsp;
+            Report & Dashboard
+        </li>
+        <li *ngIf="hasPermissionAccess(['FAKE_DATA_PAGE_PERMISSION'])" nz-menu-item
+            class="hli" routerLink="/setting">
+            <span nz-icon nzType="file-sync" nzTheme="outline"></span>&nbsp;
+            Generate Fake Data
+        </li>
+    </ul>
+</nz-dropdown-menu>

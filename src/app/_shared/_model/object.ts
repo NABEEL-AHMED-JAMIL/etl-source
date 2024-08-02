@@ -11,6 +11,12 @@ export enum ApiCode {
     HTTP_404 = 'HTTP_404'
 }
 
+export interface IETLCountry {
+    countryCode?: any;
+    countryName?: any;
+    code?: any;
+}
+
 export interface AuthResponse {
     id: any;
     token: any;
@@ -123,8 +129,20 @@ export interface IAppUser extends IBaseEntity {
     ipAddress?: any;
     roles?: any;
     profile?: any;
+    accountType?: any;
+    organization?: IOrganization;
     enVariables?: any;
     eventBridge?: any;
+}
+
+export interface IOrganization extends IBaseEntity {
+    name?: any;
+    address?: any;
+    email?: any;
+    phone?: any;
+    country?: any;
+    website?: any;
+    logo?: any;
 }
 
 export interface ICredential extends IBaseEntity {
@@ -340,6 +358,7 @@ export interface IDashboardSetting extends IBaseEntity {
 
 export interface IReportSetting extends IBaseEntity {
     dateFilter?: any;
+    recordReport?: any;
     fetchRate?: any;
     name?: any;
     groupType?: any;
@@ -400,7 +419,6 @@ export interface INotification {
     id: any;
     title: any;
     data?: any;
-    avatar: any;
     status?: any,
     statusType?: any
     notifyType?: any;
@@ -641,9 +659,16 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 permission: ['USER_PERMISSION']
             },
             {
-                name: 'Roler & Profile',
+                name: 'Organization',
+                icon: 'deployment-unit',
+                link: '/setting/mgOrganization',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
+                permission: ['ORGANIZATION_PERMISSION']
+            },
+            {
+                name: 'Role & Profile',
                 icon: 'pushpin',
-                link: '/setting/mgRPPToken',
+                link: '/setting/mgRPP',
                 roles: ['ROLE_MASTER_ADMIN', 'ROLE_DB', 'ROLE_DEV'],
                 permission: ['RPP_PERMISSION']
             },

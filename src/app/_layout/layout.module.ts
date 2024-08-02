@@ -5,21 +5,21 @@ import { NgZorroAntdModule } from '../_helpers/ng-zorro-antd.module';
 import { IconsProviderModule } from '../icons-provider.module';
 // compoenet
 import {
-    Header2Component,
     BreadcrumbComponent,
     AdminLayoutComponent,
     MainLayoutComponent,
+    ReportLayoutComponent,
+    ActionHeaderListComponent,
     UserActionComponent,
-    NotifactionActionComponent,
-    ReportLayoutComponent
+    NotifactionActionComponent
 } from './index';
 
 export const APP_COMPONENT = [
-    Header2Component,
     BreadcrumbComponent,
     AdminLayoutComponent,
     ReportLayoutComponent,
     MainLayoutComponent,
+    ActionHeaderListComponent,
     UserActionComponent,
     NotifactionActionComponent
 ];

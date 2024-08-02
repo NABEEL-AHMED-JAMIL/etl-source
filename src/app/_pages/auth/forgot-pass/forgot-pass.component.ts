@@ -1,8 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { AlertService, SpinnerService } from '../../../_helpers';
-import { ApiCode, AuthenticationService } from '../../../_shared/index';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators
+} from '@angular/forms';
+import {
+    AlertService,
+    SpinnerService
+} from '../../../_helpers';
+import {
+    ApiCode,
+    AuthenticationService
+} from '../../../_shared/index';
 import { first } from 'rxjs/operators';
 
 
@@ -14,7 +24,6 @@ import { first } from 'rxjs/operators';
 export class ForgotPassComponent implements OnInit {
 
     public forgotForm!: UntypedFormGroup;
-    public loading: any = false;
 
     constructor(private fb: UntypedFormBuilder,
         private router: Router,
@@ -38,7 +47,8 @@ export class ForgotPassComponent implements OnInit {
         this.spinnerService.show();
         // stop here if form is invalid
         if (this.forgotForm.invalid) {
-            Object.values(this.forgotForm.controls).forEach(control => {
+            Object.values(this.forgotForm.controls)
+            .forEach(control => {
                 if (control.invalid) {
                     control.markAsDirty();
                     control.updateValueAndValidity({ onlySelf: true });
@@ -47,11 +57,9 @@ export class ForgotPassComponent implements OnInit {
             this.spinnerService.hide();
             return;
         }
-        this.loading = true;
         this.authenticationService.forgotPassword(this.forgotForm.value)
             .pipe(first())
             .subscribe((response: any) => {
-                this.loading = false;
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
                     this.alertService.showError(response.message, ApiCode.ERROR);
@@ -60,7 +68,6 @@ export class ForgotPassComponent implements OnInit {
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 this.router.navigate(['/login']);
             }, (response: any) => {
-                this.loading = false;
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });

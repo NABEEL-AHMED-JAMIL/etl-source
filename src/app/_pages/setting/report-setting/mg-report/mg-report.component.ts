@@ -96,8 +96,8 @@ export class MgReportComponent implements OnInit {
                 type: 'tag'
             },
             {
-                field: 'fetchRate',
-                header: 'Rate Limit',
+                field: 'recordReport',
+                header: 'Recoard Report',
                 type: 'tag'
             },
             {
@@ -131,6 +131,11 @@ export class MgReportComponent implements OnInit {
                 type: 'tag'
             },
             {
+                field: 'fetchRate',
+                header: 'Rate Limit',
+                type: 'tag'
+            },
+            {
                 field: 'dateCreated',
                 header: 'Created',
                 type: 'date'
@@ -160,6 +165,13 @@ export class MgReportComponent implements OnInit {
         ],
         actionType: [
             {
+                type: 'edit',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
+            },
+            {
                 type: 'eye',
                 color: 'orange',
                 spin: false,
@@ -167,11 +179,11 @@ export class MgReportComponent implements OnInit {
                 action: ActionType.VIEW
             },
             {
-                type: 'edit',
-                color: 'green',
+                type: 'file-done',
+                color: 'black',
                 spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
+                tooltipTitle: 'View Recoard Report',
+                action: ActionType.LINK
             },
             {
                 type: 'delete',
