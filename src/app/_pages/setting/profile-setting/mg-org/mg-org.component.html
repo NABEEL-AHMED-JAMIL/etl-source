@@ -1,0 +1,49 @@
+
+<div class="content">
+    <h3>
+        <span nz-icon nzType="link" nzTheme="outline"></span>
+        {{orgTable.title}}
+    </h3>
+    <nz-divider style="margin: 5px 0;"></nz-divider>
+    <!-- <app-gen-table *ngIf="orgTable"
+        [isDateFilter]="true"
+        [startDate]="startDate"
+        [endDate]="endDate"
+        [setOfCheckedId]="setOfCheckedId"
+        [staticTable]="orgTable"
+        (actionEventEmitter)="tableActionReciver($event)"
+        (buttonEventEmitter)="buttonActionReciver($event)"
+        (filterEventEmitter)="filterActionReciver($event)"
+        (extraEventEmitter)="extraActionReciver($event)">
+    </app-gen-table> -->
+
+    <nz-row nzGutter="16">
+        <ng-container *ngFor="let ministry of ministries">
+            <nz-col [nzSpan]="6">
+                <nz-card nzTitle="#{{ ministry.id }} {{ ministry.name }}"
+                    [nzExtra]="extraTemplate"
+                    [nzActions]="[actionEdit, actionUserSetting, actionMore]"
+                    style="width: 100%; margin-bottom: 16px;">
+                    <p><span>Email:</span> {{ ministry.email }}</p>
+                    <p><span>Phone:</span> {{ ministry.phone }}</p>
+                    <p><span>Address:</span> {{ ministry.address }}</p>
+                    <p><span>Country Code:</span> {{ ministry.country }}</p>
+                </nz-card>
+            </nz-col>
+        </ng-container>
+    </nz-row>
+    <!-- extra-work -->
+    <ng-template #extraTemplate>
+        <nz-tag><b>Active</b></nz-tag>
+        <nz-avatar nzSrc="./assets/avatar/spring.png"></nz-avatar>
+    </ng-template>
+    <ng-template #actionEdit>
+        <span nz-icon nzType="edit"></span>
+    </ng-template>
+    <ng-template #actionUserSetting>
+        <span nz-icon nzType="usergroup-add"></span>
+    </ng-template>
+    <ng-template #actionMore>
+        <span nz-icon nzType="ellipsis"></span>
+    </ng-template>
+</div>

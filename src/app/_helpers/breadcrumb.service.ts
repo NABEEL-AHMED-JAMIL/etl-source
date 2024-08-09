@@ -29,7 +29,11 @@ export class BreadcrumbService {
                             const routeSnapshot = route.snapshot;
                             url += '/' + routeSnapshot.url.map(segment => segment.path).join('/');
                             if (routeSnapshot.data && routeSnapshot.data['breadcrumb']) {
-                                this.breadcrumbs.push({ label: routeSnapshot.data['breadcrumb'], url: url });
+                                this.breadcrumbs.push(
+                                    {
+                                        label: routeSnapshot.data['breadcrumb'],
+                                        url: url
+                                    });
                             }
                             currentRoute = route;
                         }

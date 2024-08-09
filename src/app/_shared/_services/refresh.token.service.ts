@@ -12,6 +12,10 @@ export class RefreshTokenService {
 
     constructor(private http: HttpClient) { }
 
+    public fetchSessionStatistics(): Observable<ApiResponse> {
+        return this.http.get<any>(`${config.apiBaseUrl}/refreshToken.json/fetchSessionStatistics`);
+    }
+
     public fetchByAllRefreshToken(payload: any): Observable<ApiResponse> {
         return this.http.post<any>(`${config.apiBaseUrl}/refreshToken.json/fetchByAllRefreshToken`, payload);
     }

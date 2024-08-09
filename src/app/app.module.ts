@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { AppRoutingModule } from './app-routing.module';
@@ -52,7 +52,9 @@ import {
     CUEvariableComponent,
     MgEVariableComponent,
     CUUserComponent,
+    CUOrgComponent,
     MgUserComponent,
+    MgOrgComponent,
     RUCroseTableComponent,
     PUCroseTableComponent,
     EVUCroseTableComponent,
@@ -101,8 +103,13 @@ import {
     DynamicSelectComponent,
     DynamicDatePickerComponent
 } from './_dynamic-fields';
+import { ThemeService } from './_shared';
 
 registerLocaleData(en);
+
+export function loadThemeFactory(themeService: ThemeService) {
+    return () => themeService.loadTheme();
+}
 
 export const APP_COMPONENT = [
     ETLSourceComponent,
@@ -137,6 +144,8 @@ export const APP_COMPONENT = [
     MgEVariableComponent,
     CUUserComponent,
     MgUserComponent,
+    CUOrgComponent,
+    MgOrgComponent,
     CredentialComponent,
     CuCredentialComponent,
     CUFormComponent,
@@ -203,6 +212,12 @@ export const APP_COMPONENT = [
         {
             provide: NZ_I18N,
             useValue: en_US
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: loadThemeFactory,
+            deps: [ThemeService],
+            multi: true
         },
         {
             provide: HTTP_INTERCEPTORS,

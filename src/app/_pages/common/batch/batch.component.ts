@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
-import { first } from 'rxjs';
+import { first } from 'rxjs/operators';
 import {
     ApiCode,
     AuthResponse,
@@ -10,7 +10,7 @@ import {
     RPPService,
     EVariableService,
     FormSettingService,
-    EvenBridgeService
+    EvenBridgeService,
 } from '../../../_shared';
 import {
     AlertService,
@@ -31,21 +31,21 @@ export class BatchComponent implements OnInit {
     public payload: any;
     public errors: any;
 
-    public uploading: any = false;
+    public uploading = false;
     public fileList: NzUploadFile[] = [];
     public sessionUser: AuthResponse;
 
     constructor(
+        private drawerRef: NzDrawerRef<any>,
+        private alertService: AlertService,
+        private spinnerService: SpinnerService,
         private rppService: RPPService,
         private lookupService: LookupService,
         private evenBridgeService: EvenBridgeService,
-        private alertService: AlertService,
         private eVariableService: EVariableService,
         private formSettingService: FormSettingService,
-        private spinnerService: SpinnerService,
-        private drawerRef: NzDrawerRef<any>,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
+        this.authenticationService?.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
             });
@@ -55,8 +55,7 @@ export class BatchComponent implements OnInit {
 
     public beforeUpload = (file: NzUploadFile): boolean => {
         this.errors = [];
-        this.fileList = [];
-        this.fileList = this.fileList.concat(file);
+        this.fileList = [file];
         return false;
     };
 
@@ -66,168 +65,81 @@ export class BatchComponent implements OnInit {
         this.uploading = true;
         this.action = this.batchDetail.action;
         this.payload = this.batchDetail.data;
+
         const formData = new FormData();
         this.fileList.forEach((file: any) => {
             formData.append('file', file);
         });
-        if (this.action === 'Lookup' || this.action === 'SubLookup') {
-            let payload = {
-                parentLookupId: this.action === 'SubLookup' ? this.payload.parentLookupId : null,
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            }
-            formData.append("data", JSON.stringify(payload));
-            this.lookupService.uploadLookupData(formData)
-                .pipe(first())
-                .subscribe((response: any) => {
-                    this.spinnerService.hide();
-                    this.uploading = false;
-                    if (response?.status === ApiCode.ERROR) {
-                        this.errors = response.data;
-                        this.alertService.showError(response.message, ApiCode.ERROR);
-                        return;
-                    }
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                }, (response: any) => {
-                    this.spinnerService.hide();
-                    this.uploading = false;
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
-                });
-        } else if (this.action === 'Role' || this.action === 'Profile' || this.action === 'Permission') {
-            let payload = {
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            }
-            formData.append("data", JSON.stringify(payload));
-            if (this.action === 'Role') {
-                this.rppService.uploadRole(formData)
-                    .pipe(first())
-                    .subscribe((response: any) => {
-                        this.spinnerService.hide();
-                        this.uploading = false;
-                        if (response?.status === ApiCode.ERROR) {
-                            this.errors = response.data;
-                            this.alertService.showError(response.message, ApiCode.ERROR);
-                            return;
-                        }
-                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (response: any) => {
-                        this.spinnerService.hide();
-                        this.uploading = false;
-                        this.alertService.showError(response.error.message, ApiCode.ERROR);
-                    });
-            } else if (this.action === 'Profile') {
-                this.rppService.uploadProfile(formData)
-                    .pipe(first())
-                    .subscribe((response: any) => {
-                        this.spinnerService.hide();
-                        this.uploading = false;
-                        if (response?.status === ApiCode.ERROR) {
-                            this.errors = response.data;
-                            this.alertService.showError(response.message, ApiCode.ERROR);
-                            return;
-                        }
-                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (response: any) => {
-                        this.spinnerService.hide();
-                        this.uploading = false;
-                        this.alertService.showError(response.error.message, ApiCode.ERROR);
-                    });
-            } else if (this.action === 'Permission') {
-                this.rppService.uploadPermission(formData)
-                    .pipe(first())
-                    .subscribe((response: any) => {
-                        this.spinnerService.hide();
-                        this.uploading = false;
-                        if (response?.status === ApiCode.ERROR) {
-                            this.errors = response.data;
-                            this.alertService.showError(response.message, ApiCode.ERROR);
-                            return;
-                        }
-                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (response: any) => {
-                        this.spinnerService.hide();
-                        this.uploading = false;
-                        this.alertService.showError(response.error.message, ApiCode.ERROR);
-                    });
-            }
-        } else if (this.action === 'EVariable') {
-            let payload = {
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            }
-            formData.append("data", JSON.stringify(payload));
-            this.eVariableService.uploadEnVariable(formData)
-                .pipe(first())
-                .subscribe((response: any) => {
-                    this.spinnerService.hide();
-                    this.uploading = false;
-                    if (response?.status === ApiCode.ERROR) {
-                        this.errors = response.data;
-                        this.alertService.showError(response.message, ApiCode.ERROR);
-                        return;
-                    }
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                }, (response: any) => {
-                    this.spinnerService.hide();
-                    this.uploading = false;
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
-                });
-        } else if (this.action === 'STT_FORM' || this.action === 'STT_SECTION' || this.action === 'STT_CONTROL') {
-            let payload = {
-                uploadType: this.action,
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            }
-            formData.append("data", JSON.stringify(payload));
-            this.formSettingService.uploadSTTCommon(formData)
-                .pipe(first())
-                .subscribe((response: any) => {
-                    this.spinnerService.hide();
-                    this.uploading = false;
-                    if (response?.status === ApiCode.ERROR) {
-                        this.errors = response.data;
-                        this.alertService.showError(response.message, ApiCode.ERROR);
-                        return;
-                    }
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                }, (response: any) => {
-                    this.spinnerService.hide();
-                    this.uploading = false;
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
-                });
-        } else if (this.action === 'EventBridge') {
-            let payload = {
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            }
-            formData.append("data", JSON.stringify(payload));
-            this.evenBridgeService.uploadEventBridge(formData)
-                .pipe(first())
-                .subscribe((response: any) => {
-                    this.spinnerService.hide();
-                    this.uploading = false;
-                    if (response?.status === ApiCode.ERROR) {
-                        this.errors = response.data;
-                        this.alertService.showError(response.message, ApiCode.ERROR);
-                        return;
-                    }
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                }, (response: any) => {
-                    this.spinnerService.hide();
-                    this.uploading = false;
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
-                });
+        formData.append("data", JSON.stringify(this.getPayload()));
+        this.uploadData(formData).subscribe(
+            (response: any) => this.handleSuccess(response),
+            (response: any) => this.handleError(response)
+        );
+    }
+
+    private getPayload() {
+        const basePayload = {
+            sessionUser: {
+                username: this.sessionUser.username
+            }};
+        switch (this.action) {
+            case 'Lookup':
+            case 'SubLookup':
+                return {
+                    ...basePayload,
+                    parentLookupId: this.action === 'SubLookup' ? this.payload.parentLookupId : null
+                };
+            case 'STT_FORM':
+            case 'STT_SECTION':
+            case 'STT_CONTROL':
+                return { ...basePayload, uploadType: this.action };
+            default:
+                return basePayload;
         }
+    }
+
+    private uploadData(formData: FormData) {
+        switch (this.action) {
+            case 'Lookup':
+            case 'SubLookup':
+                return this.lookupService.uploadLookupData(formData).pipe(first());
+            case 'Role':
+                return this.rppService.uploadRole(formData).pipe(first());
+            case 'Profile':
+                return this.rppService.uploadProfile(formData).pipe(first());
+            case 'Permission':
+                return this.rppService.uploadPermission(formData).pipe(first());
+            case 'EVariable':
+                return this.eVariableService.uploadEnVariable(formData).pipe(first());
+            case 'STT_FORM':
+            case 'STT_SECTION':
+            case 'STT_CONTROL':
+                return this.formSettingService.uploadSTTCommon(formData).pipe(first());
+            case 'EventBridge':
+                return this.evenBridgeService.uploadEventBridge(formData).pipe(first());
+            default:
+                throw new Error(`Unsupported action type: ${this.action}`);
+        }
+    }
+
+    private handleSuccess(response: any) {
+        this.spinnerService.hide();
+        this.uploading = false;
+        if (response?.status === ApiCode.ERROR) {
+            this.errors = response.data;
+            this.alertService.showError(response.message, ApiCode.ERROR);
+        } else {
+            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+        }
+    }
+
+    private handleError(response: any) {
+        this.spinnerService.hide();
+        this.uploading = false;
+        this.alertService.showError(response.error.message, ApiCode.ERROR);
     }
 
     public close(): void {
         this.drawerRef.close();
     }
-
 }

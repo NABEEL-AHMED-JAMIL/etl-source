@@ -23,8 +23,7 @@ export class NotifactionActionComponent implements OnInit {
     @Input()
     public userNotificationData: INotification[];
 
-    constructor(private notificationService: NotificationService) {
-    }
+    constructor(private notificationService: NotificationService) {}
 
     ngOnInit(): void {
     }

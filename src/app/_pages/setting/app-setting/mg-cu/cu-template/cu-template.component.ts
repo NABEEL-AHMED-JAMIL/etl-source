@@ -32,23 +32,23 @@ export class CUTemplateComponent implements OnInit {
     @Input()
     public editPayload: ITemplateReg;
 
-    public editAction = ActionType.EDIT;
-
     public loading: boolean = false;
+    public editAction = ActionType.EDIT;
     public templateForm: FormGroup;
 
     public EMAIL_TEMPLATE:ILookups;
     public APPLICATION_STATUS:ILookups;
     public sessionUser: AuthResponse;
 
-    constructor(private formBuilder: FormBuilder,
+    constructor(
+        private drawerRef: NzDrawerRef<void>,
+        private formBuilder: FormBuilder,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private templateRegService: TemplateRegService,
-        private drawerRef: NzDrawerRef<void>,
         private authenticationService: AuthenticationService) {
-            this.authenticationService.currentUser
+            this.authenticationService?.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
             });

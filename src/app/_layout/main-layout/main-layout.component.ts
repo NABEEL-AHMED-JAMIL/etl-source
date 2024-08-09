@@ -4,6 +4,7 @@ import {
     AuthResponse,
 } from 'src/app/_shared';
 
+
 @Component({
     selector: 'app-main-layout',
     templateUrl: './main-layout.component.html',
@@ -16,13 +17,13 @@ export class MainLayoutComponent implements OnInit {
     public userPermission: any;
 
     constructor(private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-        .subscribe(currentUser => {
-            this.sessionUser = currentUser;
-            if (this.sessionUser) {
-                this.userPermission = currentUser.profile.permission;
-            }
-        });
+        this.authenticationService?.currentUser
+            .subscribe(currentUser => {
+                this.sessionUser = currentUser;
+                if (this.sessionUser) {
+                    this.userPermission = currentUser.profile.permission;
+                }
+            });
     }
 
     ngOnInit(): void {

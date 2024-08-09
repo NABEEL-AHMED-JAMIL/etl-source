@@ -25,7 +25,6 @@ import { first } from 'rxjs';
 export class MgTemplateComponent implements OnInit {
 
     public setOfCheckedId = new Set<any>();
-    //
     public sessionUser: AuthResponse;
     public templateTable: IStaticTable = {
         tableId: 'template_id',

@@ -16,27 +16,27 @@ export class EVariableService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/addEnVariable`, payload);
     }
 
-    public updateEnVariable(payload: any) : Observable<ApiResponse> {
+    public updateEnVariable(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/updateEnVariable`, payload);
     }
 
-    public fetchAllEnVariable(payload: any) : Observable<ApiResponse> {
+    public fetchAllEnVariable(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/fetchAllEnVariable`, payload);
     }
 
-    public fetchEnVariableById(payload: any) : Observable<ApiResponse> {
+    public fetchEnVariableById(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/fetchEnVariableById`, payload);
     }
 
-    public fetchUserEnvByEnvKey(payload: any) : Observable<ApiResponse> {
+    public fetchUserEnvByEnvKey(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/fetchUserEnvByEnvKey`, payload);
     }
 
-    public deleteEnVariableById(payload: any) : Observable<ApiResponse> {
+    public deleteEnVariableById(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/deleteEnVariableById`, payload);
     }
 
-    public deleteAllEnVariable(payload: any) : Observable<ApiResponse> {
+    public deleteAllEnVariable(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/deleteAllEnVariable`, payload);
     }    
 
@@ -58,11 +58,11 @@ export class EVariableService {
         return this.http.post(`${config.apiBaseUrl}/eVariable.json/uploadEnVariable`, payload);
     }
 
-    public fetchLinkEVariableWitUser(payload: any) : Observable<ApiResponse> {
+    public fetchLinkEVariableWitUser(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/fetchLinkEVariableWitUser`, payload);
     }
 
-    public linkEVariableWithUser(payload: any) : Observable<ApiResponse> {
+    public linkEVariableWithUser(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/eVariable.json/linkEVariableWithUser`, payload);
     }
 

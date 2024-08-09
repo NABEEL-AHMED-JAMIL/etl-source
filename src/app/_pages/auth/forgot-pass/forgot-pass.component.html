@@ -1,18 +1,21 @@
 <div nz-row class="h100vh form" style="position: relative;">
     <img class="bottom" src="../../../../assets/bg.jpg">
     <div class="center-container" nz-col [nzSpan]="24">
-        <form class="login-form" nz-form [formGroup]="forgotForm"
+        <form class="login-form" nz-form
+            [formGroup]="forgotForm"
             (ngSubmit)="onSubmit()">
             <div style="text-align: center">
                 <a href="https://targetfitout.com/">
-                    <img src="../../../../assets/logo.png" alt="logo" style="width: 200px;" />
+                    <img src="../../../../assets/logo.png"
+                        alt="logo" style="width: 200px;" />
                 </a>
             </div>
             <h3 class="title title-align">Forgot Password</h3>
             <nz-form-item>
                 <nz-form-control nzErrorTip="Please input your Email!">
                     <nz-input-group nzPrefixIcon="user">
-                        <input nz-input type="email" formControlName="email"
+                        <input nz-input type="email"
+                            formControlName="email"
                             placeholder="Enter Email" />
                     </nz-input-group>
                 </nz-form-control>

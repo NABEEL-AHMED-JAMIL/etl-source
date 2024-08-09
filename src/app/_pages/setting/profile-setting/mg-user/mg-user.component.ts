@@ -93,9 +93,19 @@ export class MgUserComponent implements OnInit {
                 subfield: ['description']
             },
             {
+                field: 'accountType',
+                header: 'Account Type',
+                type: 'tag',
+            },
+            {
                 field: 'ipAddress',
                 header: 'Ip Address',
                 type: 'data'
+            },
+            {
+                field: 'totalSubUser',
+                header: 'Sub User',
+                type: 'tag'
             },
             {
                 field: 'dateCreated',
@@ -151,7 +161,127 @@ export class MgUserComponent implements OnInit {
                 action: ActionType.ENABLED
             },
             {
-                title: 'InActive User',
+                title: 'In Active User',
+                type: 'close-circle',
+                targetFiled: 'status',
+                condition: "EQ",
+                targetValue: 1,
+                action: ActionType.DISABLED
+            }
+        ]
+    };
+    // single user table
+    public singleUserTable: IStaticTable = {
+        tableId: 'sing_user_id',
+        title: 'Mg Single User Account',
+        bordered: true,
+        checkbox: true,
+        size: 'small',
+        headerButton: [
+            {
+                type: 'plus-circle',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Add',
+                action: ActionType.ADD
+            },
+            {
+                type: 'reload',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Refresh',
+                action: ActionType.RE_FRESH
+            },
+            {
+                type: 'download',
+                color: 'balck',
+                spin: false,
+                tooltipTitle: 'Download',
+                action: ActionType.DOWNLOAD
+            }
+        ],
+        extraHeaderButton: [
+            {
+                title: 'Delete All',
+                type: 'delete',
+                action: ActionType.DELETE
+            }
+        ],
+        dataColumn: [
+            {
+                field: 'profileImg',
+                header: 'Img',
+                type: 'img'
+            },
+            {
+                field: 'email',
+                header: 'Email',
+                type: 'data'
+            },
+            {
+                field: 'username',
+                header: 'Username',
+                type: 'data'
+            },
+            {
+                field: 'profile',
+                header: 'Profile',
+                type: 'combine',
+                subfield: ['description']
+            },
+            {
+                field: 'accountType',
+                header: 'Account Type',
+                type: 'tag',
+            },
+            {
+                field: 'ipAddress',
+                header: 'Ip Address',
+                type: 'data'
+            },
+            {
+                field: 'dateCreated',
+                header: 'Created',
+                type: 'date'
+            },
+            {
+                field: 'dateUpdated',
+                header: 'Updated',
+                type: 'date'
+            },
+            {
+                field: 'status',
+                header: 'Status',
+                type: 'tag'
+            }
+        ],
+        actionType: [
+            {
+                type: 'edit',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
+            },
+            {
+                type: 'delete',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Delete Account',
+                action: ActionType.DELETE
+            }
+        ],
+        moreActionType: [
+            {
+                title: 'Active User',
+                type: 'check-circle',
+                targetFiled: 'status',
+                condition: "EQ",
+                targetValue: 0,
+                action: ActionType.ENABLED
+            },
+            {
+                title: 'In Active User',
                 type: 'close-circle',
                 targetFiled: 'status',
                 condition: "EQ",
@@ -165,7 +295,7 @@ export class MgUserComponent implements OnInit {
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
         private alertService: AlertService,
-        private commomService: CommomService,
+        public commomService: CommomService,
         private spinnerService: SpinnerService,
         private appUserService: AppUserService,
         private authenticationService: AuthenticationService) {
@@ -250,7 +380,7 @@ export class MgUserComponent implements OnInit {
                         email: payload.data.email,
                         username: payload.data.username
                     }
-                    this.closeAppUserAccount({
+                    this.deleteAppUserAccount({
                         ...appUser,
                         sessionUser: {
                             username: this.sessionUser.username
@@ -355,9 +485,9 @@ export class MgUserComponent implements OnInit {
             });
     }
 
-    public closeAppUserAccount(payload: any): void {
+    public deleteAppUserAccount(payload: any): void {
         this.spinnerService.show();
-        this.appUserService.closeAppUserAccount(payload)
+        this.appUserService.deleteAppUserAccount(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();

@@ -1,7 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { EChartsOption } from 'echarts';
-import * as echarts from 'echarts';
 import { first } from 'rxjs';
 import {
     AlertService,
@@ -11,8 +9,10 @@ import {
     ApiCode,
     AuthResponse,
     AuthenticationService,
-    SettingService
+    SettingService,
+    ThemeService
 } from 'src/app/_shared';
+
 
 @Component({
     selector: 'app-setting-dashboard',
@@ -30,52 +30,22 @@ export class SettingDashboardComponent implements OnInit {
     public APP_SETTING_STATISTICS: EChartsOption;
     public SESSION_COUNT_STATISTICS: EChartsOption;
 
-    // daily session detail
-    public fromdate: any;
-    public todate: any;
-
     constructor(
-        private http: HttpClient,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private settingService: SettingService,
+        private themeService: ThemeService,
         private authenticationService: AuthenticationService) {
-        this.loadTheme();
-        this.authenticationService.currentUser
+        this.authenticationService?.currentUser
             .subscribe(currentUser => {
                 this.currentUser = currentUser;
             });
-
     }
 
     ngOnInit(): void {
         this.fetchSettingDashboard({
             username: this.currentUser.username
         });
-    }
-
-    public loadTheme(): void {
-        this.http.get('assets/shine-theme.json')
-            .subscribe((theme: any) => {
-                echarts.registerTheme('shine', theme);
-            });
-    }
-
-    public initCharts(): void {
-        this.initChart('SERVICE_SETTING_STATISTICS', this.SERVICE_SETTING_STATISTICS);
-        this.initChart('DASHBOARD_AND_REPORT_SETTING_STATISTICS', this.DASHBOARD_AND_REPORT_SETTING_STATISTICS);
-        this.initChart('FORM_SETTING_STATISTICS', this.FORM_SETTING_STATISTICS);
-        this.initChart('PROFILE_SETTING_STATISTICS', this.PROFILE_SETTING_STATISTICS);
-        this.initChart('APP_SETTING_STATISTICS', this.APP_SETTING_STATISTICS);
-        this.initChart('SESSION_COUNT_STATISTICS', this.SESSION_COUNT_STATISTICS);
-    }
-
-    public initChart(elementId: string, chartOptions: EChartsOption): void {
-        const chartDom = document.getElementById(elementId);
-        if (chartDom) {
-            const myChart = echarts.init(chartDom, 'shine');
-            myChart.setOption(chartOptions);
-        }
     }
 
     // fetch all lookup
@@ -175,6 +145,15 @@ export class SettingDashboardComponent implements OnInit {
                 }
             ]
         }
+    }
+
+    public initCharts(): void {
+        this.themeService.initChart('SERVICE_SETTING_STATISTICS', this.SERVICE_SETTING_STATISTICS);
+        this.themeService.initChart('DASHBOARD_AND_REPORT_SETTING_STATISTICS', this.DASHBOARD_AND_REPORT_SETTING_STATISTICS);
+        this.themeService.initChart('FORM_SETTING_STATISTICS', this.FORM_SETTING_STATISTICS);
+        this.themeService.initChart('PROFILE_SETTING_STATISTICS', this.PROFILE_SETTING_STATISTICS);
+        this.themeService.initChart('APP_SETTING_STATISTICS', this.APP_SETTING_STATISTICS);
+        this.themeService.initChart('SESSION_COUNT_STATISTICS', this.SESSION_COUNT_STATISTICS);
     }
 
 }

@@ -6,8 +6,15 @@ import {
     Output,
     ViewEncapsulation
 } from '@angular/core';
-import { IStaticTable, ActionType, ApiCode } from '../../../_shared';
-import { AlertService, CommomService } from 'src/app/_helpers';
+import {
+    IStaticTable,
+    ActionType,
+    ApiCode
+} from '../../../_shared';
+import {
+    AlertService,
+    CommomService
+} from 'src/app/_helpers';
 
 
 @Component({

@@ -39,7 +39,8 @@ export class ActionHeaderListComponent implements OnInit {
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         public commomService: CommomService) {
-            this.authenticationService.currentUser.subscribe(currentUser => {
+            this.authenticationService?.currentUser
+            .subscribe(currentUser => {
                 this.sessionUser = currentUser;
                 if (this.sessionUser) {
                     this.userPermission = currentUser.profile.permission;

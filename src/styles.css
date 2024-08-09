@@ -69,6 +69,7 @@ nz-content {
 .ant-table.ant-table-small tfoot>tr>td {
     padding: 2px 8px;
 }
+
 .ant-tabs-top>.ant-tabs-nav,
 .ant-tabs-bottom>.ant-tabs-nav,
 .ant-tabs-top>div>.ant-tabs-nav,
@@ -106,10 +107,6 @@ nz-content {
     background: rgba(255, 0, 0, 0.636);
     color: white;
 }
-
-/* .ant-descriptions-header {
-    margin-bottom: 0px !important;
-  } */
 
 .text-center {
     text-align: center !important;
@@ -193,13 +190,11 @@ textarea {
 }
 
 .form-side {
-    /* background-color: var(--primary); */
     padding: 55px;
     line-height: 50px;
     justify-content: center;
     display: flex;
     flex-direction: column;
-    /* background-image: url("../src/assets/form-bg.jpg"); */
     background-size: cover;
 }
 
@@ -240,7 +235,6 @@ app-confirmation-popup .ant-result-icon {
 
 /* =============== */
 /* ====== Mobile Responsive ========= */
-
 .ant-card-head-title {
     padding: 10px 0 !important;
 }
@@ -284,7 +278,6 @@ app-confirmation-popup .ant-result-icon {
 .uploader>.ant-upload {
     width: 100% !important;
 }
-
 
 [dir="rtl"] .action-button-container {
     float: left !important;
@@ -388,7 +381,15 @@ app-confirmation-popup .ant-result-icon {
     box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
 }
 
-
 .ant-drawer-footer {
     color: red;
+}
+
+/* card detial */
+.ant-card-head {
+    padding: 0 10px !important;
+}
+
+.ant-card-body {
+    padding: 10px !important;
 }
