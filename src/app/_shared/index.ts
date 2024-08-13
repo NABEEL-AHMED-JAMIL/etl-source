@@ -1,5 +1,5 @@
 // services
-export * from './_services/app.dashboard.theme';
+export * from '../_helpers/app.dashboard.theme';
 export * from './_services/setting.service';
 export * from './_services/authentication.service';
 export * from './_services/credential.service';

@@ -887,41 +887,148 @@ export const enum SERVER_ACTION {
 }
 
 export const ORGANIZATIONS: IOrganization[] = [
-    {'id': 18,
-    'name': 'Ministry of Education and Higher Education',
-    'address': 'Supreme Education Council, Doha',
-    'email': 'info@edu.gov.qa',
-    'phone': '+9744404444',
-    'country': 'QAT'},
-   {'id': 19,
-    'name': 'Ministry of Public Health',
-    'address': 'Hamad Medical City, Doha',
-    'email': 'ghcc@moph.gov.qa',
-    'phone': '+97444070000',
-    'country': 'QAT'},
-   {'id': 20,
-    'name': 'Ministry of Endowments and Islamic Affairs (Awqaf)',
-    'address': 'Al Funduq St, Doha',
-    'email': 'public.sec@islam.gov.qa',
-    'phone': '+97444700000',
-    'country': 'QAT'},
-   {'id': 21,
-    'name': 'Ministry of Finance',
-    'address': 'Doha',
-    'email': 'info@mof.gov.qa',
-    'phone': '+97444461444',
-    'country': 'QAT'},
-   {'id': 22,
-    'name': 'Ministry of Interior',
-    'address': 'Doha',
-    'email': 'info@moi.gov.qa',
-    'phone': '2366666',
-    'country': 'QAT'},
-   {
-    'id': 24,
-    'name': 'Ministry of Transport',
-    'address': 'Excellence Tower, Al Shatt St, Doha',
-    'email': 'info@mot.gov.qa',
-    'phone': '+97440451111',
-    'country': 'QAT'
-    }];
+    {
+        'id': 18,
+        'name': 'MinistryofEducationandHigherEducation',
+        'address': 'SupremeEducationCouncil, Doha',
+        'email': 'info@edu.gov.qa',
+        'phone': '+9744404444',
+        'country': 'QAT'
+    },
+    {
+        'id': 19,
+        'name': 'MinistryofPublicHealth',
+        'address': 'HamadMedicalCity, Doha',
+        'email': 'ghcc@moph.gov.qa',
+        'phone': '+97444070000',
+        'country': 'QAT'
+    },
+    {
+        'id': 20,
+        'name': 'MinistryofEndowmentsandIslamicAffairs(Awqaf)',
+        'address': 'AlFunduqSt, Doha',
+        'email': 'public.sec@islam.gov.qa',
+        'phone': '+97444700000',
+        'country': 'QAT'
+    },
+    {
+        'id': 21,
+        'name': 'MinistryofFinance',
+        'address': 'Doha',
+        'email': 'info@mof.gov.qa',
+        'phone': '+97444461444',
+        'country': 'QAT'
+    },
+    {
+        'id': 22,
+        'name': 'MinistryofInterior',
+        'address': 'Doha',
+        'email': 'info@moi.gov.qa',
+        'phone': '2366666',
+        'country': 'QAT'
+    },
+    {
+        'id': 24,
+        'name': 'MinistryofTransport',
+        'address': 'ExcellenceTower, AlShattSt, Doha',
+        'email': 'info@mot.gov.qa',
+        'phone': '+97440451111',
+        'country': 'QAT'
+    },
+    {
+        'id': 18,
+        'name': 'MinistryofEducationandHigherEducation',
+        'address': 'SupremeEducationCouncil, Doha',
+        'email': 'info@edu.gov.qa',
+        'phone': '+9744404444',
+        'country': 'QAT'
+    },
+    {
+        'id': 19,
+        'name': 'MinistryofPublicHealth',
+        'address': 'HamadMedicalCity, Doha',
+        'email': 'ghcc@moph.gov.qa',
+        'phone': '+97444070000',
+        'country': 'QAT'
+    },
+    {
+        'id': 20,
+        'name': 'MinistryofEndowmentsandIslamicAffairs(Awqaf)',
+        'address': 'AlFunduqSt, Doha',
+        'email': 'public.sec@islam.gov.qa',
+        'phone': '+97444700000',
+        'country': 'QAT'
+    },
+    {
+        'id': 21,
+        'name': 'MinistryofFinance',
+        'address': 'Doha',
+        'email': 'info@mof.gov.qa',
+        'phone': '+97444461444',
+        'country': 'QAT'
+    },
+    {
+        'id': 22,
+        'name': 'MinistryofInterior',
+        'address': 'Doha',
+        'email': 'info@moi.gov.qa',
+        'phone': '2366666',
+        'country': 'QAT'
+    },
+    {
+        'id': 24,
+        'name': 'MinistryofTransport',
+        'address': 'ExcellenceTower, AlShattSt, Doha',
+        'email': 'info@mot.gov.qa',
+        'phone': '+97440451111',
+        'country': 'QAT'
+    },
+    {
+        'id': 18,
+        'name': 'MinistryofEducationandHigherEducation',
+        'address': 'SupremeEducationCouncil, Doha',
+        'email': 'info@edu.gov.qa',
+        'phone': '+9744404444',
+        'country': 'QAT'
+    },
+    {
+        'id': 19,
+        'name': 'MinistryofPublicHealth',
+        'address': 'HamadMedicalCity, Doha',
+        'email': 'ghcc@moph.gov.qa',
+        'phone': '+97444070000',
+        'country': 'QAT'
+    },
+    {
+        'id': 20,
+        'name': 'MinistryofEndowmentsandIslamicAffairs(Awqaf)',
+        'address': 'AlFunduqSt, Doha',
+        'email': 'public.sec@islam.gov.qa',
+        'phone': '+97444700000',
+        'country': 'QAT'
+    },
+    {
+        'id': 21,
+        'name': 'MinistryofFinance',
+        'address': 'Doha',
+        'email': 'info@mof.gov.qa',
+        'phone': '+97444461444',
+        'country': 'QAT'
+    },
+    {
+        'id': 22,
+        'name': 'MinistryofInterior',
+        'address': 'Doha',
+        'email': 'info@moi.gov.qa',
+        'phone': '2366666',
+        'country': 'QAT'
+    },
+    {
+        'id': 24,
+        'name': 'MinistryofTransport',
+        'address': 'ExcellenceTower, AlShattSt, Doha',
+        'email': 'info@mot.gov.qa',
+        'phone': '+97440451111',
+        'country': 'QAT'
+    }
+];

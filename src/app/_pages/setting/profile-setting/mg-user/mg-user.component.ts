@@ -38,7 +38,7 @@ export class MgUserComponent implements OnInit {
     // sub user table
     public subUserTable: IStaticTable = {
         tableId: 'user_id',
-        title: 'Mg User',
+        title: 'My User Account',
         bordered: true,
         checkbox: true,
         size: 'small',
@@ -185,7 +185,7 @@ export class MgUserComponent implements OnInit {
     // single user table
     public singleUserTable: IStaticTable = {
         tableId: 'sing_user_id',
-        title: 'Mg Single User Account',
+        title: 'Other User Account',
         bordered: true,
         checkbox: true,
         size: 'small',

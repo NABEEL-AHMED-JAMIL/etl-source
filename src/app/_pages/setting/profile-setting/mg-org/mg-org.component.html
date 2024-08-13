@@ -1,13 +1,13 @@
 
-<div class="content">
+<!-- my-info  -->
+<app-user-info [userInfo]="sessionUser"></app-user-info>
+<div class="content" style="margin-top: 10px;">
     <h3>
         <span nz-icon nzType="link" nzTheme="outline"></span>
         Mg Organization
     </h3>
     <nz-divider style="margin: 5px 0;"></nz-divider>
-
 </div>
-
 <nz-row nzGutter="16">
     <ng-container *ngFor="let organization of organizations">
         <nz-col [nzSpan]="8" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 8}">
@@ -17,20 +17,21 @@
                 [nzExtra]="extraTemplate" class="nz-card-aligment">
                 <nz-row nzGutter="16">
                     <nz-col [nzSpan]="12">
-                        <span>
+                        <span  style="color: green;font-weight: bold;">
                             <span nz-icon nzType="usergroup-add"></span>
                             Active User = 20
                         </span>
                     </nz-col>
-                    <nz-col [nzSpan]="12" style="text-align: end;">
-                        <span>
+                    <nz-col [nzSpan]="12"
+                        style="text-align: end;">
+                        <span style="color: orange;font-weight: bold;">
                             <span nz-icon nzType="usergroup-delete"></span>
                             Inactive User = 0
                         </span>
                     </nz-col>
                 </nz-row>
                 <nz-divider style="margin: 5px 0;"></nz-divider>
-                <p  id="email">
+                <p id="email">
                     <span nz-icon nzType="mail" nzTheme="outline"></span>
                     <span> Email: </span> {{organization.email}}
                 </p>
@@ -42,6 +43,25 @@
                     <span nz-icon nzType="home" nzTheme="outline"></span>
                     <span> Address:</span> {{organization.address}}, {{organization.country}}
                 </p>
+                <nz-divider style="margin: 5px 0;"></nz-divider>
+                <nz-row nzGutter="16">
+                    <nz-col [nzSpan]="24" class="progress-detail">
+                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
+                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
+                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
+                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
+                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
+                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
+                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
+                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
+                        <nz-progress [nzPercent]="70" nzType="circle" [nzWidth]="45" nzStatus="exception"></nz-progress>
+                        <nz-progress [nzPercent]="100" nzType="circle" [nzWidth]="45"></nz-progress>
+                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
+                        <nz-progress [nzPercent]="70" nzType="circle" [nzWidth]="45" nzStatus="exception"></nz-progress>
+                        <nz-progress [nzPercent]="100" nzType="circle" [nzWidth]="45"></nz-progress>
+                        <nz-progress [nzPercent]="70" nzType="circle" [nzWidth]="45" nzStatus="exception"></nz-progress>                        
+                    </nz-col>
+                </nz-row>
             </nz-card>
             <!-- extra-work -->
             <ng-template #extraTemplate>

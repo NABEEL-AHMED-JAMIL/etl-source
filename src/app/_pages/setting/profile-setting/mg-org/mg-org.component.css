@@ -16,3 +16,15 @@ p span {
     margin-bottom: 16px;
     border-radius: 10px;
 }
+
+nz-progress {
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.progress-detail {
+    text-align: center;
+    overflow-x: scroll;
+    display: flex;
+    scrollbar-width: none;
+}

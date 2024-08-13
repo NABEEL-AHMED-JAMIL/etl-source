@@ -1,10 +1,7 @@
+<!-- my-info  -->
+<app-user-info [userInfo]="sessionUser"></app-user-info>
 <!-- profile-permission -->
-<div class="content">
-    <h3>
-        <span nz-icon nzType="link" nzTheme="outline"></span>
-        {{title}}
-    </h3>
-    <nz-divider style="margin: 5px 0;"></nz-divider>
+<div class="content" style="margin-top: 10px;">
     <nz-tabset nzSize="small" nzTabPosition="left">
         <!-- role -->
         <nz-tab [nzTitle]="roleTemplate">

@@ -25,7 +25,8 @@ import {
     NgZorroAntdModule,
     ErrorInterceptor,
     JwtInterceptor,
-    SearchFilterPipe
+    SearchFilterPipe,
+    AppDashboardThemeService
 } from './_helpers';
 // compoenet
 import {
@@ -92,7 +93,8 @@ import {
     EBUCroseTableComponent,
     EVConfigComponent,
     SCVisibilityComponent,
-    SCEnableabilityComponent
+    SCEnableabilityComponent,
+    UserInfoComponent
 } from './_pages';
 
 // dynamic fileds
@@ -103,12 +105,12 @@ import {
     DynamicSelectComponent,
     DynamicDatePickerComponent
 } from './_dynamic-fields';
-import { ThemeService } from './_shared';
 
 registerLocaleData(en);
 
-export function loadThemeFactory(themeService: ThemeService) {
-    return () => themeService.loadTheme();
+// load tham on APP_INITIALIZER
+export function loadThemeFactory(appDashboardThemeService: AppDashboardThemeService) {
+    return () => appDashboardThemeService.loadTheme();
 }
 
 export const APP_COMPONENT = [
@@ -116,6 +118,7 @@ export const APP_COMPONENT = [
     SettingDashboardComponent,
     BatchComponent,
     EnvVariableValueComponent,
+    UserInfoComponent,
     GenTableComponent,
     SearchFilterPipe,
     SpinnerComponent,
@@ -216,7 +219,7 @@ export const APP_COMPONENT = [
         {
             provide: APP_INITIALIZER,
             useFactory: loadThemeFactory,
-            deps: [ThemeService],
+            deps: [AppDashboardThemeService],
             multi: true
         },
         {

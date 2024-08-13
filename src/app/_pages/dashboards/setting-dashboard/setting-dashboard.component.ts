@@ -3,14 +3,14 @@ import { EChartsOption } from 'echarts';
 import { first } from 'rxjs';
 import {
     AlertService,
-    SpinnerService
+    SpinnerService,
+    AppDashboardThemeService
 } from 'src/app/_helpers';
 import {
     ApiCode,
     AuthResponse,
     AuthenticationService,
     SettingService,
-    ThemeService
 } from 'src/app/_shared';
 
 
@@ -34,7 +34,7 @@ export class SettingDashboardComponent implements OnInit {
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private settingService: SettingService,
-        private themeService: ThemeService,
+        private appDashboardThemeService: AppDashboardThemeService,
         private authenticationService: AuthenticationService) {
         this.authenticationService?.currentUser
             .subscribe(currentUser => {
@@ -59,101 +59,34 @@ export class SettingDashboardComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.SERVICE_SETTING_STATISTICS = this.fillChartByPayloadId(
-                    'Service Setting', response.data['SERVICE_SETTING_STATISTICS']['data']);
-                this.DASHBOARD_AND_REPORT_SETTING_STATISTICS = this.fillChartByPayloadId(
-                    'Service Setting', response.data['DASHBOARD_AND_REPORT_SETTING_STATISTICS']['data']);
-                this.APP_SETTING_STATISTICS = this.fillChartByPayloadId(
-                    'App Setting', response.data['APP_SETTING_STATISTICS']['data']);
-                this.FORM_SETTING_STATISTICS = this.fillChartByPayloadId(
-                    'Form Setting', response.data['FORM_SETTING_STATISTICS']['data']);
-                this.PROFILE_SETTING_STATISTICS = this.fillChartByPayloadId(
-                    'Profile Setting', response.data['PROFILE_SETTING_STATISTICS']['data']);
-                this.SESSION_COUNT_STATISTICS = this.fillChartBySessionCount(
-                    response.data['SESSION_COUNT_STATISTICS']['data']);
-                this.initCharts();  // Initialize charts after data is set
+                this.initCharts(response.data);  // Initialize charts after data is set
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
-    public fillChartByPayloadId(name: any, data: any): EChartsOption {
-        return {
-            tooltip: {
-                trigger: 'item'
-            },
-            legend: {
-                show: false
-            },
-            series: [
-                {
-                    name: name,
-                    type: 'pie',
-                    radius: ['40%', '60%'],
-                    center: ['50%', '50%'],
-                    data: data,
-                    label: {
-                        formatter: '{b}: ({c})'
-                    }
-                }
-            ]
-        };
-    }
+    
 
-    public fillChartBySessionCount(data: any): EChartsOption {
-        return {
-            title: {
-                show: false
-            },
-            toolbox: {
-                show: false
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'shadow'
-                }
-            },
-            grid: {
-                left: '7%',
-                right: '7%',
-                top: '12%',
-                bottom: '15%'
-            },
-            dataZoom: [],
-            xAxis: {
-                data: data.map((object: any) => object.key),
-                silent: false,
-                splitLine: {
-                    show: false
-                },
-                splitArea: {
-                    show: false
-                }
-            },
-            yAxis: {
-                splitArea: {
-                    show: false
-                }
-            },
-            series: [
-                {
-                    type: 'bar',
-                    data: data.map((object: any) => object.value),
-                    large: true,
-                }
-            ]
-        }
-    }
-
-    public initCharts(): void {
-        this.themeService.initChart('SERVICE_SETTING_STATISTICS', this.SERVICE_SETTING_STATISTICS);
-        this.themeService.initChart('DASHBOARD_AND_REPORT_SETTING_STATISTICS', this.DASHBOARD_AND_REPORT_SETTING_STATISTICS);
-        this.themeService.initChart('FORM_SETTING_STATISTICS', this.FORM_SETTING_STATISTICS);
-        this.themeService.initChart('PROFILE_SETTING_STATISTICS', this.PROFILE_SETTING_STATISTICS);
-        this.themeService.initChart('APP_SETTING_STATISTICS', this.APP_SETTING_STATISTICS);
-        this.themeService.initChart('SESSION_COUNT_STATISTICS', this.SESSION_COUNT_STATISTICS);
+    public initCharts(data: any): void {
+        // SERVICE_SETTING_STATISTICS
+        this.SERVICE_SETTING_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Service Setting', data['SERVICE_SETTING_STATISTICS']['data']);
+        this.appDashboardThemeService.initChart('SERVICE_SETTING_STATISTICS', this.SERVICE_SETTING_STATISTICS);
+        // DASHBOARD_AND_REPORT_SETTING_STATISTICS
+        this.DASHBOARD_AND_REPORT_SETTING_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Service Setting', data['DASHBOARD_AND_REPORT_SETTING_STATISTICS']['data']);
+        this.appDashboardThemeService.initChart('DASHBOARD_AND_REPORT_SETTING_STATISTICS', this.DASHBOARD_AND_REPORT_SETTING_STATISTICS);
+        // APP_SETTING_STATISTICS
+        this.APP_SETTING_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('App Setting',data['APP_SETTING_STATISTICS']['data']);
+        this.appDashboardThemeService.initChart('APP_SETTING_STATISTICS', this.APP_SETTING_STATISTICS);
+        // FORM_SETTING_STATISTICS
+        this.FORM_SETTING_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Form Setting', data['FORM_SETTING_STATISTICS']['data']);
+        this.appDashboardThemeService.initChart('FORM_SETTING_STATISTICS', this.FORM_SETTING_STATISTICS);
+        // PROFILE_SETTING_STATISTICS
+        this.PROFILE_SETTING_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Profile Setting', data['PROFILE_SETTING_STATISTICS']['data']);
+        this.appDashboardThemeService.initChart('PROFILE_SETTING_STATISTICS', this.PROFILE_SETTING_STATISTICS);
+        // SESSION_COUNT_STATISTICS
+        this.SESSION_COUNT_STATISTICS = this.appDashboardThemeService.fillAxisChartPayload(data['SESSION_COUNT_STATISTICS']['data']);
+        this.appDashboardThemeService.initChart('SESSION_COUNT_STATISTICS', this.SESSION_COUNT_STATISTICS);
     }
 
 }

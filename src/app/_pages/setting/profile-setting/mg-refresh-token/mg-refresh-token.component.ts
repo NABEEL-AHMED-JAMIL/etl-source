@@ -10,7 +10,7 @@ import {
     RefreshTokenService,
     AuthResponse,
     AuthenticationService,
-    ThemeService
+    AppDashboardThemeService
 } from '../../../../_shared';
 import { first } from 'rxjs';
 import {
@@ -104,7 +104,7 @@ export class MgRefreshTokenComponent implements OnInit {
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         public commomService: CommomService,
-        private themeService: ThemeService,
+        private appDashboardThemeService: AppDashboardThemeService,
         private refreshTokenService: RefreshTokenService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
@@ -135,11 +135,8 @@ export class MgRefreshTokenComponent implements OnInit {
                     return;
                 }
                 this.queryParseForStatisticResult(response.data);
-                this.DAILY_STATISTICS = this.fillChartByPayloadId('Daily Count', this.sessionStatistics.daily);
-                this.WEEKLY_STATISTICS = this.fillChartByPayloadId('Weekly Count', this.sessionStatistics.weekly);
-                this.MONTHLY_STATISTICS = this.fillChartByPayloadId('Monthly Count', this.sessionStatistics.monthly);
-                this.YEARLY_STATISTICS = this.fillChartByPayloadId('Yearly Count', this.sessionStatistics.yearly);
-                this.initCharts();  // Initialize charts after data is set
+                 // Initialize charts and data is set
+                this.initCharts();
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
@@ -224,69 +221,55 @@ export class MgRefreshTokenComponent implements OnInit {
 
     public queryParseForStatisticResult(queryResponse: IQuery) {
         this.sessionStatistics = {};
-        const updateStatistics = (name: string, totalCount: number, activeCount: number, offCount: number) => {
-            const statistics = {
-                totalCount,
-                sessionData: [
-                    { name: 'Login', value: activeCount },
-                    { name: 'Logout', value: offCount }
-                ]
-            };
-            switch (name) {
-                case 'DAILY':
-                    this.sessionStatistics.dailyCount = statistics.totalCount;
-                    this.sessionStatistics.daily = statistics.sessionData;
-                    break;
-                case 'WEEK':
-                    this.sessionStatistics.weeklyCount = statistics.totalCount;
-                    this.sessionStatistics.weekly = statistics.sessionData;
-                    break;
-                case 'MONTH':
-                    this.sessionStatistics.monthlyCount = statistics.totalCount;
-                    this.sessionStatistics.monthly = statistics.sessionData;
-                    break;
-                case 'YEAR':
-                    this.sessionStatistics.yearlyCount = statistics.totalCount;
-                    this.sessionStatistics.yearly = statistics.sessionData;
-                    break;
-            }
+        const updateStatistics = (name: string, totalCount: number, 
+            activeCount: number, offCount: number) => {
+                const statistics = {
+                    totalCount,
+                    sessionData: [
+                        { name: 'Login', value: activeCount },
+                        { name: 'Logout', value: offCount }
+                    ]
+                };
+                switch (name) {
+                    case 'DAILY':
+                        this.sessionStatistics.dailyCount = statistics.totalCount;
+                        this.sessionStatistics.daily = statistics.sessionData;
+                        break;
+                    case 'WEEK':
+                        this.sessionStatistics.weeklyCount = statistics.totalCount;
+                        this.sessionStatistics.weekly = statistics.sessionData;
+                        break;
+                    case 'MONTH':
+                        this.sessionStatistics.monthlyCount = statistics.totalCount;
+                        this.sessionStatistics.monthly = statistics.sessionData;
+                        break;
+                    case 'YEAR':
+                        this.sessionStatistics.yearlyCount = statistics.totalCount;
+                        this.sessionStatistics.yearly = statistics.sessionData;
+                        break;
+                }
         };
         queryResponse.data
             .forEach((data: any) => {
                 if (data) {
                     updateStatistics(data.name, data.totalcount, data.activecount, data.offcount);
                 }
-        });
-    }
-    
-    public fillChartByPayloadId(name: any, data: any): EChartsOption {
-        return {
-            tooltip: {
-                trigger: 'item'
-            },
-            legend: {
-                show: false
-            },
-            series: [
-                {
-                    name: name,
-                    type: 'pie',
-                    radius: ['40%', '60%'],
-                    center: ['50%', '50%'],
-                    data: data,
-                    label: {
-                        formatter: '{b}: ({c})'
-                    }
-                }
-            ]
-        };
+            });
     }
 
     public initCharts(): void {
-        this.themeService.initChart('DAILY_STATISTICS', this.DAILY_STATISTICS);
-        this.themeService.initChart('WEEKLY_STATISTICS', this.WEEKLY_STATISTICS);
-        this.themeService.initChart('MONTHLY_STATISTICS', this.MONTHLY_STATISTICS);
-        this.themeService.initChart('YEARLY_STATISTICS', this.YEARLY_STATISTICS);
+        // daily
+        this.DAILY_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Daily Count', this.sessionStatistics.daily);
+        this.appDashboardThemeService.initChart('DAILY_STATISTICS', this.DAILY_STATISTICS);
+        // weekly
+        this.WEEKLY_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Weekly Count', this.sessionStatistics.weekly);
+        this.appDashboardThemeService.initChart('WEEKLY_STATISTICS', this.WEEKLY_STATISTICS);
+        // monthly
+        this.MONTHLY_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Monthly Count', this.sessionStatistics.monthly);
+        this.appDashboardThemeService.initChart('MONTHLY_STATISTICS', this.MONTHLY_STATISTICS);
+        // yearly
+        this.YEARLY_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Yearly Count', this.sessionStatistics.yearly);
+        this.appDashboardThemeService.initChart('YEARLY_STATISTICS', this.YEARLY_STATISTICS);
     }
 
 }
