@@ -148,20 +148,20 @@ export class RPPService {
         return this.http.post(`${config.apiBaseUrl}/rpp.json/updateLinkProfilePermission`, payload);
     }
 
-    public fetchLinkRoleWithRootUser(payload: any): Observable<ApiResponse> {
-        return this.http.post(`${config.apiBaseUrl}/rpp.json/fetchLinkRoleWithRootUser`, payload);
+    public fetchLinkRoleWithUser(payload: any): Observable<ApiResponse> {
+        return this.http.post(`${config.apiBaseUrl}/rpp.json/fetchLinkRoleWithUser`, payload);
     }
 
-    public linkRoleWithRootUser(payload: any): Observable<ApiResponse> {
-        return this.http.post(`${config.apiBaseUrl}/rpp.json/linkRoleWithRootUser`, payload);
+    public linkRoleWithUser(payload: any): Observable<ApiResponse> {
+        return this.http.post(`${config.apiBaseUrl}/rpp.json/linkRoleWithUser`, payload);
     }
 
-    public fetchLinkProfileWithRootUser(payload: any): Observable<ApiResponse> {
-        return this.http.post(`${config.apiBaseUrl}/rpp.json/fetchLinkProfileWithRootUser`, payload);
+    public fetchLinkProfileWithUser(payload: any): Observable<ApiResponse> {
+        return this.http.post(`${config.apiBaseUrl}/rpp.json/fetchLinkProfileWithUser`, payload);
     }
 
-    public linkProfileWithRootUser(payload: any): Observable<ApiResponse> {
-        return this.http.post(`${config.apiBaseUrl}/rpp.json/linkProfileWithRootUser`, payload);
+    public linkProfileWithUser(payload: any): Observable<ApiResponse> {
+        return this.http.post(`${config.apiBaseUrl}/rpp.json/linkProfileWithUser`, payload);
     }
     
     public fetchProfileWithUser(payload: any): Observable<ApiResponse> {

@@ -120,7 +120,7 @@ nz-content {
     color: rgba(0, 0, 0, 0.85);
 }
 
-.ant-input {
+/* .ant-input {
     border-radius: 10px;
 }
 
@@ -142,7 +142,7 @@ textarea {
 
 .ant-select-show-search.ant-select:not(.ant-select-customize-input) .ant-select-selector {
     border-radius: 10px;
-}
+} */
 
 .ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {
     color: rgba(0, 0, 0, 0.85);
@@ -371,7 +371,6 @@ app-confirmation-popup .ant-result-icon {
     justify-content: center;
     margin-top: 20px; /* Adjust as needed */
 }
-
 
 .app-header {
     position: relative;

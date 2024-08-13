@@ -76,15 +76,15 @@ export class PUCroseTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchLinkProfileWithRootUser({
+        this.fetchLinkProfileWithUser({
             profileId: this.profile.id
         });
     }
 
     // profile&permission
-    public fetchLinkProfileWithRootUser(payload: any): any {
+    public fetchLinkProfileWithUser(payload: any): any {
         this.spinnerService.show();
-        this.rppService.fetchLinkProfileWithRootUser(payload)
+        this.rppService.fetchLinkProfileWithUser(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -101,7 +101,7 @@ export class PUCroseTableComponent implements OnInit {
 
     public enableActionReciver(payload: any): void {
         this.spinnerService.show();
-        this.rppService.linkProfileWithRootUser({
+        this.rppService.linkProfileWithUser({
             profileId: this.profile.id,
             appUserId: payload.id,
             linked: payload.linked,
