@@ -54,7 +54,7 @@ export class PUCroseTableComponent implements OnInit {
                 field: 'profile',
                 header: 'Profile',
                 type: 'combine',
-                subfield: ['id', 'profileName']
+                subfield: ['profileName']
             },
             {
                 field: 'linkStatus',

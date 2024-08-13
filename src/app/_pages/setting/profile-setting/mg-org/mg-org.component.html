@@ -13,9 +13,8 @@
         <nz-col [nzSpan]="8" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 8}">
             <nz-card nzTitle="#{{ organization.id }} {{ organization.name }}"
                 nz-tooltip nzTooltipTitle="#{{ organization.id }} {{ organization.name }}"
-                [nzExtra]="extraTemplate"
                 [nzActions]="[actionEdit, actionUserSetting, actionMore]"
-                class="nz-card-aligment">
+                [nzExtra]="extraTemplate" class="nz-card-aligment">
                 <nz-row nzGutter="16">
                     <nz-col [nzSpan]="12">
                         <span>

@@ -393,3 +393,8 @@ app-confirmation-popup .ant-result-icon {
 .ant-card-body {
     padding: 10px !important;
 }
+
+.ant-tabs-left > .ant-tabs-nav .ant-tabs-tab {
+    padding: 8px 10px !important;
+    text-align: center !important;
+}

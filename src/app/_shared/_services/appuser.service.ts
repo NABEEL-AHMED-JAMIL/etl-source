@@ -34,13 +34,6 @@ export class AppUserService {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/deleteAllAppUserAccount`, payload);
     }
 
-    public downloadAppUserAccountTemplateFile(): Observable<any> {
-        return this.http.get(`${config.apiBaseUrl}/appUser.json/downloadAppUserAccountTemplateFile`,
-            {
-                responseType: 'blob'
-            });
-    }
-
     public downloadAppUserAccount(payload: any): Observable<any> {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/downloadAppUserAccount`, payload,
             {
