@@ -42,7 +42,7 @@ export class MgRefreshTokenComponent implements OnInit {
         tableId: 'refresh_id',
         title: 'Refresh Token',
         bordered: true,
-        checkbox: true,
+        checkbox: false,
         size: 'small',
         headerButton: [
             {
@@ -51,13 +51,6 @@ export class MgRefreshTokenComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Refresh',
                 action: ActionType.RE_FRESH
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
             }
         ],
         dataColumn: [
@@ -171,48 +164,12 @@ export class MgRefreshTokenComponent implements OnInit {
             });
     }
 
-    public deleteRefreshToken(payload: any): void {
-        this.spinnerService.show();
-        this.refreshTokenService.deleteRefreshToken(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchByAllRefreshToken({
-                    startDate: this.startDate,
-                    endDate: this.endDate
-                });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
 
     public buttonActionReciver(payload: any): void {
         if (ActionType.RE_FRESH === payload.action) {
             this.fetchByAllRefreshToken({
                 startDate: this.startDate,
                 endDate: this.endDate
-            });
-        }
-    }
-
-    public tableActionReciver(payload: any): void {
-        if (ActionType.DELETE === payload.action) {
-            this.modalService.confirm({
-                nzOkText: 'Ok',
-                nzCancelText: 'Cancel',
-                nzTitle: 'Do you want to delete?',
-                nzContent: 'Press \'Ok\' may effect the business source.',
-                nzOnOk: () => {
-                    this.deleteRefreshToken({
-                        refreshToken: payload.data.token
-                    });
-                }
             });
         }
     }

@@ -16,6 +16,10 @@ export class SettingService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/fetchSettingDashboard`, payload);
     }
 
+    public fetchCountryData(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/fetchCountryData`, payload);
+    }
+
     // query
     public dynamicQueryResponse(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/dynamicQueryResponse`, payload);

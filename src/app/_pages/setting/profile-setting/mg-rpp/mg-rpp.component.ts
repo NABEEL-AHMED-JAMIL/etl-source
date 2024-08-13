@@ -9,7 +9,8 @@ import {
     AuthenticationService,
     IRole,
     IProfile,
-    IPermission
+    IPermission,
+    SettingService
 } from '../../../../_shared';
 import { first } from 'rxjs';
 import {
@@ -37,11 +38,39 @@ import {
 export class MgRPPComponent implements OnInit {
 
     public title = 'Role & Profile';
+    public sessionUser: AuthResponse;
+    // check id for role and profile and permission
     public setOfRoleCheckedId = new Set<any>();
     public setOfProfileCheckedId = new Set<any>();
     public setOfPermissionCheckedId = new Set<any>();
 
-    public sessionUser: AuthResponse;
+    // country
+    public countryTable: IStaticTable = {
+        tableId: 'country_id',
+        title: 'Mg Country',
+        bordered: true,
+        checkbox: false,
+        size: 'small',
+        dataColumn: [
+            {
+                field: 'code',
+                header: 'Code',
+                type: 'data'
+            },
+            {
+                field: 'countryCode',
+                header: 'Country Code',
+                type: 'data'
+            },
+            {
+                field: 'countryName',
+                header: 'Name',
+                type: 'data'
+            }
+        ]
+    };
+
+    // role
     public roleTable: IStaticTable = {
         tableId: 'role_id',
         title: 'Mg Role',
@@ -363,8 +392,9 @@ export class MgRPPComponent implements OnInit {
         private modalService: NzModalService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
-        private rppService: RPPService,
         private commomService: CommomService,
+        private rppService: RPPService,
+        private settingService: SettingService,
         private authenticationService: AuthenticationService) {
         this.authenticationService.currentUser
             .subscribe(currentUser => {
@@ -373,6 +403,9 @@ export class MgRPPComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.fetchCountryData({
+            username: this.sessionUser.username
+        });
         this.fetchAllRole({
             sessionUser: {
                 username: this.sessionUser.username
@@ -388,6 +421,24 @@ export class MgRPPComponent implements OnInit {
                 username: this.sessionUser.username
             }
         });
+    }
+    
+    // country
+    public fetchCountryData(payload: any): any {
+        this.spinnerService.show();
+        this.settingService.fetchCountryData(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.countryTable.dataSource = response.data;
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
     }
 
     // role

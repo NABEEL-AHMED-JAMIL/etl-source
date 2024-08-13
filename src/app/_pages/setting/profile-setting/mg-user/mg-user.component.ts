@@ -29,11 +29,13 @@ import {
 })
 export class MgUserComponent implements OnInit {
 
-    public startDate: any;
-    public endDate: any;
-    public setOfCheckedId = new Set<any>();
-
     public sessionUser: AuthResponse;
+
+    // sub-user
+    public startDateSubUser: any;
+    public endDateSubUser: any;
+    public setOfCheckedIdSubUser = new Set<any>();
+    // sub user table
     public subUserTable: IStaticTable = {
         tableId: 'user_id',
         title: 'Mg User',
@@ -75,6 +77,11 @@ export class MgUserComponent implements OnInit {
                 field: 'profileImg',
                 header: 'Img',
                 type: 'img'
+            },
+            {
+                field: 'fullName',
+                header: 'Name',
+                type: 'data'
             },
             {
                 field: 'email',
@@ -170,6 +177,11 @@ export class MgUserComponent implements OnInit {
             }
         ]
     };
+
+    // single user
+    public startDateSingleUser: any;
+    public endDateSingleUser: any;
+    public setOfCheckedIdSingleUser = new Set<any>();
     // single user table
     public singleUserTable: IStaticTable = {
         tableId: 'sing_user_id',
@@ -178,13 +190,6 @@ export class MgUserComponent implements OnInit {
         checkbox: true,
         size: 'small',
         headerButton: [
-            {
-                type: 'plus-circle',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Add',
-                action: ActionType.ADD
-            },
             {
                 type: 'reload',
                 color: 'red',
@@ -214,10 +219,15 @@ export class MgUserComponent implements OnInit {
                 type: 'img'
             },
             {
+                field: 'fullName',
+                header: 'Name',
+                type: 'data'
+            },
+            {
                 field: 'email',
                 header: 'Email',
                 type: 'data'
-            },
+            },            
             {
                 field: 'username',
                 header: 'Username',
@@ -238,11 +248,6 @@ export class MgUserComponent implements OnInit {
                 field: 'ipAddress',
                 header: 'Ip Address',
                 type: 'data'
-            },
-            {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
             },
             {
                 field: 'dateUpdated',
@@ -299,8 +304,7 @@ export class MgUserComponent implements OnInit {
         private spinnerService: SpinnerService,
         private appUserService: AppUserService,
         private authenticationService: AuthenticationService) {
-        this.endDate = this.commomService.getCurrentDate();
-        this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
+        this.initializeDates();
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
@@ -308,39 +312,46 @@ export class MgUserComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        // for sub user
         this.fetchAllAppUserAccount({
-            startDate: this.startDate,
-            endDate: this.endDate,
+            startDate: this.startDateSubUser,
+            endDate: this.endDateSubUser,
+            standalone: false,
             sessionUser: {
                 username: this.sessionUser.username
             }
         });
-    }
-
-    public fetchAllAppUserAccount(payload: any): any {
-        this.spinnerService.show();
-        this.appUserService.fetchAllAppUserAccount(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        if (this.commomService.hasPermissionAccess(this.sessionUser.roles, ['ROLE_MASTER_ADMIN'])) {
+            // for single user
+            this.fetchAllAppUserAccount({
+                startDate: this.startDateSingleUser,
+                endDate: this.endDateSingleUser,
+                standalone: true,
+                sessionUser: {
+                    username: this.sessionUser.username
                 }
-                this.subUserTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
+        }
     }
 
-    public buttonActionReciver(payload: any): void {
+    private initializeDates(): void {
+        // sub user
+        this.endDateSubUser = this.commomService.getCurrentDate();
+        this.startDateSubUser = this.commomService.getDate364DaysAgo(this.endDateSubUser);
+        // single user
+        this.endDateSingleUser = this.commomService.getCurrentDate();
+        this.startDateSingleUser = this.commomService.getDate364DaysAgo(this.endDateSingleUser);
+    }
+
+    // sub-user-button
+    public subUserButtonActionReciver(payload: any): void {
         if (ActionType.ADD === payload.action) {
-            this.openCuEnVariable(ActionType.ADD, null);
+            this.openCuEnVariable(ActionType.ADD, null, false);
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchAllAppUserAccount({
-                startDate: this.startDate,
-                endDate: this.endDate,
+                startDate: this.startDateSubUser,
+                endDate: this.endDateSubUser,
+                standalone: false,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -349,25 +360,27 @@ export class MgUserComponent implements OnInit {
             this.spinnerService.show();
             this.appUserService.downloadAppUserAccount({
                 ids: payload.checked,
-                startDate: this.startDate,
-                endDate: this.endDate,
+                startDate: this.startDateSubUser,
+                endDate: this.endDateSubUser,
+                standalone: false,
                 sessionUser: {
                     username: this.sessionUser.username
                 },
             }).pipe(first())
-                .subscribe((response: any) => {
-                    this.commomService.downLoadFile(response);
-                    this.spinnerService.hide();
-                }, (response: any) => {
-                    this.spinnerService.hide();
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
-                });
+            .subscribe((response: any) => {
+                this.commomService.downLoadFile(response);
+                this.spinnerService.hide();
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
         }
     }
 
-    public tableActionReciver(payload: any): void {
+    // sub-user table
+    public subUserTableActionReciver(payload: any): void {
         if (ActionType.EDIT === payload.action) {
-            this.openCuEnVariable(ActionType.EDIT, payload);
+            this.openCuEnVariable(ActionType.EDIT, payload, false);
         } else if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
                 nzOkText: 'Ok',
@@ -382,6 +395,7 @@ export class MgUserComponent implements OnInit {
                     }
                     this.deleteAppUserAccount({
                         ...appUser,
+                        standalone: false,
                         sessionUser: {
                             username: this.sessionUser.username
                         }
@@ -401,6 +415,7 @@ export class MgUserComponent implements OnInit {
                     }
                     this.enabledDisabledAppUserAccount({
                         ...appUser,
+                        standalone: false,
                         sessionUser: {
                             username: this.sessionUser.username
                         }
@@ -420,6 +435,7 @@ export class MgUserComponent implements OnInit {
                     }
                     this.enabledDisabledAppUserAccount({
                         ...appUser,
+                        standalone: false,
                         sessionUser: {
                             username: this.sessionUser.username
                         }
@@ -429,19 +445,22 @@ export class MgUserComponent implements OnInit {
         }
     }
 
-    public filterActionReciver(payload: any): void {
-        this.startDate = payload.startDate;
-        this.endDate = payload.endDate;
+    // sub-user filter
+    public subUserFilterActionReciver(payload: any): void {
+        this.startDateSubUser = payload.startDate;
+        this.endDateSubUser = payload.endDate;
         this.fetchAllAppUserAccount({
-            startDate: this.startDate,
-            endDate: this.endDate,
+            startDate: this.startDateSubUser,
+            endDate: this.endDateSubUser,
+            standalone: false,
             sessionUser: {
                 username: this.sessionUser.username
             }
         });
     }
 
-    public extraActionReciver(payload: any): void {
+    // sub user extra
+    public subUserExtraActionReciver(payload: any): void {
         if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
                 nzOkText: 'Ok',
@@ -452,6 +471,7 @@ export class MgUserComponent implements OnInit {
                     this.deleteAllAppUserAccount(
                         {
                             ids: payload.checked,
+                            standalone: false,
                             sessionUser: {
                                 username: this.sessionUser.username
                             }
@@ -459,6 +479,164 @@ export class MgUserComponent implements OnInit {
                 }
             });
         }
+    }
+
+    public singleUserButtonActionReciver(payload: any): void {
+        if (ActionType.RE_FRESH === payload.action) {
+            this.fetchAllAppUserAccount({
+                startDate: this.startDateSingleUser,
+                endDate: this.endDateSingleUser,
+                standalone: true,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        } else if (ActionType.DOWNLOAD === payload.action) {
+            this.spinnerService.show();
+            this.appUserService.downloadAppUserAccount({
+                ids: payload.checked,
+                startDate: this.startDateSingleUser,
+                endDate: this.endDateSingleUser,
+                standalone: true,
+                sessionUser: {
+                    username: this.sessionUser.username
+                },
+            }).pipe(first())
+                .subscribe((response: any) => {
+                    this.commomService.downLoadFile(response);
+                    this.spinnerService.hide();
+                }, (response: any) => {
+                    this.spinnerService.hide();
+                    this.alertService.showError(response.error.message, ApiCode.ERROR);
+                });
+        }
+    }
+
+    public singleUserTableActionReciver(payload: any): void {
+        if (ActionType.EDIT === payload.action) {
+            this.openCuEnVariable(ActionType.EDIT, payload, true);
+        } else if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    let appUser: IAppUser = {
+                        id: payload.data.id,
+                        email: payload.data.email,
+                        username: payload.data.username,
+                    }
+                    this.deleteAppUserAccount({
+                        ...appUser,
+                        standalone: true,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                }
+            });
+        } else if (ActionType.ENABLED === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to enabled?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    let appUser: IAppUser = {
+                        id: payload.data.id,
+                        status: APPLICATION_STATUS.ACTIVE
+                    }
+                    this.enabledDisabledAppUserAccount({
+                        ...appUser,
+                        standalone: true,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                }
+            });
+        } else if (ActionType.DISABLED === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to disabled?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    let appUser: IAppUser = {
+                        id: payload.data.id,
+                        status: APPLICATION_STATUS.INACTIVE
+                    }
+                    this.enabledDisabledAppUserAccount({
+                        ...appUser,
+                        standalone: true,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    public singleUserFilterActionReciver(payload: any): void {
+        this.startDateSingleUser = payload.startDate;
+        this.endDateSingleUser = payload.endDate;
+        this.fetchAllAppUserAccount({
+            startDate: this.startDateSingleUser,
+            endDate: this.endDateSingleUser,
+            standalone: true,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        });
+    }
+
+    public singleUserExtraActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteAllAppUserAccount(
+                        {
+                            ids: payload.checked,
+                            standalone: true,
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                }
+            });
+        }
+    }
+
+    public fetchAllAppUserAccount(payload: any): any {
+        this.spinnerService.show();
+        this.appUserService.fetchAllAppUserAccount(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                response.data
+                    .map((data: any) => {
+                        data.fullName = data?.firstName + ' ' + data?.lastName;
+                        return data;
+                    });
+                if (payload.standalone) {
+                    this.singleUserTable.dataSource = response.data;
+                } else {
+                    this.subUserTable.dataSource = response.data;
+                }
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
     }
 
     public deleteAllAppUserAccount(payload: any): void {
@@ -472,8 +650,9 @@ export class MgUserComponent implements OnInit {
                     return;
                 }
                 this.fetchAllAppUserAccount({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
+                    startDate: this.startDateSingleUser,
+                    endDate: this.endDateSingleUser,
+                    ...payload.standalone,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -496,8 +675,9 @@ export class MgUserComponent implements OnInit {
                     return;
                 }
                 this.fetchAllAppUserAccount({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
+                    startDate: this.startDateSingleUser,
+                    endDate: this.endDateSingleUser,
+                    ...payload.standalone,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -520,8 +700,9 @@ export class MgUserComponent implements OnInit {
                     return;
                 }
                 this.fetchAllAppUserAccount({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
+                    startDate: this.startDateSingleUser,
+                    endDate: this.endDateSingleUser,
+                    ...payload.standalone,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -533,7 +714,7 @@ export class MgUserComponent implements OnInit {
             });
     }
 
-    public openCuEnVariable(actionType: ActionType, editPayload: any): void {
+    public openCuEnVariable(actionType: ActionType, editPayload: any, standalone: boolean): void {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add User' : 'Edit User',
@@ -546,10 +727,12 @@ export class MgUserComponent implements OnInit {
                 editPayload: editPayload?.data
             }
         });
-        drawerRef.afterClose.subscribe(data => {
+        drawerRef.afterClose
+        .subscribe(data => {
             this.fetchAllAppUserAccount({
-                startDate: this.startDate,
-                endDate: this.endDate,
+                startDate: standalone === true ? this.startDateSingleUser : this.startDateSubUser,
+                endDate: standalone === true ? this.endDateSingleUser : this.endDateSubUser,
+                standalone: standalone,
                 sessionUser: {
                     username: this.sessionUser.username
                 }

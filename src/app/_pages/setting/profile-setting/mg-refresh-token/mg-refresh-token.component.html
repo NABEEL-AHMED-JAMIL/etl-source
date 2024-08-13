@@ -3,8 +3,9 @@
         <span nz-icon nzType="link" nzTheme="outline"></span>
         Session Statistics
     </h3>
-    <nz-row>
-        <nz-col [nzSpan]="4" *ngIf="sessionStatistics">
+    <nz-row id="session-statistics">
+        <nz-col [nzSpan]="4" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 4}"
+            *ngIf="sessionStatistics">
             <hr>
             <h4 style="text-align: center;">
                 <span nz-icon nzType="account-book" nzTheme="outline"></span>
@@ -26,7 +27,7 @@
                 </nz-descriptions-item>
             </nz-descriptions>
         </nz-col>
-        <nz-col [nzSpan]="5">
+        <nz-col [nzSpan]="5" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 5}">
             <hr>
             <h4 style="text-align: center;">
                 <span nz-icon nzType="account-book" nzTheme="outline"></span> Daily Count
@@ -36,7 +37,7 @@
                 class="demo-chart" style="height: 180px;">
             </div>
         </nz-col>
-        <nz-col [nzSpan]="5">
+        <nz-col [nzSpan]="5" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 5}">
             <hr>
             <h4 style="text-align: center;">
                 <span nz-icon nzType="account-book" nzTheme="outline"></span> Weekly Count
@@ -46,7 +47,7 @@
                 class="demo-chart" style="height: 180px;">
             </div>
         </nz-col>
-        <nz-col [nzSpan]="5">
+        <nz-col [nzSpan]="5" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 5}">
             <hr>
             <h4 style="text-align: center;">
                 <span nz-icon nzType="account-book"
@@ -57,7 +58,7 @@
                 class="demo-chart" style="height: 180px;">
             </div>
         </nz-col>
-        <nz-col [nzSpan]="5">
+        <nz-col [nzSpan]="5" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 5}">
             <hr>
             <h4 style="text-align: center;">
                 <span nz-icon nzType="account-book"
@@ -83,7 +84,6 @@
         [endDate]="endDate"
         [setOfCheckedId]="setOfCheckedId"
         [staticTable]="refreshTokenTable"
-        (actionEventEmitter)="tableActionReciver($event)"
         (buttonEventEmitter)="buttonActionReciver($event)"
         (filterEventEmitter)="filterActionReciver($event)"
         (extraEventEmitter)="extraActionReciver($event)">

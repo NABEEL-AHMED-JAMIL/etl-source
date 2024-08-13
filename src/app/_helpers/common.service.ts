@@ -169,4 +169,8 @@ export class CommomService {
         return url.protocol === "http:" || url.protocol === "https:";
     }
 
+    public hasPermissionAccess(userPermission: any, routePermission: any): any {
+        return userPermission.some((permission: any) => routePermission.includes(permission));
+    }
+
 }

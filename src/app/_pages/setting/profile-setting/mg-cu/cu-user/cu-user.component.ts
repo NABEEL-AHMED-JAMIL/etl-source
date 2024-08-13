@@ -13,7 +13,6 @@ import {
     CommomService
 } from 'src/app/_helpers';
 import {
-    APPLICATION_STATUS,
     ActionType,
     ApiCode,
     AppUserService,
@@ -50,8 +49,8 @@ export class CUUserComponent implements OnInit {
     public loading: boolean = false;
     public editAction = ActionType.EDIT;
 
+    public ACCOUNT_TYPE: ILookups;
     public userForm: FormGroup;
-    public APPLICATION_STATUS: ILookups;
     public sessionUser: AuthResponse;
 
     constructor(
@@ -72,11 +71,9 @@ export class CUUserComponent implements OnInit {
 
     ngOnInit(): void {
         this.lookupService.fetchLookupDataByLookupType({
-            lookupType: LOOKUP_TYPE.APPLICATION_STATUS
+            lookupType: LOOKUP_TYPE.ACCOUNT_TYPE
         }).subscribe((data) => {
-            this.APPLICATION_STATUS = data;
-            this.APPLICATION_STATUS.SUB_LOOKUP_DATA = this.APPLICATION_STATUS.SUB_LOOKUP_DATA
-                .filter((data) => data.lookupCode !== APPLICATION_STATUS.DELETE);
+            this.ACCOUNT_TYPE = data;
         });
         // role
         this.fetchRoleWithUser({
@@ -110,6 +107,7 @@ export class CUUserComponent implements OnInit {
                 this.profiles = response.data;
             }, (response: any) => {
                 this.spinnerService.hide();
+                this.closeDrawer();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
@@ -127,6 +125,7 @@ export class CUUserComponent implements OnInit {
                 this.roleList = response.data;
             }, (response: any) => {
                 this.spinnerService.hide();
+                this.closeDrawer();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
@@ -142,6 +141,7 @@ export class CUUserComponent implements OnInit {
             password: ['', [Validators.required]],
             confirm: ['', [this.confirmValidator]],
             assignRole: [, [Validators.required]],
+            accountType: ['', [Validators.required]],
             profile: ['', [Validators.required]],
             profileImg: [this.profileList[Math.floor(
                 Math.random() * this.profileList.length)]]
@@ -160,7 +160,7 @@ export class CUUserComponent implements OnInit {
             ipAddress: [this.editPayload.ipAddress, [Validators.required]],
             assignRole: [this.editPayload.roles, [Validators.required]],
             profile: [this.editPayload.profile?.id, [Validators.required]],
-            // status: [this.editPayload.status?.lookupCode, Validators.required]
+            accountType: [this.editPayload.accountType?.lookupCode, Validators.required]
         });
         this.spinnerService.hide();
     }

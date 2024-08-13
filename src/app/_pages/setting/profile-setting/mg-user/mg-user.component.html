@@ -7,42 +7,22 @@
             User Info (IP:{{sessionUser.ipAddress}})
         </h3>
         <nz-descriptions nzSize="small">
-            <nz-descriptions-item nzTitle="Name">
-                {{sessionUser.firstName}} {{sessionUser.lastName}}
-            </nz-descriptions-item>
-            <nz-descriptions-item nzTitle="UserName">
-                {{sessionUser.username}}
-            </nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Email">
-                {{sessionUser.email}}
-            </nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Account Type">
-                {{commomService.getDataFromObjectV2(sessionUser.accountType)}}
-            </nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Profile">
-                {{sessionUser.profile?.profileName}}
-            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Name">{{sessionUser.firstName}} {{sessionUser.lastName}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="UserName">{{sessionUser.username}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Email">{{sessionUser.email}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Account Type">{{commomService.getDataFromObjectV2(sessionUser.accountType)}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Profile">{{sessionUser.profile?.profileName}}</nz-descriptions-item>
         </nz-descriptions>
         <h3>
             <span nz-icon nzType="deployment-unit" nzTheme="outline"></span>
             Org Info
         </h3>
         <nz-descriptions nzSize="small" *ngIf="sessionUser?.organization">
-            <nz-descriptions-item nzTitle="Name">
-                {{sessionUser?.organization.name}}
-            </nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Email">
-                {{sessionUser?.organization.email}}
-            </nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Phone">
-                {{sessionUser?.organization.phone}}
-            </nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Address">
-                {{sessionUser?.organization.address}}
-            </nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Country">
-                {{sessionUser?.organization?.country?.countryName}}
-            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Name">{{sessionUser?.organization.name}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Email">{{sessionUser?.organization.email}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Phone">{{sessionUser?.organization.phone}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Address">{{sessionUser?.organization.address}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Country">{{sessionUser?.organization?.country?.countryName}}</nz-descriptions-item>
         </nz-descriptions>
     </nz-collapse-panel>
 </nz-collapse>
@@ -62,18 +42,19 @@
             </ng-template>
             <app-gen-table *ngIf="subUserTable"
                 [isDateFilter]="true"
-                [startDate]="startDate"
-                [endDate]="endDate"
-                [setOfCheckedId]="setOfCheckedId"
+                [startDate]="startDateSubUser"
+                [endDate]="endDateSubUser"
+                [setOfCheckedId]="setOfCheckedIdSubUser"
                 [staticTable]="subUserTable"
-                (actionEventEmitter)="tableActionReciver($event)"
-                (buttonEventEmitter)="buttonActionReciver($event)"
-                (filterEventEmitter)="filterActionReciver($event)"
-                (extraEventEmitter)="extraActionReciver($event)">
+                (buttonEventEmitter)="subUserButtonActionReciver($event)"
+                (actionEventEmitter)="subUserTableActionReciver($event)"
+                (filterEventEmitter)="subUserFilterActionReciver($event)"
+                (extraEventEmitter)="subUserExtraActionReciver($event)">
             </app-gen-table>
         </nz-tab>
         <!-- user who direct register -->
-        <nz-tab [nzTitle]="unGroupUserTemplate">
+        <nz-tab *ngIf="commomService.hasPermissionAccess(sessionUser.roles, ['ROLE_MASTER_ADMIN'])"
+            [nzTitle]="unGroupUserTemplate">
             <ng-template #unGroupUserTemplate>
                 <span nz-icon nzType="ungroup" nzTheme="outline"
                     nz-tooltip nzTooltipTitle="{{singleUserTable.title}}">
@@ -81,14 +62,14 @@
             </ng-template>
             <app-gen-table *ngIf="singleUserTable"
                 [isDateFilter]="true"
-                [startDate]="startDate"
-                [endDate]="endDate"
-                [setOfCheckedId]="setOfCheckedId"
+                [startDate]="startDateSingleUser"
+                [endDate]="endDateSingleUser"
+                [setOfCheckedId]="setOfCheckedIdSingleUser"
                 [staticTable]="singleUserTable"
-                (actionEventEmitter)="tableActionReciver($event)"
-                (buttonEventEmitter)="buttonActionReciver($event)"
-                (filterEventEmitter)="filterActionReciver($event)"
-                (extraEventEmitter)="extraActionReciver($event)">
+                (buttonEventEmitter)="singleUserButtonActionReciver($event)"
+                (actionEventEmitter)="singleUserTableActionReciver($event)"
+                (filterEventEmitter)="singleUserFilterActionReciver($event)"
+                (extraEventEmitter)="singleUserExtraActionReciver($event)">
             </app-gen-table>
         </nz-tab>
     </nz-tabset>

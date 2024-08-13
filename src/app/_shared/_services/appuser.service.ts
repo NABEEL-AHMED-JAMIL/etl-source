@@ -35,14 +35,14 @@ export class AppUserService {
     }
 
     public downloadAppUserAccountTemplateFile(): Observable<any> {
-        return this.http.get(`${config.apiBaseUrl}/eVariable.json/downloadAppUserAccountTemplateFile`,
+        return this.http.get(`${config.apiBaseUrl}/appUser.json/downloadAppUserAccountTemplateFile`,
             {
                 responseType: 'blob'
             });
     }
 
     public downloadAppUserAccount(payload: any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/eVariable.json/downloadAppUserAccount`, payload,
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/downloadAppUserAccount`, payload,
             {
                 responseType: 'blob'
             });

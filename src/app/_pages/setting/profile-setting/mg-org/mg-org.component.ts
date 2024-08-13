@@ -12,7 +12,6 @@ import {
     ActionType,
     ApiCode,
     AuthResponse,
-    IStaticTable,
     ORGANIZATIONS,
     AuthenticationService,
     OrganizationService,
@@ -29,143 +28,9 @@ export class MgOrgComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
-    public setOfCheckedId = new Set<any>();
 
     public sessionUser: AuthResponse;
-    public orgTable: IStaticTable = {
-        tableId: 'org_id',
-        title: 'Mg Org',
-        bordered: true,
-        checkbox: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'plus-circle',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Add',
-                action: ActionType.ADD
-            },
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            },
-            {
-                type: 'download',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Download',
-                action: ActionType.DOWNLOAD
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'name',
-                header: 'Name',
-                type: 'date'
-            },
-            {
-                field: 'address',
-                header: 'Address',
-                type: 'date'
-            },
-            {
-                field: 'email',
-                header: 'Email',
-                type: 'date'
-            },
-            {
-                field: 'phone',
-                header: 'Phone',
-                type: 'date'
-            },
-            {
-                field: 'country',
-                header: 'Country',
-                type: 'date'
-            },
-            {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
-            },
-            {
-                field: 'createdBy',
-                header: 'Created By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'dateUpdated',
-                header: 'Updated',
-                type: 'date'
-            },
-            {
-                field: 'updatedBy',
-                header: 'Updated By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'status',
-                header: 'Status',
-                type: 'tag'
-            }
-        ],
-        actionType: [
-            {
-                type: 'edit',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete Org',
-                action: ActionType.DELETE
-            },
-            {
-                type: 'eye',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'View Org',
-                action: ActionType.VIEW
-            },
-        ],
-        moreActionType: [
-            {
-                title: 'Active Org',
-                type: 'check-circle',
-                targetFiled: 'status',
-                condition: "EQ",
-                targetValue: 0,
-                action: ActionType.ENABLED
-            },
-            {
-                title: 'In Active Org',
-                type: 'close-circle',
-                targetFiled: 'status',
-                condition: "EQ",
-                targetValue: 1,
-                action: ActionType.DISABLED
-            }
-        ]
-    };
-
-    public ministries: IOrganization[] = ORGANIZATIONS;
+    public organizations: IOrganization[] = ORGANIZATIONS;
 
     constructor(private drawerService: NzDrawerService,
         private modalService: NzModalService,
@@ -179,8 +44,7 @@ export class MgOrgComponent implements OnInit {
             this.authenticationService.currentUser
                 .subscribe(currentUser => {
                     this.sessionUser = currentUser;
-                });
-    
+                });    
     }
 
     ngOnInit(): void {
@@ -203,7 +67,6 @@ export class MgOrgComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.orgTable.dataSource = response.data;
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);

@@ -2,10 +2,11 @@
     <img class="bottom" src="../../../../assets/bg.jpg">
     <div nz-col nzMd="12" nzSm="24" class="center-container">
         <div class="content-container">
-            <form nz-form *ngIf="registerForm" [nzLayout]="'vertical'"
-                [formGroup]="registerForm" (ngSubmit)="onSubmit()"
-                    style="padding-top: 25px;padding-right: 50px;
-                    padding-bottom: 5px;padding-left: 50px">
+            <form nz-form *ngIf="registerForm"
+                [nzLayout]="'vertical'"
+                [formGroup]="registerForm"
+                (ngSubmit)="onSubmit()"
+                class="register">
                 <div style="text-align: center">
                     <a href="https://etl2023.com/">
                         <img src="../../../../assets/logo.png" 
@@ -13,7 +14,7 @@
                     </a>
                 </div>
                 <h3 style="margin-top: 14px;text-align: center;" 
-                    class="title">Reset Password</h3>
+                    class="title">Register User</h3>
                 <div nz-row [nzGutter]="16">
                     <div nz-col nzSpan="12">
                         <nz-form-item>
