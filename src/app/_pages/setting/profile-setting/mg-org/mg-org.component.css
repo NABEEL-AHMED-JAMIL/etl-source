@@ -1,0 +1,23 @@
+p {
+    margin: 8px 0;
+    color: #555;
+}
+p span {
+    font-weight: bold;
+    color: #000;
+}
+
+.ant-card-bordered {
+    border: 1px solid #fff;
+}
+
+.nz-card-aligment {
+    width: 100%;
+    margin-bottom: 16px;
+    border-radius: 10px;
+}
+
+.chart-height {
+    height: 130px;
+    overflow-y: auto;
+}

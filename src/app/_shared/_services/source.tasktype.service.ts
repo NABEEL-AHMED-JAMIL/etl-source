@@ -16,8 +16,8 @@ export class SourceTaskTypeService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/stt.json/addSTT`, payload);
     }
 
-    public editSTT(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/stt.json/editSTT`, payload);
+    public updateSTT(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/stt.json/updateSTT`, payload);
     }
 
     public deleteSTT(payload: any): Observable<ApiResponse> {

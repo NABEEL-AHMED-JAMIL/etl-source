@@ -99,7 +99,7 @@ export class CUSectionComponent implements OnInit {
         if (this.actionType === ActionType.ADD) {
             this.addSection();
         } else if (this.actionType === ActionType.EDIT) {
-            this.editSection();
+            this.updateSection();
         }
     }
 
@@ -132,7 +132,7 @@ export class CUSectionComponent implements OnInit {
             });
     }
 
-    public editSection(): void {
+    public updateSection(): void {
         this.loading = true;
         this.spinnerService.show();
         if (this.genSectionForm.invalid) {
@@ -145,7 +145,7 @@ export class CUSectionComponent implements OnInit {
                 username: this.sessionUser.username
             }
         }
-        this.formSettingService.editSection(payload)
+        this.formSettingService.updateSection(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;

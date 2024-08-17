@@ -12,10 +12,13 @@
         <ul nz-menu nzTheme="dark" nzMode="inline">
             <ng-container *ngFor="let sidebar of sidebars">
                 <li *ngIf="hasPermissionAccess(sidebar.permission)"
-                    nz-submenu nzTitle="{{sidebar.name}}" nzIcon="{{sidebar.icon}}">
+                    nz-submenu
+                    nzTitle="{{sidebar.name}}"
+                    nzIcon="{{sidebar.icon}}">
                     <ul *ngIf="sidebar?.childLinks">
                         <ng-container *ngFor="let childLink of sidebar?.childLinks">
-                            <li *ngIf="hasPermissionAccess(childLink.permission)" nz-menu-item nzMatchRouter>
+                            <li *ngIf="hasPermissionAccess(childLink.permission)"
+                                nz-menu-item nzMatchRouter>
                                 <a routerLink="{{childLink.link}}">
                                     <span nz-icon nzType="{{childLink.icon}}" nzTheme="outline"></span>
                                     {{childLink.name}}
@@ -30,15 +33,19 @@
     <nz-layout>
         <nz-header>
             <div class="app-header" nz-row>
-                <div nz-col [nzSpan]="16" [nzXs]="{span: 16}" [nzSm]="{span: 12}" [nzMd]="{span: 20}">
+                <div nz-col
+                    [nzSpan]="16"
+                    [nzXs]="{span: 16}"
+                    [nzSm]="{span: 12}"
+                    [nzMd]="{span: 20}">
                     <ul nz-menu nzMode="horizontal">
                         <span class="trigger" nz-icon style="margin-left: 15px;"
                             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
                             (click)="isCollapsed = !isCollapsed"></span>&nbsp;
-                        <li nz-menu-item (click)="home()" style="font-size: 15px !important;">
+                        <li nz-menu-item (click)="home()" class="ls-font">
                             <span nz-icon nzType="home" nzTheme="outline"></span> Home
                         </li>
-                        <li nz-menu-item (click)="back()" style="font-size: 15px !important;">
+                        <li nz-menu-item (click)="back()" class="ls-font">
                             <span nz-icon nzType="rollback" nzTheme="outline"></span> Back
                         </li>
                     </ul>

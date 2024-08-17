@@ -232,7 +232,7 @@ export class CuSourceTTypeComponent implements OnInit {
         if (this.actionType === ActionType.ADD) {
             this.addSTT();
         } else if (this.actionType === ActionType.EDIT) {
-            this.editSTT();
+            this.updateSTT();
         }
     }
 
@@ -264,7 +264,7 @@ export class CuSourceTTypeComponent implements OnInit {
             });
     }
 
-    public editSTT(): void {
+    public updateSTT(): void {
         this.spinnerService.show();
         if (this.sttForm.invalid) {
             this.spinnerService.hide();
@@ -276,7 +276,7 @@ export class CuSourceTTypeComponent implements OnInit {
                 username: this.sessionUser.username
             }
         }
-        this.sourceTaskTypeService.editSTT(payload)
+        this.sourceTaskTypeService.updateSTT(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();

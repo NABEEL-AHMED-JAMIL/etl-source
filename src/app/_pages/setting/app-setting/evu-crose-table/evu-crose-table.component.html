@@ -3,6 +3,7 @@
         [isDateFilter]="false"
         [staticTable]="envLinkUserTable"
         (buttonEventEmitter)="buttonActionReciver($event)"
+        (actionEventEmitter)="tableActionReciver($event)"
         (enableActionEventEmitter)="enableActionReciver($event)">
     </app-gen-table>
 </div>

@@ -5,6 +5,7 @@ export * from './auth/forgot-pass/forgot-pass.component';
 // common
 export * from './common/batch/batch.component';
 export * from './common/gen-table/gen-table.component';
+export * from './common/user-info/user-info.component';
 export * from './common/env-variable-value/env-variable-value.component';
 // etl-source & setting dashboard
 export * from './dashboards/etl-source/etl-source.component';
@@ -51,6 +52,7 @@ export * from './setting/app-setting/mg-evariable/mg-evariable.component';
 export * from './setting/app-setting/mg-lookup/mg-lookup.component';
 export * from './setting/app-setting/mg-template/mg-template.component';
 // profile-setting
+export * from './setting/profile-setting/mg-cu/cu-org/cu-org.component';
 export * from './setting/profile-setting/mg-cu/cu-user/cu-user.component';
 export * from './setting/profile-setting/mg-cu/cu-profile/cu-profile.component';
 export * from './setting/profile-setting/mg-cu/cu-permission/cu-permission.component';
@@ -58,6 +60,7 @@ export * from './setting/profile-setting/mg-cu/cu-role/cu-role.component';
 export * from './setting/profile-setting/pu-crose-table/pu-crose-table.component';
 export * from './setting/profile-setting/ru-crose-table/ru-crose-table.component';
 export * from './setting/profile-setting/pp-crose-table/pp-crose-table.component';
+export * from './setting/profile-setting/mg-org/mg-org.component';
 export * from './setting/profile-setting/mg-user/mg-user.component';
 export * from './setting/profile-setting/mg-rpp/mg-rpp.component';
 export * from './setting/profile-setting/mg-refresh-token/mg-refresh-token.component';

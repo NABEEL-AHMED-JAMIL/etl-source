@@ -1,4 +1,79 @@
-<div class="content">
+<!-- session detail -->
+<div class="content" style="margin-top: 10px;">
+    <h3>
+        <span nz-icon nzType="link" nzTheme="outline"></span>
+        Session Statistics
+    </h3>
+    <nz-row id="session-statistics">
+        <nz-col [nzSpan]="4" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 4}"
+            *ngIf="sessionStatistics">
+            <hr>
+            <h4 style="text-align: center;">
+                <span nz-icon nzType="account-book" nzTheme="outline"></span>
+                Overall Count
+            </h4>
+            <hr>
+            <nz-descriptions nzSize="small" nzBordered>
+                <nz-descriptions-item [nzSpan]="3" nzTitle="Daily Count">
+                    {{sessionStatistics.dailyCount}}
+                </nz-descriptions-item>
+                <nz-descriptions-item [nzSpan]="3" nzTitle="Weekly Count">
+                    {{sessionStatistics.weeklyCount}}
+                </nz-descriptions-item>
+                <nz-descriptions-item [nzSpan]="3" nzTitle="Monthly Count">
+                    {{sessionStatistics.monthlyCount}}
+                </nz-descriptions-item>
+                <nz-descriptions-item [nzSpan]="3" nzTitle="Yearly Count">
+                    {{sessionStatistics.yearlyCount}}
+                </nz-descriptions-item>
+            </nz-descriptions>
+        </nz-col>
+        <nz-col [nzSpan]="5" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 5}">
+            <hr>
+            <h4 style="text-align: center;">
+                <span nz-icon nzType="account-book" nzTheme="outline"></span> Daily Count
+            </h4>
+            <hr>
+            <div id="DAILY_STATISTICS" echarts theme="macarons" [options]="DAILY_STATISTICS"
+                class="demo-chart" style="height: 180px;">
+            </div>
+        </nz-col>
+        <nz-col [nzSpan]="5" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 5}">
+            <hr>
+            <h4 style="text-align: center;">
+                <span nz-icon nzType="account-book" nzTheme="outline"></span> Weekly Count
+            </h4>
+            <hr>
+            <div id="WEEKLY_STATISTICS" echarts theme="macarons" [options]="WEEKLY_STATISTICS"
+                class="demo-chart" style="height: 180px;">
+            </div>
+        </nz-col>
+        <nz-col [nzSpan]="5" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 5}">
+            <hr>
+            <h4 style="text-align: center;">
+                <span nz-icon nzType="account-book"
+                    nzTheme="outline"></span> Monthly Count
+            </h4>
+            <hr>
+            <div id="MONTHLY_STATISTICS" echarts theme="macarons" [options]="MONTHLY_STATISTICS"                 
+                class="demo-chart" style="height: 180px;">
+            </div>
+        </nz-col>
+        <nz-col [nzSpan]="5" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 5}">
+            <hr>
+            <h4 style="text-align: center;">
+                <span nz-icon nzType="account-book"
+                    nzTheme="outline"></span> Yearly Count
+            </h4>
+            <hr>
+            <div id="YEARLY_STATISTICS" echarts theme="macarons" [options]="YEARLY_STATISTICS"                 
+                class="demo-chart" style="height: 180px;">
+            </div>
+        </nz-col>
+    </nz-row>
+</div>
+<!-- user-table detail -->
+<div class="content" style="margin-top: 10px;">
     <h3>
         <span nz-icon nzType="link" nzTheme="outline"></span>
         {{refreshTokenTable.title}}
@@ -10,7 +85,6 @@
         [endDate]="endDate"
         [setOfCheckedId]="setOfCheckedId"
         [staticTable]="refreshTokenTable"
-        (actionEventEmitter)="tableActionReciver($event)"
         (buttonEventEmitter)="buttonActionReciver($event)"
         (filterEventEmitter)="filterActionReciver($event)"
         (extraEventEmitter)="extraActionReciver($event)">

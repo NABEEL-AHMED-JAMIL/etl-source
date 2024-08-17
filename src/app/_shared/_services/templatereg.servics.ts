@@ -17,8 +17,8 @@ export class TemplateRegService {
 		return this.http.post<ApiResponse>(`${config.apiBaseUrl}/templateReg.json/addTemplateReg`, payload);
 	}
 
-	public editTemplateReg(payload: any): Observable<ApiResponse> {
-		return this.http.post<ApiResponse>(`${config.apiBaseUrl}/templateReg.json/editTemplateReg`, payload);
+	public updateTemplateReg(payload: any): Observable<ApiResponse> {
+		return this.http.post<ApiResponse>(`${config.apiBaseUrl}/templateReg.json/updateTemplateReg`, payload);
 	}
 
 	public findTemplateRegByTemplateId(payload: any): Observable<ApiResponse> {

@@ -24,7 +24,7 @@ export class CommomService {
             { 
                 type: 'application/json'
             });
-        saveAs(file, 'ETL ' + this.uuid() + '.json');
+        saveAs(file, 'ETL-2023 ' + this.uuid() + '.json');
     }
 
     public downLoadFile(data: any): void {
@@ -167,6 +167,10 @@ export class CommomService {
             return false;
         }
         return url.protocol === "http:" || url.protocol === "https:";
+    }
+
+    public hasPermissionAccess(userPermission: any, routePermission: any): any {
+        return userPermission.some((permission: any) => routePermission.includes(permission));
     }
 
 }

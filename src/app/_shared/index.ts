@@ -1,4 +1,5 @@
 // services
+export * from '../_helpers/app.dashboard.theme';
 export * from './_services/setting.service';
 export * from './_services/authentication.service';
 export * from './_services/credential.service';
@@ -19,6 +20,7 @@ export * from './_services/source.job.service';
 export * from './_services/source.task.service';
 export * from './_services/play.ground.service';
 export * from './_services/common.service';
+export * from './_services/organization.service';
 export * from './_services/eventbridge.service';
 export * from './_services/enable-visibility.service';
 export * from './_services/source.tasktype.service';

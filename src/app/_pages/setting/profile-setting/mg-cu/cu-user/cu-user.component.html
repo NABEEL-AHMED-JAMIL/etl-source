@@ -80,39 +80,39 @@
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <!-- <div nz-col nzSpan="12" *ngIf="actionType === editAction && APPLICATION_STATUS">
+        <div nz-col nzSpan="12" *ngIf="profiles">
             <nz-form-item>
-                <nz-form-label nzRequired>EnvKey Status</nz-form-label>
-                <nz-form-control nzErrorTip="EnvKey Status Required">
-                    <nz-select nzShowSearch nzAllowClear formControlName="status"
-                        nzPlaceHolder="Select EnvKey Status">
-                        <nz-option *ngFor="let lookupChildren of APPLICATION_STATUS?.SUB_LOOKUP_DATA"
-                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
+                <nz-form-label nzRequired>Profile</nz-form-label>
+                <nz-form-control nzErrorTip="Profile Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="profile" nzPlaceHolder="Select Profile">
+                        <nz-option *ngFor="let profile of profiles"
+                            [nzLabel]="profile.description" [nzValue]="profile.id">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
-        </div> -->
+        </div>
         <div nz-col nzSpan="12" *ngIf="roleList">
             <nz-form-item>
                 <nz-form-label nzRequired>Roles</nz-form-label>
                 <nz-form-control nzErrorTip="Roles Required">
                     <nz-select nzShowSearch nzAllowClear nzMode="multiple" [nzMaxTagCount]="2"
                         formControlName="assignRole" nzPlaceHolder="Select Roles">
-                        <nz-option *ngFor="let role of roleList" [nzLabel]="role.description"
-                            [nzValue]="role.name">
+                        <nz-option *ngFor="let role of roleList"
+                            [nzLabel]="role.description" [nzValue]="role.name">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="12" *ngIf="profiles">
+        <div nz-col nzSpan="12" *ngIf="ACCOUNT_TYPE">
             <nz-form-item>
-                <nz-form-label nzRequired>Profile</nz-form-label>
-                <nz-form-control nzErrorTip="Profile Required">
-                    <nz-select nzShowSearch nzAllowClear formControlName="profile" nzPlaceHolder="Select Profile">
-                        <nz-option *ngFor="let profile of profiles" [nzLabel]="profile.description"
-                            [nzValue]="profile.id">
+                <nz-form-label nzRequired>Account Type</nz-form-label>
+                <nz-form-control nzErrorTip="Account Type Required">
+                    <nz-select nzShowSearch nzAllowClear formControlName="accountType"
+                        nzPlaceHolder="Select Account Type">
+                        <nz-option *ngFor="let lookupChildren of ACCOUNT_TYPE?.SUB_LOOKUP_DATA"
+                            [nzLabel]="lookupChildren.lookupValue" [nzValue]="lookupChildren.lookupCode">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>
@@ -122,7 +122,8 @@
             <nz-form-item>
                 <nz-form-label nzRequired>IP Address</nz-form-label>
                 <nz-form-control nzHasFeedback nzErrorTip="Please input a valid IP address!">
-                    <input nz-input type="text" formControlName="ipAddress" placeholder="Enter IP Address" />
+                    <input nz-input type="text" formControlName="ipAddress"
+                        placeholder="Enter IP Address" />
                 </nz-form-control>
             </nz-form-item>
         </div>

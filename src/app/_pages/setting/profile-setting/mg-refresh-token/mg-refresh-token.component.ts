@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { EChartsOption } from 'echarts';
 import {
     ApiCode,
     IStaticTable,
+    ISession,
+    IQuery,
     ActionType,
     RefreshTokenService,
     AuthResponse,
-    AuthenticationService
+    AuthenticationService,
+    AppDashboardThemeService
 } from '../../../../_shared';
 import { first } from 'rxjs';
 import {
@@ -13,7 +18,6 @@ import {
     CommomService,
     SpinnerService
 } from '../../../../_helpers';
-import { NzModalService } from 'ng-zorro-antd/modal';
 
 
 @Component({
@@ -26,13 +30,19 @@ export class MgRefreshTokenComponent implements OnInit {
     public startDate: any;
     public endDate: any;
     public setOfCheckedId = new Set<any>();
+
+    public sessionStatistics: ISession;
+    public DAILY_STATISTICS: EChartsOption;
+    public WEEKLY_STATISTICS: EChartsOption;
+    public MONTHLY_STATISTICS: EChartsOption;
+    public YEARLY_STATISTICS: EChartsOption;
     //
     public sessionUser: AuthResponse;
     public refreshTokenTable: IStaticTable = {
         tableId: 'refresh_id',
         title: 'Refresh Token',
         bordered: true,
-        checkbox: true,
+        checkbox: false,
         size: 'small',
         headerButton: [
             {
@@ -41,13 +51,6 @@ export class MgRefreshTokenComponent implements OnInit {
                 spin: false,
                 tooltipTitle: 'Refresh',
                 action: ActionType.RE_FRESH
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
             }
         ],
         dataColumn: [
@@ -101,11 +104,12 @@ export class MgRefreshTokenComponent implements OnInit {
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         public commomService: CommomService,
+        private appDashboardThemeService: AppDashboardThemeService,
         private refreshTokenService: RefreshTokenService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
         this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
-        this.authenticationService.currentUser
+        this.authenticationService?.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
             });
@@ -116,6 +120,27 @@ export class MgRefreshTokenComponent implements OnInit {
             startDate: this.startDate,
             endDate: this.endDate
         });
+        this.fetchSessionStatistics();
+    }
+
+    // fetch session statistics
+    public fetchSessionStatistics(): any {
+        this.spinnerService.show();
+        this.refreshTokenService.fetchSessionStatistics()
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.queryParseForStatisticResult(response.data);
+                 // Initialize charts and data is set
+                this.initCharts();
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
     }
 
     // fetch all lookup
@@ -136,48 +161,12 @@ export class MgRefreshTokenComponent implements OnInit {
             });
     }
 
-    public deleteRefreshToken(payload: any): void {
-        this.spinnerService.show();
-        this.refreshTokenService.deleteRefreshToken(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchByAllRefreshToken({
-                    startDate: this.startDate,
-                    endDate: this.endDate
-                });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
 
     public buttonActionReciver(payload: any): void {
         if (ActionType.RE_FRESH === payload.action) {
             this.fetchByAllRefreshToken({
                 startDate: this.startDate,
                 endDate: this.endDate
-            });
-        }
-    }
-
-    public tableActionReciver(payload: any): void {
-        if (ActionType.DELETE === payload.action) {
-            this.modalService.confirm({
-                nzOkText: 'Ok',
-                nzCancelText: 'Cancel',
-                nzTitle: 'Do you want to delete?',
-                nzContent: 'Press \'Ok\' may effect the business source.',
-                nzOnOk: () => {
-                    this.deleteRefreshToken({
-                        refreshToken: payload.data.token
-                    });
-                }
             });
         }
     }
@@ -228,6 +217,59 @@ export class MgRefreshTokenComponent implements OnInit {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
+    }
+
+    public queryParseForStatisticResult(queryResponse: IQuery) {
+        this.sessionStatistics = {};
+        const updateStatistics = (name: string, totalCount: number, 
+            activeCount: number, offCount: number) => {
+                const statistics = {
+                    totalCount,
+                    sessionData: [
+                        { name: 'Login', value: activeCount },
+                        { name: 'Logout', value: offCount }
+                    ]
+                };
+                switch (name) {
+                    case 'DAILY':
+                        this.sessionStatistics.dailyCount = statistics.totalCount;
+                        this.sessionStatistics.daily = statistics.sessionData;
+                        break;
+                    case 'WEEK':
+                        this.sessionStatistics.weeklyCount = statistics.totalCount;
+                        this.sessionStatistics.weekly = statistics.sessionData;
+                        break;
+                    case 'MONTH':
+                        this.sessionStatistics.monthlyCount = statistics.totalCount;
+                        this.sessionStatistics.monthly = statistics.sessionData;
+                        break;
+                    case 'YEAR':
+                        this.sessionStatistics.yearlyCount = statistics.totalCount;
+                        this.sessionStatistics.yearly = statistics.sessionData;
+                        break;
+                }
+        };
+        queryResponse.data
+            .forEach((data: any) => {
+                if (data) {
+                    updateStatistics(data.name, data.totalcount, data.activecount, data.offcount);
+                }
+            });
+    }
+
+    public initCharts(): void {
+        // daily
+        this.DAILY_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Daily Count', this.sessionStatistics.daily);
+        this.appDashboardThemeService.initChart('DAILY_STATISTICS', this.DAILY_STATISTICS);
+        // weekly
+        this.WEEKLY_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Weekly Count', this.sessionStatistics.weekly);
+        this.appDashboardThemeService.initChart('WEEKLY_STATISTICS', this.WEEKLY_STATISTICS);
+        // monthly
+        this.MONTHLY_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Monthly Count', this.sessionStatistics.monthly);
+        this.appDashboardThemeService.initChart('MONTHLY_STATISTICS', this.MONTHLY_STATISTICS);
+        // yearly
+        this.YEARLY_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Yearly Count', this.sessionStatistics.yearly);
+        this.appDashboardThemeService.initChart('YEARLY_STATISTICS', this.YEARLY_STATISTICS);
     }
 
 }

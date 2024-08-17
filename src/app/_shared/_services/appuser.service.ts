@@ -18,10 +18,6 @@ export class AppUserService {
         return this.http.get<any>(`${config.apiBaseUrl}/appUser.json/fetchAppUserProfile`, { params });
     }
 
-    public updateAppUserProfile(payload:any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserProfile`, payload);
-    }
-
     public updateAppUserEnvVariable(payload:any): Observable<any> {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserEnvVariable`, payload);
     }
@@ -30,23 +26,16 @@ export class AppUserService {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserPassword`, payload);
     }
 
-    public closeAppUserAccount(payload:any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/appUser.json/closeAppUserAccount`, payload);
+    public deleteAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/deleteAppUserAccount`, payload);
     }
 
     public deleteAllAppUserAccount(payload:any): Observable<any> {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/deleteAllAppUserAccount`, payload);
     }
 
-    public downloadAppUserAccountTemplateFile(): Observable<any> {
-        return this.http.get(`${config.apiBaseUrl}/eVariable.json/downloadAppUserAccountTemplateFile`,
-            {
-                responseType: 'blob'
-            });
-    }
-
     public downloadAppUserAccount(payload: any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/eVariable.json/downloadAppUserAccount`, payload,
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/downloadAppUserAccount`, payload,
             {
                 responseType: 'blob'
             });
@@ -60,8 +49,8 @@ export class AppUserService {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/addAppUserAccount`, payload);
     }
 
-    public editAppUserAccount(payload:any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/appUser.json/editAppUserAccount`, payload);
+    public updateAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserAccount`, payload);
     }
 
     public enabledDisabledAppUserAccount(payload:any): Observable<any> {

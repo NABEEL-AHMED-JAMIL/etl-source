@@ -32,9 +32,9 @@ export class DBQueryComponent implements OnInit {
 
     constructor(private fb: UntypedFormBuilder,
         private alertService: AlertService,
+        private commomService: CommomService,
         private spinnerService: SpinnerService,
-        private settingService: SettingService,
-        private commomService: CommomService) {
+        private settingService: SettingService) {
     }
 
     ngOnInit(): void {

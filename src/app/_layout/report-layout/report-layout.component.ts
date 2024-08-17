@@ -34,12 +34,12 @@ export class ReportLayoutComponent implements OnInit {
     constructor(
         private router: Router,
         private location: Location,
-        private authenticationService: AuthenticationService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
+        private dashboardService: DashboardService,
         private reportSettingService: ReportSettingService,
-        private dashboardService: DashboardService) {
-        this.authenticationService.currentUser
+        private authenticationService: AuthenticationService) {
+        this.authenticationService?.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
                 if (this.sessionUser) {

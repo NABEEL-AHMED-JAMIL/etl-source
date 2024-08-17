@@ -1,26 +1,38 @@
 <nz-layout class="layout">
     <nz-header>
         <div nz-row class="app-header">
-            <div nz-col [nzSpan]="16" [nzXs]="{span: 2}" [nzSm]="{span: 2}" [nzMd]="{span: 2}"
+            <div nz-col
+                [nzSpan]="16"
+                [nzXs]="{span: 2}"
+                [nzSm]="{span: 2}"
+                [nzMd]="{span: 2}"
                 style="text-align: center;">
                 <a routerLink="/dashboard" style="color: black;">
                     <b>{{title}}</b>
                 </a>
             </div>
-            <div nz-col [nzSpan]="16" [nzXs]="{span: 14}" [nzSm]="{span: 10}" [nzMd]="{span: 18}">
+            <div nz-col
+                [nzSpan]="16"
+                [nzXs]="{span: 14}"
+                [nzSm]="{span: 10}"
+                [nzMd]="{span: 18}">
                 <ul nz-menu nzMode="horizontal">
-                    <li *ngIf="hasPermissionAccess(['SOURCE_ACTION_PERMISSION'])" class="hli" nz-menu-item>
+                    <li *ngIf="hasPermissionAccess(['SOURCE_ACTION_PERMISSION'])"
+                        class="hli" nz-menu-item>
                         <a nz-dropdown [nzDropdownMenu]="menu">
                             <span nz-icon nzType="fire"></span> Source Action</a>
                     </li>
-                    <li *ngIf="hasPermissionAccess(['ADMIN_PAGE_PERMISSION'])" nz-menu-item
-                        class="hli" routerLink="/setting">
+                    <li *ngIf="hasPermissionAccess(['ADMIN_PAGE_PERMISSION'])"
+                        nz-menu-item class="hli" routerLink="/setting">
                         <span nz-icon nzType="setting" nzTheme="outline"></span> App Setting
                     </li>
                 </ul>
             </div>
-            <div nz-col [nzSpan]="16" [nzXs]="{span: 8}"
-                [nzSm]="{span: 12}" [nzMd]="{span: 4}"
+            <div nz-col
+                [nzSpan]="16"
+                [nzXs]="{span: 8}"
+                [nzSm]="{span: 12}"
+                [nzMd]="{span: 4}"
                 style="text-align: end;padding-right: 20px">
                 <action-header-list></action-header-list>
             </div>

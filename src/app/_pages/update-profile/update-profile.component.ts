@@ -102,6 +102,11 @@ export class UpdateProfileComponent implements OnInit {
                 showImg: true
             },
             {
+                field: 'httpMethod',
+                header: 'Method',
+                type: 'tag'
+            },
+            {
                 
                 field: 'tokenId',
                 header: 'Token Id',

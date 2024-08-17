@@ -54,7 +54,7 @@ export class RUCroseTableComponent implements OnInit {
                 field: 'profile',
                 header: 'Profile',
                 type: 'combine',
-                subfield: ['id', 'profileName']
+                subfield: ['profileName']
             },
             {
                 field: 'linkStatus',
@@ -76,15 +76,15 @@ export class RUCroseTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchLinkRoleWithRootUser({
+        this.fetchLinkRoleWithUser({
             roleId: this.role.id
         });
     }
 
     // role -> root user
-    public fetchLinkRoleWithRootUser(payload: any): any {
+    public fetchLinkRoleWithUser(payload: any): any {
         this.spinnerService.show();
-        this.rppService.fetchLinkRoleWithRootUser(payload)
+        this.rppService.fetchLinkRoleWithUser(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -101,7 +101,7 @@ export class RUCroseTableComponent implements OnInit {
 
     public enableActionReciver(payload: any): void {
         this.spinnerService.show();
-        this.rppService.linkRoleWithRootUser({
+        this.rppService.linkRoleWithUser({
             roleId: this.role.id,
             appUserId: payload.id,
             linked: payload.linked,

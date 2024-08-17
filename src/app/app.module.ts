@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { AppRoutingModule } from './app-routing.module';
@@ -25,7 +25,8 @@ import {
     NgZorroAntdModule,
     ErrorInterceptor,
     JwtInterceptor,
-    SearchFilterPipe
+    SearchFilterPipe,
+    AppDashboardThemeService
 } from './_helpers';
 // compoenet
 import {
@@ -52,7 +53,9 @@ import {
     CUEvariableComponent,
     MgEVariableComponent,
     CUUserComponent,
+    CUOrgComponent,
     MgUserComponent,
+    MgOrgComponent,
     RUCroseTableComponent,
     PUCroseTableComponent,
     EVUCroseTableComponent,
@@ -90,7 +93,8 @@ import {
     EBUCroseTableComponent,
     EVConfigComponent,
     SCVisibilityComponent,
-    SCEnableabilityComponent
+    SCEnableabilityComponent,
+    UserInfoComponent
 } from './_pages';
 
 // dynamic fileds
@@ -104,11 +108,17 @@ import {
 
 registerLocaleData(en);
 
+// load tham on APP_INITIALIZER
+export function loadThemeFactory(appDashboardThemeService: AppDashboardThemeService) {
+    return () => appDashboardThemeService.loadTheme();
+}
+
 export const APP_COMPONENT = [
     ETLSourceComponent,
     SettingDashboardComponent,
     BatchComponent,
     EnvVariableValueComponent,
+    UserInfoComponent,
     GenTableComponent,
     SearchFilterPipe,
     SpinnerComponent,
@@ -137,6 +147,8 @@ export const APP_COMPONENT = [
     MgEVariableComponent,
     CUUserComponent,
     MgUserComponent,
+    CUOrgComponent,
+    MgOrgComponent,
     CredentialComponent,
     CuCredentialComponent,
     CUFormComponent,
@@ -203,6 +215,12 @@ export const APP_COMPONENT = [
         {
             provide: NZ_I18N,
             useValue: en_US
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: loadThemeFactory,
+            deps: [AppDashboardThemeService],
+            multi: true
         },
         {
             provide: HTTP_INTERCEPTORS,

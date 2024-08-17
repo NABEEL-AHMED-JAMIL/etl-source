@@ -11,6 +11,11 @@ export enum ApiCode {
     HTTP_404 = 'HTTP_404'
 }
 
+export interface IKeyValue {
+    name?: any;
+    value?: any;
+}
+
 export interface IETLCountry {
     countryCode?: any;
     countryName?: any;
@@ -29,6 +34,8 @@ export interface AuthResponse {
     profileImage?: any;
     firstName?: any;
     lastName?: any;
+    organization?: any;
+    accountType?: any;
     profile?: any;
 }
 
@@ -141,8 +148,8 @@ export interface IOrganization extends IBaseEntity {
     email?: any;
     phone?: any;
     country?: any;
-    website?: any;
-    logo?: any;
+    image?: any;
+    owner?: IAppUser;
 }
 
 export interface ICredential extends IBaseEntity {
@@ -482,6 +489,17 @@ export interface SideBar {
     childLinks?: SideBar[];
 }
 
+export interface ISession {
+    dailyCount?: any;
+    weeklyCount?: any;
+    monthlyCount?: any;
+    yearlyCount?: any;
+    daily?: IKeyValue[];
+    weekly?: IKeyValue[];
+    monthly?: IKeyValue[];
+    yearly?: IKeyValue[];
+}
+
 export const CONTROL_PATTERN: IControlPattern[] = [
     {
         type: 'Tel',
@@ -648,14 +666,14 @@ export const SETTING_SIDEBAR: SideBar[] = [
     {
         name: 'Profile Setting',
         icon: 'profile',
-        roles: ['ROLE_DEV'],
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
         permission: ['PROFILE_SETTING_PERMISSION'],
         childLinks: [
             {
                 name: 'Users',
                 icon: 'user-add',
                 link: '/setting/mgUsers',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
                 permission: ['USER_PERMISSION']
             },
             {
@@ -684,7 +702,7 @@ export const SETTING_SIDEBAR: SideBar[] = [
     {
         name: 'App Setting',
         icon: 'appstore',
-        roles: ['ROLE_DEV'],
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
         permission: ['APP_SETTING_PERMISSION'],
         childLinks: [
             {
@@ -727,14 +745,14 @@ export const SETTING_SIDEBAR: SideBar[] = [
     {
         name: 'Support',
         icon: 'wifi',
-        roles: ['ROLE_DEV'],
+        roles: ['ROLE_DEV', 'ROLE_DB'],
         permission: ['SUPPORT_SETTING_PERMISSION'],
         childLinks: [
             {
                 name: 'Query Inquiry',
                 icon: 'console-sql',
                 link: '/setting/inquery',
-                roles: ['ROLE_DEV'],
+                roles: ['ROLE_DEV', 'ROLE_DB'],
                 permission: ['QUERY_INQUIRY_PERMISSION']
             }
         ]
@@ -758,7 +776,8 @@ export const LOOKUP_TYPE = {
     EVENT_BRIDGE_TYPE: 'EVENT_BRIDGE_TYPE',
     COMPARISON_OPERATORS: 'COMPARISON_OPERATORS',
     LOGICAL_OPERATORS: 'LOGICAL_OPERATORS',
-    DYNAMIC_CONDITION: 'DYNAMIC_CONDITION'
+    DYNAMIC_CONDITION: 'DYNAMIC_CONDITION',
+    ACCOUNT_TYPE: 'ACCOUNT_TYPE'
 }
 
 export const enum UI_LOOKUP {
@@ -867,3 +886,42 @@ export const enum SERVER_ACTION {
     LINK,
     UNLINK
 }
+
+export const ORGANIZATIONS: IOrganization[] = [
+    {
+        'id': 18,
+        'name': 'MinistryofEducationandHigherEducation',
+        'address': 'SupremeEducationCouncil, Doha',
+        'email': 'info@edu.gov.qa',
+        'image': 'qnl.png',
+        'phone': '+9744404444',
+        'country': 'QAT'
+    },
+    {
+        'id': 19,
+        'name': 'MinistryofPublicHealth',
+        'address': 'HamadMedicalCity, Doha',
+        'email': 'ghcc@moph.gov.qa',
+        'image': 'moi.jpg',
+        'phone': '+97444070000',
+        'country': 'QAT'
+    },
+    {
+        'id': 18,
+        'name': 'MinistryofEducationandHigherEducation',
+        'address': 'SupremeEducationCouncil, Doha',
+        'email': 'info@edu.gov.qa',
+        'image': 'qnl.png',
+        'phone': '+9744404444',
+        'country': 'QAT'
+    },
+    {
+        'id': 19,
+        'name': 'MinistryofPublicHealth',
+        'address': 'HamadMedicalCity, Doha',
+        'email': 'ghcc@moph.gov.qa',
+        'image': 'moi.jpg',
+        'phone': '+97444070000',
+        'country': 'QAT'
+    }
+];

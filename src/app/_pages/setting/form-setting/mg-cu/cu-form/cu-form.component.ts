@@ -204,7 +204,7 @@ export class CUFormComponent implements OnInit {
         if (this.actionType === ActionType.ADD) {
             this.addForm();
         } else if (this.actionType === ActionType.EDIT) {
-            this.editForm();
+            this.updateForm();
         }
     }
 
@@ -239,7 +239,7 @@ export class CUFormComponent implements OnInit {
             });
     }
 
-    public editForm(): void {
+    public updateForm(): void {
         this.loading = true;
         this.spinnerService.show();
         if (this.genFormForm.invalid) {
@@ -252,7 +252,7 @@ export class CUFormComponent implements OnInit {
                 username: this.sessionUser.username
             }
         }
-        this.formSettingService.editForm(payload)
+        this.formSettingService.updateForm(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;

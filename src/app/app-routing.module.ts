@@ -37,7 +37,8 @@ import {
     ViewReportComponent,
     ViewDashboardComponent,
     MgEventBridgeComponent,
-    EVConfigComponent
+    EVConfigComponent,
+    MgOrgComponent
 } from './_pages';
 
 
@@ -252,6 +253,17 @@ const routes: Routes = [
                     roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
                     permission: ['USER_PERMISSION'],
                     breadcrumb: 'Mg User',
+                }
+            },
+            {
+                path: 'mgOrganization',
+                component: MgOrgComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    parent: false,
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
+                    permission: ['USER_PERMISSION'],
+                    breadcrumb: 'Mg Organization',
                 }
             },
             // profile-setting => mg-rpp

@@ -32,23 +32,23 @@ export class CUTemplateComponent implements OnInit {
     @Input()
     public editPayload: ITemplateReg;
 
-    public editAction = ActionType.EDIT;
-
     public loading: boolean = false;
+    public editAction = ActionType.EDIT;
     public templateForm: FormGroup;
 
     public EMAIL_TEMPLATE:ILookups;
     public APPLICATION_STATUS:ILookups;
     public sessionUser: AuthResponse;
 
-    constructor(private formBuilder: FormBuilder,
+    constructor(
+        private drawerRef: NzDrawerRef<void>,
+        private formBuilder: FormBuilder,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private templateRegService: TemplateRegService,
-        private drawerRef: NzDrawerRef<void>,
         private authenticationService: AuthenticationService) {
-            this.authenticationService.currentUser
+            this.authenticationService?.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
             });
@@ -100,7 +100,7 @@ export class CUTemplateComponent implements OnInit {
         if (this.actionType === ActionType.ADD) {
             this.addTemplate();
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateTemplate();
+            this.updateTemplateReg();
         }
     }
 
@@ -135,7 +135,7 @@ export class CUTemplateComponent implements OnInit {
             });
     }
 
-    public updateTemplate(): void {
+    public updateTemplateReg(): void {
         this.loading = true;
         this.spinnerService.show();
         if (this.templateForm.invalid) {
@@ -148,7 +148,7 @@ export class CUTemplateComponent implements OnInit {
                 username: this.sessionUser.username
             }
         }
-        this.templateRegService.editTemplateReg(payload)
+        this.templateRegService.updateTemplateReg(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;

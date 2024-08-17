@@ -266,7 +266,7 @@ export class CUControlComponent implements OnInit {
         if (this.actionType === ActionType.ADD) {
             this.addControl();
         } else if (this.actionType === ActionType.EDIT) {
-            this.editControl();
+            this.updateControl();
         }
     }
 
@@ -301,7 +301,7 @@ export class CUControlComponent implements OnInit {
             });
     }
 
-    public editControl(): void {
+    public updateControl(): void {
         this.loading = true;
         this.spinnerService.show();
         if (this.genControlForm.invalid) {
@@ -314,7 +314,7 @@ export class CUControlComponent implements OnInit {
                 username: this.sessionUser.username
             }
         }
-        this.formSettingService.editControl(payload)
+        this.formSettingService.updateControl(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;

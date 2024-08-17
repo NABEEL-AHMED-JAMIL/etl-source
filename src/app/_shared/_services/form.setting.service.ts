@@ -17,8 +17,8 @@ export class FormSettingService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/addForm`, payload);
     }
 
-    public editForm(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/editForm`, payload);
+    public updateForm(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/updateForm`, payload);
     }
 
     public deleteFormById(payload: any): Observable<ApiResponse> {
@@ -65,8 +65,8 @@ export class FormSettingService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/addSection`, payload);
     }
 
-    public editSection(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/editSection`, payload);
+    public updateSection(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/updateSection`, payload);
     }
 
     public deleteSectionById(payload: any): Observable<ApiResponse> {
@@ -113,8 +113,8 @@ export class FormSettingService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/addControl`, payload);
     }
 
-    public editControl(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/editControl`, payload);
+    public updateControl(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/formSetting.json/updateControl`, payload);
     }
 
     public deleteControlById(payload: any): Observable<ApiResponse> {

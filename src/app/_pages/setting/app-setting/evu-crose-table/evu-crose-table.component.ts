@@ -13,6 +13,8 @@ import {
     IEnVariables,
     IStaticTable
 } from 'src/app/_shared';
+import { EnvVariableValueComponent } from 'src/app/_pages';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 
 @Component({
@@ -73,8 +75,17 @@ export class EVUCroseTableComponent implements OnInit {
             },
             {
                 field: 'linkStatus',
-                header: 'Status',
+                header: 'Link Status',
                 type: 'tag'
+            }
+        ],
+        actionType: [
+            {
+                type: 'edit',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
             }
         ]
     };
@@ -82,6 +93,7 @@ export class EVUCroseTableComponent implements OnInit {
     constructor(
         private alertService: AlertService,
         private spinnerService: SpinnerService,
+        private modalService: NzModalService,
         private eVariableService: EVariableService,
         private authenticationService: AuthenticationService) {
         this.authenticationService.currentUser
@@ -127,18 +139,46 @@ export class EVUCroseTableComponent implements OnInit {
             envId: this.enVariable.id,
             appUserId: payload.id,
             linked: payload.linked
-        })
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);;
+        }).pipe(first())
+        .subscribe((response: any) => {
+            this.spinnerService.hide();
+            if (response.status === ApiCode.ERROR) {
+                this.alertService.showError(response.message, ApiCode.ERROR);
+                return;
+            }
+        }, (response: any) => {
+            this.spinnerService.hide();
+            this.alertService.showError(response.error.message, ApiCode.ERROR);;
+        });
+    }
+
+    public tableActionReciver(payload: any): void {
+        if (ActionType.EDIT === payload.action) {
+            if (!payload?.data?.linked) {
+                this.alertService.showError('Please link user then edit.', ApiCode.ERROR);                
+                return;
+            }
+            let editPayload: IEnVariables = {
+                id: payload?.data.linkId,
+                envKey: this.enVariable.envKey,
+                envValue: payload?.data.envValue
+            }
+            const drawerRef = this.modalService.create({
+                nzTitle: 'Environment Variable',
+                nzMaskClosable: false,
+                nzContent: EnvVariableValueComponent,
+                nzComponentParams: {
+                    actionType: payload.action,
+                    editPayload: editPayload
+                },
+                nzFooter: null // Set the footer to null to hide it
             });
+            drawerRef.afterClose.subscribe(data => {
+                this.fetchLinkEVariableWitUser({
+                    envId: this.enVariable.id
+                });
+            });  
+        }
     }
 
 

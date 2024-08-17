@@ -1,3 +1,4 @@
+export * from './app.dashboard.theme';
 export * from './alert.service';
 export * from './common.service';
 export * from './spinner.service';

@@ -1,11 +1,7 @@
 <!-- profile-permission -->
-<div class="content">
-    <h3>
-        <span nz-icon nzType="link" nzTheme="outline"></span>
-        {{title}}
-    </h3>
-    <nz-divider style="margin: 5px 0;"></nz-divider>
+<div class="content" style="margin-top: 10px;">
     <nz-tabset nzSize="small" nzTabPosition="left">
+        <!-- role -->
         <nz-tab [nzTitle]="roleTemplate">
             <ng-template #roleTemplate>
                 <span nz-icon nzType="lock" nzTheme="outline"
@@ -27,6 +23,7 @@
                 (extraEventEmitter)="extraRoleActionReciver($event)">
             </app-gen-table>
         </nz-tab>
+        <!-- profile -->
         <nz-tab [nzTitle]="profileTemplate">
             <ng-template #profileTemplate>
                 <span nz-icon nzType="profile" nzTheme="outline"
@@ -48,6 +45,7 @@
                 (extraEventEmitter)="extraProfileActionReciver($event)">
             </app-gen-table>
         </nz-tab>
+        <!-- permission -->
         <nz-tab [nzTitle]="permissionTemplate">
             <ng-template #permissionTemplate>
                 <span nz-icon nzType="reconciliation" nzTheme="outline"
@@ -69,6 +67,7 @@
                 (extraEventEmitter)="extraPermissionActionReciver($event)">
             </app-gen-table>
         </nz-tab>
+        <!-- profile & permission -->
         <nz-tab [nzTitle]="lppTemplate">
             <ng-template #lppTemplate>
                 <span nz-icon nzType="control" nzTheme="outline"
@@ -83,6 +82,24 @@
             <div style="padding-left: 0px;padding-right: 0px;">
                 <app-pp-crose-table></app-pp-crose-table>
             </div>
+        </nz-tab>
+        <!-- country -->
+        <nz-tab [nzTitle]="countryTemplate">
+            <ng-template #countryTemplate>
+                <span nz-icon nzType="flag" nzTheme="outline"
+                    nz-tooltip nzTooltipTitle="{{countryTable.title}}">
+                </span>
+            </ng-template>
+            <h3>
+                <span nz-icon nzType="flag" nzTheme="outline"></span>
+                {{countryTable.title}}
+            </h3>
+            <hr>
+            <app-gen-table
+                *ngIf="countryTable"
+                [isDateFilter]="false"
+                [staticTable]="countryTable">
+            </app-gen-table>
         </nz-tab>
     </nz-tabset>
 </div>
