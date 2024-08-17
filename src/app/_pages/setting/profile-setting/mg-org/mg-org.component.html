@@ -1,20 +1,53 @@
-
-<!-- my-info  -->
-<app-user-info [userInfo]="sessionUser"></app-user-info>
-<div class="content" style="margin-top: 10px;">
-    <h3>
-        <span nz-icon nzType="link" nzTheme="outline"></span>
-        Mg Organization
-    </h3>
-    <nz-divider style="margin: 5px 0;"></nz-divider>
-</div>
+<!-- org detail -->
 <nz-row nzGutter="16">
     <ng-container *ngFor="let organization of organizations">
-        <nz-col [nzSpan]="8" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 8}">
+        <nz-col [nzSpan]="12" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 12}">
             <nz-card nzTitle="#{{ organization.id }} {{ organization.name }}"
                 nz-tooltip nzTooltipTitle="#{{ organization.id }} {{ organization.name }}"
-                [nzActions]="[actionEdit, actionUserSetting, actionMore]"
+                [nzActions]="[actionEdit, actionUserSetting, actionMore, actionEdit, actionUserSetting, actionMore]"
                 [nzExtra]="extraTemplate" class="nz-card-aligment">
+                <!-- service statistics carts -->
+                <nz-row nzGutter="16" class="chart-height">
+                    <nz-col [nzSpan]="12">
+                        <h5 style="text-align: center;">
+                            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
+                        </h5>
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
+                        <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
+                            theme="macarons" style="height: 100px;"
+                            [options]="SERVICE_SETTING_STATISTICS"></div>
+                    </nz-col>
+                    <nz-col [nzSpan]="12">
+                        <h5 style="text-align: center;">
+                            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
+                        </h5>
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
+                        <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
+                            theme="macarons" style="height: 100px;"
+                            [options]="SERVICE_SETTING_STATISTICS"></div>
+                    </nz-col>
+                    <nz-divider style="margin: 5px 0;"></nz-divider>
+                    <nz-col [nzSpan]="12">
+                        <h5 style="text-align: center;">
+                            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
+                        </h5>
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
+                        <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
+                            theme="macarons" style="height: 100px;"
+                            [options]="SERVICE_SETTING_STATISTICS"></div>
+                    </nz-col>
+                    <nz-col [nzSpan]="12">
+                        <h5 style="text-align: center;">
+                            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
+                        </h5>
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
+                        <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
+                            theme="macarons" style="height: 100px;"
+                            [options]="SERVICE_SETTING_STATISTICS"></div>
+                    </nz-col>
+                </nz-row>
+                <nz-divider style="margin: 5px 0;"></nz-divider>
+                <!-- total user count  -->
                 <nz-row nzGutter="16">
                     <nz-col [nzSpan]="12">
                         <span  style="color: green;font-weight: bold;">
@@ -30,43 +63,34 @@
                         </span>
                     </nz-col>
                 </nz-row>
-                <nz-divider style="margin: 5px 0;"></nz-divider>
-                <p id="email">
-                    <span nz-icon nzType="mail" nzTheme="outline"></span>
-                    <span> Email: </span> {{organization.email}}
-                </p>
-                <p id="phone">
-                    <span nz-icon nzType="phone" nzTheme="outline"></span>
-                    <span> Phone: </span> {{organization.phone}}
-                </p>
-                <p id="address">
-                    <span nz-icon nzType="home" nzTheme="outline"></span>
-                    <span> Address:</span> {{organization.address}}, {{organization.country}}
-                </p>
-                <nz-divider style="margin: 5px 0;"></nz-divider>
+                <nz-divider style="margin: 1px 0;"></nz-divider>
+                <!-- org detail -->
                 <nz-row nzGutter="16">
-                    <nz-col [nzSpan]="24" class="progress-detail">
-                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
-                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
-                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
-                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
-                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
-                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
-                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
-                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
-                        <nz-progress [nzPercent]="70" nzType="circle" [nzWidth]="45" nzStatus="exception"></nz-progress>
-                        <nz-progress [nzPercent]="100" nzType="circle" [nzWidth]="45"></nz-progress>
-                        <nz-progress [nzPercent]="75" nzType="circle" [nzWidth]="45"></nz-progress>
-                        <nz-progress [nzPercent]="70" nzType="circle" [nzWidth]="45" nzStatus="exception"></nz-progress>
-                        <nz-progress [nzPercent]="100" nzType="circle" [nzWidth]="45"></nz-progress>
-                        <nz-progress [nzPercent]="70" nzType="circle" [nzWidth]="45" nzStatus="exception"></nz-progress>                        
+                    <nz-col [nzSpan]="12">
+                        <p id="email">
+                            <span nz-icon nzType="mail" nzTheme="outline"></span>
+                            <span> Email: </span> {{organization.email}}
+                        </p>
+                    </nz-col>
+                    <nz-col [nzSpan]="12"
+                        style="text-align: end;">
+                        <p id="phone">
+                            <span nz-icon nzType="phone" nzTheme="outline"></span>
+                            <span> Phone: </span> {{organization.phone}}
+                        </p>
+                    </nz-col>
+                    <nz-col [nzSpan]="24">
+                        <p id="address">
+                            <span nz-icon nzType="home" nzTheme="outline"></span>
+                            <span> Address: </span> {{organization.address}}
+                        </p>
                     </nz-col>
                 </nz-row>
             </nz-card>
             <!-- extra-work -->
             <ng-template #extraTemplate>
                 <nz-tag><b>Active</b></nz-tag>
-                <nz-avatar nzSrc="./assets/avatar/spring.png"></nz-avatar>
+                <nz-avatar nzSrc="./assets/avatar/{{organization.image}}"></nz-avatar>
             </ng-template>
             <ng-template #actionEdit>
                 <span nz-icon nzType="edit"></span>

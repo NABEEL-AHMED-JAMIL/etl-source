@@ -100,7 +100,7 @@ export class CUTemplateComponent implements OnInit {
         if (this.actionType === ActionType.ADD) {
             this.addTemplate();
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateTemplate();
+            this.updateTemplateReg();
         }
     }
 
@@ -135,7 +135,7 @@ export class CUTemplateComponent implements OnInit {
             });
     }
 
-    public updateTemplate(): void {
+    public updateTemplateReg(): void {
         this.loading = true;
         this.spinnerService.show();
         if (this.templateForm.invalid) {
@@ -148,7 +148,7 @@ export class CUTemplateComponent implements OnInit {
                 username: this.sessionUser.username
             }
         }
-        this.templateRegService.editTemplateReg(payload)
+        this.templateRegService.updateTemplateReg(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;

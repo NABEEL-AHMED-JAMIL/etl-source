@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EChartsOption } from 'echarts';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { first } from 'rxjs/internal/operators/first';
@@ -15,7 +16,7 @@ import {
     ORGANIZATIONS,
     AuthenticationService,
     OrganizationService,
-    IOrganization
+    IOrganization,
 } from 'src/app/_shared';
 
 
@@ -32,7 +33,51 @@ export class MgOrgComponent implements OnInit {
     public sessionUser: AuthResponse;
     public organizations: IOrganization[] = ORGANIZATIONS;
 
-    constructor(private drawerService: NzDrawerService,
+    public SERVICE_SETTING_STATISTICS: EChartsOption = {
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            show: false
+        },
+        series: [
+            {
+                name: 'Nabeel',
+                type: 'pie',
+                radius: ['40%', '60%'],
+                center: ['50%', '50%'],
+                data: [
+                    {
+                        "name": "ACTIVE-EVENT-BRIDGE",
+                        "value": 4
+                    },
+                    {
+                        "name": "ACTIVE-LOOKUP",
+                        "value": 37
+                    },
+                    {
+                        "name": "ACTIVE-E-VARIABLE",
+                        "value": 3
+                    },
+                    {
+                        "name": "ACTIVE-TEMPLATE",
+                        "value": 14
+                    },
+                    {
+                        "name": "ACTIVE-CREDENTIAL",
+                        "value": 3
+                    }
+                ],
+                label: {
+                    formatter: '{b}: ({c})',
+                    show: true
+                }
+            }
+        ]
+    };
+    
+    constructor(
+        private drawerService: NzDrawerService,
         private modalService: NzModalService,
         private alertService: AlertService,
         private commomService: CommomService,
@@ -44,7 +89,7 @@ export class MgOrgComponent implements OnInit {
             this.authenticationService.currentUser
                 .subscribe(currentUser => {
                     this.sessionUser = currentUser;
-                });    
+                });
     }
 
     ngOnInit(): void {

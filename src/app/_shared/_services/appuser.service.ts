@@ -49,8 +49,8 @@ export class AppUserService {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/addAppUserAccount`, payload);
     }
 
-    public editAppUserAccount(payload:any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/appUser.json/editAppUserAccount`, payload);
+    public updateAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserAccount`, payload);
     }
 
     public enabledDisabledAppUserAccount(payload:any): Observable<any> {

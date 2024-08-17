@@ -17,8 +17,8 @@ export class SourceTaskService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/source_task.json/addSourceTask`, payload);
     }
 
-    public editSourceTask(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/source_task.json/editSourceTask`, payload);
+    public updateSourceTask(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/source_task.json/updateSourceTask`, payload);
     }
 
     public deleteSourceTask(payload: any): Observable<ApiResponse> {

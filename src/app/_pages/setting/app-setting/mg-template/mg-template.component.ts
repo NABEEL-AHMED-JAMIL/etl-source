@@ -24,93 +24,10 @@ import { first } from 'rxjs';
 })
 export class MgTemplateComponent implements OnInit {
 
-    public setOfCheckedId = new Set<any>();
     public sessionUser: AuthResponse;
-    public templateTable: IStaticTable = {
-        tableId: 'template_id',
-        title: 'Mg Template',
-        bordered: true,
-        checkbox: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'plus-circle',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Add',
-                action: ActionType.ADD
-            },
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'templateName',
-                header: 'Template Name',
-                type: 'data'
-            },
-            {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
-            },
-            {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
-            },
-            {
-                field: 'createdBy',
-                header: 'Created By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'dateUpdated',
-                header: 'Updated',
-                type: 'date'
-            },
-            {
-                field: 'updatedBy',
-                header: 'Updated By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'status',
-                header: 'Status',
-                type: 'tag'
-            }
-        ],
-        actionType: [
-            {
-                type: 'edit',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            }
-        ]
-    };
+    
+    public setOfCheckedId = new Set<any>();
+    public templateTable: IStaticTable = this.initializeTable();
 
     constructor(
         private drawerService: NzDrawerService,
@@ -131,6 +48,94 @@ export class MgTemplateComponent implements OnInit {
                 username: this.sessionUser.username
             }
         });
+    }
+
+    private initializeTable(): IStaticTable {
+        return {
+            tableId: 'template_id',
+            title: 'Mg Template',
+            bordered: true,
+            checkbox: true,
+            size: 'small',
+            headerButton: [
+                {
+                    type: 'plus-circle',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Add',
+                    action: ActionType.ADD
+                },
+                {
+                    type: 'reload',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Refresh',
+                    action: ActionType.RE_FRESH
+                }
+            ],
+            extraHeaderButton: [
+                {
+                    title: 'Delete All',
+                    type: 'delete',
+                    action: ActionType.DELETE
+                }
+            ],
+            dataColumn: [
+                {
+                    field: 'templateName',
+                    header: 'Template Name',
+                    type: 'data'
+                },
+                {
+                    field: 'description',
+                    header: 'Description',
+                    type: 'data'
+                },
+                {
+                    field: 'dateCreated',
+                    header: 'Created',
+                    type: 'date'
+                },
+                {
+                    field: 'createdBy',
+                    header: 'Created By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'dateUpdated',
+                    header: 'Updated',
+                    type: 'date'
+                },
+                {
+                    field: 'updatedBy',
+                    header: 'Updated By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'status',
+                    header: 'Status',
+                    type: 'tag'
+                }
+            ],
+            actionType: [
+                {
+                    type: 'edit',
+                    color: 'green',
+                    spin: false,
+                    tooltipTitle: 'Edit',
+                    action: ActionType.EDIT
+                },
+                {
+                    type: 'delete',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Delete',
+                    action: ActionType.DELETE
+                }
+            ]
+        };
     }
 
     // fetch all lookup
@@ -206,27 +211,6 @@ export class MgTemplateComponent implements OnInit {
         }
     }
 
-    public openCuLookup(actionType: ActionType, editPayload: any): void {
-        const drawerRef = this.drawerService.create({
-            nzSize: 'default',
-            nzTitle: actionType === ActionType.ADD ? 'Add Template' : 'Edit Template',
-            nzPlacement: 'right',
-            nzMaskClosable: false,
-            nzContent: CUTemplateComponent,
-            nzContentParams: {
-                actionType: actionType,
-                editPayload: editPayload?.data
-            }
-        });
-        drawerRef.afterClose.subscribe(data => {
-            this.fetchTemplateReg({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
-        });
-    }
-
     public extraActionReciver(payload: any): void {
         if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
@@ -247,11 +231,24 @@ export class MgTemplateComponent implements OnInit {
         }
     }
 
-    public filterActionReciver(payload: any): void {
-        this.fetchTemplateReg({
-            sessionUser: {
-                username: this.sessionUser.username
+    public openCuLookup(actionType: ActionType, editPayload: any): void {
+        const drawerRef = this.drawerService.create({
+            nzSize: 'default',
+            nzTitle: actionType === ActionType.ADD ? 'Add Template' : 'Edit Template',
+            nzPlacement: 'right',
+            nzMaskClosable: false,
+            nzContent: CUTemplateComponent,
+            nzContentParams: {
+                actionType: actionType,
+                editPayload: editPayload?.data
             }
+        });
+        drawerRef.afterClose.subscribe(data => {
+            this.fetchTemplateReg({
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
         });
     }
 

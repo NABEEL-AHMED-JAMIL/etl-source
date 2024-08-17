@@ -169,7 +169,7 @@ export class CUUserComponent implements OnInit {
         if (this.actionType === ActionType.ADD) {
             this.addAppUserAccount();
         } else if (this.actionType === ActionType.EDIT) {
-            this.editAppUserAccount();
+            this.updateAppUserAccount();
         }
     }
 
@@ -204,7 +204,7 @@ export class CUUserComponent implements OnInit {
             });
     }
 
-    public editAppUserAccount(): void {
+    public updateAppUserAccount(): void {
         this.loading = true;
         this.spinnerService.show();
         if (this.userForm.invalid) {
@@ -217,7 +217,7 @@ export class CUUserComponent implements OnInit {
                 username: this.sessionUser.username
             }
         }
-        this.appUserService.editAppUserAccount(payload)
+        this.appUserService.updateAppUserAccount(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;

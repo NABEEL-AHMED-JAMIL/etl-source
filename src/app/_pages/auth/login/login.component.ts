@@ -44,8 +44,8 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         this.spinnerService.hide()
         this.loginForm = this.fb.group({
-            username: [null, [Validators.required]],
-            password: [null, [Validators.required]]
+            username: ['super_admin93', [Validators.required]],
+            password: ['B@llistic1', [Validators.required]]
         });
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';

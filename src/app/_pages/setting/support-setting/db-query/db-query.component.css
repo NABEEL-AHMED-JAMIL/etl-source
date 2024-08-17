@@ -5,3 +5,13 @@ textarea+textarea {
 .ant-table.ant-table-small {
     font-size: 10px !important;
 }
+
+.query-result {
+    max-height: 500px; /* Maximum height set to 500px */
+    overflow-y: auto;  /* Enables vertical scrolling if content exceeds 500px */
+    font-size: 10px;
+    display: block;
+    overflow-x: auto;  /* Enables horizontal scrolling for long content */
+    white-space: nowrap;
+    height: auto;      /* Automatically adjusts height based on content */
+}
