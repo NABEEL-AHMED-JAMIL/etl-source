@@ -19,10 +19,9 @@
         </h3>
         <nz-descriptions nzSize="small" *ngIf="userInfo?.organization">
             <nz-descriptions-item nzTitle="Name">{{userInfo?.organization.name}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Email">{{userInfo?.organization.email}}</nz-descriptions-item>
             <nz-descriptions-item nzTitle="Phone">{{userInfo?.organization.phone}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Address">{{userInfo?.organization.address}}</nz-descriptions-item>
             <nz-descriptions-item nzTitle="Country">{{userInfo?.organization?.country?.countryName}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Address">{{userInfo?.organization.address}}</nz-descriptions-item>
         </nz-descriptions>
     </nz-collapse-panel>
 </nz-collapse>

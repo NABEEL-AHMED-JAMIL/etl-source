@@ -34,7 +34,7 @@ export interface AuthResponse {
     profileImage?: any;
     firstName?: any;
     lastName?: any;
-    organization?: any;
+    organization?: IOrganization;
     accountType?: any;
     profile?: any;
 }
@@ -391,6 +391,13 @@ export interface IReportSetting extends IBaseEntity {
     distinctLKValue?: any;
     aggLKValue?: any;
     formResponse?: any;
+}
+
+export interface IQueryInquiry extends IBaseEntity {
+    id: any,
+    name: any;
+    description: any;
+    query: any;
 }
 
 export interface IStaticTable {
@@ -888,6 +895,24 @@ export const enum SERVER_ACTION {
 }
 
 export const ORGANIZATIONS: IOrganization[] = [
+    {
+        'id': 18,
+        'name': 'MinistryofEducationandHigherEducation',
+        'address': 'SupremeEducationCouncil, Doha',
+        'email': 'info@edu.gov.qa',
+        'image': 'qnl.png',
+        'phone': '+9744404444',
+        'country': 'QAT'
+    },
+    {
+        'id': 19,
+        'name': 'MinistryofPublicHealth',
+        'address': 'HamadMedicalCity, Doha',
+        'email': 'ghcc@moph.gov.qa',
+        'image': 'moi.jpg',
+        'phone': '+97444070000',
+        'country': 'QAT'
+    },
     {
         'id': 18,
         'name': 'MinistryofEducationandHigherEducation',

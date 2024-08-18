@@ -38,7 +38,7 @@ export class EnvVariableValueComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private drawerRef: NzModalRef<void>,
+        private modelRef: NzModalRef<void>,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         public commomService: CommomService,
@@ -87,7 +87,7 @@ export class EnvVariableValueComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.closeDrawer();
+                this.closeModel();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
             }, (response: any) => {
                 this.spinnerService.hide();
@@ -100,8 +100,8 @@ export class EnvVariableValueComponent implements OnInit {
         return this.envValueForm.controls;
     }
 
-    public closeDrawer(): void {
-        this.drawerRef.close();
+    public closeModel(): void {
+        this.modelRef.close();
     }
 
 }

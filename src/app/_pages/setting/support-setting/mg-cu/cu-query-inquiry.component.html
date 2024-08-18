@@ -1,0 +1,36 @@
+<form nz-form
+    [formGroup]="queryInquiryForm"
+    [nzLayout]="'vertical'"
+    (ngSubmit)="onSubmit()">
+    <nz-form-item>
+        <nz-form-label nzRequired>Name</nz-form-label>
+        <nz-form-control nzHasFeedback nzErrorTip="Please input query name.">
+            <input nz-input type="text"
+                formControlName="name"
+                placeholder="Enter name"/>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzRequired>Description</nz-form-label>
+        <nz-form-control nzHasFeedback nzErrorTip="Please input query description.">
+            <input nz-input type="text"
+                formControlName="description"
+                placeholder="Enter description"/>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzRequired>Query</nz-form-label>
+        <nz-form-control nzHasFeedback nzErrorTip="Please input query description.">
+            <textarea nz-input id="query" formControlName="query"
+                placeholder="Enter Select Query For Result"
+                [nzAutosize]="{ minRows: 5, maxRows: 6 }"
+                style="color: #cd0800;font-size: 15px;"></textarea>
+            </nz-form-control>
+    </nz-form-item>
+    <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="24" style="text-align: end;">
+            <button nz-button nzType="primary"
+            [disabled]="!queryInquiryForm.valid">Submit</button>
+        </div>
+    </div>
+</form>
