@@ -30,8 +30,9 @@ import {
 })
 export class MgEVariableComponent implements OnInit {
 
-    public setOfCheckedId = new Set<any>();
     public sessionUser: AuthResponse;
+    // evaraible
+    public setOfCheckedId = new Set<any>();
     public eVariableTable: IStaticTable = {
         tableId: 'variable_id',
         title: 'Mg E-Variable',
@@ -161,44 +162,40 @@ export class MgEVariableComponent implements OnInit {
         });
     }
 
-    // fetch all lookup
-    public fetchAllEnVariable(payload: any): any {
-        this.spinnerService.show();
-        this.eVariableService.fetchAllEnVariable(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.eVariableTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+    public tableActionReciver(payload: any): void {
+        if (ActionType.EDIT === payload.action) {
+            this.openCuEnVariable(ActionType.EDIT, payload);
+        } else if (ActionType.LINK === payload.action) {
+            this.drawerService.create({
+                nzTitle: '[' + payload.data.id + '] ' + payload.data.envKey,
+                nzWidth: 800,
+                nzContent: EVUCroseTableComponent,
+                nzContentParams: {
+                    enVariable: payload.data
+                },
+                nzFooter: null, // Optional footer
             });
-    }
-
-    public deleteEnVariableById(payload: any): void {
-        this.spinnerService.show();
-        this.eVariableService.deleteEnVariableById(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllEnVariable({
-                    sessionUser: {
-                        username: this.sessionUser.username
+        }else if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    let enVariable: IEnVariables = {
+                        id: payload.data.id,
+                        envKey: payload.data.envKey,
+                        description: payload.data.description
                     }
-                });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                    this.deleteEnVariableById({
+                        ...enVariable,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                }
             });
+        } 
     }
 
     public buttonActionReciver(payload: any): void {
@@ -247,42 +244,6 @@ export class MgEVariableComponent implements OnInit {
         }
     }
 
-    public tableActionReciver(payload: any): void {
-        if (ActionType.EDIT === payload.action) {
-            this.openCuEnVariable(ActionType.EDIT, payload);
-        } else if (ActionType.LINK === payload.action) {
-            this.drawerService.create({
-                nzTitle: '[' + payload.data.id + '] ' + payload.data.envKey,
-                nzWidth: 800,
-                nzFooter: null, // Optional footer
-                nzContent: EVUCroseTableComponent,
-                nzContentParams: {
-                    enVariable: payload.data
-                }
-            });
-        }else if (ActionType.DELETE === payload.action) {
-            this.modalService.confirm({
-                nzOkText: 'Ok',
-                nzCancelText: 'Cancel',
-                nzTitle: 'Do you want to delete?',
-                nzContent: 'Press \'Ok\' may effect the business source.',
-                nzOnOk: () => {
-                    let enVariable: IEnVariables = {
-                        id: payload.data.id,
-                        envKey: payload.data.envKey,
-                        description: payload.data.description
-                    }
-                    this.deleteEnVariableById({
-                        ...enVariable,
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        }
-                    });
-                }
-            });
-        } 
-    }
-
     public extraActionReciver(payload: any): void {
         if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
@@ -322,6 +283,45 @@ export class MgEVariableComponent implements OnInit {
                 }
             });
         });
+    }
+
+    public fetchAllEnVariable(payload: any): any {
+        this.spinnerService.show();
+        this.eVariableService.fetchAllEnVariable(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.eVariableTable.dataSource = response.data;
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
+    }
+
+    public deleteEnVariableById(payload: any): void {
+        this.spinnerService.show();
+        this.eVariableService.deleteEnVariableById(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;
+                }
+                this.fetchAllEnVariable({
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    }
+                });
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
     }
 
     public deleteAllEnVariable(payload: any): void {
