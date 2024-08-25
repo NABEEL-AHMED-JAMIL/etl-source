@@ -12,8 +12,8 @@ export class SettingService {
 
     constructor(private http: HttpClient) { }
 
-    public fetchSettingDashboard(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/fetchSettingDashboard`, payload);
+    public fetchStatisticsDashboard(payload: any): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/fetchStatisticsDashboard`, payload);
     }
 
     public fetchCountryData(payload: any): Observable<ApiResponse> {

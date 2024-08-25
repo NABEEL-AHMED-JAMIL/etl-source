@@ -718,7 +718,7 @@ export class MgUserComponent implements OnInit {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add User' : 'Edit User',
-            nzFooter: 'Note:- Please conteact with support team in case "Role & Permission" not show.',
+            nzFooter: 'Note:- Please conteact with support team in case "Permission" not show.',
             nzPlacement: 'right',
             nzMaskClosable: false,
             nzContent: CUUserComponent,
