@@ -25,7 +25,7 @@
                     {{commomService.getDataFromObjectV2(appUser.accountType)}}
                 </nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Profile">
-                    {{appUser.profile?.profileName}}
+                    {{appUser.profile?.description}}
                 </nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Role">
                     <div style="display: block;">
@@ -35,7 +35,7 @@
                     </div>
                 </nz-descriptions-item>
             </nz-descriptions>
-            <h3>
+            <h3 *ngIf="appUser?.organization">
                 <span nz-icon nzType="deployment-unit"
                     nzTheme="outline"></span>
                 Org Info

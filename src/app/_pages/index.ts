@@ -6,6 +6,7 @@ export * from './auth/forgot-pass/forgot-pass.component';
 export * from './common/batch/batch.component';
 export * from './common/gen-table/gen-table.component';
 export * from './common/user-info/user-info.component';
+export * from './common/org-filter/org-filter.component';
 export * from './common/env-variable-value/env-variable-value.component';
 // etl-source & setting dashboard
 export * from './dashboards/etl-source/etl-source.component';

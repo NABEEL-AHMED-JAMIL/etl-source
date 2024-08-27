@@ -261,8 +261,8 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
-                    permission: ['USER_PERMISSION'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
+                    permission: ['ORGANIZATION_PERMISSION'],
                     breadcrumb: 'Mg Organization',
                 }
             },

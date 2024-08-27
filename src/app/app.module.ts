@@ -97,7 +97,8 @@ import {
     EVConfigComponent,
     SCVisibilityComponent,
     SCEnableabilityComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    OrgFilterComponent
 } from './_pages';
 
 // dynamic fileds
@@ -123,6 +124,7 @@ export const APP_COMPONENT = [
     BatchComponent,
     EnvVariableValueComponent,
     UserInfoComponent,
+    OrgFilterComponent,
     GenTableComponent,
     SearchFilterPipe,
     SpinnerComponent,
