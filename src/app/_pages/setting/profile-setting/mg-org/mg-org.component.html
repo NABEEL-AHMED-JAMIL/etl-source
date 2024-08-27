@@ -1,48 +1,87 @@
-<!-- org detail -->
-<nz-row nzGutter="16">
-    <ng-container *ngFor="let organization of organizations">
-        <nz-col [nzSpan]="12" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 12}">
+<!-- my-info  -->
+<app-user-info id="sessionUser" [userInfo]="sessionUser"></app-user-info>
+<!-- my-info  -->
+<!-- <app-user-info id="serverSearch" [userInfo]="sessionUser" ></app-user-info> -->
+<!-- opertaion detail
+1) show the list of country
+2) show the status
+3) show the input filed for search [db]
+4) show the (start date and end date)
+-->
+<!-- --------------------------------- -->
+<!-- org detail
+1) show the server side pagenation 
+2) show the search on local search
+3) show the refresh button
+4) show the add button
+-->
+<nz-row nzGutter="16" style="margin-top: 10px;">
+    <ng-container *ngFor="let organization of organizations; index as i">
+        <nz-col [nzSpan]="8" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 8}">
             <nz-card nzTitle="#{{ organization.id }} {{ organization.name }}"
                 nz-tooltip nzTooltipTitle="#{{ organization.id }} {{ organization.name }}"
                 [nzActions]="[actionEdit, actionUserSetting, actionMore, actionEdit, actionUserSetting, actionMore]"
                 [nzExtra]="extraTemplate" class="nz-card-aligment">
                 <!-- service statistics carts -->
                 <nz-row nzGutter="16" class="chart-height">
-                    <nz-col [nzSpan]="12">
+                    <nz-col [nzSpan]="24" id="SESSION_COUNT_STATISTICS-{{i}}">
+                        <h5 style="text-align: center;">
+                            <span nz-icon nzType="login" nzTheme="outline"></span> My Daily Session
+                        </h5>
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
+                        <div id="SESSION_COUNT_STATISTICS" echarts class="demo-chart"
+                            theme="macarons" style="height: 150px;"
+                            [options]="SESSION_COUNT_STATISTICS">
+                        </div>
+                    </nz-col>
+                    <nz-col [nzSpan]="24" id="SERVICE_SETTING_STATISTICS-{{i}}">
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
                         <h5 style="text-align: center;">
                             <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
                         </h5>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 100px;"
+                            theme="macarons" style="height: 150px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
-                    <nz-col [nzSpan]="12">
+                    <nz-col [nzSpan]="24" id="DASHBOARD_AND_REPORT_SETTING_STATISTICS-{{i}}">
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
                         <h5 style="text-align: center;">
-                            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
+                            <span nz-icon nzType="pie-chart" nzTheme="outline"></span> Report & Dashboard Setting
                         </h5>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 100px;"
+                            theme="macarons" style="height: 150px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
-                    <nz-divider style="margin: 5px 0;"></nz-divider>
-                    <nz-col [nzSpan]="12">
+                    <nz-col [nzSpan]="24" id="FORM_SETTING_STATISTICS-{{i}}">
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
                         <h5 style="text-align: center;">
-                            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
+                            <span nz-icon nzType="database" nzTheme="outline"></span> Form Setting
                         </h5>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 100px;"
+                            theme="macarons" style="height: 150px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
-                    <nz-col [nzSpan]="12">
+                    <nz-col [nzSpan]="24" id="PROFILE_SETTING_STATISTICS-{{i}}">
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
                         <h5 style="text-align: center;">
-                            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
+                            <span nz-icon nzType="profile" nzTheme="outline"></span> Profile Setting
                         </h5>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 100px;"
+                            theme="macarons" style="height: 150px;"
+                            [options]="SERVICE_SETTING_STATISTICS"></div>
+                    </nz-col>
+                    <nz-col [nzSpan]="24" id="APP_SETTING_STATISTICS-{{i}}">
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
+                        <h5 style="text-align: center;">
+                            <span nz-icon nzType="appstore" nzTheme="outline"></span> App Setting
+                        </h5>
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
+                        <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
+                            theme="macarons" style="height: 150px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
                 </nz-row>
@@ -63,8 +102,8 @@
                         </span>
                     </nz-col>
                 </nz-row>
-                <nz-divider style="margin: 1px 0;"></nz-divider>
                 <!-- org detail -->
+                <nz-divider style="margin: 1px 0;"></nz-divider>
                 <nz-row nzGutter="16">
                     <nz-col [nzSpan]="12">
                         <p id="email">

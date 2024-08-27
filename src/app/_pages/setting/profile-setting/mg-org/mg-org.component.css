@@ -14,10 +14,10 @@ p span {
 .nz-card-aligment {
     width: 100%;
     margin-bottom: 16px;
-    border-radius: 10px;
+    /* border-radius: 10px; */
 }
 
 .chart-height {
-    height: 130px;
+    height: 180px;
     overflow-y: auto;
 }

@@ -15,3 +15,10 @@ textarea+textarea {
     white-space: nowrap;
     height: auto;      /* Automatically adjusts height based on content */
 }
+
+
+.export-xlx {
+    color: red;
+    border: 1px solid;
+    float: right;
+}

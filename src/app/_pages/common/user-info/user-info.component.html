@@ -7,22 +7,39 @@
             User Info (IP:{{userInfo.ipAddress}})
         </h3>
         <nz-descriptions nzSize="small">
-            <nz-descriptions-item nzTitle="Name">{{userInfo.firstName}} {{userInfo.lastName}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="UserName">{{userInfo.username}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Email">{{userInfo.email}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Account Type">{{commomService.getDataFromObjectV2(userInfo.accountType)}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Profile">{{userInfo.profile?.profileName}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Name">
+                {{userInfo.firstName}} {{userInfo.lastName}}
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="UserName">
+                {{userInfo.username}}
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Email">
+                {{userInfo.email}}
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Account Type">
+                {{commomService.getDataFromObjectV2(userInfo.accountType)}}
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Profile">
+                {{userInfo.profile?.description}}
+            </nz-descriptions-item>
         </nz-descriptions>
         <h3>
             <span nz-icon nzType="deployment-unit" nzTheme="outline"></span>
             Org Info
         </h3>
         <nz-descriptions nzSize="small" *ngIf="userInfo?.organization">
-            <nz-descriptions-item nzTitle="Name">{{userInfo?.organization.name}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Email">{{userInfo?.organization.email}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Phone">{{userInfo?.organization.phone}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Address">{{userInfo?.organization.address}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Country">{{userInfo?.organization?.country?.countryName}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Name">
+                {{userInfo?.organization.name}}
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Phone">
+                {{userInfo?.organization.phone}}
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Country">
+                {{userInfo?.organization?.country?.countryName}}
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Address">
+                {{userInfo?.organization.address}}
+            </nz-descriptions-item>
         </nz-descriptions>
     </nz-collapse-panel>
 </nz-collapse>

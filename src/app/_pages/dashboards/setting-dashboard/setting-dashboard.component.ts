@@ -43,15 +43,15 @@ export class SettingDashboardComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchSettingDashboard({
+        this.fetchStatisticsDashboard({
             username: this.currentUser.username
         });
     }
 
     // fetch all lookup
-    public fetchSettingDashboard(payload: any): any {
+    public fetchStatisticsDashboard(payload: any): any {
         this.spinnerService.show();
-        this.settingService.fetchSettingDashboard(payload)
+        this.settingService.fetchStatisticsDashboard(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();

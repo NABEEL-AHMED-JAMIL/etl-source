@@ -30,7 +30,7 @@ nz-content {
 }
 
 .content {
-    border-radius: 10px;
+    /* border-radius: 10px; */
     padding: 15px;
     background: #fff;
     height: auto;
@@ -79,7 +79,7 @@ nz-content {
 
 .ant-list-item-meta-description {
     color: rgba(0, 0, 0, 0.45);
-    font-size: 9px;
+    font-size: 10px;
     line-height: 1.5715;
 }
 
@@ -120,7 +120,7 @@ nz-content {
     color: rgba(0, 0, 0, 0.85);
 }
 
-.ant-input {
+/* .ant-input {
     border-radius: 10px;
 }
 
@@ -142,7 +142,7 @@ textarea {
 
 .ant-select-show-search.ant-select:not(.ant-select-customize-input) .ant-select-selector {
     border-radius: 10px;
-}
+} */
 
 .ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {
     color: rgba(0, 0, 0, 0.85);

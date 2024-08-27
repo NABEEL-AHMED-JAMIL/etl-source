@@ -17,6 +17,7 @@ import {
     AuthenticationService,
     OrganizationService,
     IOrganization,
+    DATA,
 } from 'src/app/_shared';
 
 
@@ -75,6 +76,50 @@ export class MgOrgComponent implements OnInit {
             }
         ]
     };
+    public SESSION_COUNT_STATISTICS: EChartsOption = {
+        title: {
+            show: false
+        },
+        toolbox: {
+            show: false
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        grid: {
+            left: '7%',
+            right: '7%',
+            top: '12%',
+            bottom: '15%'
+        },
+        dataZoom: [],
+        xAxis: {
+            data: DATA.map((object: any) => object.key),
+            silent: false,
+            splitLine: {
+                show: false
+            },
+            splitArea: {
+                show: false
+            }
+        },
+        yAxis: {
+            splitArea: {
+                show: false
+            }
+        },
+        series: [
+            {
+                type: 'bar',
+                data: DATA.map((object: any) => object.value),
+                large: true,
+            }
+        ]
+    };
+
     
     constructor(
         private drawerService: NzDrawerService,

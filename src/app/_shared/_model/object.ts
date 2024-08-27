@@ -34,7 +34,7 @@ export interface AuthResponse {
     profileImage?: any;
     firstName?: any;
     lastName?: any;
-    organization?: any;
+    organization?: IOrganization;
     accountType?: any;
     profile?: any;
 }
@@ -391,6 +391,13 @@ export interface IReportSetting extends IBaseEntity {
     distinctLKValue?: any;
     aggLKValue?: any;
     formResponse?: any;
+}
+
+export interface IQueryInquiry extends IBaseEntity {
+    id: any,
+    name: any;
+    description: any;
+    query: any;
 }
 
 export interface IStaticTable {
@@ -923,5 +930,502 @@ export const ORGANIZATIONS: IOrganization[] = [
         'image': 'moi.jpg',
         'phone': '+97444070000',
         'country': 'QAT'
+    },
+    {
+        'id': 18,
+        'name': 'MinistryofEducationandHigherEducation',
+        'address': 'SupremeEducationCouncil, Doha',
+        'email': 'info@edu.gov.qa',
+        'image': 'qnl.png',
+        'phone': '+9744404444',
+        'country': 'QAT'
+    },
+    {
+        'id': 19,
+        'name': 'MinistryofPublicHealth',
+        'address': 'HamadMedicalCity, Doha',
+        'email': 'ghcc@moph.gov.qa',
+        'image': 'moi.jpg',
+        'phone': '+97444070000',
+        'country': 'QAT'
+    }
+];
+
+export const DATA: any = [
+    {
+        "value": 10,
+        "key": "2024-03-14"
+    },
+    {
+        "value": 4,
+        "key": "2024-03-15"
+    },
+    {
+        "value": 2,
+        "key": "2024-03-18"
+    },
+    {
+        "value": 8,
+        "key": "2024-03-19"
+    },
+    {
+        "value": 1,
+        "key": "2024-03-20"
+    },
+    {
+        "value": 7,
+        "key": "2024-03-21"
+    },
+    {
+        "value": 14,
+        "key": "2024-03-22"
+    },
+    {
+        "value": 1,
+        "key": "2024-03-23"
+    },
+    {
+        "value": 23,
+        "key": "2024-03-24"
+    },
+    {
+        "value": 5,
+        "key": "2024-03-25"
+    },
+    {
+        "value": 4,
+        "key": "2024-03-26"
+    },
+    {
+        "value": 4,
+        "key": "2024-03-28"
+    },
+    {
+        "value": 1,
+        "key": "2024-03-29"
+    },
+    {
+        "value": 1,
+        "key": "2024-04-05"
+    },
+    {
+        "value": 4,
+        "key": "2024-04-06"
+    },
+    {
+        "value": 8,
+        "key": "2024-04-07"
+    },
+    {
+        "value": 4,
+        "key": "2024-04-08"
+    },
+    {
+        "value": 2,
+        "key": "2024-04-09"
+    },
+    {
+        "value": 7,
+        "key": "2024-04-11"
+    },
+    {
+        "value": 3,
+        "key": "2024-04-12"
+    },
+    {
+        "value": 3,
+        "key": "2024-04-13"
+    },
+    {
+        "value": 4,
+        "key": "2024-04-14"
+    },
+    {
+        "value": 5,
+        "key": "2024-04-15"
+    },
+    {
+        "value": 2,
+        "key": "2024-04-16"
+    },
+    {
+        "value": 1,
+        "key": "2024-04-17"
+    },
+    {
+        "value": 6,
+        "key": "2024-04-19"
+    },
+    {
+        "value": 7,
+        "key": "2024-04-20"
+    },
+    {
+        "value": 3,
+        "key": "2024-04-21"
+    },
+    {
+        "value": 1,
+        "key": "2024-04-22"
+    },
+    {
+        "value": 8,
+        "key": "2024-04-23"
+    },
+    {
+        "value": 8,
+        "key": "2024-04-24"
+    },
+    {
+        "value": 3,
+        "key": "2024-04-25"
+    },
+    {
+        "value": 3,
+        "key": "2024-04-26"
+    },
+    {
+        "value": 2,
+        "key": "2024-04-27"
+    },
+    {
+        "value": 4,
+        "key": "2024-04-28"
+    },
+    {
+        "value": 1,
+        "key": "2024-04-29"
+    },
+    {
+        "value": 5,
+        "key": "2024-04-30"
+    },
+    {
+        "value": 4,
+        "key": "2024-05-01"
+    },
+    {
+        "value": 2,
+        "key": "2024-05-02"
+    },
+    {
+        "value": 4,
+        "key": "2024-05-03"
+    },
+    {
+        "value": 1,
+        "key": "2024-05-04"
+    },
+    {
+        "value": 4,
+        "key": "2024-05-05"
+    },
+    {
+        "value": 2,
+        "key": "2024-05-06"
+    },
+    {
+        "value": 4,
+        "key": "2024-05-07"
+    },
+    {
+        "value": 3,
+        "key": "2024-05-08"
+    },
+    {
+        "value": 6,
+        "key": "2024-05-09"
+    },
+    {
+        "value": 2,
+        "key": "2024-05-10"
+    },
+    {
+        "value": 6,
+        "key": "2024-05-11"
+    },
+    {
+        "value": 35,
+        "key": "2024-05-12"
+    },
+    {
+        "value": 3,
+        "key": "2024-05-13"
+    },
+    {
+        "value": 9,
+        "key": "2024-05-14"
+    },
+    {
+        "value": 2,
+        "key": "2024-05-15"
+    },
+    {
+        "value": 2,
+        "key": "2024-05-16"
+    },
+    {
+        "value": 1,
+        "key": "2024-05-17"
+    },
+    {
+        "value": 5,
+        "key": "2024-05-19"
+    },
+    {
+        "value": 2,
+        "key": "2024-05-20"
+    },
+    {
+        "value": 4,
+        "key": "2024-05-21"
+    },
+    {
+        "value": 4,
+        "key": "2024-05-22"
+    },
+    {
+        "value": 1,
+        "key": "2024-05-23"
+    },
+    {
+        "value": 1,
+        "key": "2024-05-24"
+    },
+    {
+        "value": 2,
+        "key": "2024-05-26"
+    },
+    {
+        "value": 1,
+        "key": "2024-05-27"
+    },
+    {
+        "value": 1,
+        "key": "2024-05-28"
+    },
+    {
+        "value": 5,
+        "key": "2024-05-29"
+    },
+    {
+        "value": 2,
+        "key": "2024-05-30"
+    },
+    {
+        "value": 6,
+        "key": "2024-05-31"
+    },
+    {
+        "value": 2,
+        "key": "2024-06-01"
+    },
+    {
+        "value": 4,
+        "key": "2024-06-02"
+    },
+    {
+        "value": 3,
+        "key": "2024-06-03"
+    },
+    {
+        "value": 2,
+        "key": "2024-06-04"
+    },
+    {
+        "value": 4,
+        "key": "2024-06-05"
+    },
+    {
+        "value": 11,
+        "key": "2024-06-07"
+    },
+    {
+        "value": 3,
+        "key": "2024-06-08"
+    },
+    {
+        "value": 2,
+        "key": "2024-06-09"
+    },
+    {
+        "value": 1,
+        "key": "2024-06-14"
+    },
+    {
+        "value": 1,
+        "key": "2024-06-25"
+    },
+    {
+        "value": 4,
+        "key": "2024-06-27"
+    },
+    {
+        "value": 2,
+        "key": "2024-06-30"
+    },
+    {
+        "value": 3,
+        "key": "2024-07-01"
+    },
+    {
+        "value": 2,
+        "key": "2024-07-03"
+    },
+    {
+        "value": 1,
+        "key": "2024-07-04"
+    },
+    {
+        "value": 1,
+        "key": "2024-07-07"
+    },
+    {
+        "value": 7,
+        "key": "2024-07-11"
+    },
+    {
+        "value": 3,
+        "key": "2024-07-13"
+    },
+    {
+        "value": 2,
+        "key": "2024-07-14"
+    },
+    {
+        "value": 5,
+        "key": "2024-07-15"
+    },
+    {
+        "value": 2,
+        "key": "2024-07-16"
+    },
+    {
+        "value": 7,
+        "key": "2024-07-17"
+    },
+    {
+        "value": 5,
+        "key": "2024-07-18"
+    },
+    {
+        "value": 2,
+        "key": "2024-07-19"
+    },
+    {
+        "value": 3,
+        "key": "2024-07-21"
+    },
+    {
+        "value": 2,
+        "key": "2024-07-22"
+    },
+    {
+        "value": 3,
+        "key": "2024-07-23"
+    },
+    {
+        "value": 1,
+        "key": "2024-07-24"
+    },
+    {
+        "value": 3,
+        "key": "2024-07-25"
+    },
+    {
+        "value": 1,
+        "key": "2024-07-28"
+    },
+    {
+        "value": 12,
+        "key": "2024-07-29"
+    },
+    {
+        "value": 1,
+        "key": "2024-07-30"
+    },
+    {
+        "value": 5,
+        "key": "2024-07-31"
+    },
+    {
+        "value": 6,
+        "key": "2024-08-01"
+    },
+    {
+        "value": 4,
+        "key": "2024-08-02"
+    },
+    {
+        "value": 13,
+        "key": "2024-08-03"
+    },
+    {
+        "value": 7,
+        "key": "2024-08-04"
+    },
+    {
+        "value": 9,
+        "key": "2024-08-05"
+    },
+    {
+        "value": 2,
+        "key": "2024-08-07"
+    },
+    {
+        "value": 4,
+        "key": "2024-08-08"
+    },
+    {
+        "value": 4,
+        "key": "2024-08-09"
+    },
+    {
+        "value": 7,
+        "key": "2024-08-11"
+    },
+    {
+        "value": 7,
+        "key": "2024-08-12"
+    },
+    {
+        "value": 7,
+        "key": "2024-08-13"
+    },
+    {
+        "value": 4,
+        "key": "2024-08-14"
+    },
+    {
+        "value": 2,
+        "key": "2024-08-16"
+    },
+    {
+        "value": 2,
+        "key": "2024-08-17"
+    },
+    {
+        "value": 5,
+        "key": "2024-08-18"
+    },
+    {
+        "value": 2,
+        "key": "2024-08-19"
+    },
+    {
+        "value": 1,
+        "key": "2024-08-20"
+    },
+    {
+        "value": 7,
+        "key": "2024-08-21"
+    },
+    {
+        "value": 9,
+        "key": "2024-08-22"
+    },
+    {
+        "value": 2,
+        "key": "2024-08-23"
     }
 ];

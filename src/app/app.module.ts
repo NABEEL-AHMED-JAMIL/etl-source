@@ -37,6 +37,8 @@ import {
     PageNotFoundComponent,
     DynamicPayloadQueryComponent,
     DBQueryComponent,
+    QueryInquiryComponent,
+    CUQueryInquiryComponent,
     BatchComponent,
     GenTableComponent,
     MGLookupComponent,
@@ -70,6 +72,7 @@ import {
     MgControlComponent,
     MgPlayGroundComponent,
     SettingDashboardComponent,
+    ViewDashboardComponent,
     ETLSourceComponent,
     SttcLinkSttsComponent,
     SttfLinkSttComponent,
@@ -94,7 +97,8 @@ import {
     EVConfigComponent,
     SCVisibilityComponent,
     SCEnableabilityComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    OrgFilterComponent
 } from './_pages';
 
 // dynamic fileds
@@ -116,9 +120,11 @@ export function loadThemeFactory(appDashboardThemeService: AppDashboardThemeServ
 export const APP_COMPONENT = [
     ETLSourceComponent,
     SettingDashboardComponent,
+    ViewDashboardComponent,
     BatchComponent,
     EnvVariableValueComponent,
     UserInfoComponent,
+    OrgFilterComponent,
     GenTableComponent,
     SearchFilterPipe,
     SpinnerComponent,
@@ -129,6 +135,8 @@ export const APP_COMPONENT = [
     PageNotFoundComponent,
     DynamicPayloadQueryComponent,
     DBQueryComponent,
+    QueryInquiryComponent,
+    CUQueryInquiryComponent,
     MGLookupComponent,
     CULookupComponent,
     MgTemplateComponent,

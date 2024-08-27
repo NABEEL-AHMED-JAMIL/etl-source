@@ -33,7 +33,6 @@ export class MgReportComponent implements OnInit {
     public startDate: any;
     public endDate: any;
     public setOfCheckedId = new Set<any>();
-    public sessionUser: AuthResponse;
     public reportSettingTable: IStaticTable = {
         tableId: 'report_id',
         title: 'Mg Report',
@@ -194,6 +193,8 @@ export class MgReportComponent implements OnInit {
             }
         ]
     };
+
+    public sessionUser: AuthResponse;
 
     constructor(
         private router: Router,

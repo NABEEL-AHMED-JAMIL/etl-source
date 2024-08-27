@@ -261,8 +261,8 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
-                    permission: ['USER_PERMISSION'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
+                    permission: ['ORGANIZATION_PERMISSION'],
                     breadcrumb: 'Mg Organization',
                 }
             },
@@ -273,7 +273,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DB', 'ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
                     permission: ['RPP_PERMISSION'],
                     breadcrumb: 'Role & Profile',
                 }
@@ -285,7 +285,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
                     permission: ['REFRESH_TOKEN_PERMISSION'],
                     breadcrumb: 'Refresh Token',
                 }
@@ -319,7 +319,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
                     permission: ['EVARIABL_PERMISSION'],
                     breadcrumb: 'Mg E-Variable',
                 }
@@ -355,7 +355,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: {
                     parent: false,
-                    roles: ['ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
                     permission: ['TEMPLATE_PERMISSION'],
                     breadcrumb: 'Mg Template',
                 }
@@ -367,7 +367,7 @@ const routes: Routes = [
                 data: {
                     admin: true,
                     breadcrumb: 'Query Inquiry',
-                    roles: [ 'ROLE_DEV'],
+                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
                     permission: ['QUERY_INQUIRY_PERMISSION']
                 }
             }

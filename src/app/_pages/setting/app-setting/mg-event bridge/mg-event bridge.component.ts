@@ -30,10 +30,11 @@ import {
 })
 export class MgEventBridgeComponent implements OnInit {
 
+    public sessionUser: AuthResponse;
+    // bridge detail
     public startDate: any;
     public endDate: any;
     public setOfCheckedId = new Set<any>();
-    public sessionUser: AuthResponse;
     public eventBridgeTable: IStaticTable = {
         tableId: 'eventBridge_id',
         title: 'Mg Event Bridge',
@@ -157,8 +158,138 @@ export class MgEventBridgeComponent implements OnInit {
             }
         });
     }
+    
+    public tableActionReciver(payload: any): void {
+        if (ActionType.EDIT === payload.action) {
+            this.openCuEventBridge(ActionType.EDIT, payload);
+        } else if (ActionType.LINK === payload.action) {
+            this.drawerService.create({
+                nzTitle: '[' + payload.data.id + '] ' + payload.data.name,
+                nzWidth: 800,
+                nzContent: EBUCroseTableComponent,
+                nzContentParams: {
+                    eventBridge: payload.data
+                },
+                nzFooter: null, // Optional footer
+            });
+        }else if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    let eventBridge: IEventBridge = {
+                        id: payload.data.id,
+                        name: payload.data.name
+                    }
+                    this.deleteEventBridgeById({
+                        ...eventBridge,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                }
+            });
+        }
+    }
 
-    // fetch all lookup
+    public buttonActionReciver(payload: any): void {
+        if (ActionType.ADD === payload.action) {
+            this.openCuEventBridge(ActionType.ADD, null);
+        } else if (ActionType.RE_FRESH === payload.action) {
+            this.fetchAllEventBridge({
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        } else if (ActionType.DOWNLOAD === payload.action) {
+            this.downloadEventBridge({
+                ids: payload.checked,
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        } else if (ActionType.UPLOAD === payload.action) {
+            payload.action = 'EventBridge'
+            this.openBatchTemplate(payload);
+        }
+    }
+
+    public extraActionReciver(payload: any): void {
+        if (ActionType.DELETE === payload.action) {
+            this.modalService.confirm({
+                nzOkText: 'Ok',
+                nzCancelText: 'Cancel',
+                nzTitle: 'Do you want to delete?',
+                nzContent: 'Press \'Ok\' may effect the business source.',
+                nzOnOk: () => {
+                    this.deleteAllEventBridge(
+                        {
+                            ids: payload.checked,
+                            sessionUser: {
+                                username: this.sessionUser.username
+                            }
+                        });
+                }
+            });
+        }
+    }
+
+    public openBatchTemplate(payload: any): void {
+        const drawerRef = this.drawerService.create({
+            nzTitle: 'Batch Operation',
+            nzSize: 'default',
+            nzMaskClosable: false,
+            nzContent: BatchComponent,
+            nzContentParams: {
+                batchDetail: payload
+            },
+            nzFooter: 'Note :- Add Xlsx File For Process, Once File Upload Successfully Click the Refresh Button'
+        });
+        drawerRef.afterClose.subscribe(data => {
+            this.fetchAllEventBridge({
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        });
+    }
+
+    public openCuEventBridge(actionType: ActionType, editPayload: any): void {
+        const drawerRef = this.drawerService.create({
+            nzTitle: actionType === ActionType.ADD ? 'Add Event Bridge' : 'Edit Event Bridge',
+            nzPlacement: 'right',
+            nzMaskClosable: false,
+            nzFooter: 'Note :- Once The Event Bridge Save You Can\t Change The Event Type.',
+            nzContent: CUEventBridgeComponent,
+            nzContentParams: {
+                actionType: actionType,
+                editPayload: editPayload?.data
+            }
+        });
+        drawerRef.afterClose.subscribe(data => {
+            this.fetchAllEventBridge({
+                sessionUser: {
+                    username: this.sessionUser.username
+                }
+            });
+        });
+    }
+
+    public downloadEventBridge(payload: any): void {
+        this.spinnerService.show();
+        this.evenBridgeService.downloadEventBridge(payload)
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.commomService.downLoadFile(response);
+                this.spinnerService.hide();
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
+    }
+
     public fetchAllEventBridge(payload: any): any {
         this.spinnerService.show();
         this.evenBridgeService.fetchAllEventBridge(payload)
@@ -222,137 +353,6 @@ export class MgEventBridgeComponent implements OnInit {
                     }
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-    
-    public tableActionReciver(payload: any): void {
-        if (ActionType.EDIT === payload.action) {
-            this.openCuEventBridge(ActionType.EDIT, payload);
-        } else if (ActionType.LINK === payload.action) {
-            this.drawerService.create({
-                nzTitle: '[' + payload.data.id + '] ' + payload.data.name,
-                nzWidth: 800,
-                nzFooter: null, // Optional footer
-                nzContent: EBUCroseTableComponent,
-                nzContentParams: {
-                    eventBridge: payload.data
-                }
-            });
-        }else if (ActionType.DELETE === payload.action) {
-            this.modalService.confirm({
-                nzOkText: 'Ok',
-                nzCancelText: 'Cancel',
-                nzTitle: 'Do you want to delete?',
-                nzContent: 'Press \'Ok\' may effect the business source.',
-                nzOnOk: () => {
-                    let eventBridge: IEventBridge = {
-                        id: payload.data.id,
-                        name: payload.data.name
-                    }
-                    this.deleteEventBridgeById({
-                        ...eventBridge,
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        }
-                    });
-                }
-            });
-        }
-    }
-
-    public extraActionReciver(payload: any): void {
-        if (ActionType.DELETE === payload.action) {
-            this.modalService.confirm({
-                nzOkText: 'Ok',
-                nzCancelText: 'Cancel',
-                nzTitle: 'Do you want to delete?',
-                nzContent: 'Press \'Ok\' may effect the business source.',
-                nzOnOk: () => {
-                    this.deleteAllEventBridge(
-                        {
-                            ids: payload.checked,
-                            sessionUser: {
-                                username: this.sessionUser.username
-                            }
-                        });
-                }
-            });
-        }
-    }
-
-    public buttonActionReciver(payload: any): void {
-        if (ActionType.ADD === payload.action) {
-            this.openCuEventBridge(ActionType.ADD, null);
-        } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchAllEventBridge({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
-        } else if (ActionType.DOWNLOAD === payload.action) {
-            this.downloadEventBridge({
-                ids: payload.checked,
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
-        } else if (ActionType.UPLOAD === payload.action) {
-            payload.action = 'EventBridge'
-            this.openBatchTemplate(payload);
-        }
-    }
-
-    public openBatchTemplate(payload: any): void {
-        const drawerRef = this.drawerService.create({
-            nzTitle: 'Batch Operation',
-            nzSize: 'default',
-            nzMaskClosable: false,
-            nzFooter: 'Note :- Add Xlsx File For Process, Once File Upload Successfully Click the Refresh Button',
-            nzContent: BatchComponent,
-            nzContentParams: {
-                batchDetail: payload
-            }
-        });
-        drawerRef.afterClose.subscribe(data => {
-            this.fetchAllEventBridge({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
-        });
-    }
-
-    public openCuEventBridge(actionType: ActionType, editPayload: any): void {
-        const drawerRef = this.drawerService.create({
-            nzTitle: actionType === ActionType.ADD ? 'Add Event Bridge' : 'Edit Event Bridge',
-            nzPlacement: 'right',
-            nzMaskClosable: false,
-            nzFooter: 'Note :- Once The Event Bridge Save You Can\t Change The Event Type.',
-            nzContent: CUEventBridgeComponent,
-            nzContentParams: {
-                actionType: actionType,
-                editPayload: editPayload?.data
-            }
-        });
-        drawerRef.afterClose.subscribe(data => {
-            this.fetchAllEventBridge({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
-        });
-    }
-
-    public downloadEventBridge(payload: any): void {
-        this.spinnerService.show();
-        this.evenBridgeService.downloadEventBridge(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.commomService.downLoadFile(response);
-                this.spinnerService.hide();
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);

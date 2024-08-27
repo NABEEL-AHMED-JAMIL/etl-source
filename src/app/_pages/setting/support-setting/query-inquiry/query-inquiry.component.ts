@@ -1,48 +1,55 @@
 import { Component, OnInit } from '@angular/core';
+import { first } from 'rxjs';
+import { CUQueryInquiryComponent } from '../../../index';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import {
     ApiCode,
     IStaticTable,
     ActionType,
-    TemplateRegService,
+    SettingService,
     AuthResponse,
     AuthenticationService
 } from '../../../../_shared';
 import {
     AlertService,
+    CommomService,
     SpinnerService
 } from '../../../../_helpers';
-import { CUTemplateComponent } from '../../../index';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { NzDrawerService } from 'ng-zorro-antd/drawer';
-import { first } from 'rxjs';
 
 
 @Component({
-    selector: 'app-mg-template',
-    templateUrl: './mg-template.component.html',
-    styleUrls: ['./mg-template.component.css']
+    selector: 'app-query-inquiry',
+    templateUrl: './query-inquiry.component.html',
+    styleUrls: ['./query-inquiry.component.css']
 })
-export class MgTemplateComponent implements OnInit {
+export class QueryInquiryComponent implements OnInit {
 
     public sessionUser: AuthResponse;
+
+    public startDate: any;
+    public endDate: any;
     public setOfCheckedId = new Set<any>();
-    public templateTable: IStaticTable = this.initializeTable();
+    public queryInQuiryTable: IStaticTable = this.initializeTable();
 
     constructor(
-        private drawerService: NzDrawerService,
         private modalService: NzModalService,
+        private commomService: CommomService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
-        private templateRegService: TemplateRegService,
+        private settingService: SettingService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+            this.endDate = this.commomService.getCurrentDate();
+            this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
+            this.authenticationService.currentUser
+                .subscribe(currentUser => {
+                    this.sessionUser = currentUser;
+                });
     }
 
     ngOnInit(): void {
-        this.fetchTemplateReg({
+        this.fetchAllQueryInquiry({
+            startDate: this.startDate,
+            endDate: this.endDate,
             sessionUser: {
                 username: this.sessionUser.username
             }
@@ -51,8 +58,8 @@ export class MgTemplateComponent implements OnInit {
 
     private initializeTable(): IStaticTable {
         return {
-            tableId: 'template_id',
-            title: 'Mg Template',
+            tableId: 'query_inquiry_id',
+            title: 'Mg Query Inquiry',
             bordered: true,
             checkbox: true,
             size: 'small',
@@ -81,41 +88,14 @@ export class MgTemplateComponent implements OnInit {
             ],
             dataColumn: [
                 {
-                    field: 'templateName',
-                    header: 'Template Name',
+                    field: 'name',
+                    header: 'Name',
                     type: 'data'
                 },
                 {
                     field: 'description',
                     header: 'Description',
                     type: 'data'
-                },
-                {
-                    field: 'dateCreated',
-                    header: 'Created',
-                    type: 'date'
-                },
-                {
-                    field: 'createdBy',
-                    header: 'Created By',
-                    type: 'combine',
-                    subfield: ['username']
-                },
-                {
-                    field: 'dateUpdated',
-                    header: 'Updated',
-                    type: 'date'
-                },
-                {
-                    field: 'updatedBy',
-                    header: 'Updated By',
-                    type: 'combine',
-                    subfield: ['username']
-                },
-                {
-                    field: 'status',
-                    header: 'Status',
-                    type: 'tag'
                 }
             ],
             actionType: [
@@ -141,7 +121,9 @@ export class MgTemplateComponent implements OnInit {
         if (ActionType.ADD === payload.action) {
             this.openCuLookup(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchTemplateReg({
+            this.fetchAllQueryInquiry({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -159,7 +141,7 @@ export class MgTemplateComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    this.deleteTemplateReg({
+                    this.deleteQueryInquiryById({
                         id: payload.data.id,
                         sessionUser: {
                             username: this.sessionUser.username
@@ -178,7 +160,7 @@ export class MgTemplateComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    this.deleteAllTemplateReg(
+                    this.deleteAllQueryInquiry(
                         {
                             ids: payload.checked,
                             sessionUser: {
@@ -190,20 +172,33 @@ export class MgTemplateComponent implements OnInit {
         }
     }
 
-    public openCuLookup(actionType: ActionType, editPayload: any): void {
-        const drawerRef = this.drawerService.create({
-            nzSize: 'default',
-            nzTitle: actionType === ActionType.ADD ? 'Add Template' : 'Edit Template',
-            nzPlacement: 'right',
-            nzMaskClosable: false,
-            nzContent: CUTemplateComponent,
-            nzContentParams: {
-                actionType: actionType,
-                editPayload: editPayload?.data
+    public filterActionReciver(payload: any): void {
+        this.startDate = payload.startDate;
+        this.endDate = payload.endDate;
+        this.fetchAllQueryInquiry({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            sessionUser: {
+                username: this.sessionUser.username
             }
         });
+    }
+
+    public openCuLookup(actionType: ActionType, editPayload: any): void {
+        const drawerRef = this.modalService.create({
+            nzTitle: actionType === ActionType.ADD ? 'Add Query InQuiry' : 'Edit Query InQuiry',
+            nzMaskClosable: false,
+            nzContent: CUQueryInquiryComponent,
+            nzComponentParams: {
+                actionType: actionType,
+                editPayload: editPayload?.data
+            },
+            nzFooter: null // Set the footer to null to hide it
+        });
         drawerRef.afterClose.subscribe(data => {
-            this.fetchTemplateReg({
+            this.fetchAllQueryInquiry({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
@@ -211,9 +206,9 @@ export class MgTemplateComponent implements OnInit {
         });
     }
 
-    public fetchTemplateReg(payload: any): any {
+    public fetchAllQueryInquiry(payload: any): any {
         this.spinnerService.show();
-        this.templateRegService.fetchTemplateReg(payload)
+        this.settingService.fetchAllQueryInquiry(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -221,16 +216,16 @@ export class MgTemplateComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.templateTable.dataSource = response.data;
+                this.queryInQuiryTable.dataSource = response.data;
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
     
-    public deleteTemplateReg(payload: any): void {
+    public deleteQueryInquiryById(payload: any): void {
         this.spinnerService.show();
-        this.templateRegService.deleteTemplateReg(payload)
+        this.settingService.deleteQueryInquiryById(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -238,7 +233,9 @@ export class MgTemplateComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchTemplateReg({
+                this.fetchAllQueryInquiry({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
@@ -250,9 +247,9 @@ export class MgTemplateComponent implements OnInit {
             });
     }
 
-    public deleteAllTemplateReg(payload: any): void {
+    public deleteAllQueryInquiry(payload: any): void {
         this.spinnerService.show();
-        this.templateRegService.deleteAllTemplateReg(payload)
+        this.settingService.deleteAllQueryInquiry(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -260,7 +257,9 @@ export class MgTemplateComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchTemplateReg({
+                this.fetchAllQueryInquiry({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
                     sessionUser: {
                         username: this.sessionUser.username
                     }
