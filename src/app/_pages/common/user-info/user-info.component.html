@@ -22,6 +22,13 @@
             <nz-descriptions-item nzTitle="Profile">
                 {{userInfo.profile?.description}}
             </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Role">
+                <div style="display: block;">
+                    <nz-tag *ngFor="let role of userInfo.roles"
+                        [nzColor]="'red'">{{role}}
+                    </nz-tag>
+                </div>
+            </nz-descriptions-item>
         </nz-descriptions>
         <h3>
             <span nz-icon nzType="deployment-unit" nzTheme="outline"></span>

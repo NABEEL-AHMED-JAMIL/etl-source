@@ -81,7 +81,7 @@ export class DBQueryComponent implements OnInit {
             nzTitle: 'Mg Query Inquiry',
             nzPlacement: 'right',
             nzMaskClosable: false,
-            nzWidth: '800px',
+            nzWidth: '1000px',
             nzContent: QueryInquiryComponent
         });
         drawerRef.afterClose.subscribe(data => {

@@ -168,7 +168,7 @@ export class MgEVariableComponent implements OnInit {
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
                 nzTitle: '[' + payload.data.id + '] ' + payload.data.envKey,
-                nzWidth: 800,
+                nzWidth: 900,
                 nzContent: EVUCroseTableComponent,
                 nzContentParams: {
                     enVariable: payload.data

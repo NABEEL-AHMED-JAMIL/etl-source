@@ -13,6 +13,8 @@ import {
     CommomService
 } from 'src/app/_helpers';
 import {
+    APP_ADMIN,
+    APP_PROFILE,
     ActionType,
     ApiCode,
     AppUserService,
@@ -159,7 +161,7 @@ export class CUUserComponent implements OnInit {
             email: [this.editPayload.email, [Validators.email, Validators.required]],
             ipAddress: [this.editPayload.ipAddress, [Validators.required]],
             assignRole: [this.editPayload.roles, [Validators.required]],
-            profile: [this.editPayload.profile?.id, [Validators.required]],
+            profile: [this.editPayload.profile?.profileName, [Validators.required]],
             accountType: [this.editPayload.accountType?.lookupCode, Validators.required]
         });
         this.spinnerService.hide();
@@ -181,10 +183,7 @@ export class CUUserComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.userForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.userForm.value
         }
         this.appUserService.addAppUserAccount(payload)
             .pipe(first())
@@ -212,10 +211,7 @@ export class CUUserComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.userForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.userForm.value
         }
         this.appUserService.updateAppUserAccount(payload)
             .pipe(first())
@@ -247,6 +243,18 @@ export class CUUserComponent implements OnInit {
         }
         return {};
     };
+
+    public onProfileRoleSelect(profileName: any): void {
+        if (profileName === APP_PROFILE.SUPER_ADMIN_PROFILE) {
+            this.userForm.controls['assignRole'].setValue([APP_ADMIN.ROLE_MASTER_ADMIN]);
+        } else if (profileName === APP_PROFILE.ADMIN_PROFILE) {
+            this.userForm.controls['assignRole'].setValue([APP_ADMIN.ROLE_ADMIN]);
+        } else if (profileName === APP_PROFILE.USER_PROFILE) {
+            this.userForm.controls['assignRole'].setValue([APP_ADMIN.ROLE_USER]);
+        } else if (profileName === APP_PROFILE.DB_PROFILE) {
+            this.userForm.controls['assignRole'].setValue([APP_ADMIN.ROLE_DB]);
+        }
+    }
 
     // convenience getter for easy access to form fields
     get user() {

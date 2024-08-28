@@ -255,6 +255,12 @@ export class MgUserComponent implements OnInit {
                 type: 'date'
             },
             {
+                field: 'updatedBy',
+                header: 'Updated By',
+                type: 'combine',
+                subfield: ['username']
+            },
+            {
                 field: 'status',
                 header: 'Status',
                 type: 'tag'
@@ -618,8 +624,8 @@ export class MgUserComponent implements OnInit {
         this.appUserService.fetchAllAppUserAccount(payload)
             .pipe(first())
             .subscribe((response: any) => {
-                this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
+                    this.spinnerService.hide();
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
@@ -633,6 +639,7 @@ export class MgUserComponent implements OnInit {
                 } else {
                     this.subUserTable.dataSource = response.data;
                 }
+                this.spinnerService.hide();
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
@@ -718,7 +725,7 @@ export class MgUserComponent implements OnInit {
         const drawerRef = this.drawerService.create({
             nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add User' : 'Edit User',
-            nzFooter: 'Note:- Please conteact with support team in case "Permission" not show.',
+            nzFooter: 'Note:- Please conteact with support team in case "Role & Permission" not show.',
             nzPlacement: 'right',
             nzMaskClosable: false,
             nzContent: CUUserComponent,

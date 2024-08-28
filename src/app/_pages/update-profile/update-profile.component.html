@@ -1,61 +1,8 @@
-<div class="content">
+<!-- my-info  -->
+<app-user-info [userInfo]="sessionUser"></app-user-info>
+<!-- basic update profile -->
+<div class="content" style="margin-top: 10px;">
     <nz-tabset nzSize="small" nzTabPosition="left">
-        <nz-tab [nzTitle]="userTemplate" *ngIf="appUser">
-            <ng-template #userTemplate>
-                <span nz-icon nzType="user"
-                nz-tooltip
-                nzTooltipTitle="User Info">
-            </span>    
-            </ng-template>
-            <h3><span nz-icon nzType="user" nzTheme="outline"></span>
-                User Info (IP:{{appUser.ipAddress}})
-            </h3>
-            <hr>
-            <nz-descriptions nzSize="small">
-                <nz-descriptions-item nzTitle="Name">
-                    {{appUser.firstName}} {{appUser.lastName}}
-                </nz-descriptions-item>
-                <nz-descriptions-item nzTitle="UserName">
-                    {{appUser.username}}
-                </nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Email">
-                    {{appUser.email}}
-                </nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Account Type">
-                    {{commomService.getDataFromObjectV2(appUser.accountType)}}
-                </nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Profile">
-                    {{appUser.profile?.description}}
-                </nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Role">
-                    <div style="display: block;">
-                        <nz-tag *ngFor="let role of appUser.roles"
-                            [nzColor]="'red'">{{role}}
-                        </nz-tag>
-                    </div>
-                </nz-descriptions-item>
-            </nz-descriptions>
-            <h3 *ngIf="appUser?.organization">
-                <span nz-icon nzType="deployment-unit"
-                    nzTheme="outline"></span>
-                Org Info
-            </h3>
-            <hr>
-            <nz-descriptions nzSize="small" *ngIf="appUser?.organization">
-                <nz-descriptions-item nzTitle="Name">
-                    {{appUser?.organization.name}}
-                </nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Phone">
-                    {{appUser?.organization.phone}}
-                </nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Country">
-                    {{appUser?.organization?.country?.countryName}}
-                </nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Address">
-                    {{appUser?.organization.address}}
-                </nz-descriptions-item>
-            </nz-descriptions>
-        </nz-tab>
         <nz-tab [nzTitle]="changePasswordTemplate">
             <ng-template #changePasswordTemplate>
                 <span nz-icon nzType="key"

@@ -96,6 +96,21 @@ export class QueryInquiryComponent implements OnInit {
                     field: 'description',
                     header: 'Description',
                     type: 'data'
+                },
+                {
+                    field: 'dateCreated',
+                    header: 'Created',
+                    type: 'date'
+                },
+                {
+                    field: 'dateUpdated',
+                    header: 'Updated',
+                    type: 'date'
+                },
+                {
+                    field: 'status',
+                    header: 'Status',
+                    type: 'tag'
                 }
             ],
             actionType: [

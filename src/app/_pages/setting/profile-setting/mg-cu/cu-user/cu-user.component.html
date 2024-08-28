@@ -1,4 +1,6 @@
-<form nz-form [nzLayout]="'vertical'" [formGroup]="userForm" (ngSubmit)="submit()">
+<form nz-form [nzLayout]="'vertical'"
+    [formGroup]="userForm"
+    (ngSubmit)="submit()">
     <div nz-row [nzGutter]="16">
         <div nz-col nzSpan="12">
             <nz-form-item>
@@ -84,22 +86,10 @@
             <nz-form-item>
                 <nz-form-label nzRequired>Profile</nz-form-label>
                 <nz-form-control nzErrorTip="Profile Required">
-                    <nz-select nzShowSearch nzAllowClear formControlName="profile" nzPlaceHolder="Select Profile">
+                    <nz-select nzShowSearch nzAllowClear formControlName="profile" nzPlaceHolder="Select Profile"
+                        (ngModelChange)="onProfileRoleSelect($event)">
                         <nz-option *ngFor="let profile of profiles"
-                            [nzLabel]="profile.description" [nzValue]="profile.id">
-                        </nz-option>
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzSpan="12" *ngIf="roleList">
-            <nz-form-item>
-                <nz-form-label nzRequired>Roles</nz-form-label>
-                <nz-form-control nzErrorTip="Roles Required">
-                    <nz-select nzShowSearch nzAllowClear nzMode="multiple" [nzMaxTagCount]="2"
-                        formControlName="assignRole" nzPlaceHolder="Select Roles">
-                        <nz-option *ngFor="let role of roleList"
-                            [nzLabel]="role.description" [nzValue]="role.name">
+                            [nzLabel]="profile.description" [nzValue]="profile.profileName">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>

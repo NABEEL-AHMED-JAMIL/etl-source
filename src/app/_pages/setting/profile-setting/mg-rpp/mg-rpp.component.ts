@@ -523,7 +523,7 @@ export class MgRPPComponent implements OnInit {
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
                 nzTitle: '[' + payload.data.id + '] ' + payload.data.name,
-                nzWidth: 800,
+                nzWidth: 900,
                 nzFooter: null, // Optional footer
                 nzContent: RUCroseTableComponent,
                 nzContentParams: {
@@ -709,7 +709,7 @@ export class MgRPPComponent implements OnInit {
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
                 nzTitle: '[' + payload.data.id + '] ' + payload.data.profileName,
-                nzWidth: 800,
+                nzWidth: 900,
                 nzFooter: null, // Optional footer
                 nzContent: PUCroseTableComponent,
                 nzContentParams: {
