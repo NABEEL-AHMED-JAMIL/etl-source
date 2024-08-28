@@ -155,7 +155,7 @@ export class MgRPPComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
+                type: 'form',
                 color: 'green',
                 spin: false,
                 tooltipTitle: 'Edit',
@@ -263,7 +263,7 @@ export class MgRPPComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
+                type: 'form',
                 color: 'green',
                 spin: false,
                 tooltipTitle: 'Edit',
@@ -371,7 +371,7 @@ export class MgRPPComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
+                type: 'form',
                 color: 'green',
                 spin: false,
                 tooltipTitle: 'Edit',

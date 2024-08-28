@@ -120,7 +120,7 @@ export class MgTemplateComponent implements OnInit {
             ],
             actionType: [
                 {
-                    type: 'edit',
+                    type: 'form',
                     color: 'green',
                     spin: false,
                     tooltipTitle: 'Edit',

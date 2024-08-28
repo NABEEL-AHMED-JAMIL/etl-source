@@ -149,7 +149,7 @@ export class MgControlComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'link',
+                type: 'form',
                 color: 'orange',
                 spin: false,
                 tooltipTitle: 'Link With Section',

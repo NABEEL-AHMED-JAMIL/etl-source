@@ -24,6 +24,8 @@ import {
 })
 export class EBUCroseTableComponent implements OnInit {
 
+    public startDate: any;
+    public endDate: any;
     public searchDetails: any;
     public sessionUser: AuthResponse;
 
@@ -109,14 +111,18 @@ export class EBUCroseTableComponent implements OnInit {
         private commomService: CommomService,
         private modalService: NzModalService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+            this.endDate = this.commomService.getCurrentDate();
+            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+            this.authenticationService.currentUser
+                .subscribe(currentUser => {
+                    this.sessionUser = currentUser;
+                });
     }
 
     ngOnInit(): void {
         this.fetchLinkEventBridgeWitUser({
+            startDate: this.startDate,
+            endDate: this.endDate,
             id: this.eventBridge.id
         });
     }
@@ -141,6 +147,8 @@ export class EBUCroseTableComponent implements OnInit {
     public buttonActionReciver(payload: any): void {
         if (ActionType.RE_FRESH === payload.action) {
             this.fetchLinkEventBridgeWitUser({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 id: this.eventBridge.id
             });
         }
@@ -213,6 +221,16 @@ export class EBUCroseTableComponent implements OnInit {
         }, (response: any) => {
             this.spinnerService.hide();
             this.alertService.showError(response.error.message, ApiCode.ERROR);;
+        });
+    }
+
+    public filterActionReciver(payload: any): void {
+        this.startDate = payload.startDate;
+        this.endDate = payload.endDate;
+        this.fetchLinkEventBridgeWitUser({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            id: this.eventBridge.id
         });
     }
 

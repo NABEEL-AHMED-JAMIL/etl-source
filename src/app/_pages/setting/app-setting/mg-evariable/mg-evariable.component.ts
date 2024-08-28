@@ -117,18 +117,18 @@ export class MgEVariableComponent implements OnInit {
         ],
         actionType: [
             {
+                type: 'form',
+                color: 'green',
+                spin: false,
+                tooltipTitle: 'Edit',
+                action: ActionType.EDIT
+            },
+            {
                 type: 'link',
                 color: 'orange',
                 spin: false,
                 tooltipTitle: 'Link With User',
                 action: ActionType.LINK
-            },
-            {
-                type: 'edit',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
             },
             {
                 type: 'delete',
