@@ -108,7 +108,7 @@ export class CredentialComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
+                type: 'form',
                 color: 'green',
                 spin: false,
                 tooltipTitle: 'Edit',

@@ -11,6 +11,20 @@ export enum ApiCode {
     HTTP_404 = 'HTTP_404'
 }
 
+export enum APP_ADMIN {
+    ROLE_MASTER_ADMIN = 'ROLE_MASTER_ADMIN',
+    ROLE_ADMIN = 'ROLE_ADMIN',
+    ROLE_USER = 'ROLE_USER',
+    ROLE_DB = 'ROLE_DB'
+}
+
+export enum APP_PROFILE {
+    SUPER_ADMIN_PROFILE = 'SUPER_ADMIN_PROFILE',
+    ADMIN_PROFILE = 'ADMIN_PROFILE',
+    USER_PROFILE = 'USER_PROFILE',
+    DB_PROFILE = 'DB_PROFILE'
+}
+
 export interface IKeyValue {
     name?: any;
     value?: any;

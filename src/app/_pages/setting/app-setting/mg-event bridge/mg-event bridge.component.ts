@@ -301,26 +301,32 @@ export class MgEventBridgeComponent implements OnInit {
                     return;
                 }
                 this.eventBridgeTable.dataSource = response.data;
-                const commonActions = [
-                    {
-                        type: 'edit',
-                        color: 'green',
-                        spin: false,
-                        tooltipTitle: 'Edit',
-                        action: ActionType.EDIT
-                    },
-                    {
-                        type: 'delete',
-                        color: 'red',
-                        spin: false,
-                        tooltipTitle: 'Delete',
-                        action: ActionType.DELETE
-                    }
-                ];
                 if (!this.hasAccess(this.sessionUser.roles, ['ROLE_MASTER_ADMIN'])) {
-                    this.eventBridgeTable.actionType = commonActions;
+                    this.eventBridgeTable.actionType = [
+                        {
+                            type: 'form',
+                            color: 'green',
+                            spin: false,
+                            tooltipTitle: 'Edit',
+                            action: ActionType.EDIT
+                        },
+                        {
+                            type: 'delete',
+                            color: 'red',
+                            spin: false,
+                            tooltipTitle: 'Delete',
+                            action: ActionType.DELETE
+                        }
+                    ];
                 } else {
                     this.eventBridgeTable.actionType = [
+                        {
+                            type: 'form',
+                            color: 'green',
+                            spin: false,
+                            tooltipTitle: 'Edit',
+                            action: ActionType.EDIT
+                        },
                         {
                             type: 'link',
                             color: 'orange',
@@ -328,8 +334,14 @@ export class MgEventBridgeComponent implements OnInit {
                             tooltipTitle: 'Link With User',
                             action: ActionType.LINK
                         },
-                        ...commonActions
-                    ];
+                        {
+                            type: 'delete',
+                            color: 'red',
+                            spin: false,
+                            tooltipTitle: 'Delete',
+                            action: ActionType.DELETE
+                        }
+                    ]
                 }
             }, (response: any) => {
                 this.spinnerService.hide();

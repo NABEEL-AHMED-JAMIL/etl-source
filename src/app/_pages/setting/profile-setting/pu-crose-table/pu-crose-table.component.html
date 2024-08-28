@@ -1,7 +1,11 @@
 <div class="content">
     <app-gen-table *ngIf="profileLinkUserTable"
-        [isDateFilter]="false"
+        [isDateFilter]="true"
+        [startDate]="startDate"
+        [endDate]="endDate"
         [staticTable]="profileLinkUserTable"
+        (buttonEventEmitter)="buttonActionReciver($event)"
+        (filterEventEmitter)="filterActionReciver($event)"
         (enableActionEventEmitter)="enableActionReciver($event)">
     </app-gen-table>
 </div>

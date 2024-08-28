@@ -26,6 +26,18 @@ export class AppUserService {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserPassword`, payload);
     }
 
+    public addAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/addAppUserAccount`, payload);
+    }
+
+    public updateAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserAccount`, payload);
+    }
+
+    public fetchAllAppUserAccount(payload:any): Observable<any> {
+        return this.http.post(`${config.apiBaseUrl}/appUser.json/fetchAllAppUserAccount`, payload);
+    }
+
     public deleteAppUserAccount(payload:any): Observable<any> {
         return this.http.post(`${config.apiBaseUrl}/appUser.json/deleteAppUserAccount`, payload);
     }
@@ -39,18 +51,6 @@ export class AppUserService {
             {
                 responseType: 'blob'
             });
-    }
-
-    public fetchAllAppUserAccount(payload:any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/appUser.json/fetchAllAppUserAccount`, payload);
-    }
-
-    public addAppUserAccount(payload:any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/appUser.json/addAppUserAccount`, payload);
-    }
-
-    public updateAppUserAccount(payload:any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/appUser.json/updateAppUserAccount`, payload);
     }
 
     public enabledDisabledAppUserAccount(payload:any): Observable<any> {

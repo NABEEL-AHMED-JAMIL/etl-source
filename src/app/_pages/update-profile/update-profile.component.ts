@@ -37,7 +37,7 @@ import { EnvVariableValueComponent } from '..';
 export class UpdateProfileComponent implements OnInit {
 
     public resetPasswordForm: FormGroup;
-    public currentUser: AuthResponse;
+    public sessionUser: AuthResponse;
     public appUser: IAppUser;
 
     public fileList: NzUploadFile[] = [];
@@ -68,7 +68,7 @@ export class UpdateProfileComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
+                type: 'form',
                 color: 'green',
                 spin: false,
                 tooltipTitle: 'Edit',
@@ -147,15 +147,15 @@ export class UpdateProfileComponent implements OnInit {
         private evenBridgeService: EvenBridgeService,
         private modalService: NzModalService,
         private authenticationService: AuthenticationService) {
-        this.currentUser = this.authenticationService.currentUserValue;
-        this.fetchAppUserProfile(this.currentUser.username);
+        this.sessionUser = this.authenticationService.currentUserValue;
+        this.fetchAppUserProfile(this.sessionUser.username);
     }
 
     ngOnInit() {
     }
 
     public refresh() {
-        this.fetchAppUserProfile(this.currentUser.username);
+        this.fetchAppUserProfile(this.sessionUser.username);
     }
 
     public fetchAppUserProfile(payload: any): void {
@@ -252,7 +252,7 @@ export class UpdateProfileComponent implements OnInit {
                 nzFooter: null // Set the footer to null to hide it
             });
             drawerRef.afterClose.subscribe(data => {
-                this.fetchAppUserProfile(this.currentUser.username);
+                this.fetchAppUserProfile(this.sessionUser.username);
             });
         }
     }

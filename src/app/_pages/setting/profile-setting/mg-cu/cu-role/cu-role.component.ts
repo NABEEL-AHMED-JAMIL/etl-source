@@ -106,10 +106,7 @@ export class CURoleComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.roleForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.roleForm.value
         }
         this.rppService.addRole(payload)
             .pipe(first())
@@ -137,10 +134,7 @@ export class CURoleComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.roleForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.roleForm.value
         }
         this.rppService.updateRole(payload)
             .pipe(first())

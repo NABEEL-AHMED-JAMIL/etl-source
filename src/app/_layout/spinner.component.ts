@@ -6,7 +6,9 @@ import { Component, OnInit } from '@angular/core';
     template: `
         <div class="dark-overlay">
             <div style="text-align: center;">
-                <img src="../assets/loading.gif" alt="Image Not Found">
+                <img src="../assets/wolf.gif"
+                    style="height: 450px;margin-top: 80px;"    
+                    alt="Image Not Found">
             </div>
         </div>`,
     styles: [

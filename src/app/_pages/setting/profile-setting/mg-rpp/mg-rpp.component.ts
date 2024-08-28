@@ -155,7 +155,7 @@ export class MgRPPComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
+                type: 'form',
                 color: 'green',
                 spin: false,
                 tooltipTitle: 'Edit',
@@ -263,7 +263,7 @@ export class MgRPPComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
+                type: 'form',
                 color: 'green',
                 spin: false,
                 tooltipTitle: 'Edit',
@@ -371,7 +371,7 @@ export class MgRPPComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
+                type: 'form',
                 color: 'green',
                 spin: false,
                 tooltipTitle: 'Edit',
@@ -406,21 +406,9 @@ export class MgRPPComponent implements OnInit {
         this.fetchCountryData({
             username: this.sessionUser.username
         });
-        this.fetchAllRole({
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
-        this.fetchAllProfile({
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
-        this.fetchAllPermission({
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
+        this.fetchAllRole({});
+        this.fetchAllProfile({});
+        this.fetchAllPermission({});
     }
     
     // country
@@ -463,11 +451,7 @@ export class MgRPPComponent implements OnInit {
         if (ActionType.ADD === payload.action) {
             this.openCuRole(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchAllRole({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
+            this.fetchAllRole({});
         } else if (ActionType.DOWNLOAD === payload.action) {
             this.downloadRole({
                 sessionUser: {
@@ -487,11 +471,7 @@ export class MgRPPComponent implements OnInit {
                 }
             });
             drawerRef.afterClose.subscribe(data => {
-                this.fetchAllRole({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
+                this.fetchAllRole({});
             });
         }
     }
@@ -523,7 +503,7 @@ export class MgRPPComponent implements OnInit {
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
                 nzTitle: '[' + payload.data.id + '] ' + payload.data.name,
-                nzWidth: 800,
+                nzWidth: 900,
                 nzFooter: null, // Optional footer
                 nzContent: RUCroseTableComponent,
                 nzContentParams: {
@@ -555,11 +535,7 @@ export class MgRPPComponent implements OnInit {
                                 this.alertService.showError(response.message, ApiCode.ERROR);
                                 return;
                             }
-                            this.fetchAllRole({
-                                sessionUser: {
-                                    username: this.sessionUser.username
-                                }
-                            });
+                            this.fetchAllRole({});
                             this.setOfRoleCheckedId = new Set<any>();
                             this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                         }, (response: any) => {
@@ -584,11 +560,7 @@ export class MgRPPComponent implements OnInit {
             }
         });
         drawerRef.afterClose.subscribe(data => {
-            this.fetchAllRole({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
+            this.fetchAllRole({});
         });
     }
 
@@ -602,11 +574,7 @@ export class MgRPPComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllRole({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
+                this.fetchAllRole({});
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
             }, (response: any) => {
                 this.spinnerService.hide();
@@ -649,11 +617,7 @@ export class MgRPPComponent implements OnInit {
         if (ActionType.ADD === payload.action) {
             this.openCuProfile(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchAllProfile({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
+            this.fetchAllProfile({});
         } else if (ActionType.DOWNLOAD === payload.action) {
             this.downloadProfile({
                 sessionUser: {
@@ -673,11 +637,7 @@ export class MgRPPComponent implements OnInit {
                 }
             });
             drawerRef.afterClose.subscribe(data => {
-                this.fetchAllProfile({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
+                this.fetchAllProfile({});
             });
         }
     }
@@ -699,17 +659,14 @@ export class MgRPPComponent implements OnInit {
                         status: APPLICATION_STATUS.DELETE
                     }
                     this.deleteProfileById({
-                        ...profile,
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        }
+                        ...profile
                     });
                 }
             });
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
                 nzTitle: '[' + payload.data.id + '] ' + payload.data.profileName,
-                nzWidth: 800,
+                nzWidth: 900,
                 nzFooter: null, // Optional footer
                 nzContent: PUCroseTableComponent,
                 nzContentParams: {
@@ -729,29 +686,21 @@ export class MgRPPComponent implements OnInit {
                 nzOnOk: () => {
                     this.spinnerService.show();
                     this.rppService.deleteAllProfile({
-                        ids: payload.checked,
-                        sessionUser: {
-                            username: this.sessionUser.username
+                        ids: payload.checked
+                    }).pipe(first())
+                    .subscribe((response: any) => {
+                        this.spinnerService.hide();
+                        if (response.status === ApiCode.ERROR) {
+                            this.alertService.showError(response.message, ApiCode.ERROR);
+                            return;
                         }
-                    })
-                        .pipe(first())
-                        .subscribe((response: any) => {
-                            this.spinnerService.hide();
-                            if (response.status === ApiCode.ERROR) {
-                                this.alertService.showError(response.message, ApiCode.ERROR);
-                                return;
-                            }
-                            this.fetchAllProfile({
-                                sessionUser: {
-                                    username: this.sessionUser.username
-                                }
-                            });
-                            this.setOfProfileCheckedId = new Set<any>();
-                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                        }, (response: any) => {
-                            this.spinnerService.hide();
-                            this.alertService.showError(response.error.message, ApiCode.ERROR);
-                        });
+                        this.fetchAllProfile({});
+                        this.setOfProfileCheckedId = new Set<any>();
+                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    }, (response: any) => {
+                        this.spinnerService.hide();
+                        this.alertService.showError(response.error.message, ApiCode.ERROR);
+                    });
                 }
             });
         }
@@ -770,11 +719,7 @@ export class MgRPPComponent implements OnInit {
             }
         });
         drawerRef.afterClose.subscribe(data => {
-            this.fetchAllProfile({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
+            this.fetchAllProfile({});
         });
     }
 
@@ -788,11 +733,7 @@ export class MgRPPComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllProfile({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
+                this.fetchAllProfile({});
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
             }, (response: any) => {
                 this.spinnerService.hide();
@@ -835,11 +776,7 @@ export class MgRPPComponent implements OnInit {
         if (ActionType.ADD === payload.action) {
             this.openCuPermission(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchAllPermission({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
+            this.fetchAllPermission({});
         } else if (ActionType.DOWNLOAD === payload.action) {
             this.downloadPermission({
                 sessionUser: {
@@ -859,11 +796,7 @@ export class MgRPPComponent implements OnInit {
                 }
             });
             drawerRef.afterClose.subscribe(data => {
-                this.fetchAllPermission({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
+                this.fetchAllPermission({});
             });
         }
     }
@@ -909,25 +842,20 @@ export class MgRPPComponent implements OnInit {
                         sessionUser: {
                             username: this.sessionUser.username
                         }
-                    })
-                        .pipe(first())
-                        .subscribe((response: any) => {
-                            this.spinnerService.hide();
-                            if (response.status === ApiCode.ERROR) {
-                                this.alertService.showError(response.message, ApiCode.ERROR);
-                                return;
-                            }
-                            this.fetchAllPermission({
-                                sessionUser: {
-                                    username: this.sessionUser.username
-                                }
-                            });
-                            this.setOfPermissionCheckedId = new Set<any>();
-                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                        }, (response: any) => {
-                            this.spinnerService.hide();
-                            this.alertService.showError(response.error.message, ApiCode.ERROR);
-                        });
+                    }).pipe(first())
+                    .subscribe((response: any) => {
+                        this.spinnerService.hide();
+                        if (response.status === ApiCode.ERROR) {
+                            this.alertService.showError(response.message, ApiCode.ERROR);
+                            return;
+                        }
+                        this.fetchAllPermission({});
+                        this.setOfPermissionCheckedId = new Set<any>();
+                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    }, (response: any) => {
+                        this.spinnerService.hide();
+                        this.alertService.showError(response.error.message, ApiCode.ERROR);
+                    });
                 }
             });
         }
@@ -946,11 +874,7 @@ export class MgRPPComponent implements OnInit {
             }
         });
         drawerRef.afterClose.subscribe(data => {
-            this.fetchAllPermission({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
+            this.fetchAllPermission({});
         });
     }
 
@@ -964,11 +888,7 @@ export class MgRPPComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllPermission({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
+                this.fetchAllPermission({});
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
             }, (response: any) => {
                 this.spinnerService.hide();

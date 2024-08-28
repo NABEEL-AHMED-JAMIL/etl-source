@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { first } from 'rxjs';
 import {
     AlertService,
+    CommomService,
     SpinnerService
 } from 'src/app/_helpers';
 import {
@@ -24,6 +25,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 })
 export class EVUCroseTableComponent implements OnInit {
 
+    public startDate: any;
+    public endDate: any;
     public searchDetails: any;
     public sessionUser: AuthResponse;
 
@@ -81,7 +84,7 @@ export class EVUCroseTableComponent implements OnInit {
         ],
         actionType: [
             {
-                type: 'edit',
+                type: 'form',
                 color: 'green',
                 spin: false,
                 tooltipTitle: 'Edit',
@@ -94,8 +97,11 @@ export class EVUCroseTableComponent implements OnInit {
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private modalService: NzModalService,
+        private commomService: CommomService,
         private eVariableService: EVariableService,
         private authenticationService: AuthenticationService) {
+        this.endDate = this.commomService.getCurrentDate();
+        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
         this.authenticationService.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
@@ -104,6 +110,8 @@ export class EVUCroseTableComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetchLinkEVariableWitUser({
+            startDate: this.startDate,
+            endDate: this.endDate,
             envId: this.enVariable.id
         });
     }
@@ -128,6 +136,8 @@ export class EVUCroseTableComponent implements OnInit {
     public buttonActionReciver(payload: any): void {
         if (ActionType.RE_FRESH === payload.action) {
             this.fetchLinkEVariableWitUser({
+                startDate: this.startDate,
+                endDate: this.endDate,
                 envId: this.enVariable.id
             });
         }
@@ -175,11 +185,22 @@ export class EVUCroseTableComponent implements OnInit {
             });
             drawerRef.afterClose.subscribe(data => {
                 this.fetchLinkEVariableWitUser({
+                    startDate: this.startDate,
+                    endDate: this.endDate,
                     envId: this.enVariable.id
                 });
             });  
         }
     }
 
+    public filterActionReciver(payload: any): void {
+        this.startDate = payload.startDate;
+        this.endDate = payload.endDate;
+        this.fetchLinkEVariableWitUser({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            envId: this.enVariable.id
+        });
+    }
 
 }
