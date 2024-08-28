@@ -106,10 +106,7 @@ export class CUProfileComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.profileForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.profileForm.value
         }
         this.rppService.addProfile(payload)
             .pipe(first())
@@ -137,10 +134,7 @@ export class CUProfileComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.profileForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.profileForm.value
         }
         this.rppService.updateProfile(payload)
             .pipe(first())

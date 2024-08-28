@@ -106,10 +106,7 @@ export class CUPermissionComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.permissionForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.permissionForm.value
         }
         this.rppService.addPermission(payload)
             .pipe(first())
@@ -137,10 +134,7 @@ export class CUPermissionComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.permissionForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.permissionForm.value
         }
         this.rppService.updatePermission(payload)
             .pipe(first())

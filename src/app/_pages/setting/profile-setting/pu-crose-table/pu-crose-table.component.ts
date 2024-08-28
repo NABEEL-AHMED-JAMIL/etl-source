@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
+    ActionType,
     ApiCode,
     AuthResponse,
     AuthenticationService,
@@ -9,6 +10,7 @@ import {
 } from '../../../../_shared';
 import {
     AlertService,
+    CommomService,
     SpinnerService
 } from 'src/app/_helpers';
 import { first } from 'rxjs';
@@ -21,6 +23,8 @@ import { first } from 'rxjs';
 })
 export class PUCroseTableComponent implements OnInit {
 
+    public startDate: any;
+    public endDate: any;
     public searchDetails: any;
     public sessionUser: AuthResponse;
 
@@ -34,6 +38,15 @@ export class PUCroseTableComponent implements OnInit {
         checkbox: false,
         enableAction: true,
         size: 'small',
+        headerButton: [
+            {
+                type: 'reload',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Refresh',
+                action: ActionType.RE_FRESH
+            }
+        ],
         dataColumn: [
             {
                 field: 'fullName',
@@ -65,18 +78,23 @@ export class PUCroseTableComponent implements OnInit {
     };
 
     constructor(
+        private rppService: RPPService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
-        private rppService: RPPService,
+        private commomService: CommomService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+            this.endDate = this.commomService.getCurrentDate();
+            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+            this.authenticationService.currentUser
+                .subscribe(currentUser => {
+                    this.sessionUser = currentUser;
+                });
     }
 
     ngOnInit(): void {
         this.fetchLinkProfileWithUser({
+            startDate: this.startDate,
+            endDate: this.endDate,
             profileId: this.profile.id
         });
     }
@@ -99,24 +117,43 @@ export class PUCroseTableComponent implements OnInit {
             });
     }
 
+    public buttonActionReciver(payload: any): void {
+        if (ActionType.RE_FRESH === payload.action) {
+            this.fetchLinkProfileWithUser({
+                startDate: this.startDate,
+                endDate: this.endDate,
+                profileId: this.profile.id
+            });
+        }
+    }
+
+    public filterActionReciver(payload: any): void {
+        this.startDate = payload.startDate;
+        this.endDate = payload.endDate;
+        this.fetchLinkProfileWithUser({
+            startDate: this.startDate,
+            endDate: this.endDate,
+            profileId: this.profile.id
+        });
+    }
+
     public enableActionReciver(payload: any): void {
         this.spinnerService.show();
         this.rppService.linkProfileWithUser({
             profileId: this.profile.id,
             appUserId: payload.id,
             linked: payload.linked,
-        })
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        }).pipe(first())
+        .subscribe((response: any) => {
+            this.spinnerService.hide();
+            if (response.status === ApiCode.ERROR) {
+                this.alertService.showError(response.message, ApiCode.ERROR);
+                return;
+            }
+        }, (response: any) => {
+            this.spinnerService.hide();
+            this.alertService.showError(response.error.message, ApiCode.ERROR);
+        });
     }
 
 }

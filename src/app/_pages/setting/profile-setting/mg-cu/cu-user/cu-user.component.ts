@@ -78,17 +78,9 @@ export class CUUserComponent implements OnInit {
             this.ACCOUNT_TYPE = data;
         });
         // role
-        this.fetchRoleWithUser({
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
+        this.fetchRoleWithUser({});
         // profile
-        this.fetchProfileWithUser({
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
+        this.fetchProfileWithUser({});
         if (this.actionType === ActionType.ADD) {
             this.addUserForm();
         } else if (this.actionType === ActionType.EDIT) {
