@@ -247,10 +247,7 @@ export class CredentialComponent implements OnInit {
                 nzOnOk: () => {
                     this.deleteAllCredential(
                         {
-                            ids: payload.checked,
-                            sessionUser: {
-                                username: this.sessionUser.username
-                            }
+                            ids: payload.checked
                         });
                 }
             });

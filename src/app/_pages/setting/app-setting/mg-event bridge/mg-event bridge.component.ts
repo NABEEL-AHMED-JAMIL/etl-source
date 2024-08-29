@@ -226,10 +226,7 @@ export class MgEventBridgeComponent implements OnInit {
                 nzOnOk: () => {
                     this.deleteAllEventBridge(
                         {
-                            ids: payload.checked,
-                            sessionUser: {
-                                username: this.sessionUser.username
-                            }
+                            ids: payload.checked
                         });
                 }
             });
