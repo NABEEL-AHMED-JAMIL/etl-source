@@ -42,11 +42,7 @@ export class MgTemplateComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchTemplateReg({
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
+        this.fetchTemplateReg({});
     }
 
     private initializeTable(): IStaticTable {
@@ -141,11 +137,7 @@ export class MgTemplateComponent implements OnInit {
         if (ActionType.ADD === payload.action) {
             this.openCuLookup(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchTemplateReg({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
+            this.fetchTemplateReg({});
         }
     }
 
@@ -160,10 +152,7 @@ export class MgTemplateComponent implements OnInit {
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
                     this.deleteTemplateReg({
-                        id: payload.data.id,
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        }
+                        id: payload.data.id
                     });
                 }
             });
@@ -178,13 +167,9 @@ export class MgTemplateComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    this.deleteAllTemplateReg(
-                        {
-                            ids: payload.checked,
-                            sessionUser: {
-                                username: this.sessionUser.username
-                            }
-                        });
+                    this.deleteAllTemplateReg({
+                        ids: payload.checked
+                    });
                 }
             });
         }
@@ -203,11 +188,7 @@ export class MgTemplateComponent implements OnInit {
             }
         });
         drawerRef.afterClose.subscribe(data => {
-            this.fetchTemplateReg({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
+            this.fetchTemplateReg({});
         });
     }
 
@@ -238,11 +219,7 @@ export class MgTemplateComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchTemplateReg({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
+                this.fetchTemplateReg({});
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
             }, (response: any) => {
                 this.spinnerService.hide();
@@ -260,11 +237,7 @@ export class MgTemplateComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchTemplateReg({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
+                this.fetchTemplateReg({});
                 this.setOfCheckedId = new Set<any>();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
             }, (response: any) => {

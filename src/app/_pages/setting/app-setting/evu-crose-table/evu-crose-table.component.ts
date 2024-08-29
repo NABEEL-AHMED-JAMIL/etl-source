@@ -156,6 +156,12 @@ export class EVUCroseTableComponent implements OnInit {
                 this.alertService.showError(response.message, ApiCode.ERROR);
                 return;
             }
+            if (!payload?.linked) {
+                payload.envValue = '';
+            } else {
+                payload.envValue = '';
+                payload.linkId = response.data.linkId;
+            }
         }, (response: any) => {
             this.spinnerService.hide();
             this.alertService.showError(response.error.message, ApiCode.ERROR);;

@@ -9,8 +9,6 @@ import {
     ActionType,
     ApiCode,
     APPLICATION_STATUS,
-    AuthenticationService,
-    AuthResponse,
     ILookups,
     IQueryInquiry,
     LOOKUP_TYPE,
@@ -44,9 +42,7 @@ export class CUQueryInquiryComponent implements OnInit {
     public loading: boolean = false;
     public editAction = ActionType.EDIT;
     public queryInquiryForm: FormGroup;
-
     public APPLICATION_STATUS:ILookups;
-    public sessionUser: AuthResponse;
 
     constructor(
         private fb: FormBuilder,
@@ -55,12 +51,7 @@ export class CUQueryInquiryComponent implements OnInit {
         public commomService: CommomService,
         private spinnerService: SpinnerService,
         private settingService: SettingService,
-        private lookupService: LookupService,
-        private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        private lookupService: LookupService) {
     }
 
     ngOnInit(): void {
@@ -116,10 +107,7 @@ export class CUQueryInquiryComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.queryInquiryForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.queryInquiryForm.value
         }
         this.settingService.addQueryInquiry(payload)
             .pipe(first())
@@ -147,10 +135,7 @@ export class CUQueryInquiryComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.queryInquiryForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.queryInquiryForm.value
         }
         this.settingService.updateQueryInquiry(payload)
             .pipe(first())

@@ -164,10 +164,7 @@ export class CUReportComponent implements OnInit {
     public fetchUserEnvByEnvKey(): any {
         this.spinnerService.show();
         let payload = {
-            envKey: E_VARAIABLE.REPORT_GROUP,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            envKey: E_VARAIABLE.REPORT_GROUP
         };
         this.envVarService.fetchUserEnvByEnvKey(payload)
             .pipe(first())

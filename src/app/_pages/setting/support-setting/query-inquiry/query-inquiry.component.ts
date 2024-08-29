@@ -7,8 +7,6 @@ import {
     IStaticTable,
     ActionType,
     SettingService,
-    AuthResponse,
-    AuthenticationService
 } from '../../../../_shared';
 import {
     AlertService,
@@ -24,8 +22,6 @@ import {
 })
 export class QueryInquiryComponent implements OnInit {
 
-    public sessionUser: AuthResponse;
-
     public startDate: any;
     public endDate: any;
     public setOfCheckedId = new Set<any>();
@@ -36,23 +32,15 @@ export class QueryInquiryComponent implements OnInit {
         private commomService: CommomService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
-        private settingService: SettingService,
-        private authenticationService: AuthenticationService) {
+        private settingService: SettingService) {
             this.endDate = this.commomService.getCurrentDate();
             this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
-            this.authenticationService.currentUser
-                .subscribe(currentUser => {
-                    this.sessionUser = currentUser;
-                });
     }
 
     ngOnInit(): void {
         this.fetchAllQueryInquiry({
             startDate: this.startDate,
-            endDate: this.endDate,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            endDate: this.endDate
         });
     }
 
@@ -138,10 +126,7 @@ export class QueryInquiryComponent implements OnInit {
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchAllQueryInquiry({
                 startDate: this.startDate,
-                endDate: this.endDate,
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
+                endDate: this.endDate
             });
         }
     }
@@ -157,10 +142,7 @@ export class QueryInquiryComponent implements OnInit {
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
                     this.deleteQueryInquiryById({
-                        id: payload.data.id,
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        }
+                        id: payload.data.id
                     });
                 }
             });
@@ -177,10 +159,7 @@ export class QueryInquiryComponent implements OnInit {
                 nzOnOk: () => {
                     this.deleteAllQueryInquiry(
                         {
-                            ids: payload.checked,
-                            sessionUser: {
-                                username: this.sessionUser.username
-                            }
+                            ids: payload.checked
                         });
                 }
             });
@@ -192,10 +171,7 @@ export class QueryInquiryComponent implements OnInit {
         this.endDate = payload.endDate;
         this.fetchAllQueryInquiry({
             startDate: this.startDate,
-            endDate: this.endDate,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            endDate: this.endDate
         });
     }
 
@@ -213,10 +189,7 @@ export class QueryInquiryComponent implements OnInit {
         drawerRef.afterClose.subscribe(data => {
             this.fetchAllQueryInquiry({
                 startDate: this.startDate,
-                endDate: this.endDate,
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
+                endDate: this.endDate
             });
         });
     }
@@ -250,10 +223,7 @@ export class QueryInquiryComponent implements OnInit {
                 }
                 this.fetchAllQueryInquiry({
                     startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
+                    endDate: this.endDate
                 });
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
             }, (response: any) => {
@@ -274,10 +244,7 @@ export class QueryInquiryComponent implements OnInit {
                 }
                 this.fetchAllQueryInquiry({
                     startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
+                    endDate: this.endDate
                 });
                 this.setOfCheckedId = new Set<any>();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);

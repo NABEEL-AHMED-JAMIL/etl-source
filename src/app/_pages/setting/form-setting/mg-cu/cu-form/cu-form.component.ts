@@ -106,10 +106,7 @@ export class CUFormComponent implements OnInit {
     public fetchUserEnvByEnvKey(): any {
         this.spinnerService.show();
         let payload = {
-            envKey: E_VARAIABLE.ENV_HOME_PAGE,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            envKey: E_VARAIABLE.ENV_HOME_PAGE
         };
         this.envVarService.fetchUserEnvByEnvKey(payload)
             .pipe(first())
