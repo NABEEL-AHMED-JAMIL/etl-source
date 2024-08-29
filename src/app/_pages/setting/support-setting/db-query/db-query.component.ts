@@ -12,8 +12,6 @@ import {
 } from '../../../../_helpers';
 import {
     ApiCode,
-    AuthenticationService,
-    AuthResponse,
     IQuery,
     IQueryInquiry,
     SettingService
@@ -29,7 +27,6 @@ import { QueryInquiryComponent } from 'src/app/_pages';
 })
 export class DBQueryComponent implements OnInit {
 
-    public sessionUser: AuthResponse;
     // search detail
     public searchDetails: any;
     public tableQueryForm!: UntypedFormGroup;
@@ -45,23 +42,12 @@ export class DBQueryComponent implements OnInit {
         private drawerService: NzDrawerService,
         private commomService: CommomService,
         private spinnerService: SpinnerService,
-        private settingService: SettingService,
-        private authenticationService: AuthenticationService) {
-            this.authenticationService.currentUser
-                .subscribe(currentUser => {
-                    this.sessionUser = currentUser;
-                });
+        private settingService: SettingService) {
     }
 
     ngOnInit(): void {
         this.tableQueryFormInit();
-        this.fetchAllQueryInquiry(
-            {
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            }
-        );
+        this.fetchAllQueryInquiry({});
     }
 
     public onSelectionChange(): void {
@@ -86,13 +72,7 @@ export class DBQueryComponent implements OnInit {
         });
         drawerRef.afterClose.subscribe(data => {
             this.isExportLoading = false;
-            this.fetchAllQueryInquiry(
-                {
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                }
-            );
+            this.fetchAllQueryInquiry({});
         });
     }
 

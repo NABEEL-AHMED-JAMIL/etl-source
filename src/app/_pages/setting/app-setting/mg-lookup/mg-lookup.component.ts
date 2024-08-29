@@ -312,10 +312,10 @@ export class MGLookupComponent implements OnInit {
                 });
             } else {
                 this.fetchSubLookupDataByParentLookupDataId({
+                    parentLookupId: this.lookupId,
                     sessionUser: {
                         username: this.sessionUser.username
-                    },
-                    parentLookupId: this.lookupId
+                    }
                 });
             }
         });

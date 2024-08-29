@@ -15,8 +15,6 @@ import {
     ActionType,
     IEnVariables,
     ILookups,
-    AuthResponse,
-    AuthenticationService,
     LookupService,
     LOOKUP_TYPE,
     APPLICATION_STATUS,
@@ -39,9 +37,8 @@ export class CUEvariableComponent implements OnInit {
 
     public loading: boolean = false;
     public editAction = ActionType.EDIT;
-
     public enVariablesForm: FormGroup;
-    public sessionUser: AuthResponse;
+
 
     public APPLICATION_STATUS: ILookups;
 
@@ -52,12 +49,7 @@ export class CUEvariableComponent implements OnInit {
         private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private eVariableService: EVariableService,
-        public commomService: CommomService,
-        private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        public commomService: CommomService) {
     }
 
     ngOnInit(): void {
@@ -111,10 +103,7 @@ export class CUEvariableComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.enVariablesForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.enVariablesForm.value
         }
         this.eVariableService.addEnVariable(payload)
             .pipe(first())
@@ -142,10 +131,7 @@ export class CUEvariableComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.enVariablesForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.enVariablesForm.value
         }
         this.eVariableService.updateEnVariable(payload)
             .pipe(first())

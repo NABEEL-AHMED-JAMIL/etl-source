@@ -30,7 +30,6 @@ import {
 })
 export class MgEVariableComponent implements OnInit {
 
-    public sessionUser: AuthResponse;
     // evaraible
     public setOfCheckedId = new Set<any>();
     public eVariableTable: IStaticTable = {
@@ -146,20 +145,11 @@ export class MgEVariableComponent implements OnInit {
         private alertService: AlertService,
         private commomService: CommomService,
         private spinnerService: SpinnerService,
-        private eVariableService: EVariableService,
-        private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        private eVariableService: EVariableService) {
     }
 
     ngOnInit(): void {
-        this.fetchAllEnVariable({
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
+        this.fetchAllEnVariable({});
     }
 
     public tableActionReciver(payload: any): void {
@@ -188,10 +178,7 @@ export class MgEVariableComponent implements OnInit {
                         description: payload.data.description
                     }
                     this.deleteEnVariableById({
-                        ...enVariable,
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        }
+                        ...enVariable
                     });
                 }
             });
@@ -202,18 +189,11 @@ export class MgEVariableComponent implements OnInit {
         if (ActionType.ADD === payload.action) {
             this.openCuEnVariable(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchAllEnVariable({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
+            this.fetchAllEnVariable({});
         } else if (ActionType.DOWNLOAD === payload.action) {
             this.spinnerService.show();
             this.eVariableService.downloadEnVariable({
-                ids: payload.checked,
-                sessionUser: {
-                    username: this.sessionUser.username
-                },
+                ids: payload.checked
             }).pipe(first())
                 .subscribe((response: any) => {
                     this.commomService.downLoadFile(response);
@@ -235,11 +215,7 @@ export class MgEVariableComponent implements OnInit {
                 }
             });
             drawerRef.afterClose.subscribe(data => {
-                this.fetchAllEnVariable({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
+                this.fetchAllEnVariable({});
             });
         }
     }
@@ -254,10 +230,7 @@ export class MgEVariableComponent implements OnInit {
                 nzOnOk: () => {
                     this.deleteAllEnVariable(
                         {
-                            ids: payload.checked,
-                            sessionUser: {
-                                username: this.sessionUser.username
-                            }
+                            ids: payload.checked
                         });
                 }
             });
@@ -277,11 +250,7 @@ export class MgEVariableComponent implements OnInit {
             }
         });
         drawerRef.afterClose.subscribe(data => {
-            this.fetchAllEnVariable({
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
+            this.fetchAllEnVariable({});
         });
     }
 
@@ -312,11 +281,7 @@ export class MgEVariableComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllEnVariable({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
+                this.fetchAllEnVariable({});
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
             }, (response: any) => {
                 this.spinnerService.hide();
@@ -334,11 +299,7 @@ export class MgEVariableComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllEnVariable({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
+                this.fetchAllEnVariable({});
                 this.setOfCheckedId = new Set<any>();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
             }, (response: any) => {

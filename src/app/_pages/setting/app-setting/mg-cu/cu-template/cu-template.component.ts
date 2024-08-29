@@ -112,10 +112,7 @@ export class CUTemplateComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.templateForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.templateForm.value
         }
         this.templateRegService.addTemplateReg(payload)
             .pipe(first())
@@ -143,10 +140,7 @@ export class CUTemplateComponent implements OnInit {
             return;
         }
         let payload = {
-            ...this.templateForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            ...this.templateForm.value
         }
         this.templateRegService.updateTemplateReg(payload)
             .pipe(first())
