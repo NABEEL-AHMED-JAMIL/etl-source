@@ -48,6 +48,10 @@ export class SettingService {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/findTemplateRegByTemplateId`, payload);
     }
 
+    public fetchAllQueryInquiryAccessUser(): Observable<ApiResponse> {
+        return this.http.get<ApiResponse>(`${config.apiBaseUrl}/setting.json/fetchAllQueryInquiryAccessUser`);
+    }
+
     public addQueryInquiry(payload: any): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${config.apiBaseUrl}/setting.json/addQueryInquiry`, payload);
     }

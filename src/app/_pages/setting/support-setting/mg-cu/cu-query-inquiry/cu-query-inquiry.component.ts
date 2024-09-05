@@ -82,7 +82,7 @@ export class CUQueryInquiryComponent implements OnInit {
     public editQueryInquiryForm(): void {
         this.spinnerService.show();
         this.queryInquiryForm = this.fb.group({
-            id: [this.editPayload.id, Validators.required],
+            uuid: [this.editPayload.uuid, Validators.required],
             name: [this.editPayload.name, Validators.required],
             description: [this.editPayload.description, Validators.required],
             query: [this.editPayload.query, Validators.required],

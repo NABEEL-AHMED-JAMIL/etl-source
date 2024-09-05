@@ -66,28 +66,28 @@ export class GenTableComponent implements OnInit {
 
     public onAllChecked(checked: boolean): void {
         this.listOfCurrentPageData
-            .forEach(({ id }) => this.updateCheckedSet(id, checked));
+            .forEach(({ uuid }) => this.updateCheckedSet(uuid, checked));
         this.refreshCheckedStatus();
     }
 
-    public onItemChecked(id: any, checked: boolean): void {
-        this.updateCheckedSet(id, checked);
+    public onItemChecked(uuid: any, checked: boolean): void {
+        this.updateCheckedSet(uuid, checked);
         this.refreshCheckedStatus();
     }
 
     public refreshCheckedStatus(): void {
         const listOfEnabledData = this.listOfCurrentPageData.filter(({ disabled }) => !disabled);
         if (listOfEnabledData.length > 0) {
-            this.checked = listOfEnabledData.every(({ id }) => this.setOfCheckedId.has(id));
-            this.indeterminate = listOfEnabledData.some(({ id }) => this.setOfCheckedId.has(id)) && !this.checked;
+            this.checked = listOfEnabledData.every(({ uuid }) => this.setOfCheckedId.has(uuid));
+            this.indeterminate = listOfEnabledData.some(({ uuid }) => this.setOfCheckedId.has(uuid)) && !this.checked;
         }
     }
 
-    public updateCheckedSet(id: any, checked: boolean): void {
+    public updateCheckedSet(uuid: any, checked: boolean): void {
         if (checked) {
-            this.setOfCheckedId.add(id);
+            this.setOfCheckedId.add(uuid);
         } else {
-            this.setOfCheckedId.delete(id);
+            this.setOfCheckedId.delete(uuid);
         }
     }
 

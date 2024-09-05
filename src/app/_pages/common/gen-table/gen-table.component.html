@@ -1,10 +1,10 @@
 <div nz-row *ngIf="staticTable">
-    <div nz-col [nzSpan]="6">
+    <div nz-col [nzSpan]="8">
         <input nz-input
             [(ngModel)]="searchDetails"
             placeholder="Search Result"/>
     </div>
-    <div nz-col [nzSpan]="18" style="text-align: end;">
+    <div nz-col [nzSpan]="16" style="text-align: end;">
         <!-- more action -->
         <span *ngIf="staticTable.checkbox">
             Selected {{ setOfCheckedId.size }} items
@@ -95,8 +95,8 @@
         <tr *ngFor='let row of dynamicTable.data | searchdata: searchDetails;let i = index;'>
             <td style="text-align: center;width: 1px;">{{i+1}}</td>
             <td *ngIf="staticTable.checkbox" style="width: 1px;"
-                [nzChecked]="setOfCheckedId.has(row.id)"
-                (nzCheckedChange)="onItemChecked(row.id, $event)">
+                [nzChecked]="setOfCheckedId.has(row.uuid)"
+                (nzCheckedChange)="onItemChecked(row.uuid, $event)">
             </td>
             <ng-container *ngFor='let col of staticTable.dataColumn'>
                 <td *ngIf="col.type === 'img'" style="text-align: center;">
@@ -164,7 +164,7 @@
             <td *ngIf="staticTable.enableAction"
                 style="width: 1px;text-align: center;">
                 <nz-switch nzSize="small"
-                    [nzId]="row.id"
+                    [nzId]="row.uuid"
                     [nzSize]="'small'"
                     [ngModel]="row.linked"
                     [nzDisabled]="row?.linkStatus?.lookupCode === 0 ? true : false"

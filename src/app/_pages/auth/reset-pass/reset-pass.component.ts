@@ -51,7 +51,7 @@ export class ResetPassComponent implements OnInit {
         // if the token is not valid show the message and aslo hide redirect to reset password
         this.spinnerService.hide()
         this.resetPassForm = this.fb.group({
-            id: [this.tokenPayload.id, Validators.required],
+            uuid: [this.tokenPayload.uuid, Validators.required],
             email: [this.tokenPayload.email, Validators.required],
             username: [this.tokenPayload.username, Validators.required],
             newPassword: ['', [Validators.required]],

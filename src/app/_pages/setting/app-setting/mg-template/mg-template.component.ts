@@ -152,7 +152,7 @@ export class MgTemplateComponent implements OnInit {
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
                     this.deleteTemplateReg({
-                        id: payload.data.id
+                        uuid: payload.data.uuid
                     });
                 }
             });
@@ -168,7 +168,7 @@ export class MgTemplateComponent implements OnInit {
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
                     this.deleteAllTemplateReg({
-                        ids: payload.checked
+                        uuids: payload.checked
                     });
                 }
             });

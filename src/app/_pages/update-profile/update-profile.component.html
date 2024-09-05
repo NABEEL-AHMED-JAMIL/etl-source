@@ -105,11 +105,6 @@
                 </div>
             </div>
             <hr>
-            <nz-alert nzType="info" nzShowIcon style="margin-top: 10px;margin-bottom: 10px;"
-                nzMessage="FOR :- WebHook (Receive) & Report API (Send),
-                    Use Header KEY: [[Reciver:- XRHK-Authorization], [Send:- XSHK-Authorization]] & Token-Id,
-                    Value:[[BEARER:- Bearer Token], [token-id]]">
-            </nz-alert>
             <app-gen-table *ngIf="eVariableTable"
                 [staticTable]="eVariableTable"
                 (actionEventEmitter)="tableEVariableActionReciver($event)">
@@ -136,6 +131,11 @@
                 </div>
             </div>
             <hr>
+            <nz-alert nzType="info" nzShowIcon style="margin-top: 10px;margin-bottom: 10px;"
+                nzMessage="FOR :- WebHook (Receive) & Report API (Send),
+                    Use Header KEY: [[Reciver:- XRHK-Authorization], [Send:- XSHK-Authorization]] & Token-Id,
+                    Value:[[BEARER:- Bearer Token], [token-id]]">
+            </nz-alert>
             <app-gen-table *ngIf="eventBridgeTable"
                 [staticTable]="eventBridgeTable"
                 (actionEventEmitter)="tableEventBridgeActionReciver($event)">

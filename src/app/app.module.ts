@@ -39,6 +39,9 @@ import {
     DBQueryComponent,
     QueryInquiryComponent,
     CUQueryInquiryComponent,
+    CUAppPageComponent,
+    AppPageComponent,
+    LinkAppPageComponent,
     BatchComponent,
     GenTableComponent,
     MGLookupComponent,
@@ -98,7 +101,7 @@ import {
     SCVisibilityComponent,
     SCEnableabilityComponent,
     UserInfoComponent,
-    OrgFilterComponent
+    OrgFilterComponent,
 } from './_pages';
 
 // dynamic fileds
@@ -117,7 +120,32 @@ export function loadThemeFactory(appDashboardThemeService: AppDashboardThemeServ
     return () => appDashboardThemeService.loadTheme();
 }
 
-export const APP_COMPONENT = [
+// Components starting with 'CU'
+const CUComponents = [
+    CUQueryInquiryComponent,
+    CUProfileComponent,
+    CURoleComponent,
+    CUPermissionComponent,
+    CUAppPageComponent,
+    CUEvariableComponent,
+    CUUserComponent,
+    CUOrgComponent,
+    CUSectionComponent,
+    CUFormComponent,
+    CUControlComponent,
+    CuCredentialComponent,
+    CULookupComponent,
+    CUDashboardComponent,
+    CUReportComponent,
+    CUOLAPComponent,
+    CUEventBridgeComponent,
+    CuSourceTaskComponent,
+    CuSourceTTypeComponent,
+    CUTemplateComponent,
+  ];
+  
+  // Other components
+  const OtherComponents = [
     ETLSourceComponent,
     SettingDashboardComponent,
     ViewDashboardComponent,
@@ -135,33 +163,21 @@ export const APP_COMPONENT = [
     PageNotFoundComponent,
     DynamicPayloadQueryComponent,
     DBQueryComponent,
-    QueryInquiryComponent,
-    CUQueryInquiryComponent,
     MGLookupComponent,
-    CULookupComponent,
     MgTemplateComponent,
-    CUTemplateComponent,
     MgRefreshTokenComponent,
-    CURoleComponent,
-    CUProfileComponent,
-    CUPermissionComponent,
     MgRPPComponent,
     PPCroseTableComponent,
     RUCroseTableComponent,
     PUCroseTableComponent,
     EVUCroseTableComponent,
     UpdateProfileComponent,
-    CUEvariableComponent,
     MgEVariableComponent,
-    CUUserComponent,
     MgUserComponent,
-    CUOrgComponent,
     MgOrgComponent,
     CredentialComponent,
-    CuCredentialComponent,
-    CUFormComponent,
-    CUSectionComponent,
-    CUControlComponent,
+    AppPageComponent,
+    LinkAppPageComponent,
     MGFormComponent,
     MGSectionComponent,
     MgControlComponent,
@@ -172,37 +188,32 @@ export const APP_COMPONENT = [
     SttsLinkSttcComponent,
     SttsLinkSttfComponent,
     MgSourceTaskComponent,
-    CuSourceTaskComponent,
-    MgSourceTaskTypeComponent,
-    CuSourceTTypeComponent,
-    SttLinkFormComponent,
-    CUDashboardComponent,
-    CUReportComponent,
     MgDashboardComponent,
     MgReportComponent,
-    CUOLAPComponent,
     MgOLAPComponent,
     ViewReportComponent,
-    CUEventBridgeComponent,
     MgEventBridgeComponent,
     EBUCroseTableComponent,
-    // dynamic-condition
     EVConfigComponent,
     SCEnableabilityComponent,
     SCVisibilityComponent,
-    // dynamic fileds
     DynamicInputComponent,
     DynamicTextAreaComponent,
     DynamicRadioComponent,
     DynamicSelectComponent,
-    DynamicDatePickerComponent
-];
+    DynamicDatePickerComponent,
+    QueryInquiryComponent,
+    SttLinkFormComponent,
+    MgSourceTaskTypeComponent
+  ];
+  
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        ...APP_COMPONENT,
+        ...CUComponents,
+        ...OtherComponents
     ],
     imports: [
         BrowserModule,

@@ -38,9 +38,14 @@ export * from './setting/form-setting/linking/stts-link-sttc/stts-link-sttc.comp
 export * from './setting/form-setting/linking/stts-link-sttf/stts-link-sttf.component';
 export * from './setting/service-setting/linking/stt-link-sttf/stt-link-sttf.component';
 // support-setting
-export * from './setting/support-setting/db-query/db-query.component';
-export * from './setting/support-setting/mg-cu/cu-query-inquiry.component';
-export * from './setting/support-setting/query-inquiry/query-inquiry.component';
+export * from './setting/support-setting/mg-cu/cu-app-page/cu-app-page.component';
+export * from './setting/support-setting/mg-cu/cu-query-inquiry/cu-query-inquiry.component';
+// page-setting
+export * from './setting/support-setting/page-setting/app-page/app-page.component';
+export * from './setting/support-setting/page-setting/link-app-page/link-app-page.component';
+// inquery
+export * from './setting/support-setting/inquery/db-query/db-query.component';
+export * from './setting/support-setting/inquery/query-inquiry/query-inquiry.component';
 // app-setting
 export * from './setting/app-setting/evu-crose-table/evu-crose-table.component';
 export * from './setting/app-setting/ebu-crose-table/ebu-crose-table.component';

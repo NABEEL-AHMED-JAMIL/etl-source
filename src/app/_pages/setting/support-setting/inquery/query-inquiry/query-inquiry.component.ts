@@ -1,18 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs';
-import { CUQueryInquiryComponent } from '../../../index';
+import { CUQueryInquiryComponent } from '../../../../index';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import {
     ApiCode,
     IStaticTable,
     ActionType,
     SettingService,
-} from '../../../../_shared';
+    AuthResponse,
+    IKeyValue,
+    AuthenticationService,
+    APP_ADMIN,
+} from '../../../../../_shared';
 import {
     AlertService,
     CommomService,
     SpinnerService
-} from '../../../../_helpers';
+} from '../../../../../_helpers';
 
 
 @Component({
@@ -24,24 +28,40 @@ export class QueryInquiryComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
+    public sessionUser: AuthResponse;
+    public sessionUserRoles: any;
     public setOfCheckedId = new Set<any>();
     public queryInQuiryTable: IStaticTable = this.initializeTable();
+    // user list response
+    public selectedUser: any;
+    public isSuperAdmin: boolean = false;
+    public accessUserList: IKeyValue[] = [];
 
     constructor(
         private modalService: NzModalService,
         private commomService: CommomService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
-        private settingService: SettingService) {
+        private settingService: SettingService,
+        private authenticationService: AuthenticationService) {
             this.endDate = this.commomService.getCurrentDate();
             this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
+            this.authenticationService.currentUser
+            .subscribe(currentUser => {
+                this.sessionUser = currentUser;
+                this.sessionUserRoles = currentUser.roles;
+                if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                    this.isSuperAdmin = true;
+                    this.selectedUser = this.sessionUser.username;
+                }
+            });
     }
 
     ngOnInit(): void {
-        this.fetchAllQueryInquiry({
-            startDate: this.startDate,
-            endDate: this.endDate
-        });
+        if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+            this.fetchAllQueryInquiryAccessUser();
+        }
+        this.queryInquiryFetch();
     }
 
     private initializeTable(): IStaticTable {
@@ -124,10 +144,10 @@ export class QueryInquiryComponent implements OnInit {
         if (ActionType.ADD === payload.action) {
             this.openCuLookup(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchAllQueryInquiry({
-                startDate: this.startDate,
-                endDate: this.endDate
-            });
+            if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                this.fetchAllQueryInquiryAccessUser();
+            }
+            this.queryInquiryFetch();
         }
     }
 
@@ -142,7 +162,7 @@ export class QueryInquiryComponent implements OnInit {
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
                     this.deleteQueryInquiryById({
-                        id: payload.data.id
+                        uuid: payload.data.uuid
                     });
                 }
             });
@@ -159,7 +179,7 @@ export class QueryInquiryComponent implements OnInit {
                 nzOnOk: () => {
                     this.deleteAllQueryInquiry(
                         {
-                            ids: payload.checked
+                            uuids: payload.checked
                         });
                 }
             });
@@ -169,10 +189,7 @@ export class QueryInquiryComponent implements OnInit {
     public filterActionReciver(payload: any): void {
         this.startDate = payload.startDate;
         this.endDate = payload.endDate;
-        this.fetchAllQueryInquiry({
-            startDate: this.startDate,
-            endDate: this.endDate
-        });
+        this.queryInquiryFetch();
     }
 
     public openCuLookup(actionType: ActionType, editPayload: any): void {
@@ -186,11 +203,12 @@ export class QueryInquiryComponent implements OnInit {
             },
             nzFooter: null // Set the footer to null to hide it
         });
-        drawerRef.afterClose.subscribe(data => {
-            this.fetchAllQueryInquiry({
-                startDate: this.startDate,
-                endDate: this.endDate
-            });
+        drawerRef.afterClose
+            .subscribe(data => {
+                if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                    this.fetchAllQueryInquiryAccessUser();
+                }
+                this.queryInquiryFetch();
         });
     }
 
@@ -221,10 +239,10 @@ export class QueryInquiryComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllQueryInquiry({
-                    startDate: this.startDate,
-                    endDate: this.endDate
-                });
+                if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                    this.fetchAllQueryInquiryAccessUser();
+                }
+                this.queryInquiryFetch();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
             }, (response: any) => {
                 this.spinnerService.hide();
@@ -242,16 +260,64 @@ export class QueryInquiryComponent implements OnInit {
                     this.alertService.showError(response.message, ApiCode.ERROR);
                     return;
                 }
-                this.fetchAllQueryInquiry({
-                    startDate: this.startDate,
-                    endDate: this.endDate
-                });
+                if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                    this.fetchAllQueryInquiryAccessUser();
+                }
+                this.queryInquiryFetch();
                 this.setOfCheckedId = new Set<any>();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
+    }
+
+    public onSelectionUserChange(): void {
+        // Handle the selection change here
+        let selectedUser = this.selectedUser ? this.selectedUser : '';
+        this.queryInquiryFetch();
+    }
+
+    public fetchAllQueryInquiryAccessUser(): void {
+        this.spinnerService.show();
+        this.settingService.fetchAllQueryInquiryAccessUser()
+            .pipe(first())
+            .subscribe((response: any) => {
+                this.spinnerService.hide();
+                if (response.status === ApiCode.ERROR) {
+                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    return;   
+                }
+                this.accessUserList = response.data.map((user: any) => {
+                    return {
+                        name: `${user.fullname} & Querys [${user.count}]`,
+                        value: user.username
+                    };
+                });
+            }, (response: any) => {
+                this.spinnerService.hide();
+                this.alertService.showError(response.error.message, ApiCode.ERROR);
+            });
+    }
+
+    public queryInquiryFetch() {
+        const query: {
+            startDate: any;
+            endDate: any;
+            usernames?: string[]; // Optional property
+        } = {
+            startDate: this.startDate,
+            endDate: this.endDate,
+        };
+          
+        if (this.selectedUser) {
+            query.usernames = [this.selectedUser];
+        }
+        this.fetchAllQueryInquiry(query); 
+    }
+
+    public hasRoleAccess(userRole: any): boolean {
+        return this.sessionUserRoles.some((role: any) => userRole.includes(role));
     }
 
 }

@@ -18,6 +18,7 @@ import {
     OrganizationService,
     IOrganization,
     DATA,
+    IStaticTable,
 } from 'src/app/_shared';
 
 
@@ -30,8 +31,31 @@ export class MgOrgComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
-
     public sessionUser: AuthResponse;
+    
+    public searchDetails: any;
+    public staticTable: IStaticTable = {
+        tableId: 'mg-org-id',
+        title: 'Mg Organization',
+        size: 'small',
+        headerButton: [
+            {
+                type: 'plus-circle',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Add',
+                action: ActionType.ADD
+            },
+            {
+                type: 'reload',
+                color: 'red',
+                spin: false,
+                tooltipTitle: 'Refresh',
+                action: ActionType.RE_FRESH
+            }
+        ]
+    };
+    // 
     public organizations: IOrganization[] = ORGANIZATIONS;
 
     public SERVICE_SETTING_STATISTICS: EChartsOption = {
@@ -120,7 +144,6 @@ export class MgOrgComponent implements OnInit {
         ]
     };
 
-    
     constructor(
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
@@ -138,7 +161,7 @@ export class MgOrgComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchAllOrg({
+        this.fetchAllOrgAccount({
             startDate: this.startDate,
             endDate: this.endDate,
             sessionUser: {
@@ -147,9 +170,9 @@ export class MgOrgComponent implements OnInit {
         });
     }
 
-    public fetchAllOrg(payload: any): any {
+    public fetchAllOrgAccount(payload: any): any {
         this.spinnerService.show();
-        this.organizationService.fetchAllOrg(payload)
+        this.organizationService.fetchAllOrgAccount(payload)
             .pipe(first())
             .subscribe((response: any) => {
                 this.spinnerService.hide();
@@ -163,133 +186,9 @@ export class MgOrgComponent implements OnInit {
             });
     }
 
-    public tableActionReciver(payload: any): void {
-        if (ActionType.EDIT === payload.action) {
-            this.openCuOrg(ActionType.EDIT, payload);
-        } else if (ActionType.DELETE === payload.action) {
-            this.modalService.confirm({
-                nzOkText: 'Ok',
-                nzCancelText: 'Cancel',
-                nzTitle: 'Do you want to delete?',
-                nzContent: 'Press \'Ok\' may effect the business source.',
-                nzOnOk: () => {
-
-                }
-            });
-        } else if (ActionType.VIEW === payload.action) {
-
-        } else if (ActionType.ENABLED === payload.action) {
-
-        } else if (ActionType.DISABLED === payload.action) {
-
-        }
+    public onDateChangeEvent(): void {
     }
 
-    public buttonActionReciver(payload: any): void {
-        if (ActionType.ADD === payload.action) {
-            this.openCuOrg(ActionType.ADD, null);
-        } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchAllOrg({
-                startDate: this.startDate,
-                endDate: this.endDate,
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
-        } else if (ActionType.DOWNLOAD === payload.action) {
-            this.spinnerService.show();
-            this.organizationService.downloadOrg({
-                ids: payload.checked,
-                sessionUser: {
-                    username: this.sessionUser.username
-                },
-            }).pipe(first())
-                .subscribe((response: any) => {
-                    this.commomService.downLoadFile(response);
-                    this.spinnerService.hide();
-                }, (response: any) => {
-                    this.spinnerService.hide();
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
-                });
-        }
+    public buttonEvent(action: ActionType): void {
     }
-
-    public filterActionReciver(payload: any): void {
-        this.startDate = payload.startDate;
-        this.endDate = payload.endDate;
-        this.fetchAllOrg({
-            startDate: this.startDate,
-            endDate: this.endDate,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
-    }
-
-    public extraActionReciver(payload: any): void {
-        if (ActionType.DELETE === payload.action) {
-            this.modalService.confirm({
-                nzOkText: 'Ok',
-                nzCancelText: 'Cancel',
-                nzTitle: 'Do you want to delete?',
-                nzContent: 'Press \'Ok\' may effect the business source.',
-                nzOnOk: () => {
-                    this.deleteAllOrg(
-                        {
-                            ids: payload.checked,
-                            sessionUser: {
-                                username: this.sessionUser.username
-                            }
-                        });
-                }
-            });
-        }
-    }
-
-    public deleteAllOrg(payload: any): void {
-        this.spinnerService.show();
-        this.organizationService.deleteAllOrg(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllOrg({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public openCuOrg(actionType: ActionType, editPayload: any): void {
-        const drawerRef = this.drawerService.create({
-            nzSize: 'large',
-            nzTitle: actionType === ActionType.ADD ? 'Add Org' : 'Edit Org',
-            nzFooter: 'Note:- Once org create onwer detail not change [email].',
-            nzPlacement: 'right',
-            nzMaskClosable: false,
-            nzContent: CUOrgComponent,
-            nzContentParams: {
-            }
-        });
-        drawerRef.afterClose.subscribe(data => {
-            this.fetchAllOrg({
-                startDate: this.startDate,
-                endDate: this.endDate,
-                sessionUser: {
-                    username: this.sessionUser.username
-                }
-            });
-        });
-    }
-
 }

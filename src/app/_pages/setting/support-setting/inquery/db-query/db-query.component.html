@@ -1,16 +1,27 @@
+<!-- db-query -->
 <div class="content">
     <div nz-row>
-        <div nz-col [nzSpan]="18">
+        <div nz-col [nzSpan]="!isSuperAdmin ? 18 : 13">
             <h3>
                 <span nz-icon nzType="link" nzTheme="outline"></span>
                 Query Inquiry
             </h3>
         </div>
+        <div nz-col [nzSpan]="5" *ngIf="isSuperAdmin">
+            <nz-select nzAllowClear nzShowSearch style="width: 97%;"
+                [(ngModel)]="selectedUser"
+                nzPlaceHolder="Select User"
+                (ngModelChange)="onSelectionUserChange()">
+                <nz-option *ngFor="let option of accessUserList"
+                    [nzValue]="option.value"
+                    [nzLabel]="option.name"></nz-option>
+            </nz-select>
+        </div>
         <div nz-col [nzSpan]="6">
             <nz-select nzAllowClear nzShowSearch style="width: 88%;"
-                [(ngModel)]="selectedValue"
+                [(ngModel)]="selectedQueryInquiry"
                 nzPlaceHolder="Select Predefined Query"
-                (ngModelChange)="onSelectionChange()">
+                (ngModelChange)="onSelectionQueryInquiryChange()">
                 <nz-option *ngFor="let option of queryInquirys"
                     [nzValue]="option"
                     [nzLabel]="option.name"></nz-option>
@@ -39,8 +50,11 @@
         <div nz-row class="login-form-margin"
             style="text-align: end;margin-top: 10px;">
             <div nz-col [nzSpan]="24">
-                <button nz-button type="reset" (click)="clearResult();tableQueryFormInit();">Clear</button>&nbsp;&nbsp;
-                <button nz-button type="submit" nzType="primary" [disabled]="!tableQueryForm.valid">
+                <button nz-button type="reset"
+                    (click)="clearResult();tableQueryFormInit();">
+                    Clear</button>&nbsp;&nbsp;
+                <button nz-button type="submit" nzType="primary"
+                    [disabled]="!tableQueryForm.valid">
                     <span nz-icon nzType="search" nzTheme="outline"></span>Search</button>
             </div>
         </div>

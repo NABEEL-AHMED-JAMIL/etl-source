@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    FormBuilder,
+    FormGroup,
+    Validators
+} from '@angular/forms';
 import {
     ApiCode,
     ILookups,
@@ -87,7 +91,7 @@ export class CUTemplateComponent implements OnInit {
     public editTemplateForm(): void {
         this.spinnerService.show();
         this.templateForm = this.formBuilder.group({
-            id: [this.editPayload.id, Validators.required],
+            uuid: [this.editPayload.uuid, Validators.required],
             templateName: [this.editPayload.templateName, Validators.required],
             description: [this.editPayload.description, Validators.required],
             templateContent: [this.editPayload.templateContent, Validators.required],

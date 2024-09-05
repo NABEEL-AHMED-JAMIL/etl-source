@@ -1,4 +1,9 @@
-<div *ngIf="!isParent && parentLookupDate" class="site-page-header-ghost-wrapper">
+<!-- my-info  -->
+<app-user-info id="serverSearch" [userInfo]="sessionUser" ></app-user-info>
+<!-- parent detail -->
+<div *ngIf="!isParent && parentLookupDate"
+    class="site-page-header-ghost-wrapper"
+    style="margin-top: 10px;">
     <nz-page-header [nzGhost]="false" [nzGhost]="false" 
         class="site-page-header" (nzBack)="onBack()" nzBackIcon>
         <nz-page-header-title>
@@ -33,8 +38,7 @@
         </nz-page-header-content>
     </nz-page-header>
 </div>
-<br *ngIf="!isParent && parentLookupDate">
-<div class="content">
+<div class="content" style="margin-top: 10px;">
     <h3>
         <span nz-icon nzType="link" nzTheme="outline"></span>
         {{lookupTable.title}}

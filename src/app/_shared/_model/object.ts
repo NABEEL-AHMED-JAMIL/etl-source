@@ -1,30 +1,5 @@
 import { NzTableSize } from 'ng-zorro-antd/table';
 
-export enum ApiCode {
-    SUCCESS = 'SUCCESS',
-    INVALID_REQUEST = 'INVALID_REQUEST',
-    ALREADY_CONSUMED = 'ALREADY_CONSUMED',
-    ERROR = 'ERROR',
-    DELETED = 'DELETED',
-    HTTP_400 = 'HTTP_400',
-    HTTP_500 = 'HTTP_500',
-    HTTP_404 = 'HTTP_404'
-}
-
-export enum APP_ADMIN {
-    ROLE_MASTER_ADMIN = 'ROLE_MASTER_ADMIN',
-    ROLE_ADMIN = 'ROLE_ADMIN',
-    ROLE_USER = 'ROLE_USER',
-    ROLE_DB = 'ROLE_DB'
-}
-
-export enum APP_PROFILE {
-    SUPER_ADMIN_PROFILE = 'SUPER_ADMIN_PROFILE',
-    ADMIN_PROFILE = 'ADMIN_PROFILE',
-    USER_PROFILE = 'USER_PROFILE',
-    DB_PROFILE = 'DB_PROFILE'
-}
-
 export interface IKeyValue {
     name?: any;
     value?: any;
@@ -37,7 +12,7 @@ export interface IETLCountry {
 }
 
 export interface AuthResponse {
-    id: any;
+    uuid?: any;
     token: any;
     type: any;
     refreshToken: any;
@@ -69,6 +44,7 @@ export interface ApiResponse {
 
 export interface IBaseEntity {
     id?: any;
+    uuid?: any;
     dateCreated?: any;
     dateUpdated?: any;
     createdBy?: IActionByUser;
@@ -408,7 +384,6 @@ export interface IReportSetting extends IBaseEntity {
 }
 
 export interface IQueryInquiry extends IBaseEntity {
-    id: any,
     name: any;
     description: any;
     query: any;
@@ -471,6 +446,55 @@ export interface ISubAppUser {
     username: any;
 }
 
+export interface SideBar {
+    name: any;
+    icon?: any;
+    link?: any;
+    roles?: any[];
+    permission?: any[];
+    childLinks?: SideBar[];
+}
+
+export interface ISession {
+    dailyCount?: any;
+    weeklyCount?: any;
+    monthlyCount?: any;
+    yearlyCount?: any;
+    daily?: IKeyValue[];
+    weekly?: IKeyValue[];
+    monthly?: IKeyValue[];
+    yearly?: IKeyValue[];
+}
+
+// ***********
+// Enum
+// ***********
+
+export enum ApiCode {
+    SUCCESS = 'SUCCESS',
+    INVALID_REQUEST = 'INVALID_REQUEST',
+    ALREADY_CONSUMED = 'ALREADY_CONSUMED',
+    ERROR = 'ERROR',
+    DELETED = 'DELETED',
+    HTTP_400 = 'HTTP_400',
+    HTTP_500 = 'HTTP_500',
+    HTTP_404 = 'HTTP_404'
+}
+
+export enum APP_ADMIN {
+    ROLE_MASTER_ADMIN = 'ROLE_MASTER_ADMIN',
+    ROLE_ADMIN = 'ROLE_ADMIN',
+    ROLE_USER = 'ROLE_USER',
+    ROLE_DB = 'ROLE_DB'
+}
+
+export enum APP_PROFILE {
+    SUPER_ADMIN_PROFILE = 'SUPER_ADMIN_PROFILE',
+    ADMIN_PROFILE = 'ADMIN_PROFILE',
+    USER_PROFILE = 'USER_PROFILE',
+    DB_PROFILE = 'DB_PROFILE'
+}
+
 // delete,update,subnode,more->dropdown
 export enum ActionType {
     DELETE = 0,
@@ -499,306 +523,6 @@ export enum IProfileSetting {
     CHANGE_PASSWORD,
     MY_TEAM,
     ENVIROMENT
-}
-
-export interface SideBar {
-    name: any;
-    icon?: any;
-    link?: any;
-    roles?: any[];
-    permission?: any[];
-    childLinks?: SideBar[];
-}
-
-export interface ISession {
-    dailyCount?: any;
-    weeklyCount?: any;
-    monthlyCount?: any;
-    yearlyCount?: any;
-    daily?: IKeyValue[];
-    weekly?: IKeyValue[];
-    monthly?: IKeyValue[];
-    yearly?: IKeyValue[];
-}
-
-export const CONTROL_PATTERN: IControlPattern[] = [
-    {
-        type: 'Tel',
-        pattern: 'xxx-xxx-xxxx',
-        value: '333-333-3333'
-    },
-    {
-        type: 'Week',
-        pattern: '-',
-        value: '2024-W07'
-    },
-    {
-        type: 'Tel',
-        pattern: '-',
-        value: '06:11:00'
-    },
-    {
-        type: 'Color',
-        pattern: '-',
-        value: '#3497db'
-    },
-    {
-        type: 'Date',
-        pattern: '-',
-        value: '1993-08-06'
-    },
-    {
-        type: 'Email',
-        pattern: 'Email Pattern',
-        value: 'abc@gmail.com'
-    },
-    {
-        type: 'Month',
-        pattern: '-',
-        value: '1993-08'
-    }
-];
-
-export const SETTING_SIDEBAR: SideBar[] = [
-    {
-        name: 'Service Setting',
-        icon: 'dingding',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-        permission: ['SERVICE_SETTING_PERMISSION'],
-        childLinks: [
-            {
-                name: 'Source Task',
-                icon: 'sketch',
-                link: '/setting/mgSourceTask',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['SOURCE_TASK_PERMISSION']
-            },
-            {
-                name: 'Source Task Type',
-                icon: 'dropbox',
-                link: '/setting/mgSourceTaskType',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['SOURCE_TASKTYPE_PERMISSION']
-            }
-        ]
-    },
-    {
-        name: 'Asset Store',
-        icon: 'folder',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-        permission: ['ASSET_STORE_PERMISSION'],
-        childLinks: [
-            {
-                name: 'Manage Bucket',
-                icon: 'folder-open',
-                link: '/setting/store',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['BUCKET_SETTING_PERMISSION']
-            }
-        ]
-    },
-    {
-        name: 'Dashboard Setting',
-        icon: 'pie-chart',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-        permission: ['DASHBOARD_SETTING_PERMISSION'],
-        childLinks: [
-            {
-                name: 'Manage Dashboard',
-                icon: 'form',
-                link: '/setting/mgDashboard',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['MANAGE_DASHBOARD_PERMISSION']
-            }
-        ]
-    },
-    {
-        name: 'Report Setting',
-        icon: 'paper-clip',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-        permission: ['REPORT_SETTING_PERMISSION'],
-        childLinks: [
-            {
-                name: 'Manage Report',
-                icon: 'form',
-                link: '/setting/mgReport',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['MANAGE_REPORT_PERMISSION']
-            },
-            {
-                name: 'Manage OLAP',
-                icon: 'form',
-                link: '/setting/mgOLAP',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['MANAGE_OLAP_PERMISSION']
-            }
-        ]
-    },
-    {
-        name: 'Form Setting',
-        icon: 'database',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-        permission: ['FORM_SETTING_PERMISSION'],
-        childLinks: [
-            {
-                name: 'Manage Form',
-                icon: 'form',
-                link: '/setting/mgForm',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['FORM_PERMISSION']
-            },
-            {
-                name: 'Manage Section',
-                icon: 'highlight',
-                link: '/setting/mgSection',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['SECTION_PERMISSION']
-            },
-            {
-                name: 'Manage Control',
-                icon: 'control',
-                link: '/setting/mgControl',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['CONTROL_PERMISSION']
-            },
-            {
-                name: 'Enable & Visible',
-                icon: 'mac-command',
-                link: '/setting/evConfig',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['ENABLE_AND_VISIBLE_CONTROL_PERMISSION']
-            },
-            {
-                name: 'Dynamic Payload',
-                icon: 'partition',
-                link: '/setting/dynamicPayload',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['DYNAMIC_PAYLOAD_PERMISSION']
-            },
-            {
-                name: 'Play Ground',
-                icon: 'html5',
-                link: '/setting/mgPlayGround',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['PLAY_GROUND_PERMISSION']
-            }
-        ]
-    },
-    {
-        name: 'Profile Setting',
-        icon: 'profile',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
-        permission: ['PROFILE_SETTING_PERMISSION'],
-        childLinks: [
-            {
-                name: 'Users',
-                icon: 'user-add',
-                link: '/setting/mgUsers',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
-                permission: ['USER_PERMISSION']
-            },
-            {
-                name: 'Organization',
-                icon: 'deployment-unit',
-                link: '/setting/mgOrganization',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
-                permission: ['ORGANIZATION_PERMISSION']
-            },
-            {
-                name: 'Role & Profile',
-                icon: 'pushpin',
-                link: '/setting/mgRPP',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DB', 'ROLE_DEV'],
-                permission: ['RPP_PERMISSION']
-            },
-            {
-                name: 'Refresh Token',
-                icon: 'euro',
-                link: '/setting/mgRefreshToken',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
-                permission: ['REFRESH_TOKEN_PERMISSION']
-            }
-        ]
-    },
-    {
-        name: 'App Setting',
-        icon: 'appstore',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
-        permission: ['APP_SETTING_PERMISSION'],
-        childLinks: [
-            {
-                name: 'Credential',
-                icon: 'key',
-                link: '/setting/mgCredentail',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['SOURCE_CREDENTAIL_PERMISSION']
-            },
-            {
-                name: 'Event Bridge',
-                icon: 'group',
-                link: '/setting/mgEventBridge',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['EVENT_BRIDGE_PERMISSION']
-            },
-            {
-                name: 'E-Variable',
-                icon: 'font-colors',
-                link: '/setting/mgEvariable',
-                roles: ['ROLE_DEV'],
-                permission: ['EVARIABL_PERMISSION']
-            },
-            {
-                name: 'Lookups',
-                icon: 'control',
-                link: '/setting/mgLookup',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['LOOKUP_PERMISSION']
-            },
-            {
-                name: 'Template',
-                icon: 'mail',
-                link: '/setting/mgTemplate',
-                roles: ['ROLE_DEV'],
-                permission: ['TEMPLATE_PERMISSION']
-            }
-        ]
-    },
-    {
-        name: 'Support',
-        icon: 'wifi',
-        roles: ['ROLE_DEV', 'ROLE_DB'],
-        permission: ['SUPPORT_SETTING_PERMISSION'],
-        childLinks: [
-            {
-                name: 'Query Inquiry',
-                icon: 'console-sql',
-                link: '/setting/inquery',
-                roles: ['ROLE_DEV', 'ROLE_DB'],
-                permission: ['QUERY_INQUIRY_PERMISSION']
-            }
-        ]
-    }
-];
-
-export const LOOKUP_TYPE = {
-    FETCH_LIMIT: 'FETCH_LIMIT',
-    UI_LOOKUP: 'UI_LOOKUP',
-    APPLICATION_STATUS: 'APPLICATION_STATUS',
-    EMAIL_TEMPLATE: 'EMAIL_TEMPLATE',
-    CREDENTIAL_TYPE: 'CREDENTIAL_TYPE',
-    MASTER_ADMIN: 'MASTER_ADMIN',
-    FORM_TYPE: 'FORM_TYPE',
-    FIELD_TYPE: 'FIELD_TYPE',
-    IS_DEFAULT: 'IS_DEFAULT',
-    TASK_TYPE: 'TASK_TYPE',
-    REQUEST_METHOD: 'REQUEST_METHOD',
-    DASHBOARD_TYPE: 'DASHBOARD_TYPE',
-    PAYLOAD_REF: 'PAYLOAD_REF',
-    EVENT_BRIDGE_TYPE: 'EVENT_BRIDGE_TYPE',
-    COMPARISON_OPERATORS: 'COMPARISON_OPERATORS',
-    LOGICAL_OPERATORS: 'LOGICAL_OPERATORS',
-    DYNAMIC_CONDITION: 'DYNAMIC_CONDITION',
-    ACCOUNT_TYPE: 'ACCOUNT_TYPE'
 }
 
 export const enum UI_LOOKUP {
@@ -1443,3 +1167,290 @@ export const DATA: any = [
         "key": "2024-08-23"
     }
 ];
+
+export const CONTROL_PATTERN: IControlPattern[] = [
+    {
+        type: 'Tel',
+        pattern: 'xxx-xxx-xxxx',
+        value: '333-333-3333'
+    },
+    {
+        type: 'Week',
+        pattern: '-',
+        value: '2024-W07'
+    },
+    {
+        type: 'Tel',
+        pattern: '-',
+        value: '06:11:00'
+    },
+    {
+        type: 'Color',
+        pattern: '-',
+        value: '#3497db'
+    },
+    {
+        type: 'Date',
+        pattern: '-',
+        value: '1993-08-06'
+    },
+    {
+        type: 'Email',
+        pattern: 'Email Pattern',
+        value: 'abc@gmail.com'
+    },
+    {
+        type: 'Month',
+        pattern: '-',
+        value: '1993-08'
+    }
+];
+
+export const SETTING_SIDEBAR: SideBar[] = [
+    {
+        name: 'Service Setting',
+        icon: 'dingding',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+        permission: ['SERVICE_SETTING_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Source Task',
+                icon: 'sketch',
+                link: '/setting/mgSourceTask',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                permission: ['SOURCE_TASK_PERMISSION']
+            },
+            {
+                name: 'Source Task Type',
+                icon: 'dropbox',
+                link: '/setting/mgSourceTaskType',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
+                permission: ['SOURCE_TASKTYPE_PERMISSION']
+            }
+        ]
+    },
+    {
+        name: 'Asset Store',
+        icon: 'folder',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+        permission: ['ASSET_STORE_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Manage Bucket',
+                icon: 'folder-open',
+                link: '/setting/store',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['BUCKET_SETTING_PERMISSION']
+            }
+        ]
+    },
+    {
+        name: 'Dashboard Setting',
+        icon: 'pie-chart',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+        permission: ['DASHBOARD_SETTING_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Manage Dashboard',
+                icon: 'form',
+                link: '/setting/mgDashboard',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['MANAGE_DASHBOARD_PERMISSION']
+            }
+        ]
+    },
+    {
+        name: 'Report Setting',
+        icon: 'paper-clip',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+        permission: ['REPORT_SETTING_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Manage Report',
+                icon: 'form',
+                link: '/setting/mgReport',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['MANAGE_REPORT_PERMISSION']
+            },
+            {
+                name: 'Manage OLAP',
+                icon: 'form',
+                link: '/setting/mgOLAP',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['MANAGE_OLAP_PERMISSION']
+            }
+        ]
+    },
+    {
+        name: 'Form Setting',
+        icon: 'database',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+        permission: ['FORM_SETTING_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Manage Form',
+                icon: 'form',
+                link: '/setting/mgForm',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['FORM_PERMISSION']
+            },
+            {
+                name: 'Manage Section',
+                icon: 'highlight',
+                link: '/setting/mgSection',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['SECTION_PERMISSION']
+            },
+            {
+                name: 'Manage Control',
+                icon: 'control',
+                link: '/setting/mgControl',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['CONTROL_PERMISSION']
+            },
+            {
+                name: 'Enable & Visible',
+                icon: 'mac-command',
+                link: '/setting/evConfig',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['ENABLE_AND_VISIBLE_CONTROL_PERMISSION']
+            },
+            {
+                name: 'Dynamic Payload',
+                icon: 'partition',
+                link: '/setting/dynamicPayload',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['DYNAMIC_PAYLOAD_PERMISSION']
+            },
+            {
+                name: 'Play Ground',
+                icon: 'html5',
+                link: '/setting/mgPlayGround',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['PLAY_GROUND_PERMISSION']
+            }
+        ]
+    },
+    {
+        name: 'Profile Setting',
+        icon: 'profile',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
+        permission: ['PROFILE_SETTING_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Users',
+                icon: 'user-add',
+                link: '/setting/mgUsers',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
+                permission: ['USER_PERMISSION']
+            },
+            {
+                name: 'Organization',
+                icon: 'deployment-unit',
+                link: '/setting/mgOrganization',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
+                permission: ['ORGANIZATION_PERMISSION']
+            },
+            {
+                name: 'Role & Profile',
+                icon: 'pushpin',
+                link: '/setting/mgRPP',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DB', 'ROLE_DEV'],
+                permission: ['RPP_PERMISSION']
+            },
+            {
+                name: 'Refresh Token',
+                icon: 'euro',
+                link: '/setting/mgRefreshToken',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
+                permission: ['REFRESH_TOKEN_PERMISSION']
+            }
+        ]
+    },
+    {
+        name: 'App Setting',
+        icon: 'appstore',
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
+        permission: ['APP_SETTING_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Credential',
+                icon: 'key',
+                link: '/setting/mgCredentail',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['SOURCE_CREDENTAIL_PERMISSION']
+            },
+            {
+                name: 'Event Bridge',
+                icon: 'group',
+                link: '/setting/mgEventBridge',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['EVENT_BRIDGE_PERMISSION']
+            },
+            {
+                name: 'Lookups',
+                icon: 'control',
+                link: '/setting/mgLookup',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
+                permission: ['LOOKUP_PERMISSION']
+            },
+            {
+                name: 'E-Variable',
+                icon: 'font-colors',
+                link: '/setting/mgEvariable',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
+                permission: ['EVARIABL_PERMISSION']
+            },
+            {
+                name: 'Template',
+                icon: 'mail',
+                link: '/setting/mgTemplate',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
+                permission: ['TEMPLATE_PERMISSION']
+            }
+        ]
+    },
+    {
+        name: 'Support',
+        icon: 'wifi',
+        roles: ['ROLE_DEV', 'ROLE_DB'],
+        permission: ['SUPPORT_SETTING_PERMISSION'],
+        childLinks: [
+            {
+                name: 'Query Inquiry',
+                icon: 'console-sql',
+                link: '/setting/inquery',
+                roles: ['ROLE_DEV', 'ROLE_DB'],
+                permission: ['QUERY_INQUIRY_PERMISSION']
+            },
+            {
+                name: 'App Page Config',
+                icon: 'insert-row-right',
+                link: '/setting/appPageConfig',
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
+                permission: ['APPPAGE_PERMISSION']
+            },
+        ]
+    }
+];
+
+export const LOOKUP_TYPE = {
+    FETCH_LIMIT: 'FETCH_LIMIT',
+    UI_LOOKUP: 'UI_LOOKUP',
+    APPLICATION_STATUS: 'APPLICATION_STATUS',
+    EMAIL_TEMPLATE: 'EMAIL_TEMPLATE',
+    CREDENTIAL_TYPE: 'CREDENTIAL_TYPE',
+    MASTER_ADMIN: 'MASTER_ADMIN',
+    FORM_TYPE: 'FORM_TYPE',
+    FIELD_TYPE: 'FIELD_TYPE',
+    IS_DEFAULT: 'IS_DEFAULT',
+    TASK_TYPE: 'TASK_TYPE',
+    REQUEST_METHOD: 'REQUEST_METHOD',
+    DASHBOARD_TYPE: 'DASHBOARD_TYPE',
+    PAYLOAD_REF: 'PAYLOAD_REF',
+    EVENT_BRIDGE_TYPE: 'EVENT_BRIDGE_TYPE',
+    COMPARISON_OPERATORS: 'COMPARISON_OPERATORS',
+    LOGICAL_OPERATORS: 'LOGICAL_OPERATORS',
+    DYNAMIC_CONDITION: 'DYNAMIC_CONDITION',
+    ACCOUNT_TYPE: 'ACCOUNT_TYPE'
+}

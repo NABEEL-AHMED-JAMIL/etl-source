@@ -1,85 +1,123 @@
-<!-- my-info  -->
-<!-- <app-user-info id="serverSearch" [userInfo]="sessionUser" ></app-user-info> -->
 <!-- opertaion detail
 1) show the list of country
 2) show the status
 3) show the input filed for search [db]
 4) show the (start date and end date)
 -->
-<!-- --------------------------------- -->
-<!-- org detail
-1) show the server side pagenation 
-2) show the search on local search
-3) show the refresh button
-4) show the add button
--->
-<nz-row nzGutter="16" style="margin-top: 10px;">
+<!-- static table -->
+<div class="content" style="margin-top: 10px;">
+    <h3>
+        <span nz-icon nzType="link" nzTheme="outline"></span>
+        {{staticTable.title}}
+    </h3>
+    <nz-divider style="margin: 5px 0;"></nz-divider>
+    <div nz-row *ngIf="staticTable">
+        <div nz-col [nzSpan]="8">
+            <input nz-input  placeholder="Search Result"
+                [(ngModel)]="searchDetails"/>
+        </div>
+        <div nz-col [nzSpan]="16" style="text-align: end;">
+            <nz-button-group>
+                <nz-form-control>
+                    <input id="startDate" nz-input type="date"
+                        [(ngModel)]="startDate"
+                        (change)="onDateChangeEvent()"/>
+                </nz-form-control>&nbsp;
+                <nz-form-control>
+                    <input id="endDate" nz-input type="date"
+                        [(ngModel)]="endDate"
+                        (change)="onDateChangeEvent()"/>
+                </nz-form-control>
+            </nz-button-group>&nbsp;
+            <nz-button-group>
+                <button *ngFor='let button of staticTable.headerButton'
+                    nz-button nz-tooltip nzType="default"
+                    nzTooltipTitle="{{ button?.tooltipTitle }}"
+                    (click)="buttonEvent(button.action)">
+                    <span nz-icon nzTheme="outline"
+                        [nzType]="button.type"
+                        [nzSpin]="button.spin"
+                        [ngStyle]="{'color': button.color}">
+                    </span>
+                </button>
+            </nz-button-group>
+        </div>
+    </div>
+</div>
+<!-- gride show -->
+<nz-row nzGutter="12" style="margin-top: 10px;">
     <ng-container *ngFor="let organization of organizations; index as i">
-        <nz-col [nzSpan]="8" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 8}">
-            <nz-card nzTitle="#{{ organization.id }} {{ organization.name }}"
+        <nz-col [nzSpan]="12" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 12}">
+            <nz-card class="nz-card-aligment" nzTitle="#{{ organization.id }} {{ organization.name }}"
                 nz-tooltip nzTooltipTitle="#{{ organization.id }} {{ organization.name }}"
                 [nzActions]="[actionEdit, actionUserSetting, actionMore, actionEdit, actionUserSetting, actionMore]"
-                [nzExtra]="extraTemplate" class="nz-card-aligment">
+                [nzExtra]="extraTemplate">
                 <!-- service statistics carts -->
                 <nz-row nzGutter="16" class="chart-height">
+                    <!-- daily session -->
                     <nz-col [nzSpan]="24" id="SESSION_COUNT_STATISTICS-{{i}}">
-                        <h5 style="text-align: center;">
+                        <h4 style="text-align: center;">
                             <span nz-icon nzType="login" nzTheme="outline"></span> My Daily Session
-                        </h5>
+                        </h4>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SESSION_COUNT_STATISTICS" echarts class="demo-chart"
                             theme="macarons" style="height: 150px;"
                             [options]="SESSION_COUNT_STATISTICS">
                         </div>
                     </nz-col>
+                    <!-- service-setting -->
                     <nz-col [nzSpan]="24" id="SERVICE_SETTING_STATISTICS-{{i}}">
                         <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <h5 style="text-align: center;">
+                        <h4 style="text-align: center;">
                             <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
-                        </h5>
+                        </h4>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 150px;"
+                            theme="macarons" style="height: 250px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
+                    <!-- report & dashboard -->
                     <nz-col [nzSpan]="24" id="DASHBOARD_AND_REPORT_SETTING_STATISTICS-{{i}}">
                         <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <h5 style="text-align: center;">
+                        <h4 style="text-align: center;">
                             <span nz-icon nzType="pie-chart" nzTheme="outline"></span> Report & Dashboard Setting
-                        </h5>
+                        </h4>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 150px;"
+                            theme="macarons" style="height: 250px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
+                    <!-- form setting -->
                     <nz-col [nzSpan]="24" id="FORM_SETTING_STATISTICS-{{i}}">
                         <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <h5 style="text-align: center;">
+                        <h4 style="text-align: center;">
                             <span nz-icon nzType="database" nzTheme="outline"></span> Form Setting
-                        </h5>
+                        </h4>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 150px;"
+                            theme="macarons" style="height: 250px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
+                    <!-- profile setting -->
                     <nz-col [nzSpan]="24" id="PROFILE_SETTING_STATISTICS-{{i}}">
                         <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <h5 style="text-align: center;">
+                        <h4 style="text-align: center;">
                             <span nz-icon nzType="profile" nzTheme="outline"></span> Profile Setting
-                        </h5>
+                        </h4>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 150px;"
+                            theme="macarons" style="height: 250px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
+                    <!-- app setting -->
                     <nz-col [nzSpan]="24" id="APP_SETTING_STATISTICS-{{i}}">
                         <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <h5 style="text-align: center;">
+                        <h4 style="text-align: center;">
                             <span nz-icon nzType="appstore" nzTheme="outline"></span> App Setting
-                        </h5>
+                        </h4>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 150px;"
+                            theme="macarons" style="height: 250px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
                 </nz-row>
@@ -137,7 +175,7 @@
             </ng-template>
             <ng-template #actionMore>
                 <span nz-icon nzType="ellipsis"></span>
-            </ng-template>               
+            </ng-template>
         </nz-col>
     </ng-container>
 </nz-row>

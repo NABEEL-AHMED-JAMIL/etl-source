@@ -30,7 +30,7 @@
                 </div>
             </nz-descriptions-item>
         </nz-descriptions>
-        <h3>
+        <h3 *ngIf="userInfo?.organization">
             <span nz-icon nzType="deployment-unit" nzTheme="outline"></span>
             Org Info
         </h3>

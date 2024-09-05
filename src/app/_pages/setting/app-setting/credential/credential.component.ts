@@ -25,8 +25,8 @@ import {
 })
 export class CredentialComponent implements OnInit {
 
-    public setOfCheckedId = new Set<any>();
     public sessionUser: AuthResponse;
+    public setOfCheckedId = new Set<any>();
     public credentialTable: IStaticTable = {
         tableId: 'credential_id',
         title: 'Mg Credential',
