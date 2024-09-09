@@ -1,11 +1,7 @@
 <!-- my-info  -->
 <nz-collapse *ngIf="userInfo">
-    <nz-collapse-panel id="user-detail" nzHeader="My Info">
-        <!-- organization -->
-        <h3>
-            <span nz-icon nzType="user" nzTheme="outline"></span>
-            User Info (IP:{{userInfo.ipAddress}})
-        </h3>
+    <nz-collapse-panel id="user-detail"
+        nzHeader="User Info (IP:{{userInfo.ipAddress}})">
         <nz-descriptions nzSize="small">
             <nz-descriptions-item nzTitle="Name">
                 {{userInfo.firstName}} {{userInfo.lastName}}
@@ -30,6 +26,7 @@
                 </div>
             </nz-descriptions-item>
         </nz-descriptions>
+        <!-- organization -->
         <h3 *ngIf="userInfo?.organization">
             <span nz-icon nzType="deployment-unit" nzTheme="outline"></span>
             Org Info

@@ -29,7 +29,7 @@ export class NotifactionActionComponent implements OnInit {
     }
 
     public changeUserNotifactionStatus(notifaction: INotification, index: any) {
-        this.notificationService.updateNotification({id: notifaction.id})
+        this.notificationService.updateNotification({uuid: notifaction.uuid})
             .pipe(first())
             .subscribe((data: any) => {
                 if (data.status === ApiCode.ERROR) {
@@ -40,7 +40,7 @@ export class NotifactionActionComponent implements OnInit {
     }
 
     public changeJobNotifactionStatus(notifaction: INotification, index: any) {
-        this.notificationService.updateNotification({id: notifaction.id})
+        this.notificationService.updateNotification({uuid: notifaction.uuid})
             .pipe(first())
             .subscribe((data: any) => {
                 if (data.status === ApiCode.ERROR) {

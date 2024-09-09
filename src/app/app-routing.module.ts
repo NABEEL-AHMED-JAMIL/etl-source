@@ -38,8 +38,7 @@ import {
     ViewDashboardComponent,
     MgEventBridgeComponent,
     EVConfigComponent,
-    MgOrgComponent,
-    AppPageComponent
+    MgOrgComponent
 } from './_pages';
 
 
@@ -370,17 +369,6 @@ const routes: Routes = [
                     breadcrumb: 'Query Inquiry',
                     roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
                     permission: ['QUERY_INQUIRY_PERMISSION']
-                }
-            },
-            {
-                path: 'appPageConfig',
-                component: AppPageComponent,
-                canActivate: [AuthGuard],
-                data: {
-                    admin: true,
-                    breadcrumb: 'App Page Config',
-                    roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
-                    permission: ['APPPAGE_PERMISSION']
                 }
             }
         ]

@@ -38,7 +38,6 @@ export class DBQueryComponent implements OnInit {
     public tableQueryForm!: UntypedFormGroup;
     // query response
     public queryResponse: IQuery;
-    public isExportLoading: boolean = false;
     public selectedQueryInquiry: any;
     public queryInquirys: IQueryInquiry[] = [];
     // user list response
@@ -111,8 +110,8 @@ export class DBQueryComponent implements OnInit {
             nzWidth: '1000px',
             nzContent: QueryInquiryComponent
         });
-        drawerRef.afterClose.subscribe(data => {
-            this.isExportLoading = false;
+        drawerRef.afterClose
+        .subscribe(data => {
             if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
                 this.fetchAllQueryInquiryAccessUser();
             }
@@ -141,78 +140,53 @@ export class DBQueryComponent implements OnInit {
             this.spinnerService.hide();
             return;
         }
-        this.settingService.dynamicQueryResponse(this.tableQueryForm.value)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;   
-                }
+        this.settingService.dynamicQueryResponse(this.tableQueryForm.value).pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
                 this.queryResponse = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }), (response: any) => this.handleError(response));
     }
 
     public exportExcel(): void {
-        this.isExportLoading = true;
         this.spinnerService.show();
-        this.settingService.downloadDynamicQueryFile(this.tableQueryForm.value)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.isExportLoading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;   
-                }
+        this.settingService.downloadDynamicQueryFile(this.tableQueryForm.value).pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
                 this.commomService.downLoadFile(response);
-            }, (response: any) => {
-                this.isExportLoading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }), (response: any) => this.handleError(response));
     }
 
     public fetchAllQueryInquiry(payload: any): void {
         this.spinnerService.show();
-        this.settingService.fetchAllQueryInquiry(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;   
-                }
+        this.settingService.fetchAllQueryInquiry(payload).pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
                 this.queryInquirys = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }), (response: any) => this.handleError(response));
     }
 
     public fetchAllQueryInquiryAccessUser(): void {
         this.spinnerService.show();
-        this.settingService.fetchAllQueryInquiryAccessUser()
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;   
-                }
+        this.settingService.fetchAllQueryInquiryAccessUser().pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
                 this.accessUserList = response.data.map((user: any) => {
                     return {
                         name: `${user.fullname} & Querys [${user.count}]`,
                         value: user.username
                     };
                 });
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }), (response: any) => this.handleError(response));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        this.spinnerService.hide();
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
+    }
+    
+    private handleError(response: any): void {
+        this.spinnerService.hide();
+        this.alertService.showError(response.error.message, ApiCode.ERROR);
     }
 
     public hasRoleAccess(userRole: any): boolean {

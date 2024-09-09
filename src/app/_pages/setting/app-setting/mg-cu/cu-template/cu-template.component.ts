@@ -36,7 +36,6 @@ export class CUTemplateComponent implements OnInit {
     @Input()
     public editPayload: ITemplateReg;
 
-    public loading: boolean = false;
     public editAction = ActionType.EDIT;
     public templateForm: FormGroup;
 
@@ -101,67 +100,48 @@ export class CUTemplateComponent implements OnInit {
     }
 
     public submit(): void {
+        this.spinnerService.show();
+        if (this.templateForm.invalid) {
+            this.spinnerService.hide();
+            return;
+        }
+        let payload = {
+            ...this.templateForm.value
+        }
         if (this.actionType === ActionType.ADD) {
-            this.addTemplate();
+            this.addTemplate(payload);
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateTemplateReg();
+            this.updateTemplateReg(payload);
         }
     }
 
-    public addTemplate(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.templateForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
-        let payload = {
-            ...this.templateForm.value
-        }
-        this.templateRegService.addTemplateReg(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.closeDrawer();
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+    public addTemplate(payload: any): void {
+        this.templateRegService.addTemplateReg(payload).pipe(first())
+            .subscribe(
+                (response: any) => this.handleApiResponse(response),
+                (response: any) => this.handleError(response));
     }
 
-    public updateTemplateReg(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.templateForm.invalid) {
-            this.spinnerService.hide();
+    public updateTemplateReg(payload: any): void {
+        this.templateRegService.updateTemplateReg(payload).pipe(first())
+            .subscribe(
+                (response: any) => this.handleApiResponse(response),
+                (response: any) => this.handleError(response));
+    }
+
+    private handleApiResponse(response: any): void {
+        this.spinnerService.hide();
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
-        let payload = {
-            ...this.templateForm.value
-        }
-        this.templateRegService.updateTemplateReg(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.closeDrawer();
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+        this.closeDrawer();
+    }
+    
+    private handleError(response: any): void {
+        this.spinnerService.hide();
+        this.alertService.showError(response.error.message, ApiCode.ERROR);
     }
 
     // convenience getter for easy access to form fields

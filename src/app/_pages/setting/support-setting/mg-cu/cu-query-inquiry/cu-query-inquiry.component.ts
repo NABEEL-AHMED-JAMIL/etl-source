@@ -3,16 +3,10 @@ import {
     Input,
     OnInit
 } from '@angular/core';
-import { first } from 'rxjs';
-import { NzModalRef } from 'ng-zorro-antd/modal';
 import {
     ActionType,
     ApiCode,
-    APPLICATION_STATUS,
-    ILookups,
     IQueryInquiry,
-    LOOKUP_TYPE,
-    LookupService,
     SettingService
 } from 'src/app/_shared';
 import {
@@ -25,6 +19,8 @@ import {
     FormGroup,
     Validators
 } from '@angular/forms';
+import { first } from 'rxjs';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 
 
 @Component({
@@ -39,10 +35,8 @@ export class CUQueryInquiryComponent implements OnInit {
     @Input()
     public editPayload: IQueryInquiry;
 
-    public loading: boolean = false;
     public editAction = ActionType.EDIT;
     public queryInquiryForm: FormGroup;
-    public APPLICATION_STATUS:ILookups;
 
     constructor(
         private fb: FormBuilder,
@@ -50,18 +44,10 @@ export class CUQueryInquiryComponent implements OnInit {
         private alertService: AlertService,
         public commomService: CommomService,
         private spinnerService: SpinnerService,
-        private settingService: SettingService,
-        private lookupService: LookupService) {
+        private settingService: SettingService) {
     }
 
     ngOnInit(): void {
-        this.lookupService.fetchLookupDataByLookupType({
-            lookupType: LOOKUP_TYPE.APPLICATION_STATUS
-        }).subscribe((data) => {
-            this.APPLICATION_STATUS = data;
-            this.APPLICATION_STATUS.SUB_LOOKUP_DATA = this.APPLICATION_STATUS.SUB_LOOKUP_DATA
-                .filter((data) => data.lookupCode !== APPLICATION_STATUS.DELETE);
-        });
         if (this.actionType === ActionType.ADD) {
             this.addQueryInquiryForm();
         } else if (this.actionType === ActionType.EDIT) {
@@ -92,67 +78,49 @@ export class CUQueryInquiryComponent implements OnInit {
     }
 
     public onSubmit(): void {
+        this.spinnerService.show();
+        if (this.queryInquiryForm.invalid) {
+            this.spinnerService.hide();
+            return;
+        }
+        let payload = {
+            ...this.queryInquiryForm.value
+        }
         if (this.actionType === ActionType.ADD) {
-            this.addQueryInquiry();
+            this.addQueryInquiry(payload);
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateQueryInquiry();
+            this.updateQueryInquiry(payload);
         }
     }
 
-    public addQueryInquiry(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.queryInquiryForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
-        let payload = {
-            ...this.queryInquiryForm.value
-        }
-        this.settingService.addQueryInquiry(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
+    public addQueryInquiry(payload: any): void {
+        this.settingService.addQueryInquiry(payload).pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 this.closeModel();
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }), (response: any) => this.handleError(response));
     }
 
-    public updateQueryInquiry(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.queryInquiryForm.invalid) {
-            this.spinnerService.hide();
+    public updateQueryInquiry(payload: any): void {
+        this.settingService.updateQueryInquiry(payload).pipe(first())
+        .subscribe((response: any) => this.handleApiResponse(response, () => {
+            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            this.closeModel();
+        }), (response: any) => this.handleError(response));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        this.spinnerService.hide();
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
-        let payload = {
-            ...this.queryInquiryForm.value
-        }
-        this.settingService.updateQueryInquiry(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.closeModel();
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        successCallback();
+    }
+    
+    private handleError(response: any): void {
+        this.spinnerService.hide();
+        this.alertService.showError(response.error.message, ApiCode.ERROR);
     }
 
     // convenience getter for easy access to form fields

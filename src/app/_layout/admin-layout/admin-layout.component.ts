@@ -25,7 +25,6 @@ export class AdminLayoutComponent implements OnInit {
     public title: any = 'ETL Source 2023';
     public sessionUser: AuthResponse;
     public userPermission: any;
-
     public sidebars: SideBar[] = SETTING_SIDEBAR;
 
     constructor(
@@ -47,16 +46,16 @@ export class AdminLayoutComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    public hasPermissionAccess(userProfile: any): boolean {
-        return this.userPermission.some((permission: any) => userProfile.includes(permission));
-    }
-
     public home(): any {
         this.router.navigate(['/dashboard']);
     }
 
     public back(): any {
         this.location.back();
+    }
+
+    public hasPermissionAccess(userProfile: any): boolean {
+        return this.userPermission.some((permission: any) => userProfile.includes(permission));
     }
 
 }

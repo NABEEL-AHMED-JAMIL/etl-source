@@ -187,63 +187,51 @@ export class MgTemplateComponent implements OnInit {
                 editPayload: editPayload?.data
             }
         });
-        drawerRef.afterClose.subscribe(data => {
+        drawerRef.afterClose
+        .subscribe(data => {
             this.fetchTemplateReg({});
         });
     }
 
     public fetchTemplateReg(payload: any): any {
         this.spinnerService.show();
-        this.templateRegService.fetchTemplateReg(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
+        this.templateRegService.fetchTemplateReg(payload).pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
                 this.templateTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }), (response: any) => this.handleError(response));
     }
     
     public deleteTemplateReg(payload: any): void {
         this.spinnerService.show();
-        this.templateRegService.deleteTemplateReg(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
+        this.templateRegService.deleteTemplateReg(payload).pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
                 this.fetchTemplateReg({});
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }), (response: any) => this.handleError(response));
     }
 
     public deleteAllTemplateReg(payload: any): void {
         this.spinnerService.show();
-        this.templateRegService.deleteAllTemplateReg(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
+        this.templateRegService.deleteAllTemplateReg(payload).pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
                 this.fetchTemplateReg({});
                 this.setOfCheckedId = new Set<any>();
                 this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }), (response: any) => this.handleError(response));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        this.spinnerService.hide();
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
+    }
+    
+    private handleError(response: any): void {
+        this.spinnerService.hide();
+        this.alertService.showError(response.error.message, ApiCode.ERROR);
     }
 
 }

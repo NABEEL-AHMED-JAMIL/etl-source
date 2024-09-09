@@ -419,7 +419,7 @@ export interface IColumn {
 }
 
 export interface INotification {
-    id: any;
+    uuid: any;
     title: any;
     data?: any;
     status?: any,
@@ -1334,28 +1334,28 @@ export const SETTING_SIDEBAR: SideBar[] = [
     {
         name: 'Profile Setting',
         icon: 'profile',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
         permission: ['PROFILE_SETTING_PERMISSION'],
         childLinks: [
             {
                 name: 'Users',
                 icon: 'user-add',
                 link: '/setting/mgUsers',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
                 permission: ['USER_PERMISSION']
             },
             {
                 name: 'Organization',
                 icon: 'deployment-unit',
                 link: '/setting/mgOrganization',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
                 permission: ['ORGANIZATION_PERMISSION']
             },
             {
                 name: 'Role & Profile',
                 icon: 'pushpin',
                 link: '/setting/mgRPP',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DB', 'ROLE_DEV'],
+                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
                 permission: ['RPP_PERMISSION']
             },
             {
@@ -1370,7 +1370,7 @@ export const SETTING_SIDEBAR: SideBar[] = [
     {
         name: 'App Setting',
         icon: 'appstore',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
+        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER', 'ROLE_DEV', 'ROLE_DB'],
         permission: ['APP_SETTING_PERMISSION'],
         childLinks: [
             {
@@ -1422,14 +1422,7 @@ export const SETTING_SIDEBAR: SideBar[] = [
                 link: '/setting/inquery',
                 roles: ['ROLE_DEV', 'ROLE_DB'],
                 permission: ['QUERY_INQUIRY_PERMISSION']
-            },
-            {
-                name: 'App Page Config',
-                icon: 'insert-row-right',
-                link: '/setting/appPageConfig',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
-                permission: ['APPPAGE_PERMISSION']
-            },
+            }
         ]
     }
 ];

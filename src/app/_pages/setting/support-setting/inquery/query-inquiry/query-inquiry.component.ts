@@ -204,100 +204,63 @@ export class QueryInquiryComponent implements OnInit {
             nzFooter: null // Set the footer to null to hide it
         });
         drawerRef.afterClose
-            .subscribe(data => {
-                if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
-                    this.fetchAllQueryInquiryAccessUser();
-                }
-                this.queryInquiryFetch();
+        .subscribe(data => {
+            if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                this.fetchAllQueryInquiryAccessUser();
+            }
+            this.queryInquiryFetch();
         });
     }
 
     public fetchAllQueryInquiry(payload: any): any {
         this.spinnerService.show();
-        this.settingService.fetchAllQueryInquiry(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
+        this.settingService.fetchAllQueryInquiry(payload).pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
                 this.queryInQuiryTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }), (response: any) => this.handleError(response));
     }
     
     public deleteQueryInquiryById(payload: any): void {
         this.spinnerService.show();
-        this.settingService.deleteQueryInquiryById(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
+        this.settingService.deleteQueryInquiryById(payload).pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
                     this.fetchAllQueryInquiryAccessUser();
                 }
                 this.queryInquiryFetch();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }), (response: any) => this.handleError(response));
     }
 
     public deleteAllQueryInquiry(payload: any): void {
         this.spinnerService.show();
-        this.settingService.deleteAllQueryInquiry(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
+        this.settingService.deleteAllQueryInquiry(payload).pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
+                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
                     this.fetchAllQueryInquiryAccessUser();
                 }
                 this.queryInquiryFetch();
                 this.setOfCheckedId = new Set<any>();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public onSelectionUserChange(): void {
-        // Handle the selection change here
-        let selectedUser = this.selectedUser ? this.selectedUser : '';
-        this.queryInquiryFetch();
+            }), (response: any) => this.handleError(response));
     }
 
     public fetchAllQueryInquiryAccessUser(): void {
         this.spinnerService.show();
-        this.settingService.fetchAllQueryInquiryAccessUser()
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;   
-                }
+        this.settingService.fetchAllQueryInquiryAccessUser().pipe(first())
+            .subscribe((response: any) => this.handleApiResponse(response, () => {
                 this.accessUserList = response.data.map((user: any) => {
                     return {
                         name: `${user.fullname} & Querys [${user.count}]`,
                         value: user.username
                     };
                 });
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }), (response: any) => this.handleError(response));
+    }
+
+    public onSelectionUserChange(): void {
+        // Handle the selection change here
+        this.queryInquiryFetch();
     }
 
     public queryInquiryFetch() {
@@ -309,11 +272,24 @@ export class QueryInquiryComponent implements OnInit {
             startDate: this.startDate,
             endDate: this.endDate,
         };
-          
         if (this.selectedUser) {
             query.usernames = [this.selectedUser];
         }
         this.fetchAllQueryInquiry(query); 
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        this.spinnerService.hide();
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
+    }
+    
+    private handleError(response: any): void {
+        this.spinnerService.hide();
+        this.alertService.showError(response.error.message, ApiCode.ERROR);
     }
 
     public hasRoleAccess(userRole: any): boolean {

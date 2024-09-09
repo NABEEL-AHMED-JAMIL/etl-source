@@ -20,7 +20,9 @@ export class MainLayoutComponent implements OnInit {
         this.authenticationService?.currentUser
             .subscribe(currentUser => {
                 this.sessionUser = currentUser;
-                this.userPermission = currentUser.profile.permission;
+                if (this.sessionUser) {
+                    this.userPermission = this.sessionUser.profile.permission;
+                }
             });
     }
 
