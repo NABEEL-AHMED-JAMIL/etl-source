@@ -1,22 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { first } from 'rxjs';
-import {
-    AlertService,
-    SpinnerService
-} from 'src/app/_helpers';
+import { AlertService } from 'src/app/_helpers';
 import {
     ActionType,
     ApiCode,
     AuthResponse,
     AuthenticationService,
     ISourceTask,
-    LookupService,
     SourceTaskService
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'cu-source-task',
     templateUrl: 'cu-source-task.component.html',
@@ -35,40 +32,35 @@ export class CuSourceTaskComponent implements OnInit {
     public sessionUser: AuthResponse;
 
     constructor(private fb: FormBuilder,
-        private drawerRef: NzDrawerRef<void>,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
-        private lookupService: LookupService,
         private sourceTaskService: SourceTaskService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit() {
     }
 
     public fetchAllSTT(): any {
-        this.spinnerService.show();
         let payload = {
             sessionUser: {
                 username: this.sessionUser.username
             }
         }
-        this.sourceTaskService.fetchAllSTT(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.sourceTaskService.fetchAllSTT(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+
+                })
+            );
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

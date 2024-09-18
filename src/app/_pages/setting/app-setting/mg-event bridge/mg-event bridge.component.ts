@@ -4,8 +4,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { first } from 'rxjs';
 import {
     AlertService,
-    CommomService,
-    SpinnerService
+    CommomService
 } from 'src/app/_helpers';
 import {
     BatchComponent,
@@ -22,133 +21,31 @@ import {
     EvenBridgeService
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-mg-event bridge',
     templateUrl: './mg-event bridge.component.html',
     styleUrls: ['./mg-event bridge.component.css']
 })
 export class MgEventBridgeComponent implements OnInit {
-
-    public sessionUser: AuthResponse;
+ 
     // bridge detail
     public startDate: any;
     public endDate: any;
+    public sessionUser: AuthResponse;
     public setOfCheckedId = new Set<any>();
-    public eventBridgeTable: IStaticTable = {
-        tableId: 'eventBridge_id',
-        title: 'Mg Event Bridge',
-        bordered: true,
-        checkbox: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'plus-circle',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Add',
-                action: ActionType.ADD
-            },
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            },
-            {
-                type: 'upload',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Upload',
-                action: ActionType.UPLOAD
-            },
-            {
-                type: 'download',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Download',
-                action: ActionType.DOWNLOAD
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'name',
-                header: 'Name',
-                type: 'data'
-            },
-            {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
-            },
-            {
-                field: 'bridgeType',
-                header: 'Bridg Type',
-                type: 'tag',
-                showImg: true
-            },
-            {
-                field: 'totalLinkCount',
-                header: 'In Use',
-                type: 'tag'
-            },
-            {
-                field: 'credential',
-                header: 'Credential',
-                type: 'combine',
-                subfield: ['name'],
-                status: 'status'
-            },
-            {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
-            },
-            {
-                field: 'createdBy',
-                header: 'Created By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'dateUpdated',
-                header: 'Updated',
-                type: 'date'
-            },
-            {
-                field: 'updatedBy',
-                header: 'Updated By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'status',
-                header: 'Status',
-                type: 'tag'
-            }
-        ]
-    };
+    public eventBridgeTable = this.initStaticTable();
 
     constructor(
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private evenBridgeService: EvenBridgeService,
         private commomService: CommomService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -157,6 +54,110 @@ export class MgEventBridgeComponent implements OnInit {
                 username: this.sessionUser.username
             }
         });
+    }
+
+    private initStaticTable(): IStaticTable {
+        return {
+            tableId: 'eventBridge_id',
+            title: 'Mg Event Bridge',
+            bordered: true,
+            checkbox: true,
+            size: 'small',
+            headerButton: [
+                {
+                    type: 'plus-circle',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Add',
+                    action: ActionType.ADD
+                },
+                {
+                    type: 'reload',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Refresh',
+                    action: ActionType.RE_FRESH
+                },
+                {
+                    type: 'upload',
+                    color: 'balck',
+                    spin: false,
+                    tooltipTitle: 'Upload',
+                    action: ActionType.UPLOAD
+                },
+                {
+                    type: 'download',
+                    color: 'balck',
+                    spin: false,
+                    tooltipTitle: 'Download',
+                    action: ActionType.DOWNLOAD
+                }
+            ],
+            extraHeaderButton: [
+                {
+                    title: 'Delete All',
+                    type: 'delete',
+                    action: ActionType.DELETE
+                }
+            ],
+            dataColumn: [
+                {
+                    field: 'name',
+                    header: 'Name',
+                    type: 'data'
+                },
+                {
+                    field: 'description',
+                    header: 'Description',
+                    type: 'data'
+                },
+                {
+                    field: 'bridgeType',
+                    header: 'Bridg Type',
+                    type: 'tag',
+                    showImg: true
+                },
+                {
+                    field: 'totalLinkCount',
+                    header: 'In Use',
+                    type: 'tag'
+                },
+                {
+                    field: 'credential',
+                    header: 'Credential',
+                    type: 'combine',
+                    subfield: ['name'],
+                    status: 'status'
+                },
+                {
+                    field: 'dateCreated',
+                    header: 'Created',
+                    type: 'date'
+                },
+                {
+                    field: 'createdBy',
+                    header: 'Created By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'dateUpdated',
+                    header: 'Updated',
+                    type: 'date'
+                },
+                {
+                    field: 'updatedBy',
+                    header: 'Updated By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'status',
+                    header: 'Status',
+                    type: 'tag'
+                }
+            ]
+        };
     }
     
     public tableActionReciver(payload: any): void {
@@ -265,7 +266,8 @@ export class MgEventBridgeComponent implements OnInit {
                 editPayload: editPayload?.data
             }
         });
-        drawerRef.afterClose.subscribe(data => {
+        drawerRef.afterClose
+        .subscribe(data => {
             this.fetchAllEventBridge({
                 sessionUser: {
                     username: this.sessionUser.username
@@ -275,124 +277,100 @@ export class MgEventBridgeComponent implements OnInit {
     }
 
     public downloadEventBridge(payload: any): void {
-        this.spinnerService.show();
-        this.evenBridgeService.downloadEventBridge(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.commomService.downLoadFile(response);
-                this.spinnerService.hide();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.evenBridgeService.downloadEventBridge(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.commomService.downLoadFile(response);
+                }
+            ));
     }
 
     public fetchAllEventBridge(payload: any): any {
-        this.spinnerService.show();
-        this.evenBridgeService.fetchAllEventBridge(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.evenBridgeService.fetchAllEventBridge(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.eventBridgeTable.dataSource = response.data;
+                    if (!this.commomService.hasRoleAccess(['ROLE_MASTER_ADMIN'])) {
+                        this.eventBridgeTable.actionType = [
+                            {
+                                type: 'form',
+                                color: 'green',
+                                spin: false,
+                                tooltipTitle: 'Edit',
+                                action: ActionType.EDIT
+                            },
+                            {
+                                type: 'delete',
+                                color: 'red',
+                                spin: false,
+                                tooltipTitle: 'Delete',
+                                action: ActionType.DELETE
+                            }
+                        ];
+                    } else {
+                        this.eventBridgeTable.actionType = [
+                            {
+                                type: 'form',
+                                color: 'green',
+                                spin: false,
+                                tooltipTitle: 'Edit',
+                                action: ActionType.EDIT
+                            },
+                            {
+                                type: 'link',
+                                color: 'orange',
+                                spin: false,
+                                tooltipTitle: 'Link With User',
+                                action: ActionType.LINK
+                            },
+                            {
+                                type: 'delete',
+                                color: 'red',
+                                spin: false,
+                                tooltipTitle: 'Delete',
+                                action: ActionType.DELETE
+                            }
+                        ]
+                    }
                 }
-                this.eventBridgeTable.dataSource = response.data;
-                if (!this.hasAccess(this.sessionUser.roles, ['ROLE_MASTER_ADMIN'])) {
-                    this.eventBridgeTable.actionType = [
-                        {
-                            type: 'form',
-                            color: 'green',
-                            spin: false,
-                            tooltipTitle: 'Edit',
-                            action: ActionType.EDIT
-                        },
-                        {
-                            type: 'delete',
-                            color: 'red',
-                            spin: false,
-                            tooltipTitle: 'Delete',
-                            action: ActionType.DELETE
-                        }
-                    ];
-                } else {
-                    this.eventBridgeTable.actionType = [
-                        {
-                            type: 'form',
-                            color: 'green',
-                            spin: false,
-                            tooltipTitle: 'Edit',
-                            action: ActionType.EDIT
-                        },
-                        {
-                            type: 'link',
-                            color: 'orange',
-                            spin: false,
-                            tooltipTitle: 'Link With User',
-                            action: ActionType.LINK
-                        },
-                        {
-                            type: 'delete',
-                            color: 'red',
-                            spin: false,
-                            tooltipTitle: 'Delete',
-                            action: ActionType.DELETE
-                        }
-                    ]
-                }
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
     }
 
     public deleteEventBridgeById(payload: any): void {
-        this.spinnerService.show();
-        this.evenBridgeService.deleteEventBridgeById(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.evenBridgeService.deleteEventBridgeById(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchAllEventBridge({
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 }
-                this.fetchAllEventBridge({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
     }
 
     public deleteAllEventBridge(payload: any): void {
-        this.spinnerService.show();
-        this.evenBridgeService.deleteAllEventBridge(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.evenBridgeService.deleteAllEventBridge(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchAllEventBridge({
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                    this.setOfCheckedId = new Set<any>();
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 }
-                this.fetchAllEventBridge({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-                this.setOfCheckedId = new Set<any>();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
     }
 
-    public hasAccess(userRoles: any, targetRole: any) {
-        return userRoles.some((role: any) => targetRole.includes(role));
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

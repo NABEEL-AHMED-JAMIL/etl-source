@@ -19,15 +19,16 @@ import {
 } from '@angular/forms';
 import {
     AlertService,
-    SpinnerService,
     CommomService,
     StorageService
 } from 'src/app/_helpers';
 import { first } from 'rxjs';
-import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { EnvVariableValueComponent } from '..';
 
 
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'update-profile',
     templateUrl: './update-profile.component.html',
@@ -40,107 +41,13 @@ export class UpdateProfileComponent implements OnInit {
     public sessionUser: AuthResponse;
     public appUser: IAppUser;
 
-    public fileList: NzUploadFile[] = [];
-
-    // e-varaible
-    public eVariableTable: IStaticTable = {
-        tableId: 'variable_id',
-        title: 'E-Variable',
-        bordered: true,
-        checkbox: false,
-        size: 'small',
-        dataColumn: [
-            {
-                field: 'envKey',
-                header: 'Key',
-                type: 'data'
-            },
-            {
-                field: 'envValue',
-                header: 'Value',
-                type: 'data'
-            },
-            {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
-            }
-        ],
-        actionType: [
-            {
-                type: 'form',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            }
-        ]
-    };
-
-    // geneate token
-    public eventBridgeTable: IStaticTable = {
-        tableId: 'eventBridge_id',
-        title: 'Event Bridge',
-        bordered: true,
-        checkbox: false,
-        size: 'small',
-        dataColumn: [
-            {
-                field: 'name',
-                header: 'Name',
-                type: 'data'
-            },
-            {
-                field: 'bridgeUrl',
-                header: 'Url',
-                type: 'data'
-            },
-            {
-                field: 'bridgeType',
-                header: 'Type',
-                type: 'tag',
-                showImg: true
-            },
-            {
-                field: 'httpMethod',
-                header: 'Method',
-                type: 'tag'
-            },
-            {
-                
-                field: 'tokenId',
-                header: 'Token Id',
-                type: 'data'
-            },
-            {
-                field: 'expireTime',
-                header: 'Expire Time',
-                type: 'date'
-            }
-        ],
-        actionType: [
-            {
-                type: 'download',
-                color: '#11315f',
-                spin: false,
-                tooltipTitle: 'Download',
-                action: ActionType.DOWNLOAD
-            },
-            {
-                type: 'sync',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'Gernate Token',
-                action: ActionType.GEN_TOKEN
-            }
-        ]
-    };
+    public eVariableTable = this.initEVariableTable();
+    public eventBridgeTable = this.initEventBridgeTable();
 
     constructor(
         private router: Router,
         private fb: FormBuilder,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         public commomService: CommomService,
         public storageService: StorageService,
         private appUserService: AppUserService,
@@ -151,36 +58,111 @@ export class UpdateProfileComponent implements OnInit {
         this.fetchAppUserProfile(this.sessionUser.username);
     }
 
-    ngOnInit() {
+    ngOnInit() {}
+
+    private initEVariableTable(): IStaticTable {
+        return {
+            tableUuid: this.commomService.uuid(), // uuid for table
+            title: 'E-Variable',
+            bordered: true,
+            checkbox: false,
+            size: 'small',
+            dataColumn: [
+                {
+                    field: 'envKey',
+                    header: 'Key',
+                    type: 'data'
+                },
+                {
+                    field: 'envValue',
+                    header: 'Value',
+                    type: 'data'
+                },
+                {
+                    field: 'description',
+                    header: 'Description',
+                    type: 'data'
+                }
+            ],
+            actionType: [
+                {
+                    type: 'form',
+                    color: 'green',
+                    spin: false,
+                    tooltipTitle: 'Edit',
+                    action: ActionType.EDIT
+                }
+            ]
+        };
+    }
+
+    private initEventBridgeTable(): IStaticTable {
+        return {
+            tableUuid: this.commomService.uuid(), // uuid for table
+            title: 'Event Bridge',
+            bordered: true,
+            checkbox: false,
+            size: 'small',
+            dataColumn: [
+                {
+                    field: 'name',
+                    header: 'Name',
+                    type: 'data'
+                },
+                {
+                    field: 'bridgeUrl',
+                    header: 'Url',
+                    type: 'data'
+                },
+                {
+                    field: 'bridgeType',
+                    header: 'Type',
+                    type: 'tag',
+                    showImg: true
+                },
+                {
+                    field: 'httpMethod',
+                    header: 'Method',
+                    type: 'tag'
+                },
+                {
+                    
+                    field: 'tokenId',
+                    header: 'Token Id',
+                    type: 'data'
+                },
+                {
+                    field: 'expireTime',
+                    header: 'Expire Time',
+                    type: 'date'
+                }
+            ],
+            actionType: [
+                {
+                    type: 'download',
+                    color: '#11315f',
+                    spin: false,
+                    tooltipTitle: 'Download',
+                    action: ActionType.DOWNLOAD
+                },
+                {
+                    type: 'sync',
+                    color: 'orange',
+                    spin: false,
+                    tooltipTitle: 'Gernate Token',
+                    action: ActionType.GEN_TOKEN
+                }
+            ]
+        };    
     }
 
     public refresh() {
         this.fetchAppUserProfile(this.sessionUser.username);
     }
 
-    public fetchAppUserProfile(payload: any): void {
-        this.spinnerService.show();
-        this.appUserService.fetchAppUserProfile(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response?.message, ApiCode.ERROR);
-                    return;
-                }
-                this.appUser = response.data;
-                this.eVariableTable.dataSource = this.appUser.enVariables;
-                this.eventBridgeTable.dataSource = this.appUser.eventBridge;
-                this.fillAppUserPasswordDetail(this.appUser);
-            }, (error: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(error, ApiCode.ERROR);
-            });
-    }
-
     public fillAppUserPasswordDetail(payload: IAppUser): void {
         this.resetPasswordForm = this.fb.group({
-            id: [payload.id],
+            uuid: [payload.uuid],
             email: [payload.email, [Validators.email, Validators.required]],
             username: [payload.username, [Validators.required]],
             oldPassword: ['', [Validators.required]],
@@ -204,39 +186,34 @@ export class UpdateProfileComponent implements OnInit {
         return {};
     };
 
+    public fetchAppUserProfile(payload: any): void {
+        this.appUserService.fetchAppUserProfile(payload).pipe(first())
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.appUser = response.data;
+                    this.eVariableTable.dataSource = this.appUser.enVariables;
+                    this.eventBridgeTable.dataSource = this.appUser.eventBridge;
+                    this.fillAppUserPasswordDetail(this.appUser);
+                })
+            );
+    }
+
     public submitResetPassword(): any {
-        this.spinnerService.show();
         if (this.resetPasswordForm.invalid) {
-            this.spinnerService.hide();
             return;
         }
-        this.spinnerService.show();
-        this.appUserService.updateAppUserPassword(this.resetPasswordForm.getRawValue())
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.authenticationService.logout()
-                    .pipe(first())
-                    .subscribe((data: any) => {
-                        this.spinnerService.hide();
-                        if (data.status === ApiCode.ERROR) {
-                            this.alertService.showError(data.message, ApiCode.ERROR);
-                            return;
-                        }
-                        this.storageService.clear();
-                        this.router.navigate(['/login']);
-                    }, (response: any) => {
-                        this.spinnerService.hide();
-                        this.alertService.showError(response.error.message, ApiCode.ERROR);
-                    });
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.appUserService.updateAppUserPassword(this.resetPasswordForm.getRawValue()).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.authenticationService.logout().pipe(first())
+                        .subscribe((response: any) => 
+                            this.handleApiResponse(response, () => {
+                                this.storageService.clear();
+                                this.router.navigate(['/login']);
+                            })
+                        )
+                })
+            );
     }
 
     public tableEVariableActionReciver(payload: any): void {
@@ -251,7 +228,8 @@ export class UpdateProfileComponent implements OnInit {
                 },
                 nzFooter: null // Set the footer to null to hide it
             });
-            drawerRef.afterClose.subscribe(data => {
+            drawerRef.afterClose
+            .subscribe(data => {
                 this.fetchAppUserProfile(this.sessionUser.username);
             });
         }
@@ -282,24 +260,25 @@ export class UpdateProfileComponent implements OnInit {
     }
 
     public genEventBridgeToken(payload: any): void {
-        this.spinnerService.show();
         this.evenBridgeService.genEventBridgeToken({
             tokenId: payload.data.tokenId
-        })
-        .pipe(first())
-        .subscribe((response: any) => {
-            this.spinnerService.hide();
-            if (response.status === ApiCode.ERROR) {
-                this.alertService.showError(response.message, ApiCode.ERROR);
-                return;
-            }
-            payload.data.tokenId = response.data.tokenId;
-            payload.data.expireTime = response.data.expireTime;
-            payload.data.accessToken = response.data.accessToken;
-        }, (response: any) => {
-            this.spinnerService.hide();
-            this.alertService.showError(response.error.message, ApiCode.ERROR);;
-        });
+        }).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    payload.data.tokenId = response.data.tokenId;
+                    payload.data.expireTime = response.data.expireTime;
+                    payload.data.accessToken = response.data.accessToken;
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+        );
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

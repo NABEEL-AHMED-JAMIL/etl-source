@@ -32,7 +32,9 @@ import {
     DASHBOARD_TYPE
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-cu-form',
     templateUrl: './cu-form.component.html',

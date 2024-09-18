@@ -4,6 +4,9 @@ import { DynamicFieldComponent } from '../dynmic-field';
 /**
  * Text | Email | URL | Passwrod
  * */
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'dynamic-input',
     templateUrl: './dynamic-input.component.html',

@@ -54,6 +54,7 @@ export interface IBaseEntity {
 
 export interface IActionByUser {
     id?: any;
+    uuid?: any;
     email?: any;
     username?: any;
 }
@@ -164,12 +165,6 @@ export interface ISTT extends IBaseEntity {
     credential?: any;
     kafkaTaskType?: any;
     apiTaskType?: any;
-}
-
-export interface IQuery {
-    query?: any;
-    column?: any;
-    data?: any;
 }
 
 export interface ILinkRU extends IBaseEntity {
@@ -323,27 +318,6 @@ export interface IFormLinkSourceTaskType extends IBaseEntity {
     linkSourceTaskTypeId?: any;
 }
 
-export interface ISCVisibility {
-    visible?: IVisible;
-}
-
-export interface ISCEnableability {
-    visible?: IVisible;
-}
-
-export interface IVisible {
-    condition: any;
-    target: ITarget[];
-}
-
-export interface ITarget {
-    section: any;
-    filed: any;
-    visible?: any; // if object ISCVisibility
-    enabled?: any; // if object ISCEnableability
-    description: any;
-}
-
 export interface IDashboardSetting extends IBaseEntity {
     name?: any;
     groupType?: any;
@@ -389,8 +363,36 @@ export interface IQueryInquiry extends IBaseEntity {
     query: any;
 }
 
+export interface IQuery {
+    query?: any;
+    column?: any;
+    data?: any;
+}
+
+export interface ISCVisibility {
+    visible?: IVisible;
+}
+
+export interface ISCEnableability {
+    visible?: IVisible;
+}
+
+export interface IVisible {
+    condition: any;
+    target: ITarget[];
+}
+
+export interface ITarget {
+    section: any;
+    filed: any;
+    visible?: any; // if object ISCVisibility
+    enabled?: any; // if object ISCEnableability
+    description: any;
+}
+
 export interface IStaticTable {
     tableId?: any;
+    tableUuid?: any;
     title?: any;
     expand?: boolean;
     bordered?: boolean,
@@ -440,7 +442,7 @@ export interface IControlPattern {
 }
 
 export interface ISubAppUser {
-    id: any,
+    uuid: any,
     fullname: any;
     email: any;
     username: any;
@@ -634,7 +636,7 @@ export const enum SERVER_ACTION {
 
 export const ORGANIZATIONS: IOrganization[] = [
     {
-        'id': 18,
+        'uuid': 18,
         'name': 'MinistryofEducationandHigherEducation',
         'address': 'SupremeEducationCouncil, Doha',
         'email': 'info@edu.gov.qa',
@@ -643,7 +645,7 @@ export const ORGANIZATIONS: IOrganization[] = [
         'country': 'QAT'
     },
     {
-        'id': 19,
+        'uuid': 19,
         'name': 'MinistryofPublicHealth',
         'address': 'HamadMedicalCity, Doha',
         'email': 'ghcc@moph.gov.qa',
@@ -652,7 +654,7 @@ export const ORGANIZATIONS: IOrganization[] = [
         'country': 'QAT'
     },
     {
-        'id': 18,
+        'uuid': 18,
         'name': 'MinistryofEducationandHigherEducation',
         'address': 'SupremeEducationCouncil, Doha',
         'email': 'info@edu.gov.qa',
@@ -661,7 +663,7 @@ export const ORGANIZATIONS: IOrganization[] = [
         'country': 'QAT'
     },
     {
-        'id': 19,
+        'uuid': 19,
         'name': 'MinistryofPublicHealth',
         'address': 'HamadMedicalCity, Doha',
         'email': 'ghcc@moph.gov.qa',
@@ -670,7 +672,7 @@ export const ORGANIZATIONS: IOrganization[] = [
         'country': 'QAT'
     },
     {
-        'id': 18,
+        'uuid': 18,
         'name': 'MinistryofEducationandHigherEducation',
         'address': 'SupremeEducationCouncil, Doha',
         'email': 'info@edu.gov.qa',
@@ -679,7 +681,7 @@ export const ORGANIZATIONS: IOrganization[] = [
         'country': 'QAT'
     },
     {
-        'id': 19,
+        'uuid': 19,
         'name': 'MinistryofPublicHealth',
         'address': 'HamadMedicalCity, Doha',
         'email': 'ghcc@moph.gov.qa',

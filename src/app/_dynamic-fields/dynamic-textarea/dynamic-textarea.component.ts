@@ -4,6 +4,9 @@ import { DynamicFieldComponent } from '../dynmic-field';
 /**
  * TextArea
  * */
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'dynamic-textarea',
     templateUrl: './dynamic-textarea.component.html',

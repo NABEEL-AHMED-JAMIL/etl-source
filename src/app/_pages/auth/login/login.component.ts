@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AlertService } from '../../../_helpers';
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators
 } from '@angular/forms';
 import {
-    AlertService,
-    SpinnerService
-} from '../../../_helpers';
-import {
     ApiCode,
     AuthenticationService
 } from '../../../_shared';
 import { first } from 'rxjs/operators';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'login',
     templateUrl: './login.component.html',
@@ -25,16 +24,14 @@ export class LoginComponent implements OnInit {
 
     public passwordVisible: boolean = false;
     public loginForm!: UntypedFormGroup;
-    public loading: any = false;
     public returnUrl: string;
 
     constructor(
+        private router: Router,
         private fb: UntypedFormBuilder,
         private route: ActivatedRoute,
-        private router: Router,
-        private authenticationService: AuthenticationService,
         private alertService: AlertService,
-        private spinnerService: SpinnerService) {
+        private authenticationService: AuthenticationService) {
         // redirect to home if already logged in
         if (this.authenticationService.currentUserValue) {
             this.router.navigate(['/']);
@@ -42,7 +39,6 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.spinnerService.hide()
         this.loginForm = this.fb.group({
             username: ['super_admin93', [Validators.required]],
             password: ['B@llistic1', [Validators.required]]
@@ -51,14 +47,7 @@ export class LoginComponent implements OnInit {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
-    // convenience getter for easy access to form fields
-    get f() {
-        return this.loginForm.controls;
-    }
-
     public onSubmit(): any {
-        this.spinnerService.show();
-        // stop here if form is invalid
         if (this.loginForm.invalid) {
             Object.values(this.loginForm.controls)
             .forEach(control => {
@@ -67,29 +56,26 @@ export class LoginComponent implements OnInit {
                     control.updateValueAndValidity({ onlySelf: true });
                 }
             });
-            this.spinnerService.hide();
             return;
         }
-        this.loading = true;
-        this.authenticationService.signInAppUser(this.loginForm.value)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.authenticationService.signInAppUser(this.loginForm.value).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.router.navigate([this.returnUrl]);
                 }
-                this.router.navigate([this.returnUrl]);
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
     }
 
     public register(): any {
         this.router.navigate(['/register']);
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

@@ -14,11 +14,13 @@ import {
 } from '../../../../../_shared';
 import {
     AlertService,
-    CommomService,
-    SpinnerService
+    CommomService
 } from '../../../../../_helpers';
 
 
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-query-inquiry',
     templateUrl: './query-inquiry.component.html',
@@ -29,7 +31,6 @@ export class QueryInquiryComponent implements OnInit {
     public startDate: any;
     public endDate: any;
     public sessionUser: AuthResponse;
-    public sessionUserRoles: any;
     public setOfCheckedId = new Set<any>();
     public queryInQuiryTable: IStaticTable = this.initializeTable();
     // user list response
@@ -41,24 +42,19 @@ export class QueryInquiryComponent implements OnInit {
         private modalService: NzModalService,
         private commomService: CommomService,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private settingService: SettingService,
         private authenticationService: AuthenticationService) {
             this.endDate = this.commomService.getCurrentDate();
             this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
-            this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-                this.sessionUserRoles = currentUser.roles;
-                if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
-                    this.isSuperAdmin = true;
-                    this.selectedUser = this.sessionUser.username;
-                }
-            });
+            this.sessionUser = this.authenticationService.currentUserValue;
+            if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                this.isSuperAdmin = true;
+                this.selectedUser = this.sessionUser.username;
+            }
     }
 
     ngOnInit(): void {
-        if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+        if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
             this.fetchAllQueryInquiryAccessUser();
         }
         this.queryInquiryFetch();
@@ -66,7 +62,7 @@ export class QueryInquiryComponent implements OnInit {
 
     private initializeTable(): IStaticTable {
         return {
-            tableId: 'query_inquiry_id',
+            tableUuid: this.commomService.uuid(), // uuid for table
             title: 'Mg Query Inquiry',
             bordered: true,
             checkbox: true,
@@ -144,7 +140,7 @@ export class QueryInquiryComponent implements OnInit {
         if (ActionType.ADD === payload.action) {
             this.openCuLookup(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
-            if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+            if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
                 this.fetchAllQueryInquiryAccessUser();
             }
             this.queryInquiryFetch();
@@ -205,7 +201,7 @@ export class QueryInquiryComponent implements OnInit {
         });
         drawerRef.afterClose
         .subscribe(data => {
-            if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+            if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
                 this.fetchAllQueryInquiryAccessUser();
             }
             this.queryInquiryFetch();
@@ -213,49 +209,53 @@ export class QueryInquiryComponent implements OnInit {
     }
 
     public fetchAllQueryInquiry(payload: any): any {
-        this.spinnerService.show();
         this.settingService.fetchAllQueryInquiry(payload).pipe(first())
-            .subscribe((response: any) => this.handleApiResponse(response, () => {
-                this.queryInQuiryTable.dataSource = response.data;
-            }), (response: any) => this.handleError(response));
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.queryInQuiryTable.dataSource = response.data;
+                })
+            );
     }
     
     public deleteQueryInquiryById(payload: any): void {
-        this.spinnerService.show();
         this.settingService.deleteQueryInquiryById(payload).pipe(first())
-            .subscribe((response: any) => this.handleApiResponse(response, () => {
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
-                    this.fetchAllQueryInquiryAccessUser();
-                }
-                this.queryInquiryFetch();
-            }), (response: any) => this.handleError(response));
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                        this.fetchAllQueryInquiryAccessUser();
+                    }
+                    this.queryInquiryFetch();
+                })
+            );
     }
 
     public deleteAllQueryInquiry(payload: any): void {
-        this.spinnerService.show();
         this.settingService.deleteAllQueryInquiry(payload).pipe(first())
-            .subscribe((response: any) => this.handleApiResponse(response, () => {
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
-                    this.fetchAllQueryInquiryAccessUser();
-                }
-                this.queryInquiryFetch();
-                this.setOfCheckedId = new Set<any>();
-            }), (response: any) => this.handleError(response));
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                        this.fetchAllQueryInquiryAccessUser();
+                    }
+                    this.queryInquiryFetch();
+                    this.setOfCheckedId = new Set<any>();
+                })
+            );
     }
 
     public fetchAllQueryInquiryAccessUser(): void {
-        this.spinnerService.show();
         this.settingService.fetchAllQueryInquiryAccessUser().pipe(first())
-            .subscribe((response: any) => this.handleApiResponse(response, () => {
-                this.accessUserList = response.data.map((user: any) => {
-                    return {
-                        name: `${user.fullname} & Querys [${user.count}]`,
-                        value: user.username
-                    };
-                });
-            }), (response: any) => this.handleError(response));
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.accessUserList = response.data.map((user: any) => {
+                        return {
+                            name: `${user.fullname} & Querys [${user.count}]`,
+                            value: user.username
+                        };
+                    });
+                })
+            );
     }
 
     public onSelectionUserChange(): void {
@@ -279,21 +279,11 @@ export class QueryInquiryComponent implements OnInit {
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
-        this.spinnerService.hide();
         if (response.status === ApiCode.ERROR) {
             this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
         successCallback();
-    }
-    
-    private handleError(response: any): void {
-        this.spinnerService.hide();
-        this.alertService.showError(response.error.message, ApiCode.ERROR);
-    }
-
-    public hasRoleAccess(userRole: any): boolean {
-        return this.sessionUserRoles.some((role: any) => userRole.includes(role));
     }
 
 }

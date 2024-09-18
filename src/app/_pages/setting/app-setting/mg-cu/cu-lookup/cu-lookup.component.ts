@@ -8,17 +8,18 @@ import {
     ActionType,
     ILookupData,
     LOOKUP_TYPE,
-    AuthenticationService,
     AuthResponse,
-    ILookups
+    ILookups,
+    AuthenticationService,
 } from '../../../../../_shared';
 import {
     AlertService,
     CommomService,
-    SpinnerService
 } from '../../../../../_helpers';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-cu-lookup',
     templateUrl: './cu-lookup.component.html',
@@ -33,23 +34,18 @@ export class CULookupComponent implements OnInit {
     @Input()
     public editPayload: ILookupData;
 
-    public loading: boolean = false;
-    public lookupDataForm: FormGroup;
-    public UI_LOOKUP: ILookups;
     public sessionUser: AuthResponse;
+    public UI_LOOKUP: ILookups;
+    public lookupDataForm: FormGroup;
 
     constructor(
         private fb: FormBuilder,
         private drawerRef: NzDrawerRef<void>,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private lookupService: LookupService,
         public commomService: CommomService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -66,7 +62,6 @@ export class CULookupComponent implements OnInit {
     }
 
     public addLookupForm(): any {
-        this.spinnerService.show();
         this.lookupDataForm = this.fb.group({
             lookupType: ['', Validators.required],
             lookupValue: ['', Validators.required],
@@ -77,11 +72,9 @@ export class CULookupComponent implements OnInit {
             uiLookup: [0, Validators.required],
             parentLookupId: [this.parentLookupId]
         });
-        this.spinnerService.hide();
     }
 
     public editLookupForm(): void {
-        this.spinnerService.show();
         this.lookupDataForm = this.fb.group({
             id: [this.editPayload.id, Validators.required],
             lookupType: [this.editPayload.lookupType, Validators.required],
@@ -91,86 +84,51 @@ export class CULookupComponent implements OnInit {
             uiLookup: [this.editPayload.uiLookup.lookupCode],
             parentLookupId: [this.parentLookupId]
         });
-        this.spinnerService.hide();
     }
 
     public submit(): void {
+        if (this.lookupDataForm.invalid) {
+            return;
+        }
+        let payload = {
+            ...this.lookupDataForm.value,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        }
         if (this.actionType === ActionType.ADD) {
-            this.addLookupData();
+            this.addLookupData(payload);
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateLookupData();
+            this.updateLookupData(payload);
         }
     }
 
-    public addLookupData(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.lookupDataForm.invalid) {
-            this.spinnerService.hide();
+    public addLookupData(payload: any): void {
+        this.lookupService.addLookupData(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }
+            ));
+    }
+
+    public updateLookupData(payload: any): void {
+        this.lookupService.updateLookupData(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }
+            ));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
-        let payload = {
-            ...this.lookupDataForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        }
-        this.lookupService.addLookupData(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public updateLookupData(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.lookupDataForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
-        let payload = {
-            ...this.lookupDataForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        }
-        this.lookupService.updateLookupData(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);;
-            });
-    }
-
-    // convenience getter for easy access to form fields
-    get lookupData() {
-        return this.lookupDataForm.controls;
-    }
-
-    public closeDrawer(): void {
-        this.drawerRef.close();
+        successCallback();
     }
 
 }

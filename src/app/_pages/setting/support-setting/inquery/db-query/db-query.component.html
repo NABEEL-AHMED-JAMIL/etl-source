@@ -55,7 +55,8 @@
                     Clear</button>&nbsp;&nbsp;
                 <button nz-button type="submit" nzType="primary"
                     [disabled]="!tableQueryForm.valid">
-                    <span nz-icon nzType="search" nzTheme="outline"></span>Search</button>
+                    <span nz-icon nzType="search"
+                    nzTheme="outline"></span>Search</button>
             </div>
         </div>
     </form>
@@ -79,9 +80,7 @@
     <nz-divider style="margin: 5px 0;"></nz-divider>
     <div nz-row>
         <div nz-col [nzSpan]="24">
-            <nz-table nzSize="small" #basicTable 
-                [nzData]="queryResponse.data"
-                [nzFrontPagination]="false"
+            <nz-table nzSize="small" #basicTable [nzData]="queryResponse.data" [nzFrontPagination]="false"
                 class="query-result">
                 <thead>
                     <tr>

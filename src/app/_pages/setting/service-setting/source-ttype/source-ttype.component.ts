@@ -4,8 +4,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { first } from 'rxjs';
 import {
     AlertService,
-    CommomService,
-    SpinnerService
+    CommomService
 } from 'src/app/_helpers';
 import {
     CuSourceTTypeComponent,
@@ -20,7 +19,9 @@ import {
     ApiCode
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-source-ttype',
     templateUrl: 'source-ttype.component.html',
@@ -33,122 +34,13 @@ export class MgSourceTaskTypeComponent implements OnInit {
     public setOfCheckedId = new Set<any>();
 
     public sessionUser: AuthResponse;
-    public sttTable: IStaticTable = {
-        tableId: 'stt_id',
-        title: 'Mg Source Task Type',
-        bordered: true,
-        checkbox: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'plus-circle',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Add',
-                action: ActionType.ADD
-            },
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'serviceName',
-                header: 'Service Name',
-                type: 'data'
-            },
-            {
-                field: 'taskType',
-                header: 'Task Type',
-                type: 'tag'
-            },
-            {
-                field: 'credential',
-                header: 'Credential',
-                type: 'combine',
-                subfield: ['name'],
-                status: 'status'
-            },
-            {
-                field: 'totalTask',
-                header: 'Total Task',
-                type: 'tag'
-            },
-            {
-                field: 'totalForm',
-                header: 'Total Form',
-                type: 'tag'
-            },
-            {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
-            },
-            {
-                field: 'createdBy',
-                header: 'Created By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'dateUpdated',
-                header: 'Updated',
-                type: 'date'
-            },
-            {
-                field: 'updatedBy',
-                header: 'Updated By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'status',
-                header: 'Status',
-                type: 'tag'
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
-            }
-        ],
-        actionType: [
-            {
-                type: 'form',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
-                type: 'link',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'Link With Form',
-                action: ActionType.LINK_FROM
-            },
-            {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            }
-        ]
-    };
+    public sttTable = this.initializeTable();
 
     constructor(
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
         private alertService: AlertService,
         private commomService: CommomService,
-        private spinnerService: SpinnerService,
         private sourceTaskTypeService: SourceTaskTypeService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
@@ -169,47 +61,117 @@ export class MgSourceTaskTypeComponent implements OnInit {
         });
     }
 
-    // fetch all lookup
-    public fetchAllSTT(payload: any): any {
-        this.spinnerService.show();
-        this.sourceTaskTypeService.fetchAllSTT(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+    private initializeTable(): IStaticTable {
+        return {
+            tableUuid: this.commomService.uuid(),
+            title: 'Mg Source Task Type',
+            bordered: true,
+            checkbox: true,
+            size: 'small',
+            headerButton: [
+                {
+                    type: 'plus-circle',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Add',
+                    action: ActionType.ADD
+                },
+                {
+                    type: 'reload',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Refresh',
+                    action: ActionType.RE_FRESH
                 }
-                this.sttTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public deleteSTT(payload: any): void {
-        this.spinnerService.show();
-        this.sourceTaskTypeService.deleteSTT(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+            ],
+            dataColumn: [
+                {
+                    field: 'serviceName',
+                    header: 'Service Name',
+                    type: 'data'
+                },
+                {
+                    field: 'taskType',
+                    header: 'Task Type',
+                    type: 'tag'
+                },
+                {
+                    field: 'credential',
+                    header: 'Credential',
+                    type: 'combine',
+                    subfield: ['name'],
+                    status: 'status'
+                },
+                {
+                    field: 'totalTask',
+                    header: 'Total Task',
+                    type: 'tag'
+                },
+                {
+                    field: 'totalForm',
+                    header: 'Total Form',
+                    type: 'tag'
+                },
+                {
+                    field: 'dateCreated',
+                    header: 'Created',
+                    type: 'date'
+                },
+                {
+                    field: 'createdBy',
+                    header: 'Created By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'dateUpdated',
+                    header: 'Updated',
+                    type: 'date'
+                },
+                {
+                    field: 'updatedBy',
+                    header: 'Updated By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'status',
+                    header: 'Status',
+                    type: 'tag'
                 }
-                this.fetchAllSTT({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error, ApiCode.ERROR);
-            });
-    }
+            ],
+            extraHeaderButton: [
+                {
+                    title: 'Delete All',
+                    type: 'delete',
+                    action: ActionType.DELETE
+                }
+            ],
+            actionType: [
+                {
+                    type: 'form',
+                    color: 'green',
+                    spin: false,
+                    tooltipTitle: 'Edit',
+                    action: ActionType.EDIT
+                },
+                {
+                    type: 'link',
+                    color: 'orange',
+                    spin: false,
+                    tooltipTitle: 'Link With Form',
+                    action: ActionType.LINK_FROM
+                },
+                {
+                    type: 'delete',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Delete',
+                    action: ActionType.DELETE
+                }
+            ]
+        }
+    };
 
     public tableActionReciver(payload: any): void {
         if (ActionType.EDIT === payload.action) {
@@ -242,7 +204,8 @@ export class MgSourceTaskTypeComponent implements OnInit {
                     editPayload: payload?.data
                 }
             });
-            drawerRef.afterClose.subscribe(data => {
+            drawerRef.afterClose
+            .subscribe(data => {
                 this.fetchAllSTT({
                     startDate: this.startDate,
                     endDate: this.endDate,
@@ -288,13 +251,12 @@ export class MgSourceTaskTypeComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    this.deleteAllSTT(
-                        {
-                            ids: payload.checked,
-                            sessionUser: {
-                                username: this.sessionUser.username
-                            }
-                        });
+                    this.deleteAllSTT({
+                        ids: payload.checked,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
                 }
             });
         }
@@ -314,7 +276,8 @@ export class MgSourceTaskTypeComponent implements OnInit {
                 editPayload: editPayload?.data
             }
         });
-        drawerRef.afterClose.subscribe(data => {
+        drawerRef.afterClose
+        .subscribe(data => {
             this.fetchAllSTT({
                 startDate: this.startDate,
                 endDate: this.endDate,
@@ -325,29 +288,55 @@ export class MgSourceTaskTypeComponent implements OnInit {
         });
     }
 
+     // fetch all lookup
+     public fetchAllSTT(payload: any): any {
+        this.sourceTaskTypeService.fetchAllSTT(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.sttTable.dataSource = response.data;
+                })
+            );
+    }
+
+    public deleteSTT(payload: any): void {
+        this.sourceTaskTypeService.deleteSTT(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchAllSTT({
+                        startDate: this.startDate,
+                        endDate: this.endDate,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })    
+            );
+    }
+
     public deleteAllSTT(payload: any): void {
-        this.spinnerService.show();
-        this.sourceTaskTypeService.deleteAllSTT(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllSTT({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-                this.setOfCheckedId = new Set<any>();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.sourceTaskTypeService.deleteAllSTT(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchAllSTT({
+                        startDate: this.startDate,
+                        endDate: this.endDate,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                    this.setOfCheckedId = new Set<any>();
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    })
+                );
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

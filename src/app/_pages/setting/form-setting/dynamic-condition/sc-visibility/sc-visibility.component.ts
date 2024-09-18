@@ -22,7 +22,9 @@ import {
     SpinnerService
 } from 'src/app/_helpers';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-sc-visibility',
     templateUrl: './sc-visibility.component.html',

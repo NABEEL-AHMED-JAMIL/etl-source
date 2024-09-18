@@ -1,3 +1,6 @@
+/**
+ * @author Nabeel Ahmed
+ */
 export * from './auth/login/login.component';
 export * from './auth/register/register.component';
 export * from './auth/reset-pass/reset-pass.component';

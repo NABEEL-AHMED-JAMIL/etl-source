@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { StorageService } from '../../_helpers';
-import { ApiResponse } from '../index';
+import { ApiResponse, ApiService } from '../index';
 import { map } from 'rxjs/operators';
 import { AuthResponse } from '..';
 import { config } from '../../../environments/environment';
 
-
-@Injectable({ providedIn: 'root' })
+/**
+ * @author Nabeel Ahmed
+ */
+@Injectable({
+    providedIn: 'root'
+})
 export class AuthenticationService {
 
     private currentUserSubject: BehaviorSubject<AuthResponse>;
     public currentUser: Observable<AuthResponse>;
 
-    constructor(private http: HttpClient,
+    constructor(private apiService: ApiService,
         private storageService: StorageService) {
         this.currentUserSubject = new BehaviorSubject<AuthResponse>(this.storageService.get('currentUser'));
         this.currentUser = this.currentUserSubject.asObservable();
@@ -25,7 +28,7 @@ export class AuthenticationService {
     }
 
     public signInAppUser(payload: any): Observable<ApiResponse> {
-        return this.http.post<any>(`${config.apiBaseUrl}/auth.json/signInAppUser`, payload)
+        return this.apiService.postData(`${config.authBaseUrl}/auth.json/signInAppUser`, payload)
             .pipe(map(response => {
                 if (response.data) {
                     this.storageService.set('currentUser', response.data);
@@ -36,25 +39,26 @@ export class AuthenticationService {
     }
 
     public signupAppUser(payload: any): Observable<ApiResponse> {
-        return this.http.post<any>(`${config.apiBaseUrl}/auth.json/signupAppUser`, payload);
+        return this.apiService.postData(`${config.authBaseUrl}/auth.json/signupAppUser`, payload);
     }
 
     public forgotPassword(payload: any): Observable<ApiResponse> {
-        return this.http.post<any>(`${config.apiBaseUrl}/auth.json/forgotPassword`, payload);
+        return this.apiService.postData(`${config.authBaseUrl}/auth.json/forgotPassword`, payload);
     }
 
     public resetPassword(payload: any): Observable<ApiResponse> {
-        return this.http.post<any>(`${config.apiBaseUrl}/auth.json/resetPassword`, payload);
+        return this.apiService.postData(`${config.authBaseUrl}/auth.json/resetPassword`, payload);
     }
 
-    public tokenVerify(token: any): Observable<ApiResponse> {
-        return this.http.get<any>(`${config.apiBaseUrl}/appUser.json/tokenVerify`, {
-            headers: { 'Authorization': token }
-        });
+    /**
+     * this will get token from header
+     */
+    public tokenVerify(): Observable<ApiResponse> {
+        return this.apiService.getData(`${config.authBaseUrl}/appUser.json/tokenVerify`);
     }
 
     public authClamByRefreshToken(payload: any): Observable<ApiResponse> {
-        return this.http.post<any>(`${config.apiBaseUrl}/auth.json/authClamByRefreshToken`, payload)
+        return this.apiService.postData(`${config.authBaseUrl}/auth.json/authClamByRefreshToken`, payload)
         .pipe(map(response => {
             if (response.data) {
                 this.storageService.set('currentUser', response.data);
@@ -66,10 +70,10 @@ export class AuthenticationService {
 
     public logout(): Observable<ApiResponse> {
         let refreshToken = this.storageService.get('currentUser')?.refreshToken;
-        return this.http.post<any>(`${config.apiBaseUrl}/auth.json/logoutAppUser`, {
+        return this.apiService.postData(`${config.authBaseUrl}/auth.json/logoutAppUser`, {
             refreshToken: refreshToken
         }).pipe(map(response => {
-            localStorage.clear();
+            this.storageService.clear();
             this.currentUserSubject.next(null);
             return response;
         }));

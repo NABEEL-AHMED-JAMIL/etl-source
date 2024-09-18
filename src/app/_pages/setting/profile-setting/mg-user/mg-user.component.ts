@@ -21,7 +21,9 @@ import {
     CUUserComponent,
 } from 'src/app/_pages';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-mg-user',
     templateUrl: './mg-user.component.html',
@@ -327,7 +329,7 @@ export class MgUserComponent implements OnInit {
                 username: this.sessionUser.username
             }
         });
-        if (this.commomService.hasPermissionAccess(this.sessionUser.roles, ['ROLE_MASTER_ADMIN'])) {
+        if (this.commomService.hasRoleAccess(['ROLE_MASTER_ADMIN'])) {
             // for single user
             this.fetchAllAppUserAccount({
                 startDate: this.startDateSingleUser,

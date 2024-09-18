@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {
-    AuthenticationService,
-    AuthResponse,
-} from 'src/app/_shared';
+import { CommomService } from 'src/app/_helpers';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-main-layout',
     templateUrl: './main-layout.component.html',
@@ -13,24 +12,11 @@ import {
 export class MainLayoutComponent implements OnInit {
 
     public title: any = 'ETL Source 2023';
-    public sessionUser: AuthResponse;
-    public userPermission: any;
 
-    constructor(private authenticationService: AuthenticationService) {
-        this.authenticationService?.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-                if (this.sessionUser) {
-                    this.userPermission = this.sessionUser.profile.permission;
-                }
-            });
+    constructor(public commomService: CommomService) {
     }
 
     ngOnInit(): void {
-    }
-
-    public hasPermissionAccess(userProfile: any): boolean {
-        return this.userPermission.some((permission: any) => userProfile.includes(permission));
     }
 
 }

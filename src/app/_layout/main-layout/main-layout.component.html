@@ -17,12 +17,12 @@
                 [nzSm]="{span: 10}"
                 [nzMd]="{span: 18}">
                 <ul nz-menu nzMode="horizontal">
-                    <li *ngIf="hasPermissionAccess(['SOURCE_ACTION_PERMISSION'])"
+                    <li *ngIf="commomService.hasPermissionAccess(['SOURCE_ACTION_PERMISSION'])"
                         class="hli" nz-menu-item>
                         <a nz-dropdown [nzDropdownMenu]="menu">
                             <span nz-icon nzType="fire"></span> Source Action</a>
                     </li>
-                    <li *ngIf="hasPermissionAccess(['ADMIN_PAGE_PERMISSION'])"
+                    <li *ngIf="commomService.hasPermissionAccess(['ADMIN_PAGE_PERMISSION'])"
                         nz-menu-item class="hli" routerLink="/setting">
                         <span nz-icon nzType="setting" nzTheme="outline"></span> App Setting
                     </li>
@@ -47,20 +47,20 @@
 <!-- source job-menu -->
 <nz-dropdown-menu #menu="nzDropdownMenu">
     <ul nz-menu nzSelectable>
-        <li *ngIf="hasPermissionAccess(['RUNNING_SOURCE_JOB_PERMISSION'])" nz-menu-item>
+        <li *ngIf="commomService.hasPermissionAccess(['RUNNING_SOURCE_JOB_PERMISSION'])" nz-menu-item>
             <span nz-icon nzType="play-circle" nzTheme="outline"></span>&nbsp; 
             Running Source Jobs
         </li>
-        <li *ngIf="hasPermissionAccess(['SOURCE_JOB_HISTORY_PERMISSION'])" nz-menu-item>
+        <li *ngIf="commomService.hasPermissionAccess(['SOURCE_JOB_HISTORY_PERMISSION'])" nz-menu-item>
             <span nz-icon nzType="history" nzTheme="outline"></span>&nbsp; 
             Source Jobs History
         </li>
-        <li *ngIf="hasPermissionAccess(['REPORT_PAGE_PERMISSION'])" nz-menu-item
+        <li *ngIf="commomService.hasPermissionAccess(['REPORT_PAGE_PERMISSION'])" nz-menu-item
             class="hli" routerLink="/report">
             <span nz-icon nzType="line-chart" nzTheme="outline"></span>&nbsp;
             Report & Dashboard
         </li>
-        <li *ngIf="hasPermissionAccess(['FAKE_DATA_PAGE_PERMISSION'])" nz-menu-item
+        <li *ngIf="commomService.hasPermissionAccess(['FAKE_DATA_PAGE_PERMISSION'])" nz-menu-item
             class="hli" routerLink="/setting">
             <span nz-icon nzType="file-sync" nzTheme="outline"></span>&nbsp;
             Generate Fake Data

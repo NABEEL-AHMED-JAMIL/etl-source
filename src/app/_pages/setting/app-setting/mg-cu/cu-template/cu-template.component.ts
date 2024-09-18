@@ -16,14 +16,13 @@ import {
     LookupService,
     APPLICATION_STATUS
 } from '../../../../../_shared';
-import {
-    AlertService,
-    SpinnerService
-} from '../../../../../_helpers';
+import { AlertService } from '../../../../../_helpers';
 import { first } from 'rxjs';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-cu-template',
     templateUrl: './cu-template.component.html',
@@ -37,24 +36,19 @@ export class CUTemplateComponent implements OnInit {
     public editPayload: ITemplateReg;
 
     public editAction = ActionType.EDIT;
-    public templateForm: FormGroup;
-
+    public sessionUser: AuthResponse;
     public EMAIL_TEMPLATE:ILookups;
     public APPLICATION_STATUS:ILookups;
-    public sessionUser: AuthResponse;
+    public templateForm: FormGroup;
 
     constructor(
         private drawerRef: NzDrawerRef<void>,
         private formBuilder: FormBuilder,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private templateRegService: TemplateRegService,
         private authenticationService: AuthenticationService) {
-            this.authenticationService?.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService?.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -78,17 +72,14 @@ export class CUTemplateComponent implements OnInit {
     }
 
     public addTemplateForm(): any {
-        this.spinnerService.show();
         this.templateForm = this.formBuilder.group({
             templateName: ['', Validators.required],
             description: ['', Validators.required],
             templateContent: ['', Validators.required]
         });
-        this.spinnerService.hide();
     }
 
     public editTemplateForm(): void {
-        this.spinnerService.show();
         this.templateForm = this.formBuilder.group({
             uuid: [this.editPayload.uuid, Validators.required],
             templateName: [this.editPayload.templateName, Validators.required],
@@ -96,13 +87,10 @@ export class CUTemplateComponent implements OnInit {
             templateContent: [this.editPayload.templateContent, Validators.required],
             status: [this.editPayload.status?.lookupCode, Validators.required]
         });
-        this.spinnerService.hide();
     }
 
     public submit(): void {
-        this.spinnerService.show();
         if (this.templateForm.invalid) {
-            this.spinnerService.hide();
             return;
         }
         let payload = {
@@ -117,40 +105,30 @@ export class CUTemplateComponent implements OnInit {
 
     public addTemplate(payload: any): void {
         this.templateRegService.addTemplateReg(payload).pipe(first())
-            .subscribe(
-                (response: any) => this.handleApiResponse(response),
-                (response: any) => this.handleError(response));
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }
+            ));
     }
 
     public updateTemplateReg(payload: any): void {
         this.templateRegService.updateTemplateReg(payload).pipe(first())
-            .subscribe(
-                (response: any) => this.handleApiResponse(response),
-                (response: any) => this.handleError(response));
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }
+            ));
     }
 
-    private handleApiResponse(response: any): void {
-        this.spinnerService.hide();
+    private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
             this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
-        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-        this.closeDrawer();
-    }
-    
-    private handleError(response: any): void {
-        this.spinnerService.hide();
-        this.alertService.showError(response.error.message, ApiCode.ERROR);
-    }
-
-    // convenience getter for easy access to form fields
-    get template() {
-        return this.templateForm.controls;
-    }
-
-    public closeDrawer(): void {
-        this.drawerRef.close();
+        successCallback();
     }
 
 }

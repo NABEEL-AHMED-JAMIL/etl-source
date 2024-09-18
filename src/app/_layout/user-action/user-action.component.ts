@@ -8,11 +8,12 @@ import {
 } from '../../_shared';
 import {
     AlertService,
-    SpinnerService,
     StorageService
 } from '../../_helpers';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-user-action',
     templateUrl: './user-action.component.html',
@@ -24,7 +25,6 @@ export class UserActionComponent implements OnInit {
     public sessionUser: AuthResponse;
 
     constructor(private router: Router,
-        private spinnerService: SpinnerService,
         private alertService: AlertService,
         private storageService: StorageService,
         private authenticationService: AuthenticationService) {
@@ -34,21 +34,21 @@ export class UserActionComponent implements OnInit {
     }
 
     public logout(): any {
-        this.spinnerService.show();
-        this.authenticationService.logout()
-            .pipe(first())
-            .subscribe((data: any) => {
-                this.spinnerService.hide();
-                if (data.status === ApiCode.ERROR) {
-                    this.alertService.showError(data.message, ApiCode.ERROR);
-                    return;
+        this.authenticationService.logout().pipe(first())
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.storageService.clear();
+                    this.router.navigate(['/login']);
                 }
-                this.storageService.clear();
-                this.router.navigate(['/login']);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        ));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

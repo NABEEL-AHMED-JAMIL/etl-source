@@ -5,17 +5,16 @@ import {
     UntypedFormGroup,
     Validators
 } from '@angular/forms';
-import {
-    AlertService,
-    SpinnerService
-} from '../../../_helpers';
+import { AlertService } from '../../../_helpers';
 import {
     ApiCode,
     AuthenticationService
 } from '../../../_shared/index';
 import { first } from 'rxjs/operators';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'forgot-pass',
     templateUrl: './forgot-pass.component.html',
@@ -25,26 +24,19 @@ export class ForgotPassComponent implements OnInit {
 
     public forgotForm!: UntypedFormGroup;
 
-    constructor(private fb: UntypedFormBuilder,
+    constructor(
         private router: Router,
-        private authenticationService: AuthenticationService,
+        private fb: UntypedFormBuilder,
         private alertService: AlertService,
-        private spinnerService: SpinnerService) { }
+        private authenticationService: AuthenticationService) {}
 
     ngOnInit() {
-        this.spinnerService.hide()
         this.forgotForm = this.fb.group({
             email: ['', Validators.required],
         });
     }
 
-    // convenience getter for easy access to form fields
-    get f() {
-        return this.forgotForm.controls;
-    }
-
     public onSubmit(): any {
-        this.spinnerService.show();
         // stop here if form is invalid
         if (this.forgotForm.invalid) {
             Object.values(this.forgotForm.controls)
@@ -54,23 +46,23 @@ export class ForgotPassComponent implements OnInit {
                     control.updateValueAndValidity({ onlySelf: true });
                 }
             });
-            this.spinnerService.hide();
             return;
         }
-        this.authenticationService.forgotPassword(this.forgotForm.value)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.authenticationService.forgotPassword(this.forgotForm.value).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.router.navigate(['/login']);
                 }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.router.navigate(['/login']);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

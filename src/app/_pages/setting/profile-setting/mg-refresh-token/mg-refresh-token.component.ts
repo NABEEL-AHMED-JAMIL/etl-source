@@ -19,7 +19,9 @@ import {
     SpinnerService
 } from '../../../../_helpers';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-mg-refresh-token',
     templateUrl: './mg-refresh-token.component.html',

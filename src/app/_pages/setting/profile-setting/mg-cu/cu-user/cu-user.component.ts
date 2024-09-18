@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 import {
     AlertService,
-    SpinnerService,
     CommomService
 } from 'src/app/_helpers';
 import {
@@ -29,7 +28,9 @@ import {
     RPPService
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-cu-user',
     templateUrl: './cu-user.component.html',
@@ -48,9 +49,7 @@ export class CUUserComponent implements OnInit {
     public roleList: IRole[] = [];
     public profiles: IProfile[] = [];
 
-    public loading: boolean = false;
     public editAction = ActionType.EDIT;
-
     public ACCOUNT_TYPE: ILookups;
     public userForm: FormGroup;
     public sessionUser: AuthResponse;
@@ -59,16 +58,12 @@ export class CUUserComponent implements OnInit {
         private fb: FormBuilder,
         private drawerRef: NzDrawerRef<void>,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private appUserService: AppUserService,
         public commomService: CommomService,
         public rppService: RPPService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -88,44 +83,7 @@ export class CUUserComponent implements OnInit {
         }
     }
 
-    public fetchProfileWithUser(payload: any): any {
-        this.spinnerService.show();
-        this.rppService.fetchProfileWithUser(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.profiles = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.closeDrawer();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public fetchRoleWithUser(payload: any): any {
-        this.spinnerService.show();
-        this.rppService.fetchRoleWithUser(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.roleList = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.closeDrawer();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
     public addUserForm(): any {
-        this.spinnerService.show();
         this.userForm = this.fb.group({
             firstName: ['', [Validators.required]],
             lastName: ['', [Validators.required]],
@@ -140,13 +98,11 @@ export class CUUserComponent implements OnInit {
             profileImg: [this.profileList[Math.floor(
                 Math.random() * this.profileList.length)]]
         });
-        this.spinnerService.hide();
     }
 
     public editUserForm(): void {
-        this.spinnerService.show();
         this.userForm = this.fb.group({
-            id: [this.editPayload.id, [Validators.required]],
+            uuid: [this.editPayload.uuid, [Validators.required]],
             firstName: [this.editPayload.firstName, [Validators.required]],
             lastName: [this.editPayload.lastName, [Validators.required]],
             username: [this.editPayload.username, [Validators.required]],
@@ -156,71 +112,58 @@ export class CUUserComponent implements OnInit {
             profile: [this.editPayload.profile?.profileName, [Validators.required]],
             accountType: [this.editPayload.accountType?.lookupCode, Validators.required]
         });
-        this.spinnerService.hide();
     }
 
     public submit(): void {
+        if (this.userForm.invalid) {
+            return;
+        }
+        let payload = {
+            ...this.userForm.value
+        }
         if (this.actionType === ActionType.ADD) {
-            this.addAppUserAccount();
+            this.addAppUserAccount(payload);
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateAppUserAccount();
+            this.updateAppUserAccount(payload);
         }
     }
 
-    public addAppUserAccount(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.userForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
-        let payload = {
-            ...this.userForm.value
-        }
-        this.appUserService.addAppUserAccount(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+    public fetchProfileWithUser(payload: any): any {
+        this.rppService.fetchProfileWithUser(payload).pipe(first())
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.profiles = response.data;
+                })
+            );
     }
 
-    public updateAppUserAccount(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.userForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
-        let payload = {
-            ...this.userForm.value
-        }
-        this.appUserService.updateAppUserAccount(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+    public fetchRoleWithUser(payload: any): any {
+        this.rppService.fetchRoleWithUser(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.roleList = response.data;
+                })
+            );
+    }
+
+    public addAppUserAccount(payload: any): void {
+        this.appUserService.addAppUserAccount(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                })
+            );
+    }
+
+    public updateAppUserAccount(payload: any): void {
+        this.appUserService.updateAppUserAccount(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                })
+            );
     }
 
     public validateConfirmPassword(): void {
@@ -248,13 +191,12 @@ export class CUUserComponent implements OnInit {
         }
     }
 
-    // convenience getter for easy access to form fields
-    get user() {
-        return this.userForm.controls;
-    }
-
-    public closeDrawer(): void {
-        this.drawerRef.close();
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

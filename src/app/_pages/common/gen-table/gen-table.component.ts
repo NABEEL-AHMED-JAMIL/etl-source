@@ -16,7 +16,9 @@ import {
     CommomService
 } from 'src/app/_helpers';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-gen-table',
     templateUrl: './gen-table.component.html',
@@ -65,8 +67,7 @@ export class GenTableComponent implements OnInit {
     }
 
     public onAllChecked(checked: boolean): void {
-        this.listOfCurrentPageData
-            .forEach(({ uuid }) => this.updateCheckedSet(uuid, checked));
+        this.listOfCurrentPageData.forEach(({ uuid }) => this.updateCheckedSet(uuid, checked));
         this.refreshCheckedStatus();
     }
 

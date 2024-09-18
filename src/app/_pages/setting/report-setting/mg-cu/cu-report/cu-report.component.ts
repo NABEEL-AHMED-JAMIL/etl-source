@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 import {
     AlertService,
-    SpinnerService,
     CommomService
 } from 'src/app/_helpers';
 import {
@@ -48,7 +47,6 @@ export class CUReportComponent implements OnInit {
     @Input()
     public editPayload: IReportSetting;
 
-    public loading: boolean = false;
     public formRefShow: boolean = false;
     public editAction = ActionType.EDIT;
 
@@ -68,7 +66,6 @@ export class CUReportComponent implements OnInit {
         private fb: FormBuilder,
         private drawerRef: NzDrawerRef<void>,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private envVarService: EVariableService,
         private formSettingService: FormSettingService,
@@ -76,10 +73,7 @@ export class CUReportComponent implements OnInit {
         private evenBridgeService: EvenBridgeService,
         public commomService: CommomService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -127,58 +121,7 @@ export class CUReportComponent implements OnInit {
         });
     }
 
-    // fetch all lookup
-    public fetchFormsByFormType(payload: any): any {
-        this.spinnerService.show();
-        this.formSettingService.fetchFormsByFormType(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.genForms = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public fetchEventBridgeByBridgeType() {
-        this.spinnerService.show();
-        let payload = {
-            bridgeType: EVENT_BRIDGE_TYPE.REPORT_API_SEND
-        };
-        this.evenBridgeService.fetchEventBridgeByBridgeType(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.eventBridges = response.data;
-                this.spinnerService.hide();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public fetchUserEnvByEnvKey(): any {
-        this.spinnerService.show();
-        let payload = {
-            envKey: E_VARAIABLE.REPORT_GROUP
-        };
-        this.envVarService.fetchUserEnvByEnvKey(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.REPORT_GROUP = response.data;
-                this.spinnerService.hide();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
     public addReportSettingForm(): any {
-        this.spinnerService.show();
         this.reportSettingForm = this.fb.group({
             dateFilter:[0, Validators.required],
             recordReport:[0, Validators.required],
@@ -204,11 +147,9 @@ export class CUReportComponent implements OnInit {
             distinctLKValue: [],
             aggLKValue: []
         });
-        this.spinnerService.hide();
     }
 
     public editReportSettingForm(): void {
-        this.spinnerService.show();
         this.reportSettingForm = this.fb.group({
             id: [this.editPayload.id, Validators.required],
             dateFilter:[this.editPayload.dateFilter?.lookupCode, Validators.required],
@@ -240,27 +181,20 @@ export class CUReportComponent implements OnInit {
             this.reportSettingForm.addControl('formRequestId', new FormControl(this.editPayload.formResponse?.id, Validators.required));
             this.formRefShow = true;
         }
-        this.spinnerService.hide();
     }
 
     public onChangefieldLkValue(value: any): void {
         if (value != null && value != '') {
-            this.spinnerService.show();
             let payload = {
                 lookupType: value,
                 sessionUser: {
                     username: this.sessionUser.username
                 }
             }
-            this.lookupService.fetchLookupDataByLookupType(payload)
-                .pipe(first())
+            this.lookupService.fetchLookupDataByLookupType(payload).pipe(first())
                 .subscribe((response: any) => {
-                    this.spinnerService.hide();
                     if (response) {
-                        if (response.status === ApiCode.ERROR) {
-                            this.alertService.showError('No lookup found', ApiCode.ERROR);
-                            return;
-                        } else if (response.data?.subLookupData.length === 0) {
+                        if (response.data?.subLookupData.length === 0) {
                             this.alertService.showError('Lookup not valid', ApiCode.ERROR);
                             return;
                         }
@@ -268,9 +202,6 @@ export class CUReportComponent implements OnInit {
                         this.alertService.showError('Lookup not valid', ApiCode.ERROR);
                         return;
                     }
-                }, (response: any) => {
-                    this.spinnerService.hide();
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
                 });
         }
     }
@@ -286,91 +217,80 @@ export class CUReportComponent implements OnInit {
     }
 
     public submit(): void {
+        if (this.reportSettingForm.invalid) {
+            return;
+        }
+        let payload = {
+            ...this.reportSettingForm.value,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        }
         if (this.actionType === ActionType.ADD) {
-            this.addReportSetting();
+            this.addReportSetting(payload);
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateReportSetting();
+            this.updateReportSetting(payload);
         }
     }
 
-    public addReportSetting(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.reportSettingForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
+     // fetch all lookup
+     public fetchFormsByFormType(payload: any): any {
+        this.formSettingService.fetchFormsByFormType(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.genForms = response.data;
+                })
+            );
+    }
+
+    public fetchEventBridgeByBridgeType() {
         let payload = {
-            ...this.reportSettingForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        }
-        this.reportSettingService.addReportSetting(payload)
-            .pipe(first())
+            bridgeType: EVENT_BRIDGE_TYPE.REPORT_API_SEND
+        };
+        this.evenBridgeService.fetchEventBridgeByBridgeType(payload).pipe(first())
             .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);;
+                this.eventBridges = response.data;
             });
     }
 
-    public updateReportSetting(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.reportSettingForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
+    public fetchUserEnvByEnvKey(): any {
         let payload = {
-            ...this.reportSettingForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        }
-        this.reportSettingService.updateReportSetting(payload)
-            .pipe(first())
+            envKey: E_VARAIABLE.REPORT_GROUP
+        };
+        this.envVarService.fetchUserEnvByEnvKey(payload).pipe(first())
             .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);;
+                this.REPORT_GROUP = response.data;
             });
+    }
+
+    public addReportSetting(payload: any): void {
+        this.reportSettingService.addReportSetting(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.closeDrawer();
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
+    }
+
+    public updateReportSetting(payload: any): void {
+        this.reportSettingService.updateReportSetting(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.closeDrawer();
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
     }
 
     // fetch all lookup
     public findAllParentLookupByUsername(payload: any): any {
-        this.spinnerService.show();
-        this.lookupService.findAllParentLookupByUsername(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.parentLookup = response.data
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.lookupService.findAllParentLookupByUsername(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.parentLookup = response.data
+                })
+            );
     }
 
     // convenience getter for easy access to form fields
@@ -380,6 +300,14 @@ export class CUReportComponent implements OnInit {
 
     public closeDrawer(): void {
         this.drawerRef.close();
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

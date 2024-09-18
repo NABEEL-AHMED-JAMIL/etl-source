@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { first } from 'rxjs/operators';
 import {
@@ -14,10 +13,11 @@ import {
 } from '../../../_shared';
 import {
     AlertService,
-    SpinnerService
 } from '../../../_helpers';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-batch',
     templateUrl: './batch.component.html',
@@ -36,19 +36,14 @@ export class BatchComponent implements OnInit {
     public sessionUser: AuthResponse;
 
     constructor(
-        private drawerRef: NzDrawerRef<any>,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private rppService: RPPService,
         private lookupService: LookupService,
         private evenBridgeService: EvenBridgeService,
         private eVariableService: EVariableService,
         private formSettingService: FormSettingService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService?.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService?.currentUserValue;
     }
 
     ngOnInit(): void { }
@@ -60,9 +55,8 @@ export class BatchComponent implements OnInit {
     };
 
     public handleUpload(): void {
-        this.spinnerService.show();
-        this.errors = [];
         this.uploading = true;
+        this.errors = [];
         this.action = this.batchDetail.action;
         this.payload = this.batchDetail.data;
 
@@ -71,10 +65,7 @@ export class BatchComponent implements OnInit {
             formData.append('file', file);
         });
         formData.append("data", JSON.stringify(this.getPayload()));
-        this.uploadData(formData).subscribe(
-            (response: any) => this.handleSuccess(response),
-            (response: any) => this.handleError(response)
-        );
+        this.uploadData(formData).subscribe((response: any) => this.handleSuccess(response));
     }
 
     private getPayload() {
@@ -123,7 +114,6 @@ export class BatchComponent implements OnInit {
     }
 
     private handleSuccess(response: any) {
-        this.spinnerService.hide();
         this.uploading = false;
         if (response?.status === ApiCode.ERROR) {
             this.errors = response.data;
@@ -133,13 +123,4 @@ export class BatchComponent implements OnInit {
         }
     }
 
-    private handleError(response: any) {
-        this.spinnerService.hide();
-        this.uploading = false;
-        this.alertService.showError(response.error.message, ApiCode.ERROR);
-    }
-
-    public close(): void {
-        this.drawerRef.close();
-    }
 }

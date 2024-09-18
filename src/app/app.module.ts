@@ -199,10 +199,11 @@ const CUComponents = [
     QueryInquiryComponent,
     SttLinkFormComponent,
     MgSourceTaskTypeComponent
-  ];
+];
   
-
-
+/**
+ * @author Nabeel Ahmed
+ */
 @NgModule({
     declarations: [
         AppComponent,

@@ -8,8 +8,7 @@ import {
 } from '@angular/forms';
 import {
     CommomService,
-    AlertService,
-    SpinnerService
+    AlertService
 } from 'src/app/_helpers';
 import {
     APPLICATION_STATUS,
@@ -28,7 +27,9 @@ import {
     REQUEST_METHOD
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-cu-event-bridge',
     templateUrl: './cu-event-bridge.component.html',
@@ -41,31 +42,24 @@ export class CUEventBridgeComponent implements OnInit {
     @Input()
     public editPayload: IEventBridge;
 
-    public credentials: ICredential[] = [];
-
     public APPLICATION_STATUS: ILookups;
     public EVENT_BRIDGE_TYPE: ILookups;
     public REQUEST_METHOD: ILookups;
+    public credentials: ICredential[] = [];
 
-    public loading: boolean = false;
-    public editAction = ActionType.EDIT;
-    
-    public eventBridgeForm: FormGroup;
     public sessionUser: AuthResponse;
+    public editAction = ActionType.EDIT;    
+    public eventBridgeForm: FormGroup;
 
     constructor(private fb: FormBuilder,
         public commomService: CommomService,
         private drawerRef: NzDrawerRef<void>,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private credentailService: CredentailService,
         private evenBridgeService: EvenBridgeService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -95,7 +89,6 @@ export class CUEventBridgeComponent implements OnInit {
     }
 
     public addEventBridgeForm(): any {
-        this.spinnerService.show();
         this.eventBridgeForm = this.fb.group({
             name: ['', Validators.required],
             bridgeUrl: ['', Validators.required],
@@ -104,11 +97,9 @@ export class CUEventBridgeComponent implements OnInit {
             description: ['', Validators.required],
             credentialId: ['', Validators.required],
         });
-        this.spinnerService.hide();
     }
 
     public editEventBridgeForm(): void {
-        this.spinnerService.show();
         this.eventBridgeForm = this.fb.group({
             id: [this.editPayload.id, Validators.required],
             name: [this.editPayload.name, Validators.required],
@@ -120,103 +111,66 @@ export class CUEventBridgeComponent implements OnInit {
             status: [this.editPayload.status?.lookupCode, Validators.required]
         });
         this.eventBridgeForm.get('bridgeType').disable();
-        this.spinnerService.hide();
     }
 
     public fetchAllCredentialByType(): any {
-        this.spinnerService.show();
         let payload = {
             sessionUser: {
                 username: this.sessionUser.username
             },
             types: [CREDENTIAL_TYPE.CERTIFICATE]
         }
-        this.credentailService.fetchAllCredentialByType(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.credentailService.fetchAllCredentialByType(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.credentials = response.data;
                 }
-                this.credentials = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    // convenience getter for easy access to form fields
-    get f() {
-        return this.eventBridgeForm.controls;
+            ));
     }
 
     public onSubmit(): void {
+        if (this.eventBridgeForm.invalid) {
+            return;
+        }
+        let payload = {
+            ...this.eventBridgeForm.getRawValue(),
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        }
         if (this.actionType === ActionType.ADD) {
-            this.addEventBridge();
+            this.addEventBridge(payload);
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateEventBridge();
+            this.updateEventBridge(payload);
         }
     }
 
-    public addEventBridge(): void {
-        this.spinnerService.show();
-        if (this.eventBridgeForm.invalid) {
-            this.spinnerService.hide();
+    public addEventBridge(payload: any): void {
+        this.evenBridgeService.addEventBridge(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }
+            ));
+    }
+
+    public updateEventBridge(payload: any): void {
+        this.evenBridgeService.updateEventBridge(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }
+            ));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
-        let payload = {
-            ...this.eventBridgeForm.getRawValue(),
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        }
-        this.evenBridgeService.addEventBridge(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.closeDrawer();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public updateEventBridge(): void {
-        this.spinnerService.show();
-        if (this.eventBridgeForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
-        let payload = {
-            ...this.eventBridgeForm.getRawValue(),
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        }
-        this.evenBridgeService.updateEventBridge(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.closeDrawer();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public closeDrawer(): void {
-        this.drawerRef.close();
+        successCallback();
     }
 
 }

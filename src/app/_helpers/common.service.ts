@@ -1,16 +1,35 @@
 import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { DatePipe } from '@angular/common';
-import { IControlFiled, FILED_TYPE } from '../_shared';
+import {
+    IControlFiled,
+    FILED_TYPE,
+    AuthenticationService,
+    AuthResponse 
+} from '../_shared';
 
-
-@Injectable({ providedIn: 'root' })
+/**
+ * @author Nabeel Ahmed
+ */
+@Injectable({
+    providedIn: 'root'
+})
 export class CommomService {
 
-    constructor(private datePipe: DatePipe) {
+    public userRoles: any;
+    public userPermission: any;
+    public sessionUser: AuthResponse;
+
+    constructor(private datePipe: DatePipe,
+        public authenticationService: AuthenticationService) {
+        this.sessionUser = this.authenticationService.currentUserValue
+        if (this.sessionUser) {
+            this.userPermission = this.sessionUser?.profile.permission;
+            this.userRoles = this.sessionUser?.roles;
+        }
     }
 
-    private uuid(): string {
+    public uuid(): string {
         return 'xxxxxxxx-xxxxxxxx'.replace(/[xy]/g, (char) => {
             let random = Math.random() * 16 | 0;
             let value = char === "x" ? random : (random % 4 + 8);
@@ -19,8 +38,7 @@ export class CommomService {
     }
 
     public createFile(payload: any): any {
-        const file = new Blob(
-            [JSON.stringify(payload, null, 4)],
+        const file = new Blob([JSON.stringify(payload, null, 4)],
             { 
                 type: 'application/json'
             });
@@ -169,8 +187,12 @@ export class CommomService {
         return url.protocol === "http:" || url.protocol === "https:";
     }
 
-    public hasPermissionAccess(userPermission: any, routePermission: any): any {
-        return userPermission.some((permission: any) => routePermission.includes(permission));
+    public hasRoleAccess(routeRoles: any) {
+        return this.userRoles.some((role: any) => routeRoles.includes(role));
+    }
+
+    public hasPermissionAccess(routePermission: any): any {
+        return this.userPermission.some((permission: any) => routePermission.includes(permission));
     }
 
 }

@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { first } from 'rxjs';
+import { AlertService } from 'src/app/_helpers';
 import {
-    AlertService,
-    SpinnerService
-} from 'src/app/_helpers';
+    FormBuilder,
+    FormGroup,
+    Validators
+} from '@angular/forms';
 import {
     APPLICATION_STATUS,
     ActionType,
@@ -20,7 +21,9 @@ import {
     LookupService
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'cu-credential',
     templateUrl: 'cu-credential.component.html',
@@ -28,15 +31,13 @@ import {
 })
 export class CuCredentialComponent implements OnInit {
 
-    public passwordVisible: boolean = false;
-
     @Input()
     public actionType: ActionType;
     @Input()
     public editPayload: ICredential;
 
+    public passwordVisible: boolean = false;
     public editAction = ActionType.EDIT;
-
     public BASIC_AUTH = CREDENTIAL_TYPE.BASIC_AUTH;
     public CERTIFICATE = CREDENTIAL_TYPE.CERTIFICATE;
     public AUTHORIZATION_CODE = CREDENTIAL_TYPE.AUTHORIZATION_CODE;
@@ -44,24 +45,18 @@ export class CuCredentialComponent implements OnInit {
     public FIREBASE = CREDENTIAL_TYPE.FIREBASE;
     public FTP = CREDENTIAL_TYPE.FTP;
 
-    public loading: boolean = false;
+    public sessionUser: AuthResponse;
     public credentialForm: FormGroup;
-
     public CREDENTIAL_TYPE: ILookups;
     public APPLICATION_STATUS: ILookups;
-    public sessionUser: AuthResponse;
 
     constructor(private fb: FormBuilder,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private credentailService: CredentailService,
         private drawerRef: NzDrawerRef<void>,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit() {
@@ -252,120 +247,83 @@ export class CuCredentialComponent implements OnInit {
     }
 
     public fetchCredentialById(data: any): void {
-        this.spinnerService.show();
         let payload = {
             id: data.id,
             sessionUser: {
                 username: this.sessionUser.username
             }
         }
-        this.credentailService.fetchCredentialById(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.credentailService.fetchCredentialById(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    response = response.data;
+                    this.credentialForm = this.fb.group({
+                        id: [response?.id, Validators.required],
+                        name: [response?.name, Validators.required],
+                        description: [response?.description, Validators.required],
+                        type: [response?.type?.lookupCode, Validators.required],
+                        status: [response?.status?.lookupCode, [Validators.required]],
+                    });
+                    if (response?.type?.lookupCode === CREDENTIAL_TYPE.BASIC_AUTH) {
+                        this.editBasicAuth(response?.content);
+                    } else if (response?.type?.lookupCode === CREDENTIAL_TYPE.CERTIFICATE) {
+                        this.editCertificate(response?.content);
+                    } else if (response?.type?.lookupCode === CREDENTIAL_TYPE.AUTHORIZATION_CODE) {
+                        this.editAuthorizationCode(response?.content);
+                    } else if (response?.type?.lookupCode === CREDENTIAL_TYPE.AWS_AUTH) {
+                        this.editAwsAuth(response?.content);
+                    } else if (response?.type?.lookupCode === CREDENTIAL_TYPE.FIREBASE) {
+                        this.editFirebase(response?.content);
+                    } else if (response?.type?.lookupCode === CREDENTIAL_TYPE.FTP) {
+                        this.editFtp(response?.content);
+                    }
                 }
-                response = response.data;
-                this.credentialForm = this.fb.group({
-                    id: [response?.id, Validators.required],
-                    name: [response?.name, Validators.required],
-                    description: [response?.description, Validators.required],
-                    type: [response?.type?.lookupCode, Validators.required],
-                    status: [response?.status?.lookupCode, [Validators.required]],
-                });
-                if (response?.type?.lookupCode === CREDENTIAL_TYPE.BASIC_AUTH) {
-                    this.editBasicAuth(response?.content);
-                } else if (response?.type?.lookupCode === CREDENTIAL_TYPE.CERTIFICATE) {
-                    this.editCertificate(response?.content);
-                } else if (response?.type?.lookupCode === CREDENTIAL_TYPE.AUTHORIZATION_CODE) {
-                    this.editAuthorizationCode(response?.content);
-                } else if (response?.type?.lookupCode === CREDENTIAL_TYPE.AWS_AUTH) {
-                    this.editAwsAuth(response?.content);
-                } else if (response?.type?.lookupCode === CREDENTIAL_TYPE.FIREBASE) {
-                    this.editFirebase(response?.content);
-                } else if (response?.type?.lookupCode === CREDENTIAL_TYPE.FTP) {
-                    this.editFtp(response?.content);
-                }
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
     }
 
     public onSubmit(): void {
+        if (this.credentialForm.invalid) {
+            return;
+        }
+        let payload = {
+            ...this.credentialForm.value,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        }
         if (this.actionType === ActionType.ADD) {
-            this.addCredential();
+            this.addCredential(payload);
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateCredential();
+            this.updateCredential(payload);
         }
     }
 
-    public addCredential(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.credentialForm.invalid) {
-            this.spinnerService.hide();
+    public addCredential(payload: any): void {
+        this.credentailService.addCredential(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }
+            ));
+    }
+
+    public updateCredential(payload: any): void {
+        this.credentailService.updateCredential(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }
+            ));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
-        let payload = {
-            ...this.credentialForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        }
-        this.credentailService.addCredential(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.closeDrawer();
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public updateCredential(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.credentialForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
-        let payload = {
-            ...this.credentialForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        }
-        this.credentailService.updateCredential(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.closeDrawer();
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public closeDrawer(): void {
-        this.drawerRef.close();
+        successCallback();
     }
 
 }

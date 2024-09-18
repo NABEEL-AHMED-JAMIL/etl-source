@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
-import {
-    AlertService,
-    SpinnerService
-} from '../../../_helpers';
+import { AlertService } from '../../../_helpers';
 import {
     ApiCode,
     AuthenticationService
@@ -16,7 +13,9 @@ import {
     Validators
 } from '@angular/forms';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'register',
     templateUrl: './register.component.html',
@@ -25,17 +24,13 @@ import {
 export class RegisterComponent implements OnInit {
 
     public profileList: string[] = ['a1.png', 'a2.png', 'a3.png', 'a4.png'];
-    public loading: any = false;
-    public submitted: any = false;
-
     public registerForm!: UntypedFormGroup;
 
     constructor(
         private router: Router,
         private fb: UntypedFormBuilder,
-        private authenticationService: AuthenticationService,
-        private spinnerService: SpinnerService,
-        private alertService: AlertService) {
+        private alertService: AlertService,
+        private authenticationService: AuthenticationService) {
     }
 
     ngOnInit() {
@@ -76,8 +71,6 @@ export class RegisterComponent implements OnInit {
     };
 
     public onSubmit(): any {
-        this.spinnerService.show();
-        this.submitted = true;
         // stop here if form is invalid
         if (this.registerForm.invalid) {
             Object.values(this.registerForm.controls)
@@ -87,28 +80,23 @@ export class RegisterComponent implements OnInit {
                         control.updateValueAndValidity({ onlySelf: true });
                     }
                 });
-            this.spinnerService.hide();
             return;
         }
-        this.loading = true;
-        this.authenticationService.signupAppUser(this.registerForm.getRawValue())
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.submitted = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.authenticationService.signupAppUser(this.registerForm.getRawValue()).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.router.navigate(['/login']);
                 }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.router.navigate(['/login']);
-            }, (response: any) => {
-                this.loading = false;
-                this.submitted = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

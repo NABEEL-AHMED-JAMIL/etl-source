@@ -4,7 +4,6 @@ import { first } from 'rxjs';
 import {
     AlertService,
     CommomService,
-    SpinnerService
 } from 'src/app/_helpers';
 import {
     ApiCode,
@@ -16,7 +15,9 @@ import {
     ActionType
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-ebu-crose-table',
     templateUrl: './ebu-crose-table.component.html',
@@ -24,99 +25,24 @@ import {
 })
 export class EBUCroseTableComponent implements OnInit {
 
+    @Input()
+    public eventBridge: IEventBridge;
+
     public startDate: any;
     public endDate: any;
     public searchDetails: any;
     public sessionUser: AuthResponse;
-
-    @Input()
-    public eventBridge: IEventBridge;
-
-    public eventBridgeLinkUserTable: IStaticTable = {
-        tableId: 'eventBridge_link_user_id',
-        title: 'Event Bridge Link User',
-        bordered: true,
-        checkbox: false,
-        enableAction: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'fullName',
-                header: 'Name',
-                type: 'data'
-            },
-            {
-                field: 'email',
-                header: 'Email',
-                type: 'data'
-            },
-            {
-                field: 'username',
-                header: 'Username',
-                type: 'data'
-            },
-            {
-                field: 'profile',
-                header: 'Profile',
-                type: 'combine',
-                subfield: ['description']
-            },
-            {
-                field: 'tokenId',
-                header: 'TokenId',
-                type: 'data'
-            },
-            {
-                field: 'expireTime',
-                header: 'Expire Time',
-                type: 'date'
-            },
-            {
-                field: 'linkStatus',
-                header: 'Status',
-                type: 'tag'
-            }
-        ],
-        actionType: [
-            {
-                type: 'download',
-                color: '#11315f',
-                spin: false,
-                tooltipTitle: 'Download',
-                action: ActionType.DOWNLOAD
-            },
-            {
-                type: 'sync',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'Gernate Token',
-                action: ActionType.GEN_TOKEN
-            }
-        ]
-    };
+    public eventBridgeLinkUserTable = this.initStaticTable();
 
     constructor(
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
-        private evenBridgeService: EvenBridgeService,
         private commomService: CommomService,
         private modalService: NzModalService,
+        private evenBridgeService: EvenBridgeService,
         private authenticationService: AuthenticationService) {
-            this.endDate = this.commomService.getCurrentDate();
-            this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
-            this.authenticationService.currentUser
-                .subscribe(currentUser => {
-                    this.sessionUser = currentUser;
-                });
+        this.endDate = this.commomService.getCurrentDate();
+        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -127,21 +53,78 @@ export class EBUCroseTableComponent implements OnInit {
         });
     }
 
-    public fetchLinkEventBridgeWitUser(payload: any): any {
-        this.spinnerService.show();
-        this.evenBridgeService.fetchLinkEventBridgeWitUser(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+    private initStaticTable(): IStaticTable {
+        return {
+            tableId: 'eventBridge_link_user_id',
+            title: 'Event Bridge Link User',
+            bordered: true,
+            checkbox: false,
+            enableAction: true,
+            size: 'small',
+            headerButton: [
+                {
+                    type: 'reload',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Refresh',
+                    action: ActionType.RE_FRESH
                 }
-                this.eventBridgeLinkUserTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);;
-            });
+            ],
+            dataColumn: [
+                {
+                    field: 'fullName',
+                    header: 'Name',
+                    type: 'data'
+                },
+                {
+                    field: 'email',
+                    header: 'Email',
+                    type: 'data'
+                },
+                {
+                    field: 'username',
+                    header: 'Username',
+                    type: 'data'
+                },
+                {
+                    field: 'profile',
+                    header: 'Profile',
+                    type: 'combine',
+                    subfield: ['description']
+                },
+                {
+                    field: 'tokenId',
+                    header: 'TokenId',
+                    type: 'data'
+                },
+                {
+                    field: 'expireTime',
+                    header: 'Expire Time',
+                    type: 'date'
+                },
+                {
+                    field: 'linkStatus',
+                    header: 'Status',
+                    type: 'tag'
+                }
+            ],
+            actionType: [
+                {
+                    type: 'download',
+                    color: '#11315f',
+                    spin: false,
+                    tooltipTitle: 'Download',
+                    action: ActionType.DOWNLOAD
+                },
+                {
+                    type: 'sync',
+                    color: 'orange',
+                    spin: false,
+                    tooltipTitle: 'Gernate Token',
+                    action: ActionType.GEN_TOKEN
+                }
+            ]
+        }
     }
 
     public buttonActionReciver(payload: any): void {
@@ -155,28 +138,18 @@ export class EBUCroseTableComponent implements OnInit {
     }
 
     public enableActionReciver(payload: any): void {
-        this.spinnerService.show();
         this.evenBridgeService.linkEventBridgeWithUser({
             id: this.eventBridge.id,
             appUserId: payload.id,
             linked: payload.linked
-        })
-        .pipe(first())
-        .subscribe((response: any) => {
-            this.spinnerService.hide();
-            if (response.status === ApiCode.ERROR) {
-                payload.linked = !payload.linked;
-                this.alertService.showError(response.message, ApiCode.ERROR);
-                return;
+        }).pipe(first())
+        .subscribe((response: any) => 
+            this.handleApiResponse(response, () => {
+                payload.tokenId = response.data.tokenId;
+                payload.expireTime = response.data.expireTime;
+                payload.accessToken = response.data.accessToken;
             }
-            // if deletein
-            payload.tokenId = response.data.tokenId;
-            payload.expireTime = response.data.expireTime;
-            payload.accessToken = response.data.accessToken;
-        }, (response: any) => {
-            this.spinnerService.hide();
-            this.alertService.showError(response.error.message, ApiCode.ERROR);;
-        });
+        ));
     }
 
     public tableActionReciver(payload: any): void {
@@ -203,25 +176,26 @@ export class EBUCroseTableComponent implements OnInit {
         }
     }
 
+    public fetchLinkEventBridgeWitUser(payload: any): any {
+        this.evenBridgeService.fetchLinkEventBridgeWitUser(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.eventBridgeLinkUserTable.dataSource = response.data;
+                }
+            ));
+    }
+
     public genEventBridgeToken(payload: any): void {
-        this.spinnerService.show();
         this.evenBridgeService.genEventBridgeToken({
             tokenId: payload.data.tokenId
-        })
-        .pipe(first())
-        .subscribe((response: any) => {
-            this.spinnerService.hide();
-            if (response.status === ApiCode.ERROR) {
-                this.alertService.showError(response.message, ApiCode.ERROR);
-                return;
+        }).pipe(first())
+        .subscribe((response: any) => 
+            this.handleApiResponse(response, () => {
+                payload.data.tokenId = response.data.tokenId;
+                payload.data.expireTime = response.data.expireTime;
+                payload.data.accessToken = response.data.accessToken;
             }
-            payload.data.tokenId = response.data.tokenId;
-            payload.data.expireTime = response.data.expireTime;
-            payload.data.accessToken = response.data.accessToken;
-        }, (response: any) => {
-            this.spinnerService.hide();
-            this.alertService.showError(response.error.message, ApiCode.ERROR);;
-        });
+        ));
     }
 
     public filterActionReciver(payload: any): void {
@@ -232,6 +206,14 @@ export class EBUCroseTableComponent implements OnInit {
             endDate: this.endDate,
             id: this.eventBridge.id
         });
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

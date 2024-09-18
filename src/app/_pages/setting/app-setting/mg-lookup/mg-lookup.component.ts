@@ -22,11 +22,13 @@ import {
 } from '../../../../_shared';
 import {
     AlertService,
-    SpinnerService,
     CommomService
 } from '../../../../_helpers';
 
 
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-mg-lookup',
     templateUrl: './mg-lookup.component.html',
@@ -39,7 +41,7 @@ export class MGLookupComponent implements OnInit {
     public lookupId: any;
     public lookupAction: ActionType;
     public parentLookupDate: ILookupData;
-    public lookupTable: IStaticTable = this.initializeTable();;
+    public lookupTable: IStaticTable = this.initStaticTable();;
 
     constructor(private router: Router,
         private route: ActivatedRoute,
@@ -48,27 +50,23 @@ export class MGLookupComponent implements OnInit {
         private drawerService: NzDrawerService,
         private lookupService: LookupService,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private commomService: CommomService,
         private authenticationService: AuthenticationService) {
-            this.authenticationService.currentUser
-                .subscribe(currentUser => {
-                    this.sessionUser = currentUser;
-                });
-            this.route.data.subscribe((data: any) => {
-                this.isParent = data.parent;
-                if (!this.isParent) {
-                    this.route.queryParams.subscribe(params => {
-                        this.lookupId = params['lookupId'];
-                        this.fetchSubLookupDataByParentLookupDataId({
-                            sessionUser: {
-                                username: this.sessionUser.username
-                            },
-                            parentLookupId: this.lookupId
-                        });
+        this.sessionUser = this.authenticationService.currentUserValue;
+        this.route.data.subscribe((data: any) => {
+            this.isParent = data.parent;
+            if (!this.isParent) {
+                this.route.queryParams.subscribe(params => {
+                    this.lookupId = params['lookupId'];
+                    this.fetchSubLookupDataByParentLookupDataId({
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        },
+                        parentLookupId: this.lookupId
                     });
-                }
-            });
+                });
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -81,7 +79,7 @@ export class MGLookupComponent implements OnInit {
         }
     }
 
-    private initializeTable(): IStaticTable {
+    private initStaticTable(): IStaticTable {
         return {
             tableId: 'lookup_id',
             title: 'Mg Lookup',
@@ -282,10 +280,10 @@ export class MGLookupComponent implements OnInit {
                 });
             } else {
                 this.fetchSubLookupDataByParentLookupDataId({
+                    parentLookupId: this.lookupId,
                     sessionUser: {
                         username: this.sessionUser.username
-                    },
-                    parentLookupId: this.lookupId
+                    }
                 });
             }
         });
@@ -323,112 +321,92 @@ export class MGLookupComponent implements OnInit {
 
     // fetch all lookup
     public findAllParentLookupByUsername(payload: any): any {
-        this.spinnerService.show();
-        this.lookupService.findAllParentLookupByUsername(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.lookupTable.dataSource = response.data;
-                this.lookupTable.actionType = [
-                    {
-                        type: 'form',
-                        color: 'green',
-                        spin: false,
-                        tooltipTitle: 'Edit',
-                        action: ActionType.EDIT
-                    },
-                    {
-                        type: 'plus-square',
-                        color: 'blue',
-                        spin: false,
-                        tooltipTitle: 'Sub Lookup',
-                        action: ActionType.SUBNODE
-                    }
-                ];
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.lookupService.findAllParentLookupByUsername(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.lookupTable.dataSource = response.data;
+                    this.lookupTable.actionType = [
+                        {
+                            type: 'form',
+                            color: 'green',
+                            spin: false,
+                            tooltipTitle: 'Edit',
+                            action: ActionType.EDIT
+                        },
+                        {
+                            type: 'plus-square',
+                            color: 'blue',
+                            spin: false,
+                            tooltipTitle: 'Sub Lookup',
+                            action: ActionType.SUBNODE
+                        }
+                    ];
+                })
+            );
     }
     
     public fetchSubLookupDataByParentLookupDataId(payload: any): void {
-        this.spinnerService.show();
-        this.lookupService.fetchSubLookupDataByParentLookupDataId(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response?.message, ApiCode.ERROR);
-                    return;
-                }
-                // parent lookup date to show the parent detail
-                this.parentLookupDate = response?.data.PARENT_LOOKUP_DATA;
-                this.parentLookupDate.lookupChildren = response?.data.SUB_LOOKUP_DATA;
-                this.lookupTable.dataSource = this.parentLookupDate.lookupChildren;
-                this.lookupTable.actionType = [
-                    {
-                        type: 'form',
-                        color: 'green',
-                        spin: false,
-                        tooltipTitle: 'Edit',
-                        action: ActionType.EDIT
-                    },
-                    {
-                        type: 'delete',
-                        color: 'red',
-                        spin: false,
-                        tooltipTitle: 'Delete',
-                        action: ActionType.DELETE
-                    }
-                ];
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.lookupService.fetchSubLookupDataByParentLookupDataId(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    // parent lookup date to show the parent detail
+                    this.parentLookupDate = response?.data.PARENT_LOOKUP_DATA;
+                    this.parentLookupDate.lookupChildren = response?.data.SUB_LOOKUP_DATA;
+                    this.lookupTable.dataSource = this.parentLookupDate.lookupChildren;
+                    this.lookupTable.actionType = [
+                        {
+                            type: 'form',
+                            color: 'green',
+                            spin: false,
+                            tooltipTitle: 'Edit',
+                            action: ActionType.EDIT
+                        },
+                        {
+                            type: 'delete',
+                            color: 'red',
+                            spin: false,
+                            tooltipTitle: 'Delete',
+                            action: ActionType.DELETE
+                        }
+                    ];
+                })
+            );
     }
     
     public downloadLookupData(payload: any): void {
-        this.spinnerService.show();
-        this.lookupService.downloadLookupData(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.commomService.downLoadFile(response);
-                this.spinnerService.hide();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.lookupService.downloadLookupData(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.commomService.downLoadFile(response);
+                }
+            ));
     }
     
     public deleteLookupData(payload: any): void {
-        this.spinnerService.show();
-        this.lookupService.deleteLookupData(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchSubLookupDataByParentLookupDataId({
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    },
-                    parentLookupId: this.lookupId
-                });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.lookupService.deleteLookupData(payload).pipe(first())
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.fetchSubLookupDataByParentLookupDataId({
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        },
+                        parentLookupId: this.lookupId
+                    });
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+        );
     }
 
     public onBack(): void {
         this.location.back();
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

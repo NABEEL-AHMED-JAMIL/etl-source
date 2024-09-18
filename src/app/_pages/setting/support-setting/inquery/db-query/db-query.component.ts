@@ -7,7 +7,6 @@ import {
 import { first } from 'rxjs';
 import {
     AlertService,
-    SpinnerService,
     CommomService
 } from '../../../../../_helpers';
 import {
@@ -23,7 +22,9 @@ import {
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { QueryInquiryComponent } from 'src/app/_pages';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-db-query',
     templateUrl: './db-query.component.html',
@@ -34,7 +35,6 @@ export class DBQueryComponent implements OnInit {
     // search detail
     public searchDetails: any;
     public sessionUser: AuthResponse;
-    public sessionUserRoles: any;
     public tableQueryForm!: UntypedFormGroup;
     // query response
     public queryResponse: IQuery;
@@ -49,23 +49,18 @@ export class DBQueryComponent implements OnInit {
         private alertService: AlertService,
         private drawerService: NzDrawerService,
         private commomService: CommomService,
-        private spinnerService: SpinnerService,
         private settingService: SettingService,
         private authenticationService: AuthenticationService) {
-            this.authenticationService.currentUser
-                .subscribe(currentUser => {
-                    this.sessionUser = currentUser;
-                    this.sessionUserRoles = currentUser.roles;
-                    if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
-                        this.isSuperAdmin = true;
-                        this.selectedUser = this.sessionUser.username;
-                    }
-                });
+            this.sessionUser = this.authenticationService.currentUserValue;
+            if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                this.isSuperAdmin = true;
+                this.selectedUser = this.sessionUser.username;
+            }
     }
 
     ngOnInit(): void {
         this.tableQueryFormInit();
-        if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+        if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
             this.fetchAllQueryInquiryAccessUser();
         }
         this.fetchAllQueryInquiry({});
@@ -73,14 +68,12 @@ export class DBQueryComponent implements OnInit {
 
     public onSelectionUserChange(): void {
         // Handle the selection change here
-        this.spinnerService.show();
         let selectedUser = this.selectedUser ? this.selectedUser : '';
         this.selectedQueryInquiry = '';
         this.queryResponse = undefined;
         this.tableQueryForm = this.fb.group({
             query: [this.selectedQueryInquiry, Validators.required]
         });
-        this.spinnerService.hide();
         if (selectedUser) {
             this.fetchAllQueryInquiry({
                 usernames: [selectedUser]
@@ -92,13 +85,11 @@ export class DBQueryComponent implements OnInit {
 
     public onSelectionQueryInquiryChange(): void {
         // Handle the selection change here
-        this.spinnerService.show();
         let query = this.selectedQueryInquiry ? this.selectedQueryInquiry?.query: '';
         this.queryResponse = undefined;
         this.tableQueryForm = this.fb.group({
             query: [query, Validators.required]
         });
-        this.spinnerService.hide();
     }
 
     public openQueryInquiry(): void {
@@ -112,7 +103,7 @@ export class DBQueryComponent implements OnInit {
         });
         drawerRef.afterClose
         .subscribe(data => {
-            if (this.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+            if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
                 this.fetchAllQueryInquiryAccessUser();
             }
             this.fetchAllQueryInquiry({});
@@ -120,77 +111,66 @@ export class DBQueryComponent implements OnInit {
     }
 
     public tableQueryFormInit(): any {
-        this.spinnerService.show();
         this.tableQueryForm = this.fb.group({
             query: ['', Validators.required]
         });
-        this.spinnerService.hide();
     }
 
     public clearResult(): any {
-        this.spinnerService.show();
         this.queryResponse = undefined;
         this.selectedQueryInquiry = '';
-        this.spinnerService.hide();
     }
 
     public dynamicQueryResponse(): void {
-        this.spinnerService.show();
         if (this.tableQueryForm.invalid) {
-            this.spinnerService.hide();
             return;
         }
         this.settingService.dynamicQueryResponse(this.tableQueryForm.value).pipe(first())
-            .subscribe((response: any) => this.handleApiResponse(response, () => {
-                this.queryResponse = response.data;
-            }), (response: any) => this.handleError(response));
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.queryResponse = response.data;
+                })
+            );
     }
 
     public exportExcel(): void {
-        this.spinnerService.show();
         this.settingService.downloadDynamicQueryFile(this.tableQueryForm.value).pipe(first())
-            .subscribe((response: any) => this.handleApiResponse(response, () => {
-                this.commomService.downLoadFile(response);
-            }), (response: any) => this.handleError(response));
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.commomService.downLoadFile(response);
+                })
+            );
     }
 
     public fetchAllQueryInquiry(payload: any): void {
-        this.spinnerService.show();
         this.settingService.fetchAllQueryInquiry(payload).pipe(first())
-            .subscribe((response: any) => this.handleApiResponse(response, () => {
-                this.queryInquirys = response.data;
-            }), (response: any) => this.handleError(response));
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.queryInquirys = response.data;
+                })
+            );
     }
 
     public fetchAllQueryInquiryAccessUser(): void {
-        this.spinnerService.show();
         this.settingService.fetchAllQueryInquiryAccessUser().pipe(first())
-            .subscribe((response: any) => this.handleApiResponse(response, () => {
-                this.accessUserList = response.data.map((user: any) => {
-                    return {
-                        name: `${user.fullname} & Querys [${user.count}]`,
-                        value: user.username
-                    };
-                });
-            }), (response: any) => this.handleError(response));
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.accessUserList = response.data.map((user: any) => {
+                        return {
+                            name: `${user.fullname} & Querys [${user.count}]`,
+                            value: user.username
+                        };
+                    });
+                })
+            );
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
-        this.spinnerService.hide();
         if (response.status === ApiCode.ERROR) {
             this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
         successCallback();
-    }
-    
-    private handleError(response: any): void {
-        this.spinnerService.hide();
-        this.alertService.showError(response.error.message, ApiCode.ERROR);
-    }
-
-    public hasRoleAccess(userRole: any): boolean {
-        return this.sessionUserRoles.some((role: any) => userRole.includes(role));
     }
 
 }

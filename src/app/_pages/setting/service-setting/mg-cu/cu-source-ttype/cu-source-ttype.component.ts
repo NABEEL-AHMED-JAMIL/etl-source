@@ -9,7 +9,6 @@ import {
 import {
     AlertService,
     CommomService,
-    SpinnerService
 } from 'src/app/_helpers';
 import {
     APPLICATION_STATUS,
@@ -29,7 +28,9 @@ import {
     TASK_TYPE
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'cu-source-ttype',
     templateUrl: 'cu-source-ttype.component.html',
@@ -59,7 +60,6 @@ export class CuSourceTTypeComponent implements OnInit {
     public TASK_TYPE: ILookups;
     public APPLICATION_STATUS: ILookups;
     public REQUEST_METHOD: ILookups;
-
     public credentials: ICredential[] = [];
 
     public sttForm: FormGroup;
@@ -69,15 +69,11 @@ export class CuSourceTTypeComponent implements OnInit {
         public commomService: CommomService,
         private drawerRef: NzDrawerRef<void>,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private credentailService: CredentailService,
         private sourceTaskTypeService: SourceTaskTypeService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit() {
@@ -110,7 +106,7 @@ export class CuSourceTTypeComponent implements OnInit {
         } else if (this.actionType === ActionType.EDIT) {
             this.selectedTaskType = this.editPayload.taskType.lookupCode;
             this.sttForm = this.fb.group({
-                id: [this.editPayload.id, [Validators.required]],
+                uuid: [this.editPayload.uuid, [Validators.required]],
                 serviceName: [this.editPayload.serviceName, [Validators.required]],
                 description: [this.editPayload.description, [Validators.required]],
                 status: [this.editPayload.status.lookupCode, [Validators.required]],
@@ -128,7 +124,7 @@ export class CuSourceTTypeComponent implements OnInit {
     }
 
     // convenience getter for easy access to form fields
-    get f() {
+    get stt() {
         return this.sttForm.controls;
     }
 
@@ -138,33 +134,6 @@ export class CuSourceTTypeComponent implements OnInit {
 
     get apiTaskType() {
         return this.sttForm.get('apiTaskType');
-    }
-
-    public fetchAllCredentialByType(): any {
-        this.spinnerService.show();
-        let payload = {
-            sessionUser: {
-                username: this.sessionUser.username
-            },
-            types: [
-                CREDENTIAL_TYPE.BASIC_AUTH,
-                CREDENTIAL_TYPE.AUTHORIZATION_CODE,
-                CREDENTIAL_TYPE.AWS_AUTH
-            ]
-        }
-        this.credentailService.fetchAllCredentialByType(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.credentials = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
     }
 
     public onTaskTypeSelected(event: any): void {
@@ -229,71 +198,67 @@ export class CuSourceTTypeComponent implements OnInit {
     }
 
     public onSubmit(): void {
+        if (this.sttForm.invalid) {
+            return;
+        }
+        let payload = {
+            ...this.sttForm.getRawValue(),
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        }
         if (this.actionType === ActionType.ADD) {
-            this.addSTT();
+            this.addSTT(payload);
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateSTT();
+            this.updateSTT(payload);
         }
     }
 
-    public addSTT(): void {
-        this.spinnerService.show();
-        if (this.sttForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
+    public addSTT(payload: any): void {
+        this.sourceTaskTypeService.addSTT(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                })
+            );
+    }
+
+    public updateSTT(payload: any): void {
+        this.sourceTaskTypeService.updateSTT(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                })
+            );
+    }
+
+    public fetchAllCredentialByType(): any {
         let payload = {
-            ...this.sttForm.getRawValue(),
             sessionUser: {
                 username: this.sessionUser.username
-            }
+            },
+            types: [
+                CREDENTIAL_TYPE.BASIC_AUTH,
+                CREDENTIAL_TYPE.AUTHORIZATION_CODE,
+                CREDENTIAL_TYPE.AWS_AUTH
+            ]
         }
-        this.sourceTaskTypeService.addSTT(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.closeDrawer();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.credentailService.fetchAllCredentialByType(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.credentials = response.data;
+                })
+            );
     }
 
-    public updateSTT(): void {
-        this.spinnerService.show();
-        if (this.sttForm.invalid) {
-            this.spinnerService.hide();
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
-        let payload = {
-            ...this.sttForm.getRawValue(),
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        }
-        this.sourceTaskTypeService.updateSTT(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.closeDrawer();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public closeDrawer(): void {
-        this.drawerRef.close();
+        successCallback();
     }
 
 }

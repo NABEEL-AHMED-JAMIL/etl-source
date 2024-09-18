@@ -22,6 +22,9 @@ import {
 } from 'src/app/_shared';
 
 
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-mg-org',
     templateUrl: './mg-org.component.html',

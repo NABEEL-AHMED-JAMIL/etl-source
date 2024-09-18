@@ -5,8 +5,7 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import {
     AlertService,
-    CommomService,
-    SpinnerService
+    CommomService
 } from 'src/app/_helpers';
 import {
     APPLICATION_STATUS,
@@ -32,6 +31,7 @@ export class MgReportComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
+    public sessionUser: AuthResponse;
     public setOfCheckedId = new Set<any>();
     public reportSettingTable: IStaticTable = {
         tableId: 'report_id',
@@ -194,23 +194,17 @@ export class MgReportComponent implements OnInit {
         ]
     };
 
-    public sessionUser: AuthResponse;
-
     constructor(
         private router: Router,
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
         private alertService: AlertService,
         private commomService: CommomService,
-        private spinnerService: SpinnerService,
         private reportSettingService: ReportSettingService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
         this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -221,48 +215,6 @@ export class MgReportComponent implements OnInit {
                 username: this.sessionUser.username
             }
         });
-    }
-    
-    // fetch all lookup
-    public fetchAllReportSetting(payload: any): any {
-        this.spinnerService.show();
-        this.reportSettingService.fetchAllReportSetting(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.reportSettingTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public deleteReportSettingById(payload: any): void {
-        this.spinnerService.show();
-        this.reportSettingService.deleteReportSettingById(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllReportSetting({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
     }
 
     public tableActionReciver(payload: any): void {
@@ -359,7 +311,8 @@ export class MgReportComponent implements OnInit {
                 editPayload: editPayload?.data
             }
         });
-        drawerRef.afterClose.subscribe(data => {
+        drawerRef.afterClose
+        .subscribe(data => {
             this.fetchAllReportSetting({
                 startDate: this.startDate,
                 endDate: this.endDate,
@@ -370,29 +323,55 @@ export class MgReportComponent implements OnInit {
         });
     }
 
+     // fetch all lookup
+     public fetchAllReportSetting(payload: any): any {
+        this.reportSettingService.fetchAllReportSetting(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.reportSettingTable.dataSource = response.data;
+                })
+            );
+    }
+
+    public deleteReportSettingById(payload: any): void {
+        this.reportSettingService.deleteReportSettingById(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchAllReportSetting({
+                        startDate: this.startDate,
+                        endDate: this.endDate,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
+    }
+
     public deleteAllReportSetting(payload: any): void {
-        this.spinnerService.show();
-        this.reportSettingService.deleteAllReportSetting(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllReportSetting({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-                this.setOfCheckedId = new Set<any>();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.reportSettingService.deleteAllReportSetting(payload).pipe(first())
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.fetchAllReportSetting({
+                        startDate: this.startDate,
+                        endDate: this.endDate,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                    this.setOfCheckedId = new Set<any>();
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

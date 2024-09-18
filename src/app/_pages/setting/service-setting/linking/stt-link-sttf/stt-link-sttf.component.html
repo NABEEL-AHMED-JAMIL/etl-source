@@ -4,12 +4,8 @@
             <span nz-icon nzType="link" nzTheme="outline"></span>
             ({{editPayload.id}}) {{editPayload.serviceName}}
         </ng-template>
-        <nz-descriptions-item nzTitle="Task Type" nzSpan="1">
-            {{editPayload.taskType?.lookupValue}}
-        </nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Description" nzSpan="1">
-            {{editPayload.description}}
-        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Task Type" nzSpan="1">{{editPayload.taskType?.lookupValue}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Description" nzSpan="1">{{editPayload.description}}</nz-descriptions-item>
     </nz-descriptions>
     <!-- extra tpl -->
     <ng-template #extraTpl>
@@ -34,19 +30,15 @@
                 <nz-transfer nzShowSearch [nzDataSource]="sttLinkFormLink" [nzOperations]="['To Right', 'To Left']"
                     [nzListStyle]="{ 'width.px': 500, 'height.px': 325 }" [nzRender]="render"
                     (nzChange)="onChange($event)">
-                    <ng-template #render let-item>
-                       [{{ item.description }}] {{ item.title }} 
-                    </ng-template>
+                    <ng-template #render let-item>[{{ item.description }}] {{ item.title }}</ng-template>
                 </nz-transfer>
             </div>
         </nz-tab>
     </nz-tabset>
     <!-- refreshTemplate -->
     <ng-template #refreshTemplate>
-        <button nz-button
-            [nzSize]="'small'"
-            nzType="default"
-            (click)="refresh()">
+        <button nz-button [nzSize]="'small'"
+            nzType="default" (click)="refresh()">
             Refresh
         </button>
     </ng-template>

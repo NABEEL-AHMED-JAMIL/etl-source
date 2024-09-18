@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'view-dashboard',
     templateUrl: './view-dashboard.component.html',

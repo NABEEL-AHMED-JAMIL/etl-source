@@ -9,14 +9,15 @@ import {
 } from '../../../../_shared';
 import {
     AlertService,
-    SpinnerService
 } from '../../../../_helpers';
 import { CUTemplateComponent } from '../../../index';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { first } from 'rxjs';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-mg-template',
     templateUrl: './mg-template.component.html',
@@ -26,26 +27,22 @@ export class MgTemplateComponent implements OnInit {
 
     public sessionUser: AuthResponse;
     public setOfCheckedId = new Set<any>();
-    public templateTable: IStaticTable = this.initializeTable();
+    public templateTable: IStaticTable = this.initStaticTable();
 
     constructor(
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private templateRegService: TemplateRegService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
         this.fetchTemplateReg({});
     }
 
-    private initializeTable(): IStaticTable {
+    private initStaticTable(): IStaticTable {
         return {
             tableId: 'template_id',
             title: 'Mg Template',
@@ -194,44 +191,40 @@ export class MgTemplateComponent implements OnInit {
     }
 
     public fetchTemplateReg(payload: any): any {
-        this.spinnerService.show();
         this.templateRegService.fetchTemplateReg(payload).pipe(first())
-            .subscribe((response: any) => this.handleApiResponse(response, () => {
-                this.templateTable.dataSource = response.data;
-            }), (response: any) => this.handleError(response));
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.templateTable.dataSource = response.data;
+                })
+            );
     }
     
     public deleteTemplateReg(payload: any): void {
-        this.spinnerService.show();
         this.templateRegService.deleteTemplateReg(payload).pipe(first())
-            .subscribe((response: any) => this.handleApiResponse(response, () => {
-                this.fetchTemplateReg({});
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }), (response: any) => this.handleError(response));
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchTemplateReg({});
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
     }
 
     public deleteAllTemplateReg(payload: any): void {
-        this.spinnerService.show();
         this.templateRegService.deleteAllTemplateReg(payload).pipe(first())
-            .subscribe((response: any) => this.handleApiResponse(response, () => {
-                this.fetchTemplateReg({});
-                this.setOfCheckedId = new Set<any>();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }), (response: any) => this.handleError(response));
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchTemplateReg({});
+                    this.setOfCheckedId = new Set<any>();
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
-        this.spinnerService.hide();
         if (response.status === ApiCode.ERROR) {
             this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
         successCallback();
     }
-    
-    private handleError(response: any): void {
-        this.spinnerService.hide();
-        this.alertService.showError(response.error.message, ApiCode.ERROR);
-    }
-
 }

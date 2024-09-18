@@ -1,5 +1,6 @@
 export interface IFrom {
     id?: any;
+    uuid?: any;
     name: any;
     description: any;
     sections?: ISection[];
@@ -7,12 +8,14 @@ export interface IFrom {
 
 export interface ISection {
     id?: any;
+    uuid?: any;
     name?: any;
     controls?: IControlFiled[];
 }
 
 export interface IControlFiled {
     id?: any;
+    uuid?: any;
     type?: any;
     label?: any;
     name?: any;

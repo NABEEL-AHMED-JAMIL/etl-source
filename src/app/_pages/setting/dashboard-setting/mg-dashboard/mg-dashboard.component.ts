@@ -5,7 +5,6 @@ import { first } from 'rxjs';
 import {
     AlertService,
     CommomService,
-    SpinnerService
 } from 'src/app/_helpers';
 import {
     ActionType,
@@ -19,7 +18,9 @@ import {
 import { Router } from '@angular/router';
 import { CUDashboardComponent } from 'src/app/_pages';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-mg-dashboard',
     templateUrl: './mg-dashboard.component.html',
@@ -29,111 +30,9 @@ export class MgDashboardComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
-    public setOfCheckedId = new Set<any>();
     public sessionUser: AuthResponse;
-    public dashboardTable: IStaticTable = {
-        tableId: 'dashboard_id',
-        title: 'Mg Dashboard',
-        bordered: true,
-        checkbox: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'plus-circle',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Add',
-                action: ActionType.ADD
-            },
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'name',
-                header: 'Name',
-                type: 'data'
-            },
-            {
-                field: 'groupType',
-                header: 'Group Type',
-                type: 'tag'
-            },
-            {
-                field: 'boardType',
-                header: 'Board Type',
-                type: 'tag',
-                showImg: true
-            },
-            {
-                field: 'iframe',
-                header: 'Frame',
-                type: 'tag'
-            },
-            {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
-            },
-            {
-                field: 'createdBy',
-                header: 'Created By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'dateUpdated',
-                header: 'Updated',
-                type: 'date'
-            },
-            {
-                field: 'updatedBy',
-                header: 'Updated By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'status',
-                header: 'Status',
-                type: 'tag'
-            }
-        ],
-        actionType: [
-            {
-                type: 'form',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
-                type: 'eye',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'View Report',
-                action: ActionType.VIEW
-            },
-            {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            }
-        ]
-    };
+    public setOfCheckedId = new Set<any>();
+    public dashboardTable: IStaticTable = this.initStaticTable();
 
     constructor(
         private router: Router,
@@ -141,15 +40,11 @@ export class MgDashboardComponent implements OnInit {
         private modalService: NzModalService,
         private alertService: AlertService,
         private commomService: CommomService,
-        private spinnerService: SpinnerService,
         private dashboardService: DashboardService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
         this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -162,46 +57,110 @@ export class MgDashboardComponent implements OnInit {
         });
     }
 
-    // fetch all lookup
-    public fetchAllDashboardSetting(payload: any): any {
-        this.spinnerService.show();
-        this.dashboardService.fetchAllDashboardSetting(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+    private initStaticTable(): IStaticTable {
+        return {
+            tableId: 'dashboard_id',
+            title: 'Mg Dashboard',
+            bordered: true,
+            checkbox: true,
+            size: 'small',
+            headerButton: [
+                {
+                    type: 'plus-circle',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Add',
+                    action: ActionType.ADD
+                },
+                {
+                    type: 'reload',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Refresh',
+                    action: ActionType.RE_FRESH
                 }
-                this.dashboardTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public deleteDashboardSettingById(payload: any): void {
-        this.spinnerService.show();
-        this.dashboardService.deleteDashboardSettingById(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+            ],
+            extraHeaderButton: [
+                {
+                    title: 'Delete All',
+                    type: 'delete',
+                    action: ActionType.DELETE
                 }
-                this.fetchAllDashboardSetting({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ],
+            dataColumn: [
+                {
+                    field: 'name',
+                    header: 'Name',
+                    type: 'data'
+                },
+                {
+                    field: 'groupType',
+                    header: 'Group Type',
+                    type: 'tag'
+                },
+                {
+                    field: 'boardType',
+                    header: 'Board Type',
+                    type: 'tag',
+                    showImg: true
+                },
+                {
+                    field: 'iframe',
+                    header: 'Frame',
+                    type: 'tag'
+                },
+                {
+                    field: 'dateCreated',
+                    header: 'Created',
+                    type: 'date'
+                },
+                {
+                    field: 'createdBy',
+                    header: 'Created By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'dateUpdated',
+                    header: 'Updated',
+                    type: 'date'
+                },
+                {
+                    field: 'updatedBy',
+                    header: 'Updated By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'status',
+                    header: 'Status',
+                    type: 'tag'
+                }
+            ],
+            actionType: [
+                {
+                    type: 'form',
+                    color: 'green',
+                    spin: false,
+                    tooltipTitle: 'Edit',
+                    action: ActionType.EDIT
+                },
+                {
+                    type: 'eye',
+                    color: 'orange',
+                    spin: false,
+                    tooltipTitle: 'View Report',
+                    action: ActionType.VIEW
+                },
+                {
+                    type: 'delete',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Delete',
+                    action: ActionType.DELETE
+                }
+            ]
+        };
     }
 
     public tableActionReciver(payload: any): void {
@@ -305,29 +264,55 @@ export class MgDashboardComponent implements OnInit {
         });
     }
 
+      // fetch all lookup
+      public fetchAllDashboardSetting(payload: any): any {
+        this.dashboardService.fetchAllDashboardSetting(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.dashboardTable.dataSource = response.data;
+                })
+            );
+    }
+
+    public deleteDashboardSettingById(payload: any): void {
+        this.dashboardService.deleteDashboardSettingById(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchAllDashboardSetting({
+                        startDate: this.startDate,
+                        endDate: this.endDate,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
+    }
+
     public deleteAllDashboardSetting(payload: any): void {
-        this.spinnerService.show();
-        this.dashboardService.deleteAllDashboardSetting(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllDashboardSetting({
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    sessionUser: {
-                        username: this.sessionUser.username
-                    }
-                });
-                this.setOfCheckedId = new Set<any>();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.dashboardService.deleteAllDashboardSetting(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchAllDashboardSetting({
+                        startDate: this.startDate,
+                        endDate: this.endDate,
+                        sessionUser: {
+                            username: this.sessionUser.username
+                        }
+                    });
+                    this.setOfCheckedId = new Set<any>();
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }
