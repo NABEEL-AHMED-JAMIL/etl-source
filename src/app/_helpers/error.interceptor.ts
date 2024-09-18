@@ -14,8 +14,12 @@ import { AuthenticationService } from '../_shared';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 
-
-@Injectable({ providedIn: 'root' })
+/**
+ * @author Nabeel Ahmed
+ */
+@Injectable({
+    providedIn: 'root'
+})
 export class ErrorInterceptor implements HttpInterceptor {
 
 
@@ -28,17 +32,14 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(request)
             .pipe(catchError(err => {
                 if ([401, 403].includes(err.status)) {
-                    this.authenticationService.logout()
-                        .pipe(first())
-                        .subscribe(
-                            (data: any) => {
-                                this.storageService.clear();
-                                this.router.navigate(['/login']);
-                            },
-                            (error: any) => {
-                                this.storageService.clear();
-                                this.router.navigate(['/login']);
-                            });
+                    this.authenticationService.logout().pipe(first())
+                        .subscribe((data: any) => {
+                            this.storageService.clear();
+                            this.router.navigate(['/login']);
+                        },(error: any) => {
+                            this.storageService.clear();
+                            this.router.navigate(['/login']);
+                        });
                 }
                 return throwError(err);
             }));

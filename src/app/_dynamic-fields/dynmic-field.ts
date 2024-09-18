@@ -3,6 +3,9 @@ import { IControlFiled, ISection } from "../_shared";
 import { FormControl, FormGroup } from "@angular/forms";
 
 
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     template: ''
   })

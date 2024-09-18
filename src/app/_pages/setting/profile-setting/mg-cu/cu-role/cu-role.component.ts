@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    FormBuilder,
+    FormGroup,
+    Validators
+} from '@angular/forms';
 import { first } from 'rxjs';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import {
@@ -17,10 +21,11 @@ import {
 import {
     AlertService,
     CommomService,
-    SpinnerService
 } from '../../../../../_helpers';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-cu-role',
     templateUrl: './cu-role.component.html',
@@ -33,26 +38,20 @@ export class CURoleComponent implements OnInit {
     @Input()
     public editPayload: IRole;
 
-    public loading: boolean = false;
     public editAction = ActionType.EDIT;
-
-    public roleForm: FormGroup;
     public APPLICATION_STATUS: ILookups;
+    public roleForm: FormGroup;
     public sessionUser: AuthResponse;
 
     constructor(
         private fb: FormBuilder,
         private drawerRef: NzDrawerRef<void>,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private rppService: RPPService,
         public commomService: CommomService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -71,96 +70,60 @@ export class CURoleComponent implements OnInit {
     }
 
     public addLookupForm(): any {
-        this.spinnerService.show();
         this.roleForm = this.fb.group({
             name: ['', Validators.required],
             description: ['', Validators.required]
         });
-        this.spinnerService.hide();
     }
 
     public editLookupForm(): void {
-        this.spinnerService.show();
         this.roleForm = this.fb.group({
-            id: [this.editPayload.id, Validators.required],
+            uuid: [this.editPayload.uuid, Validators.required],
             name: [this.editPayload.name, Validators.required],
             description: [this.editPayload.description, Validators.required],
             status: [this.editPayload.status?.lookupCode, Validators.required]
         });
-        this.spinnerService.hide();
     }
 
     public submit(): void {
+        if (this.roleForm.invalid) {
+            return;
+        }
+        let payload = {
+            ...this.roleForm.value
+        }
         if (this.actionType === ActionType.ADD) {
-            this.addRole();
+            this.addRole(payload);
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateRole();
+            this.updateRole(payload);
         }
     }
 
-    public addRole(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.roleForm.invalid) {
-            this.spinnerService.hide();
+    public addRole(payload: any): void {
+        this.rppService.addRole(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }));
+    }
+
+    public updateRole(payload: any): void {
+        this.rppService.updateRole(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
-        let payload = {
-            ...this.roleForm.value
-        }
-        this.rppService.addRole(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        successCallback();
     }
 
-    public updateRole(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.roleForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
-        let payload = {
-            ...this.roleForm.value
-        }
-        this.rppService.updateRole(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    // convenience getter for easy access to form fields
-    get role() {
-        return this.roleForm.controls;
-    }
-
-    public closeDrawer(): void {
-        this.drawerRef.close();
-    }
 
 }

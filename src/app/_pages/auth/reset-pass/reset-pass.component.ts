@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { AlertService, SpinnerService } from '../../../_helpers';
-import { ApiCode, AuthenticationService } from '../../../_shared';
+import {AlertService } from '../../../_helpers';
+import {
+    ApiCode,
+    AuthenticationService
+} from '../../../_shared';
 import {
     UntypedFormBuilder,
     UntypedFormControl,
@@ -11,7 +14,9 @@ import {
 } from '@angular/forms';
 import jwt_decode from "jwt-decode";
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'reset-pass',
     templateUrl: './reset-pass.component.html',
@@ -19,18 +24,16 @@ import jwt_decode from "jwt-decode";
 })
 export class ResetPassComponent implements OnInit {
 
-    public resetPassForm: UntypedFormGroup;
-    public loading: any = false;
-    public submitted: any = false;
     public tokenPayload: any;
+    public resetPassForm: UntypedFormGroup;
 
-    constructor(private router: Router,
-        private _activatedRoute: ActivatedRoute,
+    constructor(
+        private router: Router,
         private fb: UntypedFormBuilder,
-        private authenticationService: AuthenticationService,
         private alertService: AlertService,
-        private spinnerService: SpinnerService) {
-        this._activatedRoute.queryParamMap
+        private activatedRoute: ActivatedRoute,
+        private authenticationService: AuthenticationService) {
+        this.activatedRoute.queryParamMap
             .subscribe(params => {
                 try {
                     if (!params?.get('token')) {
@@ -49,9 +52,8 @@ export class ResetPassComponent implements OnInit {
 
     ngOnInit() {
         // if the token is not valid show the message and aslo hide redirect to reset password
-        this.spinnerService.hide()
         this.resetPassForm = this.fb.group({
-            id: [this.tokenPayload.id, Validators.required],
+            uuid: [this.tokenPayload.uuid, Validators.required],
             email: [this.tokenPayload.email, Validators.required],
             username: [this.tokenPayload.username, Validators.required],
             newPassword: ['', [Validators.required]],
@@ -75,8 +77,6 @@ export class ResetPassComponent implements OnInit {
     };
 
     public onSubmit(): any {
-        this.spinnerService.show();
-        this.submitted = true;
         // stop here if form is invalid
         if (this.resetPassForm.invalid) {
             Object.values(this.resetPassForm.controls)
@@ -86,35 +86,27 @@ export class ResetPassComponent implements OnInit {
                         control.updateValueAndValidity({ onlySelf: true });
                     }
                 });
-            this.spinnerService.hide();
             return;
         }
-        this.loading = true;
         let payload = {
-            sessionUser: {
-                id: this.resetPassForm.controls['id'].value,
-                email: this.resetPassForm.controls['email'].value,
-                username: this.resetPassForm.controls['username'].value
-            },
+            email: this.resetPassForm.controls['email'].value,
             newPassword: this.resetPassForm.controls['newPassword'].value
         };
         this.authenticationService.resetPassword(payload).pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.submitted = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.router.navigate(['/login']);
                 }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.router.navigate(['/login']);
-            }, (response: any) => {
-                this.loading = false;
-                this.submitted = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

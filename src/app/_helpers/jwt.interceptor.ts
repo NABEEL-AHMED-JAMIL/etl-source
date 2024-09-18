@@ -8,8 +8,12 @@ import {
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../_shared';
 
-
-@Injectable({ providedIn: 'root' })
+/**
+ * @author Nabeel Ahmed
+ */
+@Injectable({
+    providedIn: 'root'
+})
 export class JwtInterceptor implements HttpInterceptor {
 
     constructor(private authenticationService: AuthenticationService) { }

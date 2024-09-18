@@ -7,23 +7,13 @@
                 </nz-avatar>
             </div>
             <div class="ant-list-item-meta-content">
-                <h4 class="ant-list-item-meta-title">
-                    Username : {{sessionUser.username | uppercase}}
-                </h4>
+                <h4 class="ant-list-item-meta-title">Username : {{sessionUser.username | uppercase}}</h4>
                 <div class="ant-list-item-meta-description">
                     <div class="pt-1" style="line-height: 15px;">
-                        <div class="text-muted">
-                            Name : {{sessionUser.firstName}} {{sessionUser.lastName}}
-                        </div>
-                        <div class="text-muted">
-                            Email : {{sessionUser.email}}
-                        </div>
-                        <div class="text-muted">
-                            Profile : {{sessionUser.profile?.description}}
-                        </div>
-                        <div class="text-muted">
-                            IP Address : {{sessionUser.ipAddress}}
-                        </div>
+                        <div class="text-muted">Name : {{sessionUser.firstName}} {{sessionUser.lastName}}</div>
+                        <div class="text-muted">Email : {{sessionUser.email}}</div>
+                        <div class="text-muted">IP Address : {{sessionUser.ipAddress}}</div>
+                        <div class="text-muted">Profile : {{sessionUser.profile?.description}}</div>
                     </div>
                 </div>
             </div>

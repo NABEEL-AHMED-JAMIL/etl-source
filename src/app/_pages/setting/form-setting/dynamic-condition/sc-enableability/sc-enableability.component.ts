@@ -22,7 +22,9 @@ import {
     LOOKUP_TYPE
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-sc-enableability',
     templateUrl: './sc-enableability.component.html',

@@ -15,7 +15,9 @@ import {
 } from 'src/app/_helpers';
 import { first } from 'rxjs';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-ru-crose-table',
     templateUrl: './ru-crose-table.component.html',

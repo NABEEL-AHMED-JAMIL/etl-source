@@ -17,7 +17,9 @@ import {
 import { saveAs } from 'file-saver';
 import { first } from 'rxjs';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-dynamic-payload',
     templateUrl: './dynamic-payload.component.html',

@@ -5,7 +5,6 @@ import { first } from 'rxjs';
 import {
     AlertService,
     CommomService,
-    SpinnerService
 } from 'src/app/_helpers';
 import {
     BatchComponent,
@@ -14,15 +13,15 @@ import {
 } from 'src/app/_pages';
 import {
     ApiCode,
-    AuthResponse,
     IStaticTable,
     ActionType,
-    AuthenticationService,
     EVariableService,
     IEnVariables
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-mg-evariable',
     templateUrl: './mg-evariable.component.html',
@@ -32,124 +31,127 @@ export class MgEVariableComponent implements OnInit {
 
     // evaraible
     public setOfCheckedId = new Set<any>();
-    public eVariableTable: IStaticTable = {
-        tableId: 'variable_id',
-        title: 'Mg E-Variable',
-        bordered: true,
-        checkbox: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'plus-circle',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Add',
-                action: ActionType.ADD
-            },
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            },
-            {
-                type: 'upload',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Upload',
-                action: ActionType.UPLOAD
-            },
-            {
-                type: 'download',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Download',
-                action: ActionType.DOWNLOAD
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'envKey',
-                header: 'Env Key',
-                type: 'data'
-            },
-            {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
-            },
-            {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
-            },
-            {
-                field: 'createdBy',
-                header: 'Created By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'dateUpdated',
-                header: 'Updated',
-                type: 'date'
-            },
-            {
-                field: 'updatedBy',
-                header: 'Updated By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'status',
-                header: 'Status',
-                type: 'tag'
-            }
-        ],
-        actionType: [
-            {
-                type: 'form',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
-                type: 'link',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'Link With User',
-                action: ActionType.LINK
-            },
-            {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            }
-        ]
-    };
+    public eVariableTable = this.initStaticTable();
 
     constructor(
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
         private alertService: AlertService,
         private commomService: CommomService,
-        private spinnerService: SpinnerService,
         private eVariableService: EVariableService) {
     }
 
     ngOnInit(): void {
         this.fetchAllEnVariable({});
+    }
+
+    private initStaticTable(): IStaticTable {
+        return {
+            tableId: 'variable_id',
+            title: 'Mg E-Variable',
+            bordered: true,
+            checkbox: true,
+            size: 'small',
+            headerButton: [
+                {
+                    type: 'plus-circle',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Add',
+                    action: ActionType.ADD
+                },
+                {
+                    type: 'reload',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Refresh',
+                    action: ActionType.RE_FRESH
+                },
+                {
+                    type: 'upload',
+                    color: 'balck',
+                    spin: false,
+                    tooltipTitle: 'Upload',
+                    action: ActionType.UPLOAD
+                },
+                {
+                    type: 'download',
+                    color: 'balck',
+                    spin: false,
+                    tooltipTitle: 'Download',
+                    action: ActionType.DOWNLOAD
+                }
+            ],
+            extraHeaderButton: [
+                {
+                    title: 'Delete All',
+                    type: 'delete',
+                    action: ActionType.DELETE
+                }
+            ],
+            dataColumn: [
+                {
+                    field: 'envKey',
+                    header: 'Env Key',
+                    type: 'data'
+                },
+                {
+                    field: 'description',
+                    header: 'Description',
+                    type: 'data'
+                },
+                {
+                    field: 'dateCreated',
+                    header: 'Created',
+                    type: 'date'
+                },
+                {
+                    field: 'createdBy',
+                    header: 'Created By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'dateUpdated',
+                    header: 'Updated',
+                    type: 'date'
+                },
+                {
+                    field: 'updatedBy',
+                    header: 'Updated By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'status',
+                    header: 'Status',
+                    type: 'tag'
+                }
+            ],
+            actionType: [
+                {
+                    type: 'form',
+                    color: 'green',
+                    spin: false,
+                    tooltipTitle: 'Edit',
+                    action: ActionType.EDIT
+                },
+                {
+                    type: 'link',
+                    color: 'orange',
+                    spin: false,
+                    tooltipTitle: 'Link With User',
+                    action: ActionType.LINK
+                },
+                {
+                    type: 'delete',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Delete',
+                    action: ActionType.DELETE
+                }
+            ]
+        };
     }
 
     public tableActionReciver(payload: any): void {
@@ -165,7 +167,7 @@ export class MgEVariableComponent implements OnInit {
                 },
                 nzFooter: null, // Optional footer
             });
-        }else if (ActionType.DELETE === payload.action) {
+        } else if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
                 nzOkText: 'Ok',
                 nzCancelText: 'Cancel',
@@ -191,17 +193,12 @@ export class MgEVariableComponent implements OnInit {
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchAllEnVariable({});
         } else if (ActionType.DOWNLOAD === payload.action) {
-            this.spinnerService.show();
             this.eVariableService.downloadEnVariable({
                 ids: payload.checked
-            }).pipe(first())
-                .subscribe((response: any) => {
+            }).pipe(first()).subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
                     this.commomService.downLoadFile(response);
-                    this.spinnerService.hide();
-                }, (response: any) => {
-                    this.spinnerService.hide();
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
-                });
+                }));
         } else if (ActionType.UPLOAD === payload.action) {
             payload.action = 'EVariable';
             const drawerRef = this.drawerService.create({
@@ -255,57 +252,41 @@ export class MgEVariableComponent implements OnInit {
     }
 
     public fetchAllEnVariable(payload: any): any {
-        this.spinnerService.show();
-        this.eVariableService.fetchAllEnVariable(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.eVariableService.fetchAllEnVariable(payload).pipe(first())
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.eVariableTable.dataSource = response.data;
                 }
-                this.eVariableTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
     }
 
     public deleteEnVariableById(payload: any): void {
-        this.spinnerService.show();
-        this.eVariableService.deleteEnVariableById(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.eVariableService.deleteEnVariableById(payload).pipe(first())
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.fetchAllEnVariable({});
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 }
-                this.fetchAllEnVariable({});
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
     }
 
     public deleteAllEnVariable(payload: any): void {
-        this.spinnerService.show();
-        this.eVariableService.deleteAllEnVariable(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.eVariableService.deleteAllEnVariable(payload).pipe(first())
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.fetchAllEnVariable({});
+                    this.setOfCheckedId = new Set<any>();
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
                 }
-                this.fetchAllEnVariable({});
-                this.setOfCheckedId = new Set<any>();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

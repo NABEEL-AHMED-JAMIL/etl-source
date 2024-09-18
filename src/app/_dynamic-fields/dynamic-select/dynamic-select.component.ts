@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { DynamicFieldComponent } from '../dynmic-field';
 import { ApiCode, CommomReportService } from 'src/app/_shared';
 import { first } from 'rxjs';
-import { AlertService, SpinnerService } from 'src/app/_helpers';
+import { AlertService } from 'src/app/_helpers';
 
 /**
  * Select | Multi Select
  * */
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'dynamic-select',
     templateUrl: './dynamic-select.component.html',
@@ -17,7 +20,6 @@ export class DynamicSelectComponent extends DynamicFieldComponent implements OnI
 
     constructor(
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private commomReportService: CommomReportService) {
         super();
     }
@@ -29,20 +31,20 @@ export class DynamicSelectComponent extends DynamicFieldComponent implements OnI
     }
 
     public apiLkCall(apiLkValue: any): void {
-        this.spinnerService.show();
-        this.commomReportService.fetchApiLKValue(apiLkValue)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.control.selectMenuOptions = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.commomReportService.fetchApiLKValue(apiLkValue).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.control.selectMenuOptions = response.data;
+                })
+            );
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

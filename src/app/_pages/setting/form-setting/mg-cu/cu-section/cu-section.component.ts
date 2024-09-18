@@ -24,6 +24,9 @@ import {
     LookupService
 } from 'src/app/_shared';
 
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-cu-section',
     templateUrl: './cu-section.component.html',

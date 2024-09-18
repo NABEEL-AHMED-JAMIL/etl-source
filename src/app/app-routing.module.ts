@@ -415,6 +415,9 @@ const routes: Routes = [
     }
 ];
 
+/**
+ * @author Nabeel Ahmed
+ */
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]

@@ -14,7 +14,9 @@ import {
     SpinnerService
 } from '../../../../_helpers';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-pp-crose-table',
     templateUrl: './pp-crose-table.component.html',

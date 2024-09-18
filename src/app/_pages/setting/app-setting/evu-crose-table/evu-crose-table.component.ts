@@ -3,7 +3,6 @@ import { first } from 'rxjs';
 import {
     AlertService,
     CommomService,
-    SpinnerService
 } from 'src/app/_helpers';
 import {
     ActionType,
@@ -17,7 +16,9 @@ import {
 import { EnvVariableValueComponent } from 'src/app/_pages';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-evu-crose-table',
     templateUrl: './evu-crose-table.component.html',
@@ -25,87 +26,24 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 })
 export class EVUCroseTableComponent implements OnInit {
 
+    @Input()
+    public enVariable: IEnVariables;
+
     public startDate: any;
     public endDate: any;
     public searchDetails: any;
     public sessionUser: AuthResponse;
-
-    @Input()
-    public enVariable: IEnVariables;
-    // profile
-    public envLinkUserTable: IStaticTable = {
-        tableId: 'profile_link_user_id',
-        title: 'Profile Link User',
-        bordered: true,
-        checkbox: false,
-        enableAction: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'fullName',
-                header: 'Name',
-                type: 'data'
-            },
-            {
-                field: 'email',
-                header: 'Email',
-                type: 'data'
-            },
-            {
-                field: 'username',
-                header: 'Username',
-                type: 'data'
-            },
-            {
-                field: 'profile',
-                header: 'Profile',
-                type: 'combine',
-                subfield: ['description']
-            },
-            {
-                field: 'envValue',
-                header: 'Env Value',
-                type: 'data',
-            },
-            {
-                field: 'linkStatus',
-                header: 'Link Status',
-                type: 'tag'
-            }
-        ],
-        actionType: [
-            {
-                type: 'form',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            }
-        ]
-    };
+    public envLinkUserTable = this.initStaticTable();
 
     constructor(
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private modalService: NzModalService,
         private commomService: CommomService,
         private eVariableService: EVariableService,
         private authenticationService: AuthenticationService) {
         this.endDate = this.commomService.getCurrentDate();
         this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -116,21 +54,66 @@ export class EVUCroseTableComponent implements OnInit {
         });
     }
 
-    public fetchLinkEVariableWitUser(payload: any): any {
-        this.spinnerService.show();
-        this.eVariableService.fetchLinkEVariableWitUser(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+    private initStaticTable(): IStaticTable {
+        return {
+            tableId: 'profile_link_user_id',
+            title: 'Profile Link User',
+            bordered: true,
+            checkbox: false,
+            enableAction: true,
+            size: 'small',
+            headerButton: [
+                {
+                    type: 'reload',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Refresh',
+                    action: ActionType.RE_FRESH
                 }
-                this.envLinkUserTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);;
-            });
+            ],
+            dataColumn: [
+                {
+                    field: 'fullName',
+                    header: 'Name',
+                    type: 'data'
+                },
+                {
+                    field: 'email',
+                    header: 'Email',
+                    type: 'data'
+                },
+                {
+                    field: 'username',
+                    header: 'Username',
+                    type: 'data'
+                },
+                {
+                    field: 'profile',
+                    header: 'Profile',
+                    type: 'combine',
+                    subfield: ['description']
+                },
+                {
+                    field: 'envValue',
+                    header: 'Env Value',
+                    type: 'data',
+                },
+                {
+                    field: 'linkStatus',
+                    header: 'Link Status',
+                    type: 'tag'
+                }
+            ],
+            actionType: [
+                {
+                    type: 'form',
+                    color: 'green',
+                    spin: false,
+                    tooltipTitle: 'Edit',
+                    action: ActionType.EDIT
+                }
+            ]
+        };
     }
 
     public buttonActionReciver(payload: any): void {
@@ -144,28 +127,20 @@ export class EVUCroseTableComponent implements OnInit {
     }
 
     public enableActionReciver(payload: any): void {
-        this.spinnerService.show();
         this.eVariableService.linkEVariableWithUser({
             envId: this.enVariable.id,
             appUserId: payload.id,
             linked: payload.linked
-        }).pipe(first())
-        .subscribe((response: any) => {
-            this.spinnerService.hide();
-            if (response.status === ApiCode.ERROR) {
-                this.alertService.showError(response.message, ApiCode.ERROR);
-                return;
+        }).pipe(first()).subscribe((response: any) => 
+            this.handleApiResponse(response, () => {
+                if (!payload?.linked) {
+                    payload.envValue = '';
+                } else {
+                    payload.envValue = '';
+                    payload.linkId = response.data.linkId;
+                }
             }
-            if (!payload?.linked) {
-                payload.envValue = '';
-            } else {
-                payload.envValue = '';
-                payload.linkId = response.data.linkId;
-            }
-        }, (response: any) => {
-            this.spinnerService.hide();
-            this.alertService.showError(response.error.message, ApiCode.ERROR);;
-        });
+        ));
     }
 
     public tableActionReciver(payload: any): void {
@@ -187,7 +162,7 @@ export class EVUCroseTableComponent implements OnInit {
                     actionType: payload.action,
                     editPayload: editPayload
                 },
-                nzFooter: null // Set the footer to null to hide it
+                nzFooter: '' // Set the footer to null to hide it
             });
             drawerRef.afterClose.subscribe(data => {
                 this.fetchLinkEVariableWitUser({
@@ -207,6 +182,23 @@ export class EVUCroseTableComponent implements OnInit {
             endDate: this.endDate,
             envId: this.enVariable.id
         });
+    }
+
+    public fetchLinkEVariableWitUser(payload: any): any {
+        this.eVariableService.fetchLinkEVariableWitUser(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.envLinkUserTable.dataSource = response.data;
+                }
+            ));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

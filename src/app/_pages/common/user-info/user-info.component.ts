@@ -2,7 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommomService } from 'src/app/_helpers';
 import { AuthResponse } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-user-info',
     templateUrl: './user-info.component.html',

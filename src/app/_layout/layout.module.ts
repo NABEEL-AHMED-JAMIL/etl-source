@@ -24,6 +24,9 @@ export const APP_COMPONENT = [
     NotifactionActionComponent
 ];
 
+/**
+ * @author Nabeel Ahmed
+ */
 @NgModule({
     imports: [
         RouterModule,

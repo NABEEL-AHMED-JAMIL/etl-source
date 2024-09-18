@@ -10,11 +10,14 @@ import {
 } from '../../_shared';
 import {
     AlertService,
+    CommomService,
     SpinnerService
 } from 'src/app/_helpers';
 import { first } from 'rxjs';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-report-layout',
     templateUrl: './report-layout.component.html',
@@ -23,29 +26,22 @@ import { first } from 'rxjs';
 export class ReportLayoutComponent implements OnInit {
 
     public isCollapsed = false;
-
     public title: any = 'ETL Source R&D 2023';
-    public sessionUser: AuthResponse;
-    public userPermission: any;
-
+    
     public reportList: any[] = [];
     public dashboardList: any[] = [];
+    public sessionUser: AuthResponse;
 
     constructor(
         private router: Router,
         private location: Location,
+        public commomService: CommomService,
         private alertService: AlertService,
         private spinnerService: SpinnerService,
         private dashboardService: DashboardService,
         private reportSettingService: ReportSettingService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService?.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-                if (this.sessionUser) {
-                    this.userPermission = currentUser.profile.permission;
-                }
-            });
+        this.sessionUser = this.authenticationService?.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -64,41 +60,23 @@ export class ReportLayoutComponent implements OnInit {
     // fetch all lookup
     public fetchAllReportByGroup(payload: any): any {
         this.spinnerService.show();
-        this.reportSettingService.fetchAllReportByGroup(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.reportSettingService.fetchAllReportByGroup(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.reportList = response.data;
                 }
-                this.reportList = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
     }
 
     // fetch all lookup
     public fetchAllDashboardSettingByGroup(payload: any): any {
         this.spinnerService.show();
-        this.dashboardService.fetchAllDashboardSettingByGroup(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.dashboardService.fetchAllDashboardSettingByGroup(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.dashboardList = response.data;
                 }
-                this.dashboardList = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public hasPermissionAccess(userProfile: any): boolean {
-        return this.userPermission.some((permission: any) => userProfile.includes(permission));
+            ));
     }
 
     public getReportKeys(): any {
@@ -123,6 +101,15 @@ export class ReportLayoutComponent implements OnInit {
 
     public back(): any {
         this.location.back();
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        this.spinnerService.hide();
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

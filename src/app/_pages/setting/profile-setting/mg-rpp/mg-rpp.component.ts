@@ -29,7 +29,9 @@ import {
     RUCroseTableComponent
 } from 'src/app/_pages';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-mg-rpp',
     templateUrl: './mg-rpp.component.html',

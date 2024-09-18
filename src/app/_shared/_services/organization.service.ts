@@ -1,59 +1,40 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ApiResponse, } from '../index';
+import { ApiResponse, ApiService, } from '../index';
 import { Observable } from 'rxjs';
 import { config } from '../../../environments/environment';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Injectable({
     providedIn: 'root'
 })
 export class OrganizationService {
 
-    constructor(private http: HttpClient) {
+    constructor(private apiService: ApiService) { }
+
+    public addOrgAccount(payload: any): Observable<ApiResponse> {
+        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/addOrgAccount`, payload);
     }
 
-    public addOrg(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/organization.json/addOrg`, payload);
+    public updateOrgAccount(payload: any): Observable<ApiResponse> {
+        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/updateOrgAccount`, payload);
     }
 
-    public updateOrg(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/organization.json/updateOrg`, payload);
-
+    public fetchOrgAccountById(payload: any): Observable<ApiResponse> {
+        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/fetchOrgAccountById`, payload);
     }
 
-    public fetchOrgById(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/organization.json/fetchOrgById`, payload);
+    public fetchAllOrgAccount(payload: any): Observable<ApiResponse> {
+        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/fetchAllOrgAccount`, payload);
     }
 
-    public fetchAllOrg(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/organization.json/fetchAllOrg`, payload);
+    public deleteOrgAccountById(payload: any): Observable<ApiResponse> {
+        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/deleteOrgAccountById`, payload);
     }
 
-    public deleteOrgById(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/organization.json/deleteOrgById`, payload);
-    }
-
-    public deleteAllOrg(payload: any): Observable<ApiResponse> {
-        return this.http.post<ApiResponse>(`${config.apiBaseUrl}/organization.json/deleteAllOrg`, payload);
-    }
-
-    public downloadOrgTemplateFile(): Observable<any> {
-        return this.http.get(`${config.apiBaseUrl}/organization.json/downloadOrgTemplateFile`,
-            {
-                responseType: 'blob'
-            });
-    };
-
-    public downloadOrg(payload: any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/organization.json/downloadOrg`, payload,
-            {
-                responseType: 'blob'
-            });
-    }
-
-    public uploadOrg(payload: any): Observable<any> {
-        return this.http.post(`${config.apiBaseUrl}/organization.json/uploadOrg`, payload);
+    public deleteAllOrgAccount(payload: any): Observable<ApiResponse> {
+        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/deleteAllOrgAccount`, payload);
     }
 
 }

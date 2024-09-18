@@ -1,5 +1,7 @@
+<!-- my-info  -->
+<app-user-info id="serverSearch" [userInfo]="sessionUser" ></app-user-info>
 <!-- user-table detail -->
-<div class="content">
+<div class="content" style="margin-top: 10px;">
     <nz-tabset nzSize="small" nzTabPosition="left">
         <nz-tab [nzTitle]="subUserTemplate">
             <ng-template #subUserTemplate>
@@ -25,7 +27,7 @@
             </app-gen-table>
         </nz-tab>
         <!-- user who direct register -->
-        <nz-tab *ngIf="commomService.hasPermissionAccess(sessionUser.roles, ['ROLE_MASTER_ADMIN'])"
+        <nz-tab *ngIf="commomService.hasRoleAccess(['ROLE_MASTER_ADMIN'])"
             [nzTitle]="unGroupUserTemplate">
             <ng-template #unGroupUserTemplate>
                 <span nz-icon nzType="ungroup" nzTheme="outline"

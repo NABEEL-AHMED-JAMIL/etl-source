@@ -18,7 +18,9 @@ import {
     SERVER_ACTION
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-stts-link-sttc',
     templateUrl: './stts-link-sttc.component.html',

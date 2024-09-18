@@ -4,6 +4,7 @@ export const environment = {
 };
 
 export const config = {
-    apiBaseUrl: 'http://localhost:9098/api/v2',
-    webSocketEndPoint: 'http://localhost:9098/api/v2/ws'
+    authBaseUrl: 'http://localhost:9096/api/v2',
+    apiBaseUrl: 'http://localhost:9097/api/v2',
+    webSocketEndPoint: 'http://localhost:9097/api/v2/ws'
 };

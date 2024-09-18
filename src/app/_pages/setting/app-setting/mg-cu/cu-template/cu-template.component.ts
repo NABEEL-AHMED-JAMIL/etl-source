@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    FormBuilder,
+    FormGroup,
+    Validators
+} from '@angular/forms';
 import {
     ApiCode,
     ILookups,
@@ -12,14 +16,13 @@ import {
     LookupService,
     APPLICATION_STATUS
 } from '../../../../../_shared';
-import {
-    AlertService,
-    SpinnerService
-} from '../../../../../_helpers';
+import { AlertService } from '../../../../../_helpers';
 import { first } from 'rxjs';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-cu-template',
     templateUrl: './cu-template.component.html',
@@ -32,26 +35,20 @@ export class CUTemplateComponent implements OnInit {
     @Input()
     public editPayload: ITemplateReg;
 
-    public loading: boolean = false;
     public editAction = ActionType.EDIT;
-    public templateForm: FormGroup;
-
+    public sessionUser: AuthResponse;
     public EMAIL_TEMPLATE:ILookups;
     public APPLICATION_STATUS:ILookups;
-    public sessionUser: AuthResponse;
+    public templateForm: FormGroup;
 
     constructor(
         private drawerRef: NzDrawerRef<void>,
         private formBuilder: FormBuilder,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private templateRegService: TemplateRegService,
         private authenticationService: AuthenticationService) {
-            this.authenticationService?.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService?.currentUserValue;
     }
 
     ngOnInit(): void {
@@ -75,98 +72,63 @@ export class CUTemplateComponent implements OnInit {
     }
 
     public addTemplateForm(): any {
-        this.spinnerService.show();
         this.templateForm = this.formBuilder.group({
             templateName: ['', Validators.required],
             description: ['', Validators.required],
             templateContent: ['', Validators.required]
         });
-        this.spinnerService.hide();
     }
 
     public editTemplateForm(): void {
-        this.spinnerService.show();
         this.templateForm = this.formBuilder.group({
-            id: [this.editPayload.id, Validators.required],
+            uuid: [this.editPayload.uuid, Validators.required],
             templateName: [this.editPayload.templateName, Validators.required],
             description: [this.editPayload.description, Validators.required],
             templateContent: [this.editPayload.templateContent, Validators.required],
             status: [this.editPayload.status?.lookupCode, Validators.required]
         });
-        this.spinnerService.hide();
     }
 
     public submit(): void {
+        if (this.templateForm.invalid) {
+            return;
+        }
+        let payload = {
+            ...this.templateForm.value
+        }
         if (this.actionType === ActionType.ADD) {
-            this.addTemplate();
+            this.addTemplate(payload);
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateTemplateReg();
+            this.updateTemplateReg(payload);
         }
     }
 
-    public addTemplate(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.templateForm.invalid) {
-            this.spinnerService.hide();
+    public addTemplate(payload: any): void {
+        this.templateRegService.addTemplateReg(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }
+            ));
+    }
+
+    public updateTemplateReg(payload: any): void {
+        this.templateRegService.updateTemplateReg(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.drawerRef.close();
+                }
+            ));
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
             return;
         }
-        let payload = {
-            ...this.templateForm.value
-        }
-        this.templateRegService.addTemplateReg(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.closeDrawer();
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    public updateTemplateReg(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.templateForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
-        let payload = {
-            ...this.templateForm.value
-        }
-        this.templateRegService.updateTemplateReg(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                this.closeDrawer();
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
-
-    // convenience getter for easy access to form fields
-    get template() {
-        return this.templateForm.controls;
-    }
-
-    public closeDrawer(): void {
-        this.drawerRef.close();
+        successCallback();
     }
 
 }

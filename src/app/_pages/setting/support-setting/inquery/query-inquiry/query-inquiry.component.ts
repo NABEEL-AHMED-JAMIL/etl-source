@@ -1,20 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs';
-import { CUQueryInquiryComponent } from '../../../index';
+import { CUQueryInquiryComponent } from '../../../../index';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import {
     ApiCode,
     IStaticTable,
     ActionType,
     SettingService,
-} from '../../../../_shared';
+    AuthResponse,
+    IKeyValue,
+    AuthenticationService,
+    APP_ADMIN,
+} from '../../../../../_shared';
 import {
     AlertService,
-    CommomService,
-    SpinnerService
-} from '../../../../_helpers';
+    CommomService
+} from '../../../../../_helpers';
 
 
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-query-inquiry',
     templateUrl: './query-inquiry.component.html',
@@ -24,29 +30,39 @@ export class QueryInquiryComponent implements OnInit {
 
     public startDate: any;
     public endDate: any;
+    public sessionUser: AuthResponse;
     public setOfCheckedId = new Set<any>();
     public queryInQuiryTable: IStaticTable = this.initializeTable();
+    // user list response
+    public selectedUser: any;
+    public isSuperAdmin: boolean = false;
+    public accessUserList: IKeyValue[] = [];
 
     constructor(
         private modalService: NzModalService,
         private commomService: CommomService,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
-        private settingService: SettingService) {
+        private settingService: SettingService,
+        private authenticationService: AuthenticationService) {
             this.endDate = this.commomService.getCurrentDate();
             this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
+            this.sessionUser = this.authenticationService.currentUserValue;
+            if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                this.isSuperAdmin = true;
+                this.selectedUser = this.sessionUser.username;
+            }
     }
 
     ngOnInit(): void {
-        this.fetchAllQueryInquiry({
-            startDate: this.startDate,
-            endDate: this.endDate
-        });
+        if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+            this.fetchAllQueryInquiryAccessUser();
+        }
+        this.queryInquiryFetch();
     }
 
     private initializeTable(): IStaticTable {
         return {
-            tableId: 'query_inquiry_id',
+            tableUuid: this.commomService.uuid(), // uuid for table
             title: 'Mg Query Inquiry',
             bordered: true,
             checkbox: true,
@@ -124,10 +140,10 @@ export class QueryInquiryComponent implements OnInit {
         if (ActionType.ADD === payload.action) {
             this.openCuLookup(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {
-            this.fetchAllQueryInquiry({
-                startDate: this.startDate,
-                endDate: this.endDate
-            });
+            if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                this.fetchAllQueryInquiryAccessUser();
+            }
+            this.queryInquiryFetch();
         }
     }
 
@@ -142,7 +158,7 @@ export class QueryInquiryComponent implements OnInit {
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
                     this.deleteQueryInquiryById({
-                        id: payload.data.id
+                        uuid: payload.data.uuid
                     });
                 }
             });
@@ -159,7 +175,7 @@ export class QueryInquiryComponent implements OnInit {
                 nzOnOk: () => {
                     this.deleteAllQueryInquiry(
                         {
-                            ids: payload.checked
+                            uuids: payload.checked
                         });
                 }
             });
@@ -169,10 +185,7 @@ export class QueryInquiryComponent implements OnInit {
     public filterActionReciver(payload: any): void {
         this.startDate = payload.startDate;
         this.endDate = payload.endDate;
-        this.fetchAllQueryInquiry({
-            startDate: this.startDate,
-            endDate: this.endDate
-        });
+        this.queryInquiryFetch();
     }
 
     public openCuLookup(actionType: ActionType, editPayload: any): void {
@@ -186,72 +199,91 @@ export class QueryInquiryComponent implements OnInit {
             },
             nzFooter: null // Set the footer to null to hide it
         });
-        drawerRef.afterClose.subscribe(data => {
-            this.fetchAllQueryInquiry({
-                startDate: this.startDate,
-                endDate: this.endDate
-            });
+        drawerRef.afterClose
+        .subscribe(data => {
+            if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                this.fetchAllQueryInquiryAccessUser();
+            }
+            this.queryInquiryFetch();
         });
     }
 
     public fetchAllQueryInquiry(payload: any): any {
-        this.spinnerService.show();
-        this.settingService.fetchAllQueryInquiry(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.queryInQuiryTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.settingService.fetchAllQueryInquiry(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.queryInQuiryTable.dataSource = response.data;
+                })
+            );
     }
     
     public deleteQueryInquiryById(payload: any): void {
-        this.spinnerService.show();
-        this.settingService.deleteQueryInquiryById(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllQueryInquiry({
-                    startDate: this.startDate,
-                    endDate: this.endDate
-                });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.settingService.deleteQueryInquiryById(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                        this.fetchAllQueryInquiryAccessUser();
+                    }
+                    this.queryInquiryFetch();
+                })
+            );
     }
 
     public deleteAllQueryInquiry(payload: any): void {
-        this.spinnerService.show();
-        this.settingService.deleteAllQueryInquiry(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllQueryInquiry({
-                    startDate: this.startDate,
-                    endDate: this.endDate
-                });
-                this.setOfCheckedId = new Set<any>();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.settingService.deleteAllQueryInquiry(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    if (this.commomService.hasRoleAccess([APP_ADMIN.ROLE_MASTER_ADMIN])) {
+                        this.fetchAllQueryInquiryAccessUser();
+                    }
+                    this.queryInquiryFetch();
+                    this.setOfCheckedId = new Set<any>();
+                })
+            );
+    }
+
+    public fetchAllQueryInquiryAccessUser(): void {
+        this.settingService.fetchAllQueryInquiryAccessUser().pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.accessUserList = response.data.map((user: any) => {
+                        return {
+                            name: `${user.fullname} & Querys [${user.count}]`,
+                            value: user.username
+                        };
+                    });
+                })
+            );
+    }
+
+    public onSelectionUserChange(): void {
+        // Handle the selection change here
+        this.queryInquiryFetch();
+    }
+
+    public queryInquiryFetch() {
+        const query: {
+            startDate: any;
+            endDate: any;
+            usernames?: string[]; // Optional property
+        } = {
+            startDate: this.startDate,
+            endDate: this.endDate,
+        };
+        if (this.selectedUser) {
+            query.usernames = [this.selectedUser];
+        }
+        this.fetchAllQueryInquiry(query); 
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

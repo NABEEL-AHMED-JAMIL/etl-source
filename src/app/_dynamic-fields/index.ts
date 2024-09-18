@@ -1,3 +1,6 @@
+/**
+ * @author Nabeel Ahmed
+ */
 export * from './dynamic-input/dynamic-input.component';
 export * from './dynamic-textarea/dynamic-textarea.component';
 export * from './dynamic-radio/dynamic-radio.component';

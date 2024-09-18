@@ -3,7 +3,6 @@ import { EChartsOption } from 'echarts';
 import { first } from 'rxjs';
 import {
     AlertService,
-    SpinnerService,
     AppDashboardThemeService
 } from 'src/app/_helpers';
 import {
@@ -13,7 +12,9 @@ import {
     SettingService,
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-setting-dashboard',
     templateUrl: './setting-dashboard.component.html',
@@ -21,8 +22,7 @@ import {
 })
 export class SettingDashboardComponent implements OnInit {
 
-    public currentUser: AuthResponse;
-
+    public sessionUser: AuthResponse;
     public SERVICE_SETTING_STATISTICS: EChartsOption;
     public DASHBOARD_AND_REPORT_SETTING_STATISTICS: EChartsOption;
     public FORM_SETTING_STATISTICS: EChartsOption;
@@ -32,41 +32,27 @@ export class SettingDashboardComponent implements OnInit {
 
     constructor(
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private settingService: SettingService,
         private appDashboardThemeService: AppDashboardThemeService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService?.currentUser
-            .subscribe(currentUser => {
-                this.currentUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService?.currentUserValue;
     }
 
     ngOnInit(): void {
         this.fetchStatisticsDashboard({
-            username: this.currentUser.username
+            username: this.sessionUser.username
         });
     }
 
     // fetch all lookup
     public fetchStatisticsDashboard(payload: any): any {
-        this.spinnerService.show();
-        this.settingService.fetchStatisticsDashboard(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+        this.settingService.fetchStatisticsDashboard(payload).pipe(first())
+            .subscribe((response: any) =>
+                this.handleApiResponse(response, () => {
+                    this.initCharts(response.data);  // Initialize charts after data is set
                 }
-                this.initCharts(response.data);  // Initialize charts after data is set
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ));
     }
-
-    
 
     public initCharts(data: any): void {
         // SERVICE_SETTING_STATISTICS
@@ -87,6 +73,14 @@ export class SettingDashboardComponent implements OnInit {
         // SESSION_COUNT_STATISTICS
         this.SESSION_COUNT_STATISTICS = this.appDashboardThemeService.fillAxisChartPayload(data['SESSION_COUNT_STATISTICS']['data']);
         this.appDashboardThemeService.initChart('SESSION_COUNT_STATISTICS', this.SESSION_COUNT_STATISTICS);
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

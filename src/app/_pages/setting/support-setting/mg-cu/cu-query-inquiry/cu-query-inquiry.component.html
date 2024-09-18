@@ -1,7 +1,5 @@
-<form nz-form
-    [formGroup]="queryInquiryForm"
-    [nzLayout]="'vertical'"
-    (ngSubmit)="onSubmit()">
+<form nz-form [formGroup]="queryInquiryForm"
+    [nzLayout]="'vertical'" (ngSubmit)="onSubmit()">
     <nz-form-item>
         <nz-form-label nzRequired>Name</nz-form-label>
         <nz-form-control nzHasFeedback nzErrorTip="Please input query name.">

@@ -3,10 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import * as echarts from 'echarts';
 import { EChartsOption } from 'echarts';
 
+/**
+ * @author Nabeel Ahmed
+ */
 @Injectable({
     providedIn: 'root'
 })
-// E-chart team
 export class AppDashboardThemeService {
 
     constructor(private http: HttpClient) { }

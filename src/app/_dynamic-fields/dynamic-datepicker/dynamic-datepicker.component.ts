@@ -6,6 +6,9 @@ import { FILED_TYPE } from 'src/app/_shared';
 /**
  * Text | Email | URL | Passwrod
  * */
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'dynamic-datepicker',
     templateUrl: './dynamic-datepicker.component.html',
@@ -18,8 +21,8 @@ export class DynamicDatePickerComponent extends DynamicFieldComponent implements
     }
 
     ngOnInit() {
-        this.getFiledControl('value')
-            .valueChanges.subscribe(value => {
+        this.getFiledControl('value').valueChanges
+            .subscribe(value => {
                 if (this.control.pattern && this.control.type.lookupCode != FILED_TYPE.WEEK) {
                     const formattedDate = this.datePipe.transform(value, this.control.pattern);
                     this.getFiledControl('value').setValue(formattedDate, { emitEvent: false });

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-cu-org',
     templateUrl: './cu-org.component.html',

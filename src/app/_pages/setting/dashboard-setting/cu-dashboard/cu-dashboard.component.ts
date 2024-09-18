@@ -8,7 +8,6 @@ import {
 } from '@angular/forms';
 import {
     AlertService,
-    SpinnerService,
     CommomService
 } from 'src/app/_helpers';
 import {
@@ -26,7 +25,9 @@ import {
     EVariableService
 } from 'src/app/_shared';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-cu-dashboard',
     templateUrl: './cu-dashboard.component.html',
@@ -39,9 +40,7 @@ export class CUDashboardComponent implements OnInit {
     @Input()
     public editPayload: IDashboardSetting;
 
-    public loading: boolean = false;
     public editAction = ActionType.EDIT;
-
     public dashboardSettingForm: FormGroup;
     public sessionUser: AuthResponse;
     // ilookup
@@ -54,16 +53,12 @@ export class CUDashboardComponent implements OnInit {
         private fb: FormBuilder,
         private drawerRef: NzDrawerRef<void>,
         private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private lookupService: LookupService,
         private envVarService: EVariableService,
         private dashboardService: DashboardService,
         public commomService: CommomService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;;
     }
 
     ngOnInit(): void {
@@ -93,23 +88,18 @@ export class CUDashboardComponent implements OnInit {
     }
 
     public fetchUserEnvByEnvKey(): any {
-        this.spinnerService.show();
         let payload = {
             envKey: E_VARAIABLE.DASHBOARD_GROUP
         };
-        this.envVarService.fetchUserEnvByEnvKey(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.DASHBOARD_GROUP = response.data;
-                this.spinnerService.hide();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.envVarService.fetchUserEnvByEnvKey(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.DASHBOARD_GROUP = response.data;
+                })
+            );
     }
 
     public addDashboardSettingForm(): any {
-        this.spinnerService.show();
         this.dashboardSettingForm = this.fb.group({
             name: ['', Validators.required],
             groupType: ['', Validators.required],
@@ -118,11 +108,9 @@ export class CUDashboardComponent implements OnInit {
             dashboardUrl: ['', Validators.required],
             iframe: ['', Validators.required],
         });
-        this.spinnerService.hide();
     }
 
     public editDashboardSettingForm(): void {
-        this.spinnerService.show();
         this.dashboardSettingForm = this.fb.group({
             id: [this.editPayload.id, Validators.required],
             name: [this.editPayload.name, Validators.required],
@@ -133,77 +121,43 @@ export class CUDashboardComponent implements OnInit {
             iframe: [this.editPayload.iframe?.lookupCode, Validators.required],
             status: [this.editPayload.status?.lookupCode, Validators.required]
         });
-        this.spinnerService.hide();
     }
 
     public submit(): void {
+        if (this.dashboardSettingForm.invalid) {
+            return;
+        }
+        let payload = {
+            ...this.dashboardSettingForm.value,
+            sessionUser: {
+                username: this.sessionUser.username
+            }
+        }
         if (this.actionType === ActionType.ADD) {
-            this.addDashboardSetting();
+            this.addDashboardSetting(payload);
         } else if (this.actionType === ActionType.EDIT) {
-            this.updateDashboardSetting();
+            this.updateDashboardSetting(payload);
         }
     }
 
-    public addDashboardSetting(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.dashboardSettingForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
-        let payload = {
-            ...this.dashboardSettingForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        }
-        this.dashboardService.addDashboardSetting(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);;
-            });
+    public addDashboardSetting(payload: any): void {
+        this.dashboardService.addDashboardSetting(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.closeDrawer();
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
     }
 
-    public updateDashboardSetting(): void {
-        this.loading = true;
-        this.spinnerService.show();
-        if (this.dashboardSettingForm.invalid) {
-            this.spinnerService.hide();
-            return;
-        }
-        let payload = {
-            ...this.dashboardSettingForm.value,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        }
-        this.dashboardService.updateDashboardSetting(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.loading = false;
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);;
-            });
+    public updateDashboardSetting(payload: any): void {
+        this.dashboardService.updateDashboardSetting(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.closeDrawer();
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
     }
 
     // convenience getter for easy access to form fields
@@ -213,6 +167,14 @@ export class CUDashboardComponent implements OnInit {
 
     public closeDrawer(): void {
         this.drawerRef.close();
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

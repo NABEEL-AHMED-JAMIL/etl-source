@@ -10,7 +10,7 @@
         <!-- hr -->
         <ul nz-menu nzTheme="dark" nzMode="inline">
             <!-- Dashboard -->
-            <ng-container *ngIf="dashboardList && hasPermissionAccess(['VIEW_DASHBOARD_PERMISSION'])">
+            <ng-container *ngIf="dashboardList && commomService.hasPermissionAccess(['VIEW_DASHBOARD_PERMISSION'])">
                 <hr style="margin-top: 0px;">
                 <h3 style="color: white;text-align: center;">Dashboard</h3>
                 <hr style="margin-top: 0px;">
@@ -31,7 +31,7 @@
                 </ng-container>
             </ng-container>
             <!-- Report -->
-            <ng-container *ngIf="reportList && hasPermissionAccess(['VIEW_REPORT_PERMISSION'])">
+            <ng-container *ngIf="reportList && commomService.hasPermissionAccess(['VIEW_REPORT_PERMISSION'])">
                 <hr style="margin-top: 0px;">
                 <h3 style="color: white;text-align: center;">Report</h3>
                 <hr style="margin-top: 0px;">
@@ -71,8 +71,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div nz-col [nzSpan]="16" [nzXs]="{span: 8}"
-                        [nzSm]="{span: 12}" [nzMd]="{span: 4}"
+                    <div nz-col [nzSpan]="16" [nzXs]="{span: 8}" [nzSm]="{span: 12}" [nzMd]="{span: 4}"
                         style="text-align: end;padding-right: 20px">
                         <action-header-list></action-header-list>
                     </div>

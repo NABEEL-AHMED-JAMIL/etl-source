@@ -11,13 +11,13 @@
         </div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
             <ng-container *ngFor="let sidebar of sidebars">
-                <li *ngIf="hasPermissionAccess(sidebar.permission)"
+                <li *ngIf="commomService.hasPermissionAccess(sidebar.permission)"
                     nz-submenu
                     nzTitle="{{sidebar.name}}"
                     nzIcon="{{sidebar.icon}}">
                     <ul *ngIf="sidebar?.childLinks">
                         <ng-container *ngFor="let childLink of sidebar?.childLinks">
-                            <li *ngIf="hasPermissionAccess(childLink.permission)"
+                            <li *ngIf="commomService.hasPermissionAccess(childLink.permission)"
                                 nz-menu-item nzMatchRouter>
                                 <a routerLink="{{childLink.link}}">
                                     <span nz-icon nzType="{{childLink.icon}}" nzTheme="outline"></span>

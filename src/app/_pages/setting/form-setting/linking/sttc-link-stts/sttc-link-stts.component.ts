@@ -17,7 +17,9 @@ import {
 } from 'src/app/_shared';
 import { first } from 'rxjs';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-sttc-link-stts',
     templateUrl: './sttc-link-stts.component.html',

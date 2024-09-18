@@ -6,7 +6,9 @@ import {
 } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
-
+/**
+ * @author Nabeel Ahmed
+ */
 @Injectable({
     providedIn: 'root'
 })
@@ -14,13 +16,13 @@ export class BreadcrumbService {
 
     public breadcrumbs: { label: string, url: string }[] = [];
 
-    constructor(private router: Router, private activatedRoute: ActivatedRoute) {
-        this.router.events
-            .pipe(filter(event => event instanceof NavigationEnd))
+    constructor(private router: Router,
+        private activatedRoute: ActivatedRoute) {
+        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
             .subscribe(() => {
+                let url = '';
                 this.breadcrumbs = [];
                 let currentRoute = this.activatedRoute.root;
-                let url = '';
                 do {
                     const childrenRoutes = currentRoute.children;
                     currentRoute = null;

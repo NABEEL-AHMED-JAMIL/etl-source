@@ -1,3 +1,6 @@
+/**
+ * @author Nabeel Ahmed
+ */
 // breadcrumb
 export * from './breadcrumb/breadcrumb.component';
 // layout

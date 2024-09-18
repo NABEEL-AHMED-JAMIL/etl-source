@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BreadcrumbService } from 'src/app/_helpers';
 
+/**
+ * @author Nabeel Ahmed
+ */
 @Component({
     selector: 'app-breadcrumb',
     templateUrl: './breadcrumb.component.html',

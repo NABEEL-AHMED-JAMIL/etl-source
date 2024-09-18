@@ -18,6 +18,6 @@ p span {
 }
 
 .chart-height {
-    height: 180px;
+    height: 250px;
     overflow-y: auto;
 }

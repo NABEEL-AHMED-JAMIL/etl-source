@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -41,6 +40,9 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 
 // npm install @kolkov/angular-editor --save
+/**
+ * @author Nabeel Ahmed
+ */
 @NgModule({
     exports: [
         NzMenuModule,
