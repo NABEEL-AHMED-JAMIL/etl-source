@@ -46,17 +46,6 @@ export class RegisterComponent implements OnInit {
         });
     }
 
-    public resetForm(e: MouseEvent): void {
-        e.preventDefault();
-        this.registerForm.reset();
-        for (const key in this.registerForm.controls) {
-            if (this.registerForm.controls.hasOwnProperty(key)) {
-                this.registerForm.controls[key].markAsPristine();
-                this.registerForm.controls[key].updateValueAndValidity();
-            }
-        }
-    }
-
     public validateConfirmPassword(): void {
         setTimeout(() => this.registerForm.controls['confirm'].updateValueAndValidity());
     }

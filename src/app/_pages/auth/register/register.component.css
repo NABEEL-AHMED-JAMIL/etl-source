@@ -9,8 +9,16 @@
 }
 
 .register {
-    padding-top: 25px;
+    padding-top: 15px;
     padding-right: 50px;
-    padding-bottom: 5px;
-    padding-left: 50px
+    padding-bottom: 15px;
+    padding-left: 50px;
+}
+
+.login-form-margin {
+    margin-bottom: 16px;
+}
+
+.login-form-button {
+    width: 100%;
 }

@@ -105,10 +105,10 @@ export class PPCroseTableComponent implements OnInit {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
                     this.alertService.showError(response.message, ApiCode.ERROR);
-                    this.ppCroseData.crossTab[profileId + 'X' + permissionId].key = !linked;
+                    this.ppCroseData.crossTab[profileId + '||' + permissionId].key = !linked;
                     return;
                 }
-                this.ppCroseData.crossTab[profileId + 'X' + permissionId].key = linked;
+                this.ppCroseData.crossTab[profileId + '||' + permissionId].key = linked;
             }, (response: any) => {
                 this.spinnerService.hide();
                 this.alertService.showError(response.error.message, ApiCode.ERROR);

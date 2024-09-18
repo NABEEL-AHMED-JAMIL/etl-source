@@ -47,7 +47,7 @@
 <!-- gride show -->
 <nz-row nzGutter="12" style="margin-top: 10px;">
     <ng-container *ngFor="let organization of organizations; index as i">
-        <nz-col [nzSpan]="12" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 12}">
+        <nz-col [nzSpan]="8" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 8}">
             <nz-card class="nz-card-aligment" nzTitle="#{{ organization.id }} {{ organization.name }}"
                 nz-tooltip nzTooltipTitle="#{{ organization.id }} {{ organization.name }}"
                 [nzActions]="[actionEdit, actionUserSetting, actionMore, actionEdit, actionUserSetting, actionMore]"
@@ -73,7 +73,7 @@
                         </h4>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 250px;"
+                            theme="macarons" style="height: 150px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
                     <!-- report & dashboard -->
@@ -84,7 +84,7 @@
                         </h4>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 250px;"
+                            theme="macarons" style="height: 150px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
                     <!-- form setting -->
@@ -95,7 +95,7 @@
                         </h4>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 250px;"
+                            theme="macarons" style="height: 150px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
                     <!-- profile setting -->
@@ -106,7 +106,7 @@
                         </h4>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 250px;"
+                            theme="macarons" style="height: 150px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
                     <!-- app setting -->
@@ -117,7 +117,7 @@
                         </h4>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
                         <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 250px;"
+                            theme="macarons" style="height: 150px;"
                             [options]="SERVICE_SETTING_STATISTICS"></div>
                     </nz-col>
                 </nz-row>

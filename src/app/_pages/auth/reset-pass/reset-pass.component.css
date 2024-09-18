@@ -9,3 +9,24 @@
     padding-right: 50px;
     padding-top: 30px;
 }
+
+.login-form {
+    max-width: 300px;
+    padding-top: 5px;
+    padding-right: 50px;
+    padding-bottom: 15px;
+    padding-left: 50px;
+}
+
+.login-form-button {
+    width: 100%;
+}
+
+.login-form-margin {
+    margin-bottom: 16px;
+}
+
+.title-align {
+    text-align: center;
+    margin: 20px 0px
+}

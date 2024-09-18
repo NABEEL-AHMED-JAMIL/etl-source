@@ -2,19 +2,15 @@
     <img class="bottom" src="../../../../assets/bg.jpg">
     <div nz-col nzMd="12" nzSm="24" class="center-container">
         <div class="content-container">
-            <form nz-form *ngIf="registerForm"
-                [nzLayout]="'vertical'"
-                [formGroup]="registerForm"
-                (ngSubmit)="onSubmit()"
+            <form nz-form *ngIf="registerForm" [nzLayout]="'vertical'"
+                [formGroup]="registerForm" (ngSubmit)="onSubmit()"
                 class="register">
                 <div style="text-align: center">
-                    <a href="https://etl2023.com/">
-                        <img src="../../../../assets/logo.png" 
-                            alt="logo" style="width: 200px;"/>
+                    <a href="https://etlSource2023.com/">
+                        <img src="../../../../assets/logo.png" alt="logo" style="width: 150px;" />
                     </a>
+                    <h3 style="text-align: center;" class="title">New Account</h3>
                 </div>
-                <h3 style="margin-top: 14px;text-align: center;" 
-                    class="title">Register User</h3>
                 <div nz-row [nzGutter]="16">
                     <div nz-col nzSpan="12">
                         <nz-form-item>
@@ -47,8 +43,7 @@
                     <div nz-col nzSpan="12">
                         <nz-form-item>
                             <nz-form-label nzRequired>Username</nz-form-label>
-                            <nz-form-control nzHasFeedback nzValidatingTip="Validating..."
-                                [nzErrorTip]="userErrorTpl">
+                            <nz-form-control nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
                                 <input nz-input formControlName="username" placeholder="Enter Username" />
                                 <ng-template #userErrorTpl let-control>
                                     <ng-container *ngIf="control.hasError('required')">
@@ -62,8 +57,7 @@
                         <nz-form-item>
                             <nz-form-label nzRequired>E-mail</nz-form-label>
                             <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTpl">
-                                <input nz-input formControlName="email" 
-                                    placeholder="Enter Email" type="email" />
+                                <input nz-input formControlName="email" placeholder="Enter Email" type="email" />
                                 <ng-template #emailErrorTpl let-control>
                                     <ng-container *ngIf="control.hasError('email')">
                                         The input is not valid E-mail!
@@ -79,8 +73,8 @@
                         <nz-form-item>
                             <nz-form-label nzRequired>Password</nz-form-label>
                             <nz-form-control nzHasFeedback nzErrorTip="Please input your password!">
-                                <input nz-input type="password" formControlName="password"
-                                    placeholder="Enter Password" (ngModelChange)="validateConfirmPassword()" />
+                                <input nz-input type="password" formControlName="password" placeholder="Enter Password"
+                                    (ngModelChange)="validateConfirmPassword()"/>
                             </nz-form-control>
                         </nz-form-item>
                     </div>
@@ -101,20 +95,10 @@
                             </nz-form-control>
                         </nz-form-item>
                     </div>
-                    <div nz-col nzSpan="24" style="text-align: end;">
-                        <nz-form-item>
-                            <nz-form-control>
-                                <button nz-button (click)="resetForm($event)">Reset</button>
-                                &nbsp;
-                                <button nz-button nzType="primary"
-                                    [disabled]="!registerForm.valid">Submit</button>
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
                 </div>
-                <p nz-col [nzSpan]="24" class="text-center title"
-                    style="line-height: 50px">Want to
-                    <a routerLink="/login">Login?</a>
+                <button nz-button [nzType]="'primary'" class="login-form-button login-form-margin">Submit</button>
+                <p nz-col [nzSpan]="24" class="text-center title" style="line-height: 10px">Already have account?
+                    <a routerLink="/login">Login Now</a>
                 </p>
             </form>
         </div>

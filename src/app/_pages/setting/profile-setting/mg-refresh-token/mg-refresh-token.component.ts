@@ -32,8 +32,8 @@ export class MgRefreshTokenComponent implements OnInit {
     public startDate: any;
     public endDate: any;
     public setOfCheckedId = new Set<any>();
-
     public sessionStatistics: ISession;
+    // chart
     public DAILY_STATISTICS: EChartsOption;
     public WEEKLY_STATISTICS: EChartsOption;
     public MONTHLY_STATISTICS: EChartsOption;
