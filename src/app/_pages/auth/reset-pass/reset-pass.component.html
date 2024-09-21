@@ -17,9 +17,7 @@
                     <nz-form-control [nzErrorTip]="userErrorTpl">
                         <input nz-input formControlName="username" [disabled]="true" placeholder="Enter Username" />
                         <ng-template #userErrorTpl let-control>
-                            <ng-container *ngIf="control.hasError('required')">
-                                Username Required.
-                            </ng-container>
+                            <ng-container *ngIf="control.hasError('required')">Username Required.</ng-container>
                         </ng-template>
                     </nz-form-control>
                 </nz-form-item>
@@ -30,9 +28,7 @@
                         <input nz-input type="password" formControlName="newPassword" placeholder="Enter Password"
                             (ngModelChange)="validateConfirmPassword()" />
                         <ng-template #passwordErrorTpl let-control>
-                            <ng-container *ngIf="control.hasError('required')">
-                                Password Required
-                            </ng-container>
+                            <ng-container *ngIf="control.hasError('required')">Password Required</ng-container>
                         </ng-template>
                     </nz-form-control>
                 </nz-form-item>
@@ -42,10 +38,8 @@
                         <input nz-input type="password" formControlName="confirm"
                             placeholder="Enter Confirm Password" />
                         <ng-template #passwordConfirmErrorTpl let-control>
-                            <ng-container *ngIf="control.hasError('required')">Confirm Password
-                                Required.</ng-container>
-                            <ng-container *ngIf="control.hasError('confirm')">Confirm Password Not
-                                Match.</ng-container>
+                            <ng-container *ngIf="control.hasError('required')">Confirm Password Required.</ng-container>
+                            <ng-container *ngIf="control.hasError('confirm')">Confirm Password Not Match.</ng-container>
                         </ng-template>
                     </nz-form-control>
                 </nz-form-item>

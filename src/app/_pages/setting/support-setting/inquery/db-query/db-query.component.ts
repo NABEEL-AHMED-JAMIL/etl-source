@@ -12,12 +12,12 @@ import {
 import {
     ApiCode,
     APP_ADMIN,
-    AuthenticationService,
     AuthResponse,
     IKeyValue,
     IQuery,
     IQueryInquiry,
-    SettingService
+    SettingService,
+    AuthenticationService,
 } from '../../../../../_shared';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { QueryInquiryComponent } from 'src/app/_pages';
@@ -68,9 +68,9 @@ export class DBQueryComponent implements OnInit {
 
     public onSelectionUserChange(): void {
         // Handle the selection change here
-        let selectedUser = this.selectedUser ? this.selectedUser : '';
-        this.selectedQueryInquiry = '';
         this.queryResponse = undefined;
+        this.selectedQueryInquiry = '';
+        let selectedUser = this.selectedUser ? this.selectedUser : '';
         this.tableQueryForm = this.fb.group({
             query: [this.selectedQueryInquiry, Validators.required]
         });
@@ -85,8 +85,8 @@ export class DBQueryComponent implements OnInit {
 
     public onSelectionQueryInquiryChange(): void {
         // Handle the selection change here
-        let query = this.selectedQueryInquiry ? this.selectedQueryInquiry?.query: '';
-        this.queryResponse = undefined;
+        this.queryResponse = undefined
+        let query = this.selectedQueryInquiry ? this.selectedQueryInquiry?.query: '';;
         this.tableQueryForm = this.fb.group({
             query: [query, Validators.required]
         });
@@ -114,11 +114,6 @@ export class DBQueryComponent implements OnInit {
         this.tableQueryForm = this.fb.group({
             query: ['', Validators.required]
         });
-    }
-
-    public clearResult(): any {
-        this.queryResponse = undefined;
-        this.selectedQueryInquiry = '';
     }
 
     public dynamicQueryResponse(): void {
@@ -163,6 +158,11 @@ export class DBQueryComponent implements OnInit {
                     });
                 })
             );
+    }
+
+    public clearResult(): any {
+        this.queryResponse = undefined;
+        this.selectedQueryInquiry = '';
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {

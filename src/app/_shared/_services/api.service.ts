@@ -16,6 +16,27 @@ export class ApiService {
         private spinnerService: SpinnerService) {
     }
 
+     // GET request with error handling and tap
+     public getFileWithGetCall(apiUrl: any): Observable<any> {
+        this.spinnerService.show();
+        return this.http.get(apiUrl, { responseType: 'blob' }).pipe(
+            map(reponse => reponse),
+            tap(response => {
+                this.spinnerService.hide();
+            }),
+            catchError(this.handleError.bind(this)));
+    }
+
+    public getFileWithPostCall(apiUrl: any, payload: any): Observable<any> {
+        this.spinnerService.show();
+        return this.http.post(apiUrl, payload, { responseType: 'blob' }).pipe(
+            map(reponse => reponse),
+            tap(response => {
+                this.spinnerService.hide();
+            }),
+            catchError(this.handleError.bind(this)));
+    }
+
     // GET request with error handling and tap
     public getData(apiUrl: any, params?: HttpParams): Observable<ApiResponse> {
         this.spinnerService.show();
@@ -34,10 +55,7 @@ export class ApiService {
     // POST request with error handling and tap
     public postData(apiUrl: any, payload: any, params?: HttpParams): Observable<ApiResponse> {
         this.spinnerService.show();
-        const options = {
-            params: params || new HttpParams()
-        };
-        return this.http.post(apiUrl, payload, options).pipe(
+        return this.http.post(apiUrl, payload, {...params}).pipe(
             map(reponse => reponse),
             tap(response => {
                 console.log('Data posted successfully:', response);

@@ -9,6 +9,7 @@ import {
 } from '../../../../_shared';
 import {
     AlertService,
+    CommomService,
 } from '../../../../_helpers';
 import { CUTemplateComponent } from '../../../index';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -33,6 +34,7 @@ export class MgTemplateComponent implements OnInit {
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
         private alertService: AlertService,
+        private commomService: CommomService,
         private templateRegService: TemplateRegService,
         private authenticationService: AuthenticationService) {
         this.sessionUser = this.authenticationService.currentUserValue;
@@ -44,7 +46,7 @@ export class MgTemplateComponent implements OnInit {
 
     private initStaticTable(): IStaticTable {
         return {
-            tableId: 'template_id',
+            tableUuid: this.commomService.uuid(),
             title: 'Mg Template',
             bordered: true,
             checkbox: true,

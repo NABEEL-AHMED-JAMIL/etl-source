@@ -85,23 +85,5 @@
                 <app-pp-crose-table></app-pp-crose-table>
             </div>
         </nz-tab>
-        <!-- country -->
-        <nz-tab [nzTitle]="countryTemplate">
-            <ng-template #countryTemplate>
-                <span nz-icon nzType="flag" nzTheme="outline"
-                    nz-tooltip nzTooltipTitle="{{countryTable.title}}">
-                </span>
-            </ng-template>
-            <h3>
-                <span nz-icon nzType="flag" nzTheme="outline"></span>
-                {{countryTable.title}}
-            </h3>
-            <hr>
-            <app-gen-table
-                *ngIf="countryTable"
-                [isDateFilter]="false"
-                [staticTable]="countryTable">
-            </app-gen-table>
-        </nz-tab>
     </nz-tabset>
 </div>

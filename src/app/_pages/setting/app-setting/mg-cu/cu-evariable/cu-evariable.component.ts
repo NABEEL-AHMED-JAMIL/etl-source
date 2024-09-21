@@ -73,7 +73,7 @@ export class CUEvariableComponent implements OnInit {
 
     public editEnVariablesForm(): void {
         this.enVariablesForm = this.fb.group({
-            id: [this.editPayload.id, Validators.required],
+            uuid: [this.editPayload.uuid, Validators.required],
             envKey: [this.editPayload.envKey, Validators.required],
             description: [this.editPayload.description, Validators.required],
             status: [this.editPayload.status?.lookupCode, Validators.required]

@@ -159,7 +159,7 @@ export class MgEVariableComponent implements OnInit {
             this.openCuEnVariable(ActionType.EDIT, payload);
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
-                nzTitle: '[' + payload.data.id + '] ' + payload.data.envKey,
+                nzTitle: payload.data.envKey,
                 nzWidth: 900,
                 nzContent: EVUCroseTableComponent,
                 nzContentParams: {
@@ -175,7 +175,7 @@ export class MgEVariableComponent implements OnInit {
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
                     let enVariable: IEnVariables = {
-                        id: payload.data.id,
+                        uuid: payload.data.uuid,
                         envKey: payload.data.envKey,
                         description: payload.data.description
                     }
@@ -194,11 +194,13 @@ export class MgEVariableComponent implements OnInit {
             this.fetchAllEnVariable({});
         } else if (ActionType.DOWNLOAD === payload.action) {
             this.eVariableService.downloadEnVariable({
-                ids: payload.checked
-            }).pipe(first()).subscribe((response: any) =>
+                uuids: payload.checked
+            }).pipe(first())
+            .subscribe((response: any) =>
                 this.handleApiResponse(response, () => {
                     this.commomService.downLoadFile(response);
-                }));
+                })
+            );
         } else if (ActionType.UPLOAD === payload.action) {
             payload.action = 'EVariable';
             const drawerRef = this.drawerService.create({
@@ -211,7 +213,8 @@ export class MgEVariableComponent implements OnInit {
                     batchDetail: payload
                 }
             });
-            drawerRef.afterClose.subscribe(data => {
+            drawerRef.afterClose
+            .subscribe(data => {
                 this.fetchAllEnVariable({});
             });
         }
@@ -227,7 +230,7 @@ export class MgEVariableComponent implements OnInit {
                 nzOnOk: () => {
                     this.deleteAllEnVariable(
                         {
-                            ids: payload.checked
+                            uuids: payload.checked
                         });
                 }
             });
@@ -246,7 +249,8 @@ export class MgEVariableComponent implements OnInit {
                 editPayload: editPayload?.data
             }
         });
-        drawerRef.afterClose.subscribe(data => {
+        drawerRef.afterClose
+        .subscribe(data => {
             this.fetchAllEnVariable({});
         });
     }

@@ -59,7 +59,6 @@ export class BatchComponent implements OnInit {
         this.errors = [];
         this.action = this.batchDetail.action;
         this.payload = this.batchDetail.data;
-
         const formData = new FormData();
         this.fileList.forEach((file: any) => {
             formData.append('file', file);
@@ -69,23 +68,26 @@ export class BatchComponent implements OnInit {
     }
 
     private getPayload() {
-        const basePayload = {
-            sessionUser: {
-                username: this.sessionUser.username
-            }};
         switch (this.action) {
             case 'Lookup':
             case 'SubLookup':
                 return {
-                    ...basePayload,
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    },
                     parentLookupId: this.action === 'SubLookup' ? this.payload.parentLookupId : null
                 };
             case 'STT_FORM':
             case 'STT_SECTION':
             case 'STT_CONTROL':
-                return { ...basePayload, uploadType: this.action };
+                return {
+                    sessionUser: {
+                        username: this.sessionUser.username
+                    },
+                    uploadType: this.action
+                };
             default:
-                return basePayload;
+                return {};
         }
     }
 

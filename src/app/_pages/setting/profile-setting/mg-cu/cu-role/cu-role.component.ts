@@ -125,5 +125,4 @@ export class CURoleComponent implements OnInit {
         successCallback();
     }
 
-
 }

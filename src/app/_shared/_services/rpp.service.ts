@@ -3,7 +3,6 @@ import { ApiResponse } from '../_model/object';
 import { Observable } from 'rxjs';
 import { config } from '../../../environments/environment';
 import { ApiService } from './api.service';
-import { HttpParams } from '@angular/common/http';
 
 /**
  * @author Nabeel Ahmed
@@ -41,15 +40,11 @@ export class RPPService {
     }
 
     public downloadRoleTemplateFile(): Observable<any> {
-        let params = new HttpParams();
-        params = params.set('responseType', 'blob');
-        return this.apiService.getData(`${config.authBaseUrl}/rpp.json/downloadRoleTemplateFile`, params);
+        return this.apiService.getFileWithGetCall(`${config.authBaseUrl}/rpp.json/downloadRoleTemplateFile`);
     }
 
     public downloadRole(payload: any): Observable<any> {
-        let params = new HttpParams();
-        params = params.set('responseType', 'blob');
-        return this.apiService.postData(`${config.authBaseUrl}/rpp.json/downloadRole`, payload, params);
+        return this.apiService.getFileWithPostCall(`${config.authBaseUrl}/rpp.json/downloadRole`, payload);
     }
 
     public uploadRole(payload: any): Observable<ApiResponse> {
@@ -81,15 +76,11 @@ export class RPPService {
     }
 
     public downloadProfileTemplateFile(): Observable<any> {
-        let params = new HttpParams();
-        params = params.set('responseType', 'blob');
-        return this.apiService.getData(`${config.authBaseUrl}/rpp.json/downloadProfileTemplateFile`, params);
+        return this.apiService.getFileWithGetCall(`${config.authBaseUrl}/rpp.json/downloadProfileTemplateFile`);
     }
 
     public downloadProfile(payload: any): Observable<any> {
-        let params = new HttpParams();
-        params = params.set('responseType', 'blob');
-        return this.apiService.postData(`${config.authBaseUrl}/rpp.json/downloadProfile`, payload, params);
+        return this.apiService.getFileWithPostCall(`${config.authBaseUrl}/rpp.json/downloadProfile`, payload);
     }
 
     public uploadProfile(payload: any): Observable<ApiResponse> {
@@ -122,15 +113,11 @@ export class RPPService {
     }
     
     public downloadPermissionTemplateFile(): Observable<any> {
-        let params = new HttpParams();
-        params = params.set('responseType', 'blob');
-        return this.apiService.getData(`${config.authBaseUrl}/rpp.json/downloadPermissionTemplateFile`, params);
+        return this.apiService.getFileWithGetCall(`${config.authBaseUrl}/rpp.json/downloadPermissionTemplateFile`);
     }
 
     public downloadPermission(payload: any): Observable<any> {
-        let params = new HttpParams();
-        params = params.set('responseType', 'blob');
-        return this.apiService.postData(`${config.authBaseUrl}/rpp.json/downloadPermission`, payload, params);
+        return this.apiService.getFileWithPostCall(`${config.authBaseUrl}/rpp.json/downloadPermission`, payload);
     }
 
     public uploadPermission(payload: any): Observable<ApiResponse> {

@@ -78,7 +78,7 @@ export class CUPermissionComponent implements OnInit {
 
     public editLookupForm(): void {
         this.permissionForm = this.fb.group({
-            id: [this.editPayload.id, Validators.required],
+            uuid: [this.editPayload.uuid, Validators.required],
             permissionName: [this.editPayload.permissionName, Validators.required],
             description: [this.editPayload.description, Validators.required],
             status: [this.editPayload.status?.lookupCode, Validators.required]

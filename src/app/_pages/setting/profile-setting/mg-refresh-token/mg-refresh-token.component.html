@@ -43,8 +43,7 @@
         <nz-col [nzSpan]="5" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 5}">
             <hr>
             <h4 style="text-align: center;">
-                <span nz-icon nzType="account-book"
-                    nzTheme="outline"></span> Monthly Count
+                <span nz-icon nzType="account-book" nzTheme="outline"></span> Monthly Count
             </h4>
             <hr>
             <div id="MONTHLY_STATISTICS" echarts theme="macarons" [options]="MONTHLY_STATISTICS"                 
@@ -54,8 +53,7 @@
         <nz-col [nzSpan]="5" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 5}">
             <hr>
             <h4 style="text-align: center;">
-                <span nz-icon nzType="account-book"
-                    nzTheme="outline"></span> Yearly Count
+                <span nz-icon nzType="account-book" nzTheme="outline"></span> Yearly Count
             </h4>
             <hr>
             <div id="YEARLY_STATISTICS" echarts theme="macarons" [options]="YEARLY_STATISTICS"                 
@@ -78,7 +76,6 @@
         [setOfCheckedId]="setOfCheckedId"
         [staticTable]="refreshTokenTable"
         (buttonEventEmitter)="buttonActionReciver($event)"
-        (filterEventEmitter)="filterActionReciver($event)"
-        (extraEventEmitter)="extraActionReciver($event)">
+        (filterEventEmitter)="filterActionReciver($event)">
     </app-gen-table>
 </div>

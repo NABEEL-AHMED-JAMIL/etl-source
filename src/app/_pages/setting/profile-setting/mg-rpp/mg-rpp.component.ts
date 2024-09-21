@@ -5,19 +5,13 @@ import {
     ActionType,
     RPPService,
     AuthResponse,
-    APPLICATION_STATUS,
-    AuthenticationService,
-    IRole,
-    IProfile,
-    IPermission,
-    SettingService
+    AuthenticationService
 } from '../../../../_shared';
-import { first } from 'rxjs';
 import {
     AlertService,
-    CommomService,
-    SpinnerService
+    CommomService
 } from '../../../../_helpers';
+import { first } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { CURoleComponent } from '../mg-cu/cu-role/cu-role.component';
@@ -42,411 +36,140 @@ export class MgRPPComponent implements OnInit {
     public title = 'Role & Profile';
     public sessionUser: AuthResponse;
     // check id for role and profile and permission
-    public setOfRoleCheckedId = new Set<any>();
-    public setOfProfileCheckedId = new Set<any>();
-    public setOfPermissionCheckedId = new Set<any>();
-
-    // country
-    public countryTable: IStaticTable = {
-        tableId: 'country_id',
-        title: 'Mg Country',
-        bordered: true,
-        checkbox: false,
-        size: 'small',
-        dataColumn: [
-            {
-                field: 'code',
-                header: 'Code',
-                type: 'data'
-            },
-            {
-                field: 'countryCode',
-                header: 'Country Code',
-                type: 'data'
-            },
-            {
-                field: 'countryName',
-                header: 'Name',
-                type: 'data'
-            }
-        ]
-    };
-
     // role
-    public roleTable: IStaticTable = {
-        tableId: 'role_id',
-        title: 'Mg Role',
-        bordered: true,
-        checkbox: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'plus-circle',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Add',
-                action: ActionType.ADD
-            },
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            },
-            {
-                type: 'upload',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Upload',
-                action: ActionType.UPLOAD
-            },
-            {
-                type: 'download',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Download',
-                action: ActionType.DOWNLOAD
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'name',
-                header: 'Name',
-                type: 'data'
-            },
-            {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
-            },
-            {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
-            },
-            {
-                field: 'createdBy',
-                header: 'Created By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'dateUpdated',
-                header: 'Updated',
-                type: 'date'
-            },
-            {
-                field: 'updatedBy',
-                header: 'Updated By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'status',
-                header: 'Status',
-                type: 'tag'
-            }
-        ],
-        actionType: [
-            {
-                type: 'form',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
-                type: 'link',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'Link With User',
-                action: ActionType.LINK
-            },
-            {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            }
-        ]
-    };
-
+    public setOfRoleCheckedId = new Set<any>();
+    public roleTable: IStaticTable = this.initRoleStaticTable();
     // profile
-    public profileTable: IStaticTable = {
-        tableId: 'profile_id',
-        title: 'Mg Profile',
-        bordered: true,
-        checkbox: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'plus-circle',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Add',
-                action: ActionType.ADD
-            },
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            },
-            {
-                type: 'upload',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Upload',
-                action: ActionType.UPLOAD
-            },
-            {
-                type: 'download',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Download',
-                action: ActionType.DOWNLOAD
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'profileName',
-                header: 'Name',
-                type: 'data'
-            },
-            {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
-            },
-            {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
-            },
-            {
-                field: 'createdBy',
-                header: 'Created By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'dateUpdated',
-                header: 'Updated',
-                type: 'date'
-            },
-            {
-                field: 'updatedBy',
-                header: 'Updated By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'status',
-                header: 'Status',
-                type: 'tag'
-            }
-        ],
-        actionType: [
-            {
-                type: 'form',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
-                type: 'link',
-                color: 'orange',
-                spin: false,
-                tooltipTitle: 'Link With User',
-                action: ActionType.LINK
-            },
-            {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            }
-        ]
-    };
-
+    public setOfProfileCheckedId = new Set<any>();
+    public profileTable: IStaticTable = this.initProfileStaticTable();
     // permission
-    public permissionTable: IStaticTable = {
-        tableId: 'permission_id',
-        title: 'Mg Permission',
-        bordered: true,
-        checkbox: true,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'plus-circle',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Add',
-                action: ActionType.ADD
-            },
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            },
-            {
-                type: 'upload',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Upload',
-                action: ActionType.UPLOAD
-            },
-            {
-                type: 'download',
-                color: 'balck',
-                spin: false,
-                tooltipTitle: 'Download',
-                action: ActionType.DOWNLOAD
-            }
-        ],
-        extraHeaderButton: [
-            {
-                title: 'Delete All',
-                type: 'delete',
-                action: ActionType.DELETE
-            }
-        ],
-        dataColumn: [
-            {
-                field: 'permissionName',
-                header: 'Name',
-                type: 'data'
-            },
-            {
-                field: 'description',
-                header: 'Description',
-                type: 'data'
-            },
-            {
-                field: 'dateCreated',
-                header: 'Created',
-                type: 'date'
-            },
-            {
-                field: 'createdBy',
-                header: 'Created By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'dateUpdated',
-                header: 'Updated',
-                type: 'date'
-            },
-            {
-                field: 'updatedBy',
-                header: 'Updated By',
-                type: 'combine',
-                subfield: ['username']
-            },
-            {
-                field: 'status',
-                header: 'Status',
-                type: 'tag'
-            }
-        ],
-        actionType: [
-            {
-                type: 'form',
-                color: 'green',
-                spin: false,
-                tooltipTitle: 'Edit',
-                action: ActionType.EDIT
-            },
-            {
-                type: 'delete',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Delete',
-                action: ActionType.DELETE
-            }
-        ]
-    };
+    public setOfPermissionCheckedId = new Set<any>();
+    public permissionTable: IStaticTable = this.initPermissionStaticTable();
 
     constructor(
         private drawerService: NzDrawerService,
         private modalService: NzModalService,
-        private alertService: AlertService,
-        private spinnerService: SpinnerService,
-        private commomService: CommomService,
         private rppService: RPPService,
-        private settingService: SettingService,
+        private alertService: AlertService,
+        private commomService: CommomService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
-        this.fetchCountryData({
-            username: this.sessionUser.username
-        });
         this.fetchAllRole({});
         this.fetchAllProfile({});
         this.fetchAllPermission({});
     }
-    
-    // country
-    public fetchCountryData(payload: any): any {
-        this.spinnerService.show();
-        this.settingService.fetchCountryData(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.countryTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
-    }
 
     // role
-    public fetchAllRole(payload: any): any {
-        this.spinnerService.show();
-        this.rppService.fetchAllRole(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+    private initRoleStaticTable(): IStaticTable {
+        return {
+            tableUuid: this.commomService.uuid(), // uuid for table
+            title: 'Mg Role',
+            bordered: false,
+            checkbox: true,
+            size: 'small',
+            headerButton: [
+                {
+                    type: 'plus-circle',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Add',
+                    action: ActionType.ADD
+                },
+                {
+                    type: 'reload',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Refresh',
+                    action: ActionType.RE_FRESH
+                },
+                {
+                    type: 'upload',
+                    color: 'balck',
+                    spin: false,
+                    tooltipTitle: 'Upload',
+                    action: ActionType.UPLOAD
+                },
+                {
+                    type: 'download',
+                    color: 'balck',
+                    spin: false,
+                    tooltipTitle: 'Download',
+                    action: ActionType.DOWNLOAD
                 }
-                this.roleTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ],
+            extraHeaderButton: [
+                {
+                    title: 'Delete All',
+                    type: 'delete',
+                    action: ActionType.DELETE
+                }
+            ],
+            dataColumn: [
+                {
+                    field: 'name',
+                    header: 'Name',
+                    type: 'data'
+                },
+                {
+                    field: 'description',
+                    header: 'Description',
+                    type: 'data'
+                },
+                {
+                    field: 'dateCreated',
+                    header: 'Created',
+                    type: 'date'
+                },
+                {
+                    field: 'createdBy',
+                    header: 'Created By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'dateUpdated',
+                    header: 'Updated',
+                    type: 'date'
+                },
+                {
+                    field: 'updatedBy',
+                    header: 'Updated By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'status',
+                    header: 'Status',
+                    type: 'tag'
+                }
+            ],
+            actionType: [
+                {
+                    type: 'form',
+                    color: 'green',
+                    spin: false,
+                    tooltipTitle: 'Edit',
+                    action: ActionType.EDIT
+                },
+                {
+                    type: 'link',
+                    color: 'orange',
+                    spin: false,
+                    tooltipTitle: 'Link With User',
+                    action: ActionType.LINK
+                },
+                {
+                    type: 'delete',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Delete',
+                    action: ActionType.DELETE
+                }
+            ]
+        };
     }
 
     public buttonRoleActionReciver(payload: any): void {
@@ -455,11 +178,13 @@ export class MgRPPComponent implements OnInit {
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchAllRole({});
         } else if (ActionType.DOWNLOAD === payload.action) {
-            this.downloadRole({
-                sessionUser: {
-                    username: this.sessionUser.username
-                },
-            });
+            if (payload.checked) {
+                this.downloadRole({
+                    uuids: payload.checked
+                });
+                return;
+            }
+            this.downloadRole({});
         } else if (ActionType.UPLOAD === payload.action) {
             payload.action = 'Role';
             const drawerRef = this.drawerService.create({
@@ -472,7 +197,8 @@ export class MgRPPComponent implements OnInit {
                     batchDetail: payload
                 }
             });
-            drawerRef.afterClose.subscribe(data => {
+            drawerRef.afterClose
+            .subscribe(data => {
                 this.fetchAllRole({});
             });
         }
@@ -488,25 +214,15 @@ export class MgRPPComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    let role: IRole = {
-                        id: payload.data.id,
-                        name: payload.data.name,
-                        description: payload.data.description,
-                        status: APPLICATION_STATUS.DELETE
-                    }
                     this.deleteRoleById({
-                        ...role,
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        }
+                        uuid: payload.data.uuid
                     });
                 }
             });
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
-                nzTitle: '[' + payload.data.id + '] ' + payload.data.name,
                 nzWidth: 900,
-                nzFooter: null, // Optional footer
+                nzTitle: payload.data.name,
                 nzContent: RUCroseTableComponent,
                 nzContentParams: {
                     role: payload.data
@@ -523,27 +239,16 @@ export class MgRPPComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    this.spinnerService.show();
                     this.rppService.deleteAllRole({
-                        ids: payload.checked,
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        }
-                    })
-                        .pipe(first())
-                        .subscribe((response: any) => {
-                            this.spinnerService.hide();
-                            if (response.status === ApiCode.ERROR) {
-                                this.alertService.showError(response.message, ApiCode.ERROR);
-                                return;
-                            }
+                        uuids: payload.checked
+                    }).pipe(first())
+                    .subscribe((response: any) => 
+                        this.handleApiResponse(response, () => {
                             this.fetchAllRole({});
                             this.setOfRoleCheckedId = new Set<any>();
                             this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                        }, (response: any) => {
-                            this.spinnerService.hide();
-                            this.alertService.showError(response.error.message, ApiCode.ERROR);
-                        });
+                        })
+                    );
                 }
             });
         }
@@ -561,58 +266,146 @@ export class MgRPPComponent implements OnInit {
                 editPayload: editPayload?.data
             }
         });
-        drawerRef.afterClose.subscribe(data => {
+        drawerRef.afterClose
+        .subscribe(data => {
             this.fetchAllRole({});
         });
     }
 
+    public fetchAllRole(payload: any): any {
+        this.rppService.fetchAllRole(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.roleTable.dataSource = response.data;
+                })
+            );
+    }
+
     public deleteRoleById(payload: any): void {
-        this.spinnerService.show();
-        this.rppService.deleteRoleById(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllRole({});
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.rppService.deleteRoleById(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchAllRole({});
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
     }
 
     public downloadRole(payload: any): void {
-        this.spinnerService.show();
-        this.rppService.downloadRole(payload)
-            .pipe(first())
+        this.rppService.downloadRole(payload).pipe(first())
             .subscribe((response: any) => {
                 this.commomService.downLoadFile(response);
-                this.spinnerService.hide();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
     // profile
-    public fetchAllProfile(payload: any): any {
-        this.spinnerService.show();
-        this.rppService.fetchAllProfile(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+    private initProfileStaticTable(): IStaticTable {
+        return {
+            tableUuid: this.commomService.uuid(), // uuid for table
+            title: 'Mg Profile',
+            bordered: true,
+            checkbox: true,
+            size: 'small',
+            headerButton: [
+                {
+                    type: 'plus-circle',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Add',
+                    action: ActionType.ADD
+                },
+                {
+                    type: 'reload',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Refresh',
+                    action: ActionType.RE_FRESH
+                },
+                {
+                    type: 'upload',
+                    color: 'balck',
+                    spin: false,
+                    tooltipTitle: 'Upload',
+                    action: ActionType.UPLOAD
+                },
+                {
+                    type: 'download',
+                    color: 'balck',
+                    spin: false,
+                    tooltipTitle: 'Download',
+                    action: ActionType.DOWNLOAD
                 }
-                this.profileTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ],
+            extraHeaderButton: [
+                {
+                    title: 'Delete All',
+                    type: 'delete',
+                    action: ActionType.DELETE
+                }
+            ],
+            dataColumn: [
+                {
+                    field: 'profileName',
+                    header: 'Name',
+                    type: 'data'
+                },
+                {
+                    field: 'description',
+                    header: 'Description',
+                    type: 'data'
+                },
+                {
+                    field: 'dateCreated',
+                    header: 'Created',
+                    type: 'date'
+                },
+                {
+                    field: 'createdBy',
+                    header: 'Created By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'dateUpdated',
+                    header: 'Updated',
+                    type: 'date'
+                },
+                {
+                    field: 'updatedBy',
+                    header: 'Updated By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'status',
+                    header: 'Status',
+                    type: 'tag'
+                }
+            ],
+            actionType: [
+                {
+                    type: 'form',
+                    color: 'green',
+                    spin: false,
+                    tooltipTitle: 'Edit',
+                    action: ActionType.EDIT
+                },
+                {
+                    type: 'link',
+                    color: 'orange',
+                    spin: false,
+                    tooltipTitle: 'Link With User',
+                    action: ActionType.LINK
+                },
+                {
+                    type: 'delete',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Delete',
+                    action: ActionType.DELETE
+                }
+            ]
+        };
     }
 
     public buttonProfileActionReciver(payload: any): void {
@@ -621,11 +414,13 @@ export class MgRPPComponent implements OnInit {
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchAllProfile({});
         } else if (ActionType.DOWNLOAD === payload.action) {
-            this.downloadProfile({
-                sessionUser: {
-                    username: this.sessionUser.username
-                },
-            });
+            if (payload.checked) {
+                this.downloadProfile({
+                    uuids: payload.checked
+                });
+                return;
+            }
+            this.downloadProfile({});
         } else if (ActionType.UPLOAD === payload.action) {
             payload.action = 'Profile';
             const drawerRef = this.drawerService.create({
@@ -638,7 +433,8 @@ export class MgRPPComponent implements OnInit {
                     batchDetail: payload
                 }
             });
-            drawerRef.afterClose.subscribe(data => {
+            drawerRef.afterClose
+            .subscribe(data => {
                 this.fetchAllProfile({});
             });
         }
@@ -654,22 +450,15 @@ export class MgRPPComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    let profile: IProfile = {
-                        id: payload.data.id,
-                        profileName: payload.data.profileName,
-                        description: payload.data.description,
-                        status: APPLICATION_STATUS.DELETE
-                    }
                     this.deleteProfileById({
-                        ...profile
+                        uuid: payload.data.uuid
                     });
                 }
             });
         } else if (ActionType.LINK === payload.action) {
             this.drawerService.create({
-                nzTitle: '[' + payload.data.id + '] ' + payload.data.profileName,
                 nzWidth: 900,
-                nzFooter: null, // Optional footer
+                nzTitle: payload.data.profileName,
                 nzContent: PUCroseTableComponent,
                 nzContentParams: {
                     profile: payload.data
@@ -686,23 +475,16 @@ export class MgRPPComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    this.spinnerService.show();
                     this.rppService.deleteAllProfile({
-                        ids: payload.checked
+                        uuids: payload.checked
                     }).pipe(first())
-                    .subscribe((response: any) => {
-                        this.spinnerService.hide();
-                        if (response.status === ApiCode.ERROR) {
-                            this.alertService.showError(response.message, ApiCode.ERROR);
-                            return;
-                        }
-                        this.fetchAllProfile({});
-                        this.setOfProfileCheckedId = new Set<any>();
-                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (response: any) => {
-                        this.spinnerService.hide();
-                        this.alertService.showError(response.error.message, ApiCode.ERROR);
-                    });
+                    .subscribe((response: any) => 
+                        this.handleApiResponse(response, () => {
+                            this.fetchAllProfile({});
+                            this.setOfProfileCheckedId = new Set<any>();
+                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                        })
+                    );
                 }
             });
         }
@@ -710,8 +492,8 @@ export class MgRPPComponent implements OnInit {
 
     public openCuProfile(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'default',
             nzTitle: actionType === ActionType.ADD ? 'Add Profile' : 'Edit Profile',
+            nzSize: 'default',
             nzPlacement: 'right',
             nzMaskClosable: false,
             nzContent: CUProfileComponent,
@@ -720,58 +502,139 @@ export class MgRPPComponent implements OnInit {
                 editPayload: editPayload?.data
             }
         });
-        drawerRef.afterClose.subscribe(data => {
+        drawerRef.afterClose
+        .subscribe(data => {
             this.fetchAllProfile({});
         });
     }
 
+    public fetchAllProfile(payload: any): any {
+        this.rppService.fetchAllProfile(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.profileTable.dataSource = response.data;
+                })
+            );
+    }
+
     public deleteProfileById(payload: any): void {
-        this.spinnerService.show();
-        this.rppService.deleteProfileById(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllProfile({});
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.rppService.deleteProfileById(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchAllProfile({});
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
     }
 
     public downloadProfile(payload: any): void {
-        this.spinnerService.show();
-        this.rppService.downloadProfile(payload)
-            .pipe(first())
+        this.rppService.downloadProfile(payload).pipe(first())
             .subscribe((response: any) => {
                 this.commomService.downLoadFile(response);
-                this.spinnerService.hide();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
             });
     }
 
     // permission
-    public fetchAllPermission(payload: any): any {
-        this.spinnerService.show();
-        this.rppService.fetchAllPermission(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+    private initPermissionStaticTable(): IStaticTable {
+        return {
+            tableUuid: this.commomService.uuid(), // uuid for table
+            title: 'Mg Permission',
+            bordered: true,
+            checkbox: true,
+            size: 'small',
+            headerButton: [
+                {
+                    type: 'plus-circle',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Add',
+                    action: ActionType.ADD
+                },
+                {
+                    type: 'reload',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Refresh',
+                    action: ActionType.RE_FRESH
+                },
+                {
+                    type: 'upload',
+                    color: 'balck',
+                    spin: false,
+                    tooltipTitle: 'Upload',
+                    action: ActionType.UPLOAD
+                },
+                {
+                    type: 'download',
+                    color: 'balck',
+                    spin: false,
+                    tooltipTitle: 'Download',
+                    action: ActionType.DOWNLOAD
                 }
-                this.permissionTable.dataSource = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            ],
+            extraHeaderButton: [
+                {
+                    title: 'Delete All',
+                    type: 'delete',
+                    action: ActionType.DELETE
+                }
+            ],
+            dataColumn: [
+                {
+                    field: 'permissionName',
+                    header: 'Name',
+                    type: 'data'
+                },
+                {
+                    field: 'description',
+                    header: 'Description',
+                    type: 'data'
+                },
+                {
+                    field: 'dateCreated',
+                    header: 'Created',
+                    type: 'date'
+                },
+                {
+                    field: 'createdBy',
+                    header: 'Created By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'dateUpdated',
+                    header: 'Updated',
+                    type: 'date'
+                },
+                {
+                    field: 'updatedBy',
+                    header: 'Updated By',
+                    type: 'combine',
+                    subfield: ['username']
+                },
+                {
+                    field: 'status',
+                    header: 'Status',
+                    type: 'tag'
+                }
+            ],
+            actionType: [
+                {
+                    type: 'form',
+                    color: 'green',
+                    spin: false,
+                    tooltipTitle: 'Edit',
+                    action: ActionType.EDIT
+                },
+                {
+                    type: 'delete',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Delete',
+                    action: ActionType.DELETE
+                }
+            ]
+        };
     }
 
     public buttonPermissionActionReciver(payload: any): void {
@@ -780,11 +643,13 @@ export class MgRPPComponent implements OnInit {
         } else if (ActionType.RE_FRESH === payload.action) {
             this.fetchAllPermission({});
         } else if (ActionType.DOWNLOAD === payload.action) {
-            this.downloadPermission({
-                sessionUser: {
-                    username: this.sessionUser.username
-                },
-            });
+            if (payload.checked) {
+                this.downloadPermission({
+                    uuids: payload.checked
+                });
+                return;
+            }
+            this.downloadPermission({});
         } else if (ActionType.UPLOAD === payload.action) {
             payload.action = 'Permission';
             const drawerRef = this.drawerService.create({
@@ -797,7 +662,8 @@ export class MgRPPComponent implements OnInit {
                     batchDetail: payload
                 }
             });
-            drawerRef.afterClose.subscribe(data => {
+            drawerRef.afterClose
+            .subscribe(data => {
                 this.fetchAllPermission({});
             });
         }
@@ -813,17 +679,8 @@ export class MgRPPComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    let permission: IPermission = {
-                        id: payload.data.id,
-                        permissionName: payload.data.permissionName,
-                        description: payload.data.description,
-                        status: APPLICATION_STATUS.DELETE
-                    }
                     this.deletePermissionById({
-                        ...permission,
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        }
+                        uuid: payload.data.uuid
                     });
                 }
             });
@@ -838,26 +695,16 @@ export class MgRPPComponent implements OnInit {
                 nzTitle: 'Do you want to delete?',
                 nzContent: 'Press \'Ok\' may effect the business source.',
                 nzOnOk: () => {
-                    this.spinnerService.show();
                     this.rppService.deleteAllPermission({
-                        ids: payload.checked,
-                        sessionUser: {
-                            username: this.sessionUser.username
-                        }
+                        uuids: payload.checked
                     }).pipe(first())
-                    .subscribe((response: any) => {
-                        this.spinnerService.hide();
-                        if (response.status === ApiCode.ERROR) {
-                            this.alertService.showError(response.message, ApiCode.ERROR);
-                            return;
-                        }
-                        this.fetchAllPermission({});
-                        this.setOfPermissionCheckedId = new Set<any>();
-                        this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    }, (response: any) => {
-                        this.spinnerService.hide();
-                        this.alertService.showError(response.error.message, ApiCode.ERROR);
-                    });
+                    .subscribe((response: any) => 
+                        this.handleApiResponse(response, () => {
+                            this.fetchAllPermission({});
+                            this.setOfPermissionCheckedId = new Set<any>();
+                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                        })
+                    );
                 }
             });
         }
@@ -875,40 +722,46 @@ export class MgRPPComponent implements OnInit {
                 editPayload: editPayload?.data
             }
         });
-        drawerRef.afterClose.subscribe(data => {
+        drawerRef.afterClose
+        .subscribe(data => {
             this.fetchAllPermission({});
         });
     }
 
+    public fetchAllPermission(payload: any): any {
+        this.rppService.fetchAllPermission(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.permissionTable.dataSource = response.data;
+                })
+            );
+    }
+
     public deletePermissionById(payload: any): void {
-        this.spinnerService.show();
-        this.rppService.deletePermissionById(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.fetchAllPermission({});
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.rppService.deletePermissionById(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.fetchAllPermission({});
+                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                })
+            );
     }
 
     public downloadPermission(payload: any): void {
-        this.spinnerService.show();
-        this.rppService.downloadPermission(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.commomService.downLoadFile(response);
-                this.spinnerService.hide();
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.rppService.downloadPermission(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.commomService.downLoadFile(response);
+                })
+            );
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

@@ -44,15 +44,11 @@ export class EVariableService {
     }    
 
     public downloadEnVariableTemplateFile(): Observable<any> {
-        let params = new HttpParams();
-        params = params.set('responseType', 'blob');
-        return this.apiService.getData(`${config.apiBaseUrl}/eVariable.json/downloadEnVariableTemplateFile`, params);
+        return this.apiService.getFileWithGetCall(`${config.apiBaseUrl}/eVariable.json/downloadEnVariableTemplateFile`);
     }
 
     public downloadEnVariable(payload: any): Observable<any> {
-        let params = new HttpParams();
-        params = params.set('responseType', 'blob');
-        return this.apiService.postData(`${config.apiBaseUrl}/eVariable.json/downloadEnVariable`, payload, params);
+        return this.apiService.getFileWithPostCall(`${config.apiBaseUrl}/eVariable.json/downloadEnVariable`, payload);
     }
 
     public uploadEnVariable(payload: any): Observable<ApiResponse> {

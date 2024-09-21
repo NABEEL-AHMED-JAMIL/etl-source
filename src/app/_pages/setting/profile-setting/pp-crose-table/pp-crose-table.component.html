@@ -1,7 +1,6 @@
 <div nz-row *ngIf="ppCroseTable">
     <div nz-col [nzSpan]="6">
-        <input nz-input [(ngModel)]="searchDetails"
-            placeholder="Search Result" />
+        <input nz-input [(ngModel)]="searchDetails" placeholder="Search Result" />
     </div>
     <div nz-col [nzSpan]="18" style="text-align: end;">
         <nz-button-group>
@@ -59,11 +58,11 @@
                     {{ ppCroseData.crossTab[row.id + 'X' + col.id]?.key ? 'Linked': 'UnLink'}}
                 </nz-tag>&nbsp;&nbsp;
                 <nz-switch nzSize="small"
-                    [nzId]="row.id + 'X' + col.id"
+                    [nzId]="row.uuid + 'X' + col.uuid"
                     [nzSize]="'small'"
-                    [nzDisabled]="ppCroseData.crossTab[row.id + 'X' + col.id]?.value.lookupCode === 0 ? true : false"
-                    [ngModel]="ppCroseData.crossTab[row.id + 'X' + col.id]?.key"
-                    (ngModelChange)="onPPChange($event, row.id, col.id)">
+                    [nzDisabled]="ppCroseData.crossTab[row.uuid + '||' + col.uuid]?.value.lookupCode === 0 ? true : false"
+                    [ngModel]="ppCroseData.crossTab[row.uuid + '||' + col.uuid]?.key"
+                    (ngModelChange)="onPPChange($event, row.uuid, col.uuid)">
                 </nz-switch>
             </td>
         </tr>

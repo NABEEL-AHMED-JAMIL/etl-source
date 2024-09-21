@@ -9,10 +9,7 @@ import {
     ActionType
 } from '../../../../_shared';
 import { first } from 'rxjs';
-import {
-    AlertService,
-    SpinnerService
-} from '../../../../_helpers';
+import { AlertService, CommomService } from '../../../../_helpers';
 
 /**
  * @author Nabeel Ahmed
@@ -27,92 +24,73 @@ export class PPCroseTableComponent implements OnInit {
     public searchDetails: any;
     public sessionUser: AuthResponse;
     public ppCroseData: ICrossTab;
-    public ppCroseTable: IStaticTable = {
-        tableId: 'ppCrose_id',
-        title: 'Profile X Permission',
-        bordered: true,
-        checkbox: false,
-        size: 'small',
-        headerButton: [
-            {
-                type: 'reload',
-                color: 'red',
-                spin: false,
-                tooltipTitle: 'Refresh',
-                action: ActionType.RE_FRESH
-            }
-        ]
-    };
+    public ppCroseTable = this.initStaticTable(); 
 
     constructor(
-        private alertService: AlertService,
-        private spinnerService: SpinnerService,
         private rppService: RPPService,
+        private alertService: AlertService,
+        private commomService: CommomService,
         private authenticationService: AuthenticationService) {
-        this.authenticationService.currentUser
-            .subscribe(currentUser => {
-                this.sessionUser = currentUser;
-            });
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
-        this.fetchLinkProfilePermission({
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
+        this.fetchLinkProfilePermission({});
+    }
+
+    private initStaticTable(): IStaticTable {
+        return {
+            tableUuid: this.commomService.uuid(),
+            title: 'Profile X Permission',
+            bordered: true,
+            checkbox: false,
+            size: 'small',
+            headerButton: [
+                {
+                    type: 'reload',
+                    color: 'red',
+                    spin: false,
+                    tooltipTitle: 'Refresh',
+                    action: ActionType.RE_FRESH
+                }
+            ]
+        };
     }
 
     // profile&permission
     public fetchLinkProfilePermission(payload: any): any {
-        this.spinnerService.show();
-        this.rppService.fetchLinkProfilePermission(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
-                }
-                this.ppCroseData = response.data;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.rppService.fetchLinkProfilePermission(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.ppCroseData = response.data;
+                })
+            );
     }
 
     public buttonEvent(action: ActionType): void {
-        this.fetchLinkProfilePermission({
-            sessionUser: {
-                username: this.sessionUser.username
-            }
-        });
+        this.fetchLinkProfilePermission({});
     }
 
-    public onPPChange(linked: any, profileId: any, permissionId: any): void {
+    public onPPChange(linked: any, profileUuid: any, permissionUuid: any): void {
         let payload = {
             linked: linked,
-            profileId: profileId,
-            permissionId: permissionId,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+            profileUuid: profileUuid,
+            permissionUuid: permissionUuid
         }
-        this.spinnerService.show();
-        this.rppService.updateLinkProfilePermission(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    this.ppCroseData.crossTab[profileId + '||' + permissionId].key = !linked;
-                    return;
-                }
-                this.ppCroseData.crossTab[profileId + '||' + permissionId].key = linked;
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+        this.rppService.updateLinkProfilePermission(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    this.ppCroseData.crossTab[profileUuid + '||' + permissionUuid].key = linked;
+                })
+            );
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 
 }

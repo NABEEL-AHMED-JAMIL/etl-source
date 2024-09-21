@@ -66,13 +66,10 @@
     style="margin-top: 10px;">
     <div nz-row>
         <div nz-col [nzSpan]="22">
-            <h3><span nz-icon nzType="link" nzTheme="outline"></span>
-                Query Inquiry Result
-            </h3>
+            <h3><span nz-icon nzType="link" nzTheme="outline"></span>Query Inquiry Result</h3>
         </div>
         <div nz-col [nzSpan]="2">
-            <button class="export-xlx" nz-button
-                (click)="exportExcel()">Export XLSX</button>
+            <button class="export-xlx" nz-button (click)="exportExcel()">Export XLSX</button>
         </div>
     </div>
     <nz-divider style="margin: 5px 0;"></nz-divider>
@@ -80,8 +77,8 @@
     <nz-divider style="margin: 5px 0;"></nz-divider>
     <div nz-row>
         <div nz-col [nzSpan]="24">
-            <nz-table nzSize="small" #basicTable [nzData]="queryResponse.data" [nzFrontPagination]="false"
-                class="query-result">
+            <nz-table nzSize="small" #basicTable [nzData]="queryResponse.data"
+                [nzFrontPagination]="false" class="query-result">
                 <thead>
                     <tr>
                         <th *ngFor="let data of queryResponse.column">{{data | uppercase}}</th>

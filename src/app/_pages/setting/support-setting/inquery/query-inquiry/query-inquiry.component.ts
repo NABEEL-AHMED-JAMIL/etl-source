@@ -32,7 +32,7 @@ export class QueryInquiryComponent implements OnInit {
     public endDate: any;
     public sessionUser: AuthResponse;
     public setOfCheckedId = new Set<any>();
-    public queryInQuiryTable: IStaticTable = this.initializeTable();
+    public queryInQuiryTable: IStaticTable = this.initStaticTable();
     // user list response
     public selectedUser: any;
     public isSuperAdmin: boolean = false;
@@ -60,7 +60,7 @@ export class QueryInquiryComponent implements OnInit {
         this.queryInquiryFetch();
     }
 
-    private initializeTable(): IStaticTable {
+    private initStaticTable(): IStaticTable {
         return {
             tableUuid: this.commomService.uuid(), // uuid for table
             title: 'Mg Query Inquiry',
