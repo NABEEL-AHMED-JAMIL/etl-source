@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
 @Component({
     selector: 'spinner',
     template: `
+        <!-- for wolf loader -->
+        <!-- margin-top: 80px; -->
         <div class="dark-overlay">
             <div style="text-align: center;">
-                <img src="../assets/wolf.gif"
-                    style="height: 450px;margin-top: 80px;"    
+                <img src="../assets/loading.gif"
+                    style="height: 450px;"    
                     alt="Image Not Found">
             </div>
         </div>`,

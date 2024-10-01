@@ -14,27 +14,27 @@ export class OrganizationService {
     constructor(private apiService: ApiService) { }
 
     public addOrgAccount(payload: any): Observable<ApiResponse> {
-        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/addOrgAccount`, payload);
+        return this.apiService.postData(`${config.authBaseUrl}/organization.json/addOrgAccount`, payload);
     }
 
     public updateOrgAccount(payload: any): Observable<ApiResponse> {
-        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/updateOrgAccount`, payload);
+        return this.apiService.postData(`${config.authBaseUrl}/organization.json/updateOrgAccount`, payload);
     }
 
     public fetchOrgAccountById(payload: any): Observable<ApiResponse> {
-        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/fetchOrgAccountById`, payload);
+        return this.apiService.postData(`${config.authBaseUrl}/organization.json/fetchOrgAccountById`, payload);
     }
 
     public fetchAllOrgAccount(payload: any): Observable<ApiResponse> {
-        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/fetchAllOrgAccount`, payload);
+        return this.apiService.postData(`${config.authBaseUrl}/organization.json/fetchAllOrgAccount`, payload);
     }
 
     public deleteOrgAccountById(payload: any): Observable<ApiResponse> {
-        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/deleteOrgAccountById`, payload);
+        return this.apiService.postData(`${config.authBaseUrl}/organization.json/deleteOrgAccountById`, payload);
     }
 
     public deleteAllOrgAccount(payload: any): Observable<ApiResponse> {
-        return this.apiService.postData(`${config.apiBaseUrl}/organization.json/deleteAllOrgAccount`, payload);
+        return this.apiService.postData(`${config.authBaseUrl}/organization.json/deleteAllOrgAccount`, payload);
     }
 
 }

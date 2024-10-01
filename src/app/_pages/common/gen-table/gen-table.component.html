@@ -53,12 +53,12 @@
     [nzPaginationPosition]="'bottom'"
     [nzShowSizeChanger]='true'
     [nzPageSize]="15"
-    [nzPageSizeOptions]="[15,30,50]"
+    [nzPageSizeOptions]="[10,15,25]"
     [nzFrontPagination]="true"
     [nzShowPagination]="true"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
     class="table-setting"
-    style="margin: 5px 0;">
+    style="margin-top: 5px;">
     <thead>
         <tr>
             <th>#</th>
@@ -73,7 +73,8 @@
                     {{col.header}}
                 </th>
                 <th
-                    *ngIf="col.type === 'data' || col.type === 'phone' || col.type === 'price' || col.type === 'combine' ">
+                    *ngIf="col.type === 'data' || col.type === 'phone' 
+                        || col.type === 'price' || col.type === 'combine' ">
                     {{col.header}}
                 </th>
                 <th *ngIf="col.type === 'img' || col.type === 'avatar'"

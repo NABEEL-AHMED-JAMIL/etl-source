@@ -1,45 +1,52 @@
-<div nz-row class="content">
+<!-- my-info  -->
+<app-user-info id="serverSearch" [userInfo]="sessionUser" ></app-user-info>
+<!-- statistics -->
+<div nz-row class="content" style="margin-top: 10px;">
     <div nz-col [nzSpan]="24" 
         style="text-align: center;padding-top: 10px;">
         <h4>ETL Source (2023)</h4>
     </div>
-    <div nz-col [nzSpan]="8">
+    <div nz-col [nzSpan]="6">
         <hr>
         <h4 style="text-align: center;">
             <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
         </h4>
         <hr>
-        <div id="SERVICE_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
+        <div id="SERVICE_SETTING_STATISTICS" echarts
+            theme="macarons" style="height: 170px;"
             class="demo-chart" [options]="SERVICE_SETTING_STATISTICS">
         </div>
     </div>
-    <div nz-col [nzSpan]="8">
+    <div nz-col [nzSpan]="6">
         <hr>
         <h4 style="text-align: center;">
             <span nz-icon nzType="pie-chart" nzTheme="outline"></span> Report & Dashboard Setting
         </h4>
         <hr>
-        <div id="DASHBOARD_AND_REPORT_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
+        <div id="DASHBOARD_AND_REPORT_SETTING_STATISTICS" echarts
+            theme="macarons" style="height: 170px;"
             class="demo-chart" [options]="DASHBOARD_AND_REPORT_SETTING_STATISTICS">
         </div>
     </div>
-    <div nz-col [nzSpan]="8">
+    <div nz-col [nzSpan]="6">
         <hr>
         <h4 style="text-align: center;">
             <span nz-icon nzType="database" nzTheme="outline"></span> Form Setting
         </h4>
         <hr>
-        <div id="FORM_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
+        <div id="FORM_SETTING_STATISTICS" echarts
+            theme="macarons" style="height: 170px;"
             class="demo-chart" [options]="FORM_SETTING_STATISTICS">
         </div>
     </div>
-    <div nz-col [nzSpan]="8">
+    <div nz-col [nzSpan]="6">
         <hr>
         <h4 style="text-align: center;">
             <span nz-icon nzType="profile" nzTheme="outline"></span> Profile Setting
         </h4>
         <hr>
-        <div id="PROFILE_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
+        <div id="PROFILE_SETTING_STATISTICS" echarts
+            theme="macarons" style="height: 170px;"
             class="demo-chart" [options]="PROFILE_SETTING_STATISTICS">
         </div>
     </div>
@@ -49,17 +56,19 @@
             <span nz-icon nzType="appstore" nzTheme="outline"></span> App Setting
         </h4>
         <hr>
-        <div id="APP_SETTING_STATISTICS" echarts theme="macarons" style="height: 200px;"
+        <div id="APP_SETTING_STATISTICS" echarts
+            theme="macarons" style="height: 170px;"
             class="demo-chart" [options]="APP_SETTING_STATISTICS">
         </div>
     </div>
-    <div nz-col [nzSpan]="8">
+    <div nz-col [nzSpan]="16">
         <hr>
         <h4 style="text-align: center;">
             <span nz-icon nzType="login" nzTheme="outline"></span> My Daily Session
         </h4>
         <hr>
-        <div id="SESSION_COUNT_STATISTICS" echarts theme="macarons" style="height: 200px;"
+        <div id="SESSION_COUNT_STATISTICS" echarts
+            theme="macarons" style="height: 170px;"
             class="demo-chart" [options]="SESSION_COUNT_STATISTICS">
         </div>
     </div>

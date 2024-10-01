@@ -18,6 +18,24 @@ p span {
 }
 
 .chart-height {
-    height: 250px;
+    height: 180px;
     overflow-y: auto;
+}
+
+
+.pagination-div {
+    padding: 8px !important;
+    margin-bottom: 0px !important;
+}
+
+.action-button {
+    background: white;
+    border: 1px solid;
+}
+
+.create-date {
+    float: inline-end;
+    margin-right: 0px;
+    color: black;
+    font-size: 9px;
 }

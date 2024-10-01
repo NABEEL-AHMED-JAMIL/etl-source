@@ -1,32 +1,31 @@
 <!-- db-query -->
 <div class="content">
     <div nz-row>
-        <div nz-col [nzSpan]="!isSuperAdmin ? 18 : 13">
+        <div nz-col [nzSpan]="6">
             <h3>
                 <span nz-icon nzType="link" nzTheme="outline"></span>
                 Query Inquiry
             </h3>
         </div>
-        <div nz-col [nzSpan]="5" *ngIf="isSuperAdmin">
-            <nz-select nzAllowClear nzShowSearch style="width: 97%;"
-                [(ngModel)]="selectedUser"
-                nzPlaceHolder="Select User"
+        <div nz-col [nzSpan]="18" style="text-align: end;">
+            <nz-select *ngIf="isSuperAdmin" nzAllowClear nzShowSearch
+                [(ngModel)]="selectedUser" nzPlaceHolder="Select User"
                 (ngModelChange)="onSelectionUserChange()">
                 <nz-option *ngFor="let option of accessUserList"
                     [nzValue]="option.value"
-                    [nzLabel]="option.name"></nz-option>
-            </nz-select>
-        </div>
-        <div nz-col [nzSpan]="6">
-            <nz-select nzAllowClear nzShowSearch style="width: 88%;"
+                    [nzLabel]="option.name">
+                </nz-option>
+            </nz-select>&nbsp;
+            <nz-select nzAllowClear nzShowSearch
                 [(ngModel)]="selectedQueryInquiry"
                 nzPlaceHolder="Select Predefined Query"
                 (ngModelChange)="onSelectionQueryInquiryChange()">
                 <nz-option *ngFor="let option of queryInquirys"
                     [nzValue]="option"
-                    [nzLabel]="option.name"></nz-option>
+                    [nzLabel]="option.name">
+                </nz-option>
             </nz-select>&nbsp;
-            <button nz-button nzType="default" nzShape="circle" style="float: right;"
+            <button nz-button nzType="default" nzShape="circle"
                 nz-tooltip nzTooltipTitle="View Predefined Query."
                 (click)="openQueryInquiry()">
                 <span nz-icon nzType="setting" nzTheme="outline"></span>

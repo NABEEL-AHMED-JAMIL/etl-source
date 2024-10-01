@@ -28,9 +28,7 @@ export class SettingService {
     }
 
     public downloadDynamicQueryFile(payload: any): Observable<any> {
-        let params = new HttpParams();
-        params = params.set('responseType', 'blob');
-        return this.apiService.postData(`${config.apiBaseUrl}/setting.json/downloadDynamicQueryFile`, payload, params);
+        return this.apiService.getFileWithPostCall(`${config.apiBaseUrl}/setting.json/downloadDynamicQueryFile`, payload);
     }
 
     public deleteTemplateReg(payload: any): Observable<ApiResponse> {

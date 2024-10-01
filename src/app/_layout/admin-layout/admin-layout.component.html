@@ -9,7 +9,7 @@
                 <h1 style="margin: 0 0 0 00px;">{{title}}</h1>
             </a>
         </div>
-        <ul nz-menu nzTheme="dark" nzMode="inline">
+        <ul nz-menu nzTheme="dark" nzMode="inline" style="margin-top: 5px;">
             <ng-container *ngFor="let sidebar of sidebars">
                 <li *ngIf="commomService.hasPermissionAccess(sidebar.permission)"
                     nz-submenu

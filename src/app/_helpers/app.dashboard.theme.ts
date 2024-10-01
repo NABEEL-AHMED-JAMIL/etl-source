@@ -11,7 +11,7 @@ import { EChartsOption } from 'echarts';
 })
 export class AppDashboardThemeService {
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {}
 
     public loadTheme(): void {
         this.http.get('assets/shine-theme.json')
@@ -23,9 +23,21 @@ export class AppDashboardThemeService {
     public initChart(elementId: string, chartOptions: EChartsOption): void {
         const chartDom = document.getElementById(elementId);
         if (chartDom) {
-            const myChart = echarts.init(chartDom, 'shine');
-            myChart.setOption(chartOptions);
-        }
+            // Check if an instance already exists
+            const existingChart = echarts.getInstanceByDom(chartDom);
+            if (existingChart) {
+                console.log('Chart instance already exists, updating options.');
+                // If the chart instance already exists, just update the options
+                existingChart.setOption(chartOptions);
+            } else {
+                console.log('Initializing new chart instance.');
+                // Initialize a new chart if no instance exists
+                const myChart = echarts.init(chartDom, 'shine'); // Use 'shine' if loaded
+                myChart.setOption(chartOptions);
+            }
+        } else {
+            console.error(`Element with ID ${elementId} not found.`);
+        }        
     }
 
     public fillPieChartPayload(name: any, data: any): EChartsOption {
@@ -52,6 +64,10 @@ export class AppDashboardThemeService {
     }
 
     public fillAxisChartPayload(data: any): EChartsOption {
+        // Check if data is defined and is an array
+        if (!data || !Array.isArray(data)) {
+            return {}; // Handle the error case
+        }
         return {
             title: {
                 show: false
@@ -89,9 +105,9 @@ export class AppDashboardThemeService {
             },
             series: [
                 {
-                    type: 'bar',
+                    type: 'line',   // Use 'line' for an area chart
                     data: data.map((object: any) => object.value),
-                    large: true,
+                    areaStyle: {}  // Add this to fill the area
                 }
             ]
         }

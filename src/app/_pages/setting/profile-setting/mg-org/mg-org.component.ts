@@ -1,26 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { EChartsOption } from 'echarts';
-import { NzDrawerService } from 'ng-zorro-antd/drawer';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/internal/operators/first';
 import {
     AlertService,
-    CommomService,
-    SpinnerService
+    CommomService
 } from 'src/app/_helpers';
 import { CUOrgComponent } from 'src/app/_pages';
 import {
     ActionType,
     ApiCode,
     AuthResponse,
-    ORGANIZATIONS,
-    AuthenticationService,
-    OrganizationService,
     IOrganization,
-    DATA,
     IStaticTable,
+    ILookups,
+    LOOKUP_TYPE,
+    LookupService,
+    OrganizationService,
+    AuthenticationService,
+    AppDashboardThemeService,
 } from 'src/app/_shared';
 
+export interface SearchPayload {
+    startDate: string;
+    endDate: string;
+    pageNumber: number;
+    pageSize: number;
+    user?: {
+        [key: string]: any; // Adjust the type according to your requirements
+    };
+}
 
 /**
  * @author Nabeel Ahmed
@@ -32,14 +40,26 @@ import {
 })
 export class MgOrgComponent implements OnInit {
 
+    private readonly USERNAME_FILTER = 'username';
+    private readonly EMAIL_FILTER = 'email';
+    // start & end date detail
     public startDate: any;
     public endDate: any;
+    // page detail
+    public pageNumber: number = 1;
+    public pageSize: number = 4;
+    public totalRecorad: number;
+    // form deatil
+    public ORG_FILTER_TYPE: ILookups;
+    public dynamicForm: FormGroup;
+    public selectedFiledName: string = 'username';  // Default control name
+    // session user reponse
     public sessionUser: AuthResponse;
-    
-    public searchDetails: any;
+    public organizations: IOrganization[];
+    // statistic
     public staticTable: IStaticTable = {
         tableId: 'mg-org-id',
-        title: 'Mg Organization',
+        title: 'My Organization',
         size: 'small',
         headerButton: [
             {
@@ -58,140 +78,175 @@ export class MgOrgComponent implements OnInit {
             }
         ]
     };
-    // 
-    public organizations: IOrganization[] = ORGANIZATIONS;
-
-    public SERVICE_SETTING_STATISTICS: EChartsOption = {
-        tooltip: {
-            trigger: 'item'
-        },
-        legend: {
-            show: false
-        },
-        series: [
-            {
-                name: 'Nabeel',
-                type: 'pie',
-                radius: ['40%', '60%'],
-                center: ['50%', '50%'],
-                data: [
-                    {
-                        "name": "ACTIVE-EVENT-BRIDGE",
-                        "value": 4
-                    },
-                    {
-                        "name": "ACTIVE-LOOKUP",
-                        "value": 37
-                    },
-                    {
-                        "name": "ACTIVE-E-VARIABLE",
-                        "value": 3
-                    },
-                    {
-                        "name": "ACTIVE-TEMPLATE",
-                        "value": 14
-                    },
-                    {
-                        "name": "ACTIVE-CREDENTIAL",
-                        "value": 3
-                    }
-                ],
-                label: {
-                    formatter: '{b}: ({c})',
-                    show: true
-                }
-            }
-        ]
-    };
-    public SESSION_COUNT_STATISTICS: EChartsOption = {
-        title: {
-            show: false
-        },
-        toolbox: {
-            show: false
-        },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            }
-        },
-        grid: {
-            left: '7%',
-            right: '7%',
-            top: '12%',
-            bottom: '15%'
-        },
-        dataZoom: [],
-        xAxis: {
-            data: DATA.map((object: any) => object.key),
-            silent: false,
-            splitLine: {
-                show: false
-            },
-            splitArea: {
-                show: false
-            }
-        },
-        yAxis: {
-            splitArea: {
-                show: false
-            }
-        },
-        series: [
-            {
-                type: 'bar',
-                data: DATA.map((object: any) => object.value),
-                large: true,
-            }
-        ]
-    };
 
     constructor(
-        private drawerService: NzDrawerService,
-        private modalService: NzModalService,
+        private fb: FormBuilder,
         private alertService: AlertService,
-        private commomService: CommomService,
-        private spinnerService: SpinnerService,
+        public commomService: CommomService,
+        private lookupService: LookupService,
         private organizationService: OrganizationService,
+        private appDashboardThemeService: AppDashboardThemeService,
         private authenticationService: AuthenticationService) {
-            this.endDate = this.commomService.getCurrentDate();
-            this.startDate = this.commomService.getDate364DaysAgo(this.endDate);
-            this.authenticationService.currentUser
-                .subscribe(currentUser => {
-                    this.sessionUser = currentUser;
-                });
+        this.endDate = this.commomService.getCurrentDate();
+        this.startDate = this.commomService.getDate29DaysAgo(this.endDate);
+        this.sessionUser = this.authenticationService.currentUserValue;
     }
 
     ngOnInit(): void {
-        this.fetchAllOrgAccount({
-            startDate: this.startDate,
-            endDate: this.endDate,
-            sessionUser: {
-                username: this.sessionUser.username
-            }
+        this.lookupService.fetchLookupDataByLookupType({
+            lookupType: LOOKUP_TYPE.ORG_FILTER_TYPE
+        }).subscribe((data) => {
+            this.ORG_FILTER_TYPE = data;
+        });
+        // Initialize the form with the default control
+        this.intiForm();
+        // Listen for changes in filterType and update the form controls accordingly
+        this.dynamicForm.get('filterType')?.valueChanges
+            .subscribe(selectedType => {
+                this.dynamicForm.get('filedValue')?.reset();
+            });
+        this.searchResult();
+    }
+
+    public intiForm(): any {
+        // Initialize the form with the default control
+        this.dynamicForm = this.fb.group({
+            filterType: ['username', Validators.required],
+            filedValue: [''],
+            startDate: [this.startDate, Validators.required],
+            endDate: [this.endDate, Validators.required]
         });
     }
 
-    public fetchAllOrgAccount(payload: any): any {
-        this.spinnerService.show();
-        this.organizationService.fetchAllOrgAccount(payload)
-            .pipe(first())
-            .subscribe((response: any) => {
-                this.spinnerService.hide();
-                if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
-                    return;
+    public searchResult(): void {
+        this.pageNumber = 1;
+        this.fetchAllOrgAccount(this.createPayload());
+    }
+
+    public clearForm(): void {
+        this.pageNumber = 1;
+        this.intiForm();
+        this.fetchAllOrgAccount(this.createPayload());
+    }
+
+    public onPageIndexChange(newPage: number): void {
+        this.pageNumber = newPage;
+        this.fetchAllOrgAccount(this.createPayload());
+    }
+
+    private createPayload(): SearchPayload {
+        return {
+            pageNumber: this.pageNumber - 1,
+            pageSize: this.pageSize,
+            startDate: this.dynamicForm.get('startDate')?.value,
+            endDate: this.dynamicForm.get('endDate')?.value,
+            ...this.getUserPayload()
+        };
+    }
+
+    private getUserPayload(): any {
+        const filterTypeValue = this.dynamicForm.get('filterType')?.value;
+        const filedValue = this.dynamicForm.get('filedValue')?.value;
+        let payload = null;
+        if ((filterTypeValue === this.USERNAME_FILTER || filterTypeValue === this.EMAIL_FILTER) && filedValue) {
+            payload = {
+                user: {
+                    [filterTypeValue]: filedValue
                 }
-            }, (response: any) => {
-                this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
-            });
+            }
+        } else if (filterTypeValue && filedValue) {
+            payload = {
+                [filterTypeValue]: filedValue
+            }
+        }
+        return payload;
     }
 
-    public onDateChangeEvent(): void {
+    private initializeStatistics(organization: IOrganization): void {
+        const orgStatistic = organization.orgStatistic;
+        organization.SERVICE_SETTING_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Service Setting', orgStatistic['SERVICE_SETTING_STATISTICS']?.data || []);
+        organization.DASHBOARD_AND_REPORT_SETTING_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Dashboard & Report Setting', orgStatistic['DASHBOARD_AND_REPORT_SETTING_STATISTICS']?.data || []);
+        organization.FORM_SETTING_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Form Setting', orgStatistic['FORM_SETTING_STATISTICS']?.data || []);
+        organization.PROFILE_SETTING_STATISTICS = this.appDashboardThemeService.fillPieChartPayload('Profile Setting', orgStatistic['PROFILE_SETTING_STATISTICS']?.data || []);
+        if (orgStatistic['SESSION_COUNT_STATISTICS']?.data) {
+            organization.SESSION_COUNT_STATISTICS = this.appDashboardThemeService.fillAxisChartPayload(orgStatistic['SESSION_COUNT_STATISTICS']?.data);
+        }
     }
 
-    public buttonEvent(action: ActionType): void {
+    private initCharts(organization: IOrganization, index: number): void {
+        setTimeout(() => {
+            // Initialize charts only if they haven't been initialized yet
+            const orgStatistic = organization.orgStatistic;
+            this.appDashboardThemeService.initChart(`SERVICE_SETTING_STATISTICS_${index}`, organization.SERVICE_SETTING_STATISTICS);
+            this.appDashboardThemeService.initChart(`DASHBOARD_AND_REPORT_SETTING_STATISTICS_${index}`, organization.DASHBOARD_AND_REPORT_SETTING_STATISTICS);
+            this.appDashboardThemeService.initChart(`FORM_SETTING_STATISTICS_${index}`, organization.FORM_SETTING_STATISTICS);
+            this.appDashboardThemeService.initChart(`PROFILE_SETTING_STATISTICS_${index}`, organization.PROFILE_SETTING_STATISTICS);
+            if (orgStatistic['SESSION_COUNT_STATISTICS']?.data) {
+                this.appDashboardThemeService.initChart(`SESSION_COUNT_STATISTICS_${index}`, organization.SESSION_COUNT_STATISTICS);
+            }
+        }, 0);
+    }
+
+    public buttonEvent(payload: any): void {
+        if (ActionType.ADD === payload.action) {
+        } else if (ActionType.RE_FRESH === payload.action) {
+            this.onPageIndexChange(this.pageNumber);
+        }
+    }
+
+    public openCuProfile(actionType: ActionType, editPayload: any): void {
+    }
+
+    /**
+     * Method use to view the org users
+     * */
+    public viewOrgUser(payload: any): void {
+        console.log("viewOrgUser", payload);
+    }
+
+    /**
+     * Method use to edit the org
+     * */
+    public editOrgAccount(payload: any): void {
+        console.log("editOrgAccount", payload);
+    }
+
+    /**
+     * method use to change the org status
+     * active | in active
+     * */
+    public changeOrgAccountStatus(payload: any): void {
+        console.log("changeOrgAccountStatus", payload);
+    }
+
+    /**
+     * Method use to delte the org account
+     */
+    public deleteOrgAccount(payload: any): void {
+        console.log("deleteOrgAccount", payload);
+    }
+
+    public fetchAllOrgAccount(payload: any): any {
+        this.organizationService.fetchAllOrgAccount(payload).pipe(first())
+            .subscribe((response: any) => 
+                this.handleApiResponse(response, () => {
+                    let paginatedOrgResponse = response.data;
+                    this.organizations = paginatedOrgResponse.content;
+                    this.totalRecorad = paginatedOrgResponse?.totalElements;
+                    this.pageSize = paginatedOrgResponse?.pageable.pageSize;
+                    this.organizations.forEach((organization, index) => {
+                        this.initializeStatistics(organization);
+                        this.initCharts(organization, index);
+                    });
+                })
+            );
+    }
+
+    private handleApiResponse(response: any, successCallback: Function): void {
+        if (response.status === ApiCode.ERROR) {
+            this.alertService.showError(response.message, ApiCode.ERROR);
+            return;
+        }
+        successCallback();
     }
 }

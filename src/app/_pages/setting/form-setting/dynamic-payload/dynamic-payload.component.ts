@@ -93,7 +93,6 @@ export class DynamicPayloadQueryComponent implements OnInit {
             .pipe(first())
             .subscribe((response: any) => {
                 this.loading = false;
-                debugger
                 if (response.status === ApiCode.SUCCESS) {
                     this.dynamicString = response.data;
                     this.visible = true;

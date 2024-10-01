@@ -14,6 +14,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
@@ -60,6 +61,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
         NzAlertModule,
         NzTagModule,
         NzPageHeaderModule,
+        NzPaginationModule,
         NzDescriptionsModule,
         NzPopconfirmModule,
         NzUploadModule,

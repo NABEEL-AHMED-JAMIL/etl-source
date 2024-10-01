@@ -1,181 +1,211 @@
-<!-- opertaion detail
-1) show the list of country
-2) show the status
-3) show the input filed for search [db]
-4) show the (start date and end date)
--->
-<!-- static table -->
-<div class="content" style="margin-top: 10px;">
-    <h3>
-        <span nz-icon nzType="link" nzTheme="outline"></span>
-        {{staticTable.title}}
-    </h3>
-    <nz-divider style="margin: 5px 0;"></nz-divider>
-    <div nz-row *ngIf="staticTable">
-        <div nz-col [nzSpan]="8">
-            <input nz-input  placeholder="Search Result"
-                [(ngModel)]="searchDetails"/>
-        </div>
-        <div nz-col [nzSpan]="16" style="text-align: end;">
-            <nz-button-group>
-                <nz-form-control>
-                    <input id="startDate" nz-input type="date"
-                        [(ngModel)]="startDate"
-                        (change)="onDateChangeEvent()"/>
-                </nz-form-control>&nbsp;
-                <nz-form-control>
-                    <input id="endDate" nz-input type="date"
-                        [(ngModel)]="endDate"
-                        (change)="onDateChangeEvent()"/>
-                </nz-form-control>
-            </nz-button-group>&nbsp;
-            <nz-button-group>
-                <button *ngFor='let button of staticTable.headerButton'
-                    nz-button nz-tooltip nzType="default"
-                    nzTooltipTitle="{{ button?.tooltipTitle }}"
-                    (click)="buttonEvent(button.action)">
-                    <span nz-icon nzTheme="outline"
-                        [nzType]="button.type"
-                        [nzSpin]="button.spin"
-                        [ngStyle]="{'color': button.color}">
-                    </span>
-                </button>
-            </nz-button-group>
-        </div>
-    </div>
-</div>
-<!-- gride show -->
-<nz-row nzGutter="12" style="margin-top: 10px;">
+<!-- my-info  -->
+<nz-collapse style="margin-top: 10px;">
+    <nz-collapse-panel id="org-detail" nzHeader="{{staticTable.title}}">
+        <nz-descriptions nzSize="small">
+            <nz-descriptions-item nzTitle="Name">{{sessionUser.firstName}} {{sessionUser.lastName}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="UserName">{{sessionUser.username}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="User Email">{{sessionUser.email}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="User Account Type">{{commomService.getDataFromObjectV2(sessionUser.accountType)}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="User Profile">{{sessionUser.profile?.description}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Congif IP">{{sessionUser.ipAddress}}</nz-descriptions-item>
+        </nz-descriptions>
+        <nz-descriptions *ngIf="sessionUser?.organization" nzSize="small">
+            <nz-descriptions-item nzTitle="Org Name">{{sessionUser?.organization.name}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Org Phone">{{sessionUser?.organization.phone}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Org Status">
+                <nz-tag class="{{sessionUser?.organization?.status.lookupType}}">
+                    {{commomService.getDataFromObjectV2(sessionUser?.organization.status)}}
+                </nz-tag>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Org Address">{{sessionUser?.organization.address}}</nz-descriptions-item>
+        </nz-descriptions>
+    </nz-collapse-panel>
+</nz-collapse>
+<!-- search organization -->
+<nz-collapse style="margin-top: 10px;">
+    <nz-collapse-panel id="org-serch" nzHeader="Search Organization">
+        <form nz-form [nzLayout]="'vertical'" *ngIf="dynamicForm"
+            [formGroup]="dynamicForm" (ngSubmit)="searchResult()">
+            <div nz-row [nzGutter]="16">
+                <div nz-col [nzSpan]="6">
+                    <nz-form-item>
+                        <nz-form-label>Select Filter Type</nz-form-label>
+                        <nz-form-control nzErrorTip="Select Filter Type">
+                            <nz-select nzShowSearch nzAllowClear formControlName="filterType"
+                                nzPlaceHolder="Select Filter Type">
+                                <nz-option *ngFor="let lookupChildren of ORG_FILTER_TYPE?.SUB_LOOKUP_DATA"
+                                    [nzLabel]="lookupChildren.description"
+                                    [nzValue]="lookupChildren.lookupValue">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="6">
+                    <nz-form-item>
+                        <nz-form-label>Enter Value</nz-form-label>
+                        <nz-form-control nzErrorTip="Please enter your value">
+                            <input nz-input type="text" formControlName="filedValue" placeholder="Enter value" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired>Start Date</nz-form-label>
+                        <nz-form-control nzErrorTip="Start Date Required">
+                            <input nz-input type="date" formControlName="startDate" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired>End Date</nz-form-label>
+                        <nz-form-control nzErrorTip="End Date Required">
+                            <input nz-input type="date" formControlName="endDate" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <button nz-button nzType="default" type="button" (click)="clearForm()">Clear</button>
+                </div>
+                <div nz-col [nzSpan]="12" style="text-align: end;">
+                    <button nz-button nzType="primary" type="submit" [disabled]="!dynamicForm.valid">Search</button>
+                </div>
+            </div>
+        </form>
+    </nz-collapse-panel>
+</nz-collapse>
+<!-- organization info -->
+<nz-row *ngIf="organizations" nzGutter="12" style="margin-top: 10px;">
+    <!-- content -->
     <ng-container *ngFor="let organization of organizations; index as i">
-        <nz-col [nzSpan]="8" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 8}">
-            <nz-card class="nz-card-aligment" nzTitle="#{{ organization.id }} {{ organization.name }}"
-                nz-tooltip nzTooltipTitle="#{{ organization.id }} {{ organization.name }}"
-                [nzActions]="[actionEdit, actionUserSetting, actionMore, actionEdit, actionUserSetting, actionMore]"
-                [nzExtra]="extraTemplate">
+        <nz-col [nzSpan]="12" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 12}">
+            <nz-card class="nz-card-aligment" [nzExtra]="extraTemplate" nz-tooltip
+                nzTitle="#{{organization.id}} {{organization.name}}">
+                <h5 style="color: #11315f;">
+                    <span nz-icon nzType="link" nzTheme="outline"></span>
+                    Organization Statistics
+                    <nz-tag class="{{organization.status?.lookupType}}"
+                        style="float: inline-end;margin-right: 0px;">
+                        {{commomService.getDataFromObjectV2(organization.status)}}
+                    </nz-tag>
+                </h5>
+                <nz-divider style="margin: 5px 0;"></nz-divider>
                 <!-- service statistics carts -->
                 <nz-row nzGutter="16" class="chart-height">
-                    <!-- daily session -->
-                    <nz-col [nzSpan]="24" id="SESSION_COUNT_STATISTICS-{{i}}">
-                        <h4 style="text-align: center;">
+                    <!-- session -->
+                    <nz-col *ngIf="organization.SESSION_COUNT_STATISTICS"
+                        [nzSpan]="24" [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 24}">
+                        <h5 style="text-align: center;">
                             <span nz-icon nzType="login" nzTheme="outline"></span> My Daily Session
-                        </h4>
+                        </h5>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <div id="SESSION_COUNT_STATISTICS" echarts class="demo-chart"
-                            theme="macarons" style="height: 150px;"
-                            [options]="SESSION_COUNT_STATISTICS">
-                        </div>
-                    </nz-col>
-                    <!-- service-setting -->
-                    <nz-col [nzSpan]="24" id="SERVICE_SETTING_STATISTICS-{{i}}">
-                        <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <h4 style="text-align: center;">
-                            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
-                        </h4>
-                        <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 150px;"
-                            [options]="SERVICE_SETTING_STATISTICS"></div>
-                    </nz-col>
-                    <!-- report & dashboard -->
-                    <nz-col [nzSpan]="24" id="DASHBOARD_AND_REPORT_SETTING_STATISTICS-{{i}}">
-                        <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <h4 style="text-align: center;">
-                            <span nz-icon nzType="pie-chart" nzTheme="outline"></span> Report & Dashboard Setting
-                        </h4>
-                        <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 150px;"
-                            [options]="SERVICE_SETTING_STATISTICS"></div>
-                    </nz-col>
-                    <!-- form setting -->
-                    <nz-col [nzSpan]="24" id="FORM_SETTING_STATISTICS-{{i}}">
-                        <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <h4 style="text-align: center;">
-                            <span nz-icon nzType="database" nzTheme="outline"></span> Form Setting
-                        </h4>
-                        <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 150px;"
-                            [options]="SERVICE_SETTING_STATISTICS"></div>
+                        <div id="SESSION_COUNT_STATISTICS_{{i}}" echarts class="demo-chart" theme="macarons"
+                            style="height: 150px;" [options]="organization.SESSION_COUNT_STATISTICS"></div>
                     </nz-col>
                     <!-- profile setting -->
-                    <nz-col [nzSpan]="24" id="PROFILE_SETTING_STATISTICS-{{i}}">
-                        <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <h4 style="text-align: center;">
+                    <nz-col *ngIf="organization.PROFILE_SETTING_STATISTICS" [nzSpan]="12" [nzXs]="{span: 24}"
+                        [nzSm]="{span: 24}" [nzMd]="{span: 12}">
+                        <!-- if session count exist then add other wise no -->
+                        <nz-divider *ngIf="organization.SESSION_COUNT_STATISTICS" style="margin: 5px 0;"></nz-divider>
+                        <h5 style="text-align: center;">
                             <span nz-icon nzType="profile" nzTheme="outline"></span> Profile Setting
-                        </h4>
+                        </h5>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
-                            theme="macarons" style="height: 150px;"
-                            [options]="SERVICE_SETTING_STATISTICS"></div>
+                        <div id="PROFILE_SETTING_STATISTICS_{{i}}" echarts class="demo-chart" theme="macarons"
+                            style="height: 150px;" [options]="organization.PROFILE_SETTING_STATISTICS"></div>
                     </nz-col>
-                    <!-- app setting -->
-                    <nz-col [nzSpan]="24" id="APP_SETTING_STATISTICS-{{i}}">
+                    <!-- form setting -->
+                    <nz-col *ngIf="organization.FORM_SETTING_STATISTICS" [nzSpan]="12" [nzXs]="{span: 24}"
+                        [nzSm]="{span: 24}" [nzMd]="{span: 12}">
+                        <!-- if session count exist then add other wise no -->
+                        <nz-divider *ngIf="organization.SESSION_COUNT_STATISTICS" style="margin: 5px 0;"></nz-divider>
+                        <h5 style="text-align: center;">
+                            <span nz-icon nzType="database" nzTheme="outline"></span> Form Setting
+                        </h5>
                         <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <h4 style="text-align: center;">
-                            <span nz-icon nzType="appstore" nzTheme="outline"></span> App Setting
-                        </h4>
+                        <div id="FORM_SETTING_STATISTICS_{{i}}" echarts class="demo-chart" theme="macarons"
+                            style="height: 150px;" [options]="organization.FORM_SETTING_STATISTICS"></div>
+                    </nz-col>
+                    <!-- service settig -->
+                    <nz-col *ngIf="organization.SERVICE_SETTING_STATISTICS" [nzSpan]="12" [nzXs]="{span: 24}"
+                        [nzSm]="{span: 24}" [nzMd]="{span: 12}">
                         <nz-divider style="margin: 5px 0;"></nz-divider>
-                        <div id="SERVICE_SETTING_STATISTICS" echarts class="demo-chart" 
+                        <h5 style="text-align: center;">
+                            <span nz-icon nzType="dingding" nzTheme="outline"></span> Service Setting
+                        </h5>
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
+                        <div id="SERVICE_SETTING_STATISTICS_{{i}}" echarts class="demo-chart" theme="macarons"
+                            style="height: 150px;" [options]="organization.SERVICE_SETTING_STATISTICS"></div>
+                    </nz-col>
+                    <!-- report & dashboard -->
+                    <nz-col *ngIf="organization.DASHBOARD_AND_REPORT_SETTING_STATISTICS" [nzSpan]="12"
+                        [nzXs]="{span: 24}" [nzSm]="{span: 24}" [nzMd]="{span: 12}">
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
+                        <h5 style="text-align: center;">
+                            <span nz-icon nzType="pie-chart" nzTheme="outline"></span> Dashboard & Report Setting
+                        </h5>
+                        <nz-divider style="margin: 5px 0;"></nz-divider>
+                        <div id="DASHBOARD_AND_REPORT_SETTING_STATISTICS_{{i}}" echarts class="demo-chart"
                             theme="macarons" style="height: 150px;"
-                            [options]="SERVICE_SETTING_STATISTICS"></div>
+                            [options]="organization.DASHBOARD_AND_REPORT_SETTING_STATISTICS"></div>
                     </nz-col>
                 </nz-row>
                 <nz-divider style="margin: 5px 0;"></nz-divider>
-                <!-- total user count  -->
-                <nz-row nzGutter="16">
-                    <nz-col [nzSpan]="12">
-                        <span  style="color: green;font-weight: bold;">
-                            <span nz-icon nzType="usergroup-add"></span>
-                            Active User = 20
-                        </span>
-                    </nz-col>
-                    <nz-col [nzSpan]="12"
-                        style="text-align: end;">
-                        <span style="color: orange;font-weight: bold;">
-                            <span nz-icon nzType="usergroup-delete"></span>
-                            Inactive User = 0
-                        </span>
-                    </nz-col>
-                </nz-row>
-                <!-- org detail -->
-                <nz-divider style="margin: 1px 0;"></nz-divider>
-                <nz-row nzGutter="16">
-                    <nz-col [nzSpan]="12">
-                        <p id="email">
-                            <span nz-icon nzType="mail" nzTheme="outline"></span>
-                            <span> Email: </span> {{organization.email}}
-                        </p>
-                    </nz-col>
-                    <nz-col [nzSpan]="12"
-                        style="text-align: end;">
-                        <p id="phone">
-                            <span nz-icon nzType="phone" nzTheme="outline"></span>
-                            <span> Phone: </span> {{organization.phone}}
-                        </p>
-                    </nz-col>
-                    <nz-col [nzSpan]="24">
-                        <p id="address">
-                            <span nz-icon nzType="home" nzTheme="outline"></span>
-                            <span> Address: </span> {{organization.address}}
-                        </p>
-                    </nz-col>
-                </nz-row>
+                <h5 style="color: #11315f;margin-bottom: 10px;">
+                    <span nz-icon nzType="link" nzTheme="outline"></span>
+                    Organization Information
+                    <nz-tag class="create-date">
+                        Created Date : {{organization.dateCreated | date:'yyyy-MM-dd'}}
+                    </nz-tag>
+                    <nz-tag class="create-date" style="margin-right: 5px;">
+                        Account Type : {{commomService.getDataFromObjectV2(organization?.owner?.accountType)}}
+                    </nz-tag>
+                </h5>
+                <!-- user info -->
+                <nz-descriptions nzBordered nzSize="small">
+                    <nz-descriptions-item nzTitle="Email">{{organization?.owner.email}}</nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Username" [nzSpan]="3">{{organization?.owner.username}}</nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Phone" [nzSpan]="3">{{organization?.phone }}</nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="Address">{{organization?.address}}</nz-descriptions-item>
+                </nz-descriptions>
+                <!-- extra-work -->
+                <ng-template #extraTemplate>
+                    <!-- usergroup-add -->
+                    <button type="button" class="action-button" nz-tooltip nzTooltipTitle="View Org Users"
+                        style="color: #11315f;margin-right: 5px;" (click)="viewOrgUser(organization)">
+                        <span nz-icon nzType="eye" nzTheme="outline"></span>
+                    </button>
+                    <!-- edit -->
+                    <button type="button" class="action-button" nz-tooltip nzTooltipTitle="Edit Org"
+                        style="color: green;margin-right: 5px;" (click)="editOrgAccount(organization)">
+                        <span nz-icon nzType="edit" nzTheme="outline"></span>
+                    </button>
+                    <!-- active -->
+                    <button *ngIf="organization.status?.lookupCode === 0" type="button" class="action-button"
+                        nz-tooltip nzTooltipTitle="Active Org" style="color: black;margin-right: 5px;"
+                        (click)="changeOrgAccountStatus(organization)">
+                        <span nz-icon nzType="play-square" nzTheme="outline"></span>
+                    </button>
+                    <!-- active -->
+                    <button *ngIf="organization.status?.lookupCode === 1" type="button" class="action-button"
+                        nz-tooltip nzTooltipTitle="Inactive Org" style="color: black;margin-right: 5px;"
+                        (click)="changeOrgAccountStatus(organization)">
+                        <span nz-icon nzType="pause" nzTheme="outline"></span>
+                    </button>
+                    <!-- delte -->
+                    <button type="button" class="action-button" nz-tooltip nzTooltipTitle="Delete  Org"
+                        style="color: red;" (click)="deleteOrgAccount(organization)">
+                        <span nz-icon nzType="delete" nzTheme="outline"></span>
+                    </button>
+                </ng-template>
             </nz-card>
-            <!-- extra-work -->
-            <ng-template #extraTemplate>
-                <nz-tag><b>Active</b></nz-tag>
-                <nz-avatar nzSrc="./assets/avatar/{{organization.image}}"></nz-avatar>
-            </ng-template>
-            <ng-template #actionEdit>
-                <span nz-icon nzType="edit"></span>
-            </ng-template>
-            <ng-template #actionUserSetting>
-                <span nz-icon nzType="usergroup-add"></span>
-            </ng-template>
-            <ng-template #actionMore>
-                <span nz-icon nzType="ellipsis"></span>
-            </ng-template>
         </nz-col>
     </ng-container>
 </nz-row>
+<!-- pagination -->
+<ng-container *ngIf="organizations">
+    <nz-pagination style="text-align: center;" [(nzPageIndex)]="pageNumber" [nzTotal]="totalRecorad"
+        [nzPageSize]="pageSize" (nzPageIndexChange)="onPageIndexChange($event)">
+    </nz-pagination>
+</ng-container>

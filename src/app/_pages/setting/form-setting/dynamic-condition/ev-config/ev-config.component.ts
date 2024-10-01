@@ -291,7 +291,6 @@ export class EVConfigComponent implements OnInit {
     }
 
     public buttonVisibilityActionReciver(payload: any): void {
-        debugger
         if (ActionType.ADD === payload.action) {
             this.openCuVisibilityForm(ActionType.ADD, null);
         } else if (ActionType.RE_FRESH === payload.action) {

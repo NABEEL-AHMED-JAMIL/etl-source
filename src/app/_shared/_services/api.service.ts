@@ -97,7 +97,6 @@ export class ApiService {
     
     // Method to handle errors
     private handleError(error: HttpErrorResponse): void {
-        debugger
         console.error('Error occurred:', error); // Log the error to the console
         this.spinnerService.hide();  // Hide spinner on error
         let errorMessage = 'An unknown error occurred!';
