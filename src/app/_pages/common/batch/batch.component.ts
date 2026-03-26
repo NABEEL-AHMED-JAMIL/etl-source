@@ -119,9 +119,9 @@ export class BatchComponent implements OnInit {
         this.uploading = false;
         if (response?.status === ApiCode.ERROR) {
             this.errors = response.data;
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
         } else {
-            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+            this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
         }
     }
 

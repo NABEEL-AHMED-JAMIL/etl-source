@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicFieldComponent } from '../dynmic-field';
-import { ApiCode, CommomReportService } from 'src/app/_shared';
 import { first } from 'rxjs';
-import { AlertService } from 'src/app/_helpers';
+import { DynamicFieldComponent } from '../dynmic-field';
+import { ApiCode, CommomReportService } from '../../../_shared';
+import { AlertService } from '../../../_helpers';
 
 /**
  * Select | Multi Select
@@ -41,7 +41,7 @@ export class DynamicSelectComponent extends DynamicFieldComponent implements OnI
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

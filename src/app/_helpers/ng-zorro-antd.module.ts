@@ -38,6 +38,10 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTransferModule } from 'ng-zorro-antd/transfer';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
+// icon
+import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
+import * as AllIcons from '@ant-design/icons-angular/icons';
+const icons: any[] = Object.values(AllIcons);
 
 
 // npm install @kolkov/angular-editor --save
@@ -46,6 +50,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
  */
 @NgModule({
     exports: [
+        NzIconModule,
         NzMenuModule,
         NzLayoutModule,
         NzDropDownModule,
@@ -87,6 +92,10 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
         NzProgressModule
     ],
     providers: [
+        {
+            provide: NZ_ICONS,
+            useValue: icons
+        }
     ]
 })
 export class NgZorroAntdModule {

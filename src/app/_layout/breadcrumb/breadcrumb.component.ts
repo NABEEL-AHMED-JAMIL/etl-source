@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BreadcrumbService } from 'src/app/_helpers';
+import { BreadcrumbService } from '../../_helpers';
+
 
 /**
  * @author Nabeel Ahmed
@@ -13,7 +14,7 @@ export class BreadcrumbComponent implements OnInit {
 
     public breadcrumbs: { label: string, url: string }[] = [];
 
-    constructor(private breadcrumbService: BreadcrumbService) { }
+    constructor(private readonly breadcrumbService: BreadcrumbService) { }
 
     ngOnInit(): void {
         this.breadcrumbs = this.breadcrumbService.breadcrumbs;

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ApiResponse } from '../_model/object';
 import { Observable } from 'rxjs';
 import { config } from '../../../environments/environment';
-import { ApiService } from './api.service';
+import {
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -12,9 +15,8 @@ import { ApiService } from './api.service';
 })
 export class RPPService {
 
-    constructor(private apiService: ApiService) { }
+    constructor(private readonly apiService: ApiService) { }
 
-    // role
     public addRole(payload: any): Observable<ApiResponse> {
         return this.apiService.postData(`${config.authBaseUrl}/rpp.json/addRole`, payload);
     }
@@ -87,7 +89,6 @@ export class RPPService {
         return this.apiService.postData(`${config.authBaseUrl}/rpp.json/uploadProfile`, payload);
     }
 
-    // permission
     public addPermission(payload: any): Observable<ApiResponse> {
         return this.apiService.postData(`${config.authBaseUrl}/rpp.json/addPermission`, payload);
     }

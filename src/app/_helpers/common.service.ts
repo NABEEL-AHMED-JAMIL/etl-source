@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { DatePipe } from '@angular/common';
 import {
-    IControlFiled,
     FILED_TYPE,
+    IControlFiled,
     AuthenticationService,
     AuthResponse 
 } from '../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -20,8 +21,8 @@ export class CommomService {
     public userPermission: any;
     public sessionUser: AuthResponse;
 
-    constructor(private datePipe: DatePipe,
-        public authenticationService: AuthenticationService) {
+    constructor(private readonly datePipe: DatePipe,
+        public readonly authenticationService: AuthenticationService) {
         this.sessionUser = this.authenticationService.currentUserValue
         if (this.sessionUser) {
             this.userPermission = this.sessionUser?.profile.permission;
@@ -37,7 +38,7 @@ export class CommomService {
         });
     }
 
-    public createFile(payload: any): any {
+    public createFile(payload: any): void {
         const file = new Blob([JSON.stringify(payload, null, 4)],
             { 
                 type: 'application/json'
@@ -62,19 +63,17 @@ export class CommomService {
     }
 
     public getDate29DaysAgo(startDate: any): any {
-        const msInOneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in one day
-        const startDateObj = new Date(startDate); // Convert the start date to a Date object
-        const endDateObj = new Date(startDateObj.getTime() - 29 * msInOneDay); // Calculate the end date    
-        // Format the end date as "YYYY-MM-DD"
+        const msInOneDay = 24 * 60 * 60 * 1000;
+        const startDateObj = new Date(startDate);
+        const endDateObj = new Date(startDateObj.getTime() - 29 * msInOneDay);
         const endDateFormatted = endDateObj.toISOString().split('T')[0];
         return endDateFormatted;
     }
 
     public getDate364DaysAgo(startDate: any): any {
-        const msInOneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in one day
-        const startDateObj = new Date(startDate); // Convert the start date to a Date object
-        const endDateObj = new Date(startDateObj.getTime() - 354 * msInOneDay); // Calculate the end date    
-        // Format the end date as "YYYY-MM-DD"
+        const msInOneDay = 24 * 60 * 60 * 1000;
+        const startDateObj = new Date(startDate);
+        const endDateObj = new Date(startDateObj.getTime() - 354 * msInOneDay);
         const endDateFormatted = endDateObj.toISOString().split('T')[0];
         return endDateFormatted;
     }
@@ -187,11 +186,11 @@ export class CommomService {
         return url.protocol === "http:" || url.protocol === "https:";
     }
 
-    public hasRoleAccess(routeRoles: any) {
+    public hasRoleAccess(routeRoles: any) : boolean {
         return this.userRoles.some((role: any) => routeRoles.includes(role));
     }
 
-    public hasPermissionAccess(routePermission: any): any {
+    public hasPermissionAccess(routePermission: any): boolean {
         return this.userPermission.some((permission: any) => routePermission.includes(permission));
     }
 

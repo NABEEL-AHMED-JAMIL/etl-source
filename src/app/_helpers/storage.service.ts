@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+
 /**
  * @author Nabeel Ahmed
  */
@@ -19,15 +20,15 @@ export class StorageService {
         return true;
     }
 
-    public remove(key: string): any {
+    public remove(key: string): void {
         sessionStorage.removeItem(key);
     }
 
-    public clear(): any {
+    public clear(): void {
         sessionStorage.clear();
     }
 
-    public findLookupByParent(parentId: any) {
+    public findLookupByParent(parentId: any): any {
         return JSON.parse(sessionStorage.getItem('lookup-cache'))[parentId];
     }
 

@@ -1,21 +1,38 @@
-<nz-badge nzShowZero nzSize="small" class="bell"
-    [nzCount]="getTotalNotifacation()">
-    <nz-avatar class="bell-notification" nzIcon="bell"
-        nz-dropdown [nzDropdownMenu]="bellAction">
-    </nz-avatar>
-</nz-badge>&nbsp;
-<nz-avatar nzIcon="user" nz-dropdown [nzDropdownMenu]="userAction"
-    nzSrc="{{'./assets/avatar/' + sessionUser.profileImage }}">
-</nz-avatar>
+<div class="action-controls" style="margin-top: 15px;">
+    <input nz-input id="search" class="search-input" placeholder="Search..." />
+    <div class="action-buttons">
+        <!-- notification button with badge (opens bell dropdown) -->
+        <nz-badge nzShowZero nzSize="small" [nzCount]="getTotalNotifacation()"
+            nz-dropdown [nzDropdownMenu]="bellAction">
+            <button nz-button nzType="default" nzShape="circle" aria-label="Notifications">
+                <i nz-icon nzType="bell"></i>
+            </button>
+        </nz-badge>
+        <!-- more options button (opens moreAction dropdown) -->
+        <button nz-button nzType="default" nzShape="circle" aria-label="More"
+            nz-dropdown [nzDropdownMenu]="moreAction">
+            <i nz-icon nzType="ellipsis"></i>
+        </button>
+        <!-- user avatar button (opens user dropdown) -->
+        <button nz-button nzType="default" nzShape="circle" aria-label="User"
+            nz-dropdown [nzDropdownMenu]="userAction">
+            <nz-avatar [nzSrc]="'./assets/avatar/' + sessionUser.profileImage" nzSize="small"></nz-avatar>
+        </button>
+    </div>
+</div>
 
-<!-- user -->
-<nz-dropdown-menu #userAction="nzDropdownMenu">
-    <app-user-action [sessionUser]="sessionUser"></app-user-action>
-</nz-dropdown-menu>
 <!-- notifaction -->
 <nz-dropdown-menu #bellAction="nzDropdownMenu">
-    <app-notifaction-action 
+    <app-notifaction-action
         [jobNotificationData]="jobNotificationData"
         [userNotificationData]="userNotificationData">
     </app-notifaction-action>
+</nz-dropdown-menu>
+<!-- more options dropdown menu -->
+<nz-dropdown-menu #moreAction="nzDropdownMenu">
+    <app-more-action [sessionUser]="sessionUser"></app-more-action>
+</nz-dropdown-menu>
+<!-- user -->
+<nz-dropdown-menu #userAction="nzDropdownMenu">
+    <app-user-action [sessionUser]="sessionUser"></app-user-action>
 </nz-dropdown-menu>

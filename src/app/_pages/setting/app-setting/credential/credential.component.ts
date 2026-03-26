@@ -5,8 +5,8 @@ import { first } from 'rxjs';
 import {
     AlertService,
     CommomService
-} from 'src/app/_helpers';
-import { CuCredentialComponent } from 'src/app/_pages';
+} from '../../../../_helpers';
+import { CuCredentialComponent } from '../../../../_pages';
 import {
     ActionType,
     ApiCode,
@@ -14,7 +14,7 @@ import {
     AuthenticationService,
     CredentailService,
     IStaticTable
-} from 'src/app/_shared';
+} from '../../../../_shared';
 
 /**
  * @author Nabeel Ahmed
@@ -270,7 +270,7 @@ export class CredentialComponent implements OnInit {
                             username: this.sessionUser.username
                         }
                     });
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 }
             ));
     }
@@ -285,14 +285,14 @@ export class CredentialComponent implements OnInit {
                         }
                     });
                     this.setOfCheckedId = new Set<any>();
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 }
             ));
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

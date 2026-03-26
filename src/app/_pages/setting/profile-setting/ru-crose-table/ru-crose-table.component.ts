@@ -109,13 +109,13 @@ export class RUCroseTableComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 this.roleLinkUserTable.dataSource = response.data;
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 
@@ -149,12 +149,12 @@ export class RUCroseTableComponent implements OnInit {
         .subscribe((response: any) => {
             this.spinnerService.hide();
             if (response.status === ApiCode.ERROR) {
-                this.alertService.showError(response.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.message);
                 return;
             }
         }, (response: any) => {
             this.spinnerService.hide();
-            this.alertService.showError(response.error.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.error.message);
         });
     }
 

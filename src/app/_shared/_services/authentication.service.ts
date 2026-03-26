@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { StorageService } from '../../_helpers';
-import { ApiResponse, ApiService } from '../index';
 import { map } from 'rxjs/operators';
-import { AuthResponse } from '..';
 import { config } from '../../../environments/environment';
+import {
+    StorageService
+} from '../../_helpers';
+import {
+    AuthResponse,
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -17,8 +23,8 @@ export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<AuthResponse>;
     public currentUser: Observable<AuthResponse>;
 
-    constructor(private apiService: ApiService,
-        private storageService: StorageService) {
+    constructor(private readonly apiService: ApiService,
+        private readonly storageService: StorageService) {
         this.currentUserSubject = new BehaviorSubject<AuthResponse>(this.storageService.get('currentUser'));
         this.currentUser = this.currentUserSubject.asObservable();
     }
@@ -50,9 +56,6 @@ export class AuthenticationService {
         return this.apiService.postData(`${config.authBaseUrl}/auth.json/resetPassword`, payload);
     }
 
-    /**
-     * this will get token from header
-     */
     public tokenVerify(): Observable<ApiResponse> {
         return this.apiService.getData(`${config.authBaseUrl}/appUser.json/tokenVerify`);
     }

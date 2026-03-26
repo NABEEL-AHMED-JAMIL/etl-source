@@ -1,26 +1,30 @@
 <div nz-row class="h100vh form" style="position: relative;">
-    <img class="bottom" src="../../../../assets/bg.jpg">
+    <img class="bottom" src="../../../../assets/bg.avif">
     <div nz-col nzMd="12" nzSm="24" class="center-container">
         <div class="center-container">
-            <form nz-form *ngIf="forgotForm" [nzLayout]="'vertical'"
-                [formGroup]="forgotForm" (ngSubmit)="onSubmit()"
-                class="login-form">
+            <form nz-form *ngIf="forgotForm"
+                [nzLayout]="'vertical'"
+                [formGroup]="forgotForm"
+                (ngSubmit)="onSubmit()"
+                class="forgot-form">
                 <div style="text-align: center">
                     <a href="https://etlSource2023.com/">
-                        <img src="../../../../assets/logo.png" alt="logo" style="width: 150px;" />
+                        <img src="../../../../assets/logo.png" style="width: 150px;" />
                     </a>
                     <h3 style="text-align: center;" class="title">Forgot Password</h3>
                 </div>
                 <nz-form-item>
-                    <nz-form-control nzErrorTip="Please input your Email!">
+                    <nz-form-control nzErrorTip="Please input your email!">
                         <nz-input-group nzPrefixIcon="user">
-                            <input nz-input type="email" formControlName="email" placeholder="Enter Email" />
+                            <input nz-input type="email" 
+                                formControlName="email"
+                                placeholder="Enter email" />
                         </nz-input-group>
                     </nz-form-control>
                 </nz-form-item>
-                <button nz-button [nzType]="'primary'" class="login-form-button login-form-margin">Submit</button>
-                <p nz-col [nzSpan]="24" class="text-center title" style="line-height: 10px">Already have account?
-                    <a routerLink="/login">Login Now</a>
+                <button nz-button [nzType]="'primary'" class="forgot-form-button forgot-form-margin">Submit</button>
+                <p nz-col [nzSpan]="24" class="text-center title" style="line-height: 10px">
+                    Already have account? <a routerLink="/auth/login">Login now</a>
                 </p>
             </form>
         </div>

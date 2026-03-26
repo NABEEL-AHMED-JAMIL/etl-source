@@ -1,10 +1,6 @@
 /**
  * @author Nabeel Ahmed
  */
-export * from './auth/login/login.component';
-export * from './auth/register/register.component';
-export * from './auth/reset-pass/reset-pass.component';
-export * from './auth/forgot-pass/forgot-pass.component';
 // common
 export * from './common/batch/batch.component';
 export * from './common/gen-table/gen-table.component';
@@ -82,3 +78,9 @@ export * from './update-profile/update-profile.component';
 // view-report
 export * from './view-report/view-report.component';
 export * from './view-dashboard/view-dashboard.component';
+// dynamic form controls
+export * from './dynamic-fields/dynamic-input/dynamic-input.component';
+export * from './dynamic-fields/dynamic-textarea/dynamic-textarea.component';
+export * from './dynamic-fields/dynamic-radio/dynamic-radio.component';
+export * from './dynamic-fields/dynamic-select/dynamic-select.component';
+export * from './dynamic-fields/dynamic-datepicker/dynamic-datepicker.component';

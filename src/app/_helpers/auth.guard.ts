@@ -4,7 +4,8 @@ import {
     CanActivate,
     ActivatedRouteSnapshot,
 } from '@angular/router';
-import { CommomService } from './common.service';
+import { CommomService } from './index';
+
 
 /**
  * @author Nabeel Ahmed
@@ -14,14 +15,16 @@ import { CommomService } from './common.service';
 })
 export class AuthGuard implements CanActivate {
 
-    constructor(private router: Router,
-        private commomService: CommomService) {}
+    constructor(
+        private readonly router: Router,
+        private readonly commomService: CommomService
+    ) {}
 
     public canActivate(route: ActivatedRouteSnapshot): boolean {
-        if (this.commomService.hasPermissionAccess(route.data['permission'])) {
+        const permission = route.data && route.data['permission'];
+        if (permission && this.commomService.hasPermissionAccess(permission)) {
             return true;
         }
-        // authorised so return true
         this.router.navigate(['/404']);
         return false;
     }

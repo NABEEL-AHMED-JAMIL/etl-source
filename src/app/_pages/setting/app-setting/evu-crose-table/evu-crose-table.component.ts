@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { first } from 'rxjs';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import {
     AlertService,
     CommomService,
-} from 'src/app/_helpers';
+} from '../../../../_helpers';
 import {
     ActionType,
     ApiCode,
@@ -12,9 +13,9 @@ import {
     EVariableService,
     IEnVariables,
     IStaticTable
-} from 'src/app/_shared';
-import { EnvVariableValueComponent } from 'src/app/_pages';
-import { NzModalService } from 'ng-zorro-antd/modal';
+} from '../../../../_shared';
+import { EnvVariableValueComponent } from '../../../../_pages';
+
 
 /**
  * @author Nabeel Ahmed
@@ -146,7 +147,7 @@ export class EVUCroseTableComponent implements OnInit {
     public tableActionReciver(payload: any): void {
         if (ActionType.EDIT === payload.action) {
             if (!payload?.data?.linked) {
-                this.alertService.showError('Please link user then edit.', ApiCode.ERROR);                
+                this.alertService.showError(ApiCode.ERROR, 'Please link user then edit.');
                 return;
             }
             let editPayload: IEnVariables = {
@@ -195,7 +196,7 @@ export class EVUCroseTableComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

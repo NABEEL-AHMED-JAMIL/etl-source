@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { first } from 'rxjs';
-import { AlertService } from 'src/app/_helpers';
+import { AlertService } from '../../../../../_helpers';
 import {
     ActionType,
     ApiCode,
@@ -9,7 +9,7 @@ import {
     AuthenticationService,
     ISourceTask,
     SourceTaskService
-} from 'src/app/_shared';
+} from '../../../../../_shared';
 
 /**
  * @author Nabeel Ahmed
@@ -57,7 +57,7 @@ export class CuSourceTaskComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

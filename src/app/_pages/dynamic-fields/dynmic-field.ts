@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
-import { IControlFiled, ISection } from "../_shared";
 import { FormControl, FormGroup } from "@angular/forms";
+import { IControlFiled, ISection } from '../../_shared';
 
 
 /**

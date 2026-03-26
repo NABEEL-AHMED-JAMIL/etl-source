@@ -1,5 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import {
+    ApiCode,
+} from '../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -9,21 +13,21 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 })
 export class AlertService {
 
-    constructor(private notification: NzNotificationService) { }
+    constructor(private readonly notification: NzNotificationService) { }
 
-    public showSuccess(message: any, title: any): any {
+    public showSuccess(title: ApiCode, message: any): void {
         this.notification.create('success', title, message);
     }
 
-    public showError(message: any, title: any): any {
+    public showError(title: ApiCode, message: any): void {
         this.notification.create('error', title, message);
     }
 
-    public showInfo(message: any, title: any): any {
+    public showInfo(title: ApiCode, message: any): void {
         this.notification.create('info', title, message);
     }
 
-    public showWarning(message: any, title: any): any {
+    public showWarning(title: ApiCode, message: any): void {
         this.notification.create('warning', title, message);
     }
 }

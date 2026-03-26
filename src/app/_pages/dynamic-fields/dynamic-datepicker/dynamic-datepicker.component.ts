@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicFieldComponent } from '../dynmic-field';
 import { DatePipe } from '@angular/common';
-import { FILED_TYPE } from 'src/app/_shared';
+import { DynamicFieldComponent } from '../dynmic-field';
+import { FILED_TYPE } from '../../../_shared';
 
 /**
  * Text | Email | URL | Passwrod

@@ -9,7 +9,7 @@ import {
 import {
     AlertService,
     SpinnerService
-} from 'src/app/_helpers';
+} from '../../../../../_helpers';
 import {
     FormSettingService,
     EnableAndVisibilityService,
@@ -20,7 +20,7 @@ import {
     ILookups,
     LookupService,
     LOOKUP_TYPE
-} from 'src/app/_shared';
+} from '../../../../../_shared';
 
 /**
  * @author Nabeel Ahmed

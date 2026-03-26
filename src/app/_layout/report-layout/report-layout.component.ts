@@ -26,7 +26,7 @@ import { first } from 'rxjs';
 export class ReportLayoutComponent implements OnInit {
 
     public isCollapsed = false;
-    public title: any = 'ETL Source R&D 2023';
+    public title: any = 'ETL Source 2023';
     
     public reportList: any[] = [];
     public dashboardList: any[] = [];
@@ -106,7 +106,7 @@ export class ReportLayoutComponent implements OnInit {
     private handleApiResponse(response: any, successCallback: Function): void {
         this.spinnerService.hide();
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

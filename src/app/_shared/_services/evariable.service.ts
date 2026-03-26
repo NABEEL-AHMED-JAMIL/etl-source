@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ApiResponse } from '../_model/object';
 import { Observable } from 'rxjs';
 import { config } from '../../../environments/environment';
-import { ApiService } from './api.service';
-import { HttpParams } from '@angular/common/http';
+import {
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -13,7 +15,7 @@ import { HttpParams } from '@angular/common/http';
 })
 export class EVariableService {
 
-    constructor(private apiService: ApiService) { }
+    constructor(private readonly apiService: ApiService) { }
 
     public addEnVariable(payload: any): Observable<ApiResponse> {
         return this.apiService.postData(`${config.apiBaseUrl}/eVariable.json/addEnVariable`, payload);

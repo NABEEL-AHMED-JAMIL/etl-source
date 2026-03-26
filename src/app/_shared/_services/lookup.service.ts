@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
-import { ApiResponse, ApiService, ILookups } from '../index';
 import { Observable, catchError, map } from 'rxjs';
 import { config } from '../../../environments/environment';
+import {
+    ApiResponse,
+    ILookups,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -12,7 +17,7 @@ import { config } from '../../../environments/environment';
 })
 export class LookupService {
 
-    constructor(private apiService: ApiService) { }
+    constructor(private readonly apiService: ApiService) { }
 
     public addLookupData(payload: any): Observable<ApiResponse> {
         return this.apiService.postData(`${config.apiBaseUrl}/lookupData.json/addLookupData`, payload);

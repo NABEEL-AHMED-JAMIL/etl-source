@@ -6,7 +6,7 @@ import {
     AlertService,
     CommomService,
     SpinnerService
-} from 'src/app/_helpers';
+} from '../../../../../_helpers';
 import {
     ActionType,
     ApiCode,
@@ -16,7 +16,8 @@ import {
     IGenSection,
     ISectionLinkControl,
     SERVER_ACTION
-} from 'src/app/_shared';
+} from '../../../../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -83,7 +84,7 @@ export class SttsLinkSttcComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 if (response.data) {
@@ -109,7 +110,7 @@ export class SttsLinkSttcComponent implements OnInit {
                 }
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 
@@ -145,13 +146,13 @@ export class SttsLinkSttcComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 this.refresh();
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 
@@ -185,16 +186,16 @@ export class SttsLinkSttcComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 Object.assign(this.sectionLinkControlTable[index], this.editCache[id].data);
                 this.editCache[id].edit = false;
                 this.refresh();
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 

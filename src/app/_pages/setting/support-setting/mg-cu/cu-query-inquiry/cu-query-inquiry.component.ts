@@ -4,22 +4,22 @@ import {
     OnInit
 } from '@angular/core';
 import {
-    ActionType,
-    ApiCode,
-    IQueryInquiry,
-    SettingService
-} from 'src/app/_shared';
-import {
-    AlertService,
-    CommomService
-} from 'src/app/_helpers';
-import {
     FormBuilder,
     FormGroup,
     Validators
 } from '@angular/forms';
 import { first } from 'rxjs';
 import { NzModalRef } from 'ng-zorro-antd/modal';
+import {
+    ActionType,
+    ApiCode,
+    IQueryInquiry,
+    SettingService
+} from '../../../../../_shared';
+import {
+    AlertService,
+    CommomService
+} from '../../../../../_helpers';
 
 
 /**
@@ -92,7 +92,7 @@ export class CUQueryInquiryComponent implements OnInit {
         this.settingService.addQueryInquiry(payload).pipe(first())
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                     this.modalRef.close();
                 }
             ));
@@ -102,7 +102,7 @@ export class CUQueryInquiryComponent implements OnInit {
         this.settingService.updateQueryInquiry(payload).pipe(first())
         .subscribe((response: any) => 
             this.handleApiResponse(response, () => {
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 this.modalRef.close();
             })
         );
@@ -110,7 +110,7 @@ export class CUQueryInquiryComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

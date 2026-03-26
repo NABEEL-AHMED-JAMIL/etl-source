@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { ApiResponse } from '../_model/object';
-import { ApiService } from './api.service';
+import {
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -11,7 +14,7 @@ import { ApiService } from './api.service';
 })
 export class CommomReportService {
 
-    constructor(private apiService: ApiService) { }
+    constructor(private readonly apiService: ApiService) { }
 
     public fetchApiLKValue(apiUrl: string): Observable<ApiResponse> {
         return this.apiService.getData(apiUrl);

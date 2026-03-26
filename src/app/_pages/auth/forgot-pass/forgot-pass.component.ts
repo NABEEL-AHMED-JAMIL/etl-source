@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators
 } from '@angular/forms';
-import { AlertService } from '../../../_helpers';
+import {
+    AlertService
+} from '../../../_helpers';
 import {
     ApiCode,
     AuthenticationService
 } from '../../../_shared/index';
-import { first } from 'rxjs/operators';
+
 
 /**
  * @author Nabeel Ahmed
@@ -48,18 +51,19 @@ export class ForgotPassComponent implements OnInit {
             });
             return;
         }
-        this.authenticationService.forgotPassword(this.forgotForm.value).pipe(first())
-            .subscribe((response: any) => 
+        this.authenticationService.forgotPassword(this.forgotForm.value)
+            .pipe(first())
+            .subscribe((response: any) =>
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    this.router.navigate(['/login']);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
+                    this.router.navigate(['auth/login']);
                 }
             ));
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

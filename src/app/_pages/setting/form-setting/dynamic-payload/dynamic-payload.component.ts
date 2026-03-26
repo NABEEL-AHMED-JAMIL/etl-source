@@ -99,12 +99,12 @@ export class DynamicPayloadQueryComponent implements OnInit {
                     this.spinnerService.hide();
                 } else {
                     this.spinnerService.hide();
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                 }
             }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 

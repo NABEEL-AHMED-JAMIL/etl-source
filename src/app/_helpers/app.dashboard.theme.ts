@@ -3,15 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import * as echarts from 'echarts';
 import { EChartsOption } from 'echarts';
 
+
 /**
  * @author Nabeel Ahmed
  */
 @Injectable({
     providedIn: 'root'
 })
+// Todo: Refactor this service to make it more generic and reusable across different components.
 export class AppDashboardThemeService {
 
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     public loadTheme(): void {
         this.http.get('assets/shine-theme.json')
@@ -23,16 +25,11 @@ export class AppDashboardThemeService {
     public initChart(elementId: string, chartOptions: EChartsOption): void {
         const chartDom = document.getElementById(elementId);
         if (chartDom) {
-            // Check if an instance already exists
             const existingChart = echarts.getInstanceByDom(chartDom);
             if (existingChart) {
-                console.log('Chart instance already exists, updating options.');
-                // If the chart instance already exists, just update the options
                 existingChart.setOption(chartOptions);
             } else {
-                console.log('Initializing new chart instance.');
-                // Initialize a new chart if no instance exists
-                const myChart = echarts.init(chartDom, 'shine'); // Use 'shine' if loaded
+                const myChart = echarts.init(chartDom, 'shine');
                 myChart.setOption(chartOptions);
             }
         } else {
@@ -64,9 +61,8 @@ export class AppDashboardThemeService {
     }
 
     public fillAxisChartPayload(data: any): EChartsOption {
-        // Check if data is defined and is an array
         if (!data || !Array.isArray(data)) {
-            return {}; // Handle the error case
+            return {};
         }
         return {
             title: {
@@ -105,9 +101,9 @@ export class AppDashboardThemeService {
             },
             series: [
                 {
-                    type: 'line',   // Use 'line' for an area chart
+                    type: 'line',
                     data: data.map((object: any) => object.value),
-                    areaStyle: {}  // Add this to fill the area
+                    areaStyle: {}
                 }
             ]
         }

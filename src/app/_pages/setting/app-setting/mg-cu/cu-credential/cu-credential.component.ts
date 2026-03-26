@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { first } from 'rxjs';
-import { AlertService } from 'src/app/_helpers';
 import {
     FormBuilder,
     FormGroup,
     Validators
 } from '@angular/forms';
+import { AlertService } from '../../../../../_helpers';
 import {
     APPLICATION_STATUS,
     ActionType,
@@ -19,7 +19,7 @@ import {
     ILookups,
     LOOKUP_TYPE,
     LookupService
-} from 'src/app/_shared';
+} from '../../../../../_shared';
 
 /**
  * @author Nabeel Ahmed
@@ -302,7 +302,7 @@ export class CuCredentialComponent implements OnInit {
         this.credentailService.addCredential(payload).pipe(first())
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                     this.drawerRef.close();
                 }
             ));
@@ -312,7 +312,7 @@ export class CuCredentialComponent implements OnInit {
         this.credentailService.updateCredential(payload).pipe(first())
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                     this.drawerRef.close();
                 }
             ));
@@ -320,7 +320,7 @@ export class CuCredentialComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

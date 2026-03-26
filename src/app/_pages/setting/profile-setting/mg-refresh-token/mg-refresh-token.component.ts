@@ -9,13 +9,14 @@ import {
     RefreshTokenService,
     AuthResponse,
     AuthenticationService,
-    AppDashboardThemeService
 } from '../../../../_shared';
 import { first } from 'rxjs';
 import {
     AlertService,
-    CommomService
+    CommomService,
+    AppDashboardThemeService
 } from '../../../../_helpers';
+
 
 /**
  * @author Nabeel Ahmed
@@ -216,7 +217,7 @@ export class MgRefreshTokenComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

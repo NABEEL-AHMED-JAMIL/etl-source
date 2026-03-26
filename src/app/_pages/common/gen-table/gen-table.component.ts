@@ -124,7 +124,7 @@ export class GenTableComponent implements OnInit {
 
     public extraEvent(action: ActionType): void {
         if (this.setOfCheckedId.size <= 0) {
-            this.alertService.showError('Please Select Field.', ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, 'Please Select Field.');
             return;
         }
         this.extraEventEmitter.emit(

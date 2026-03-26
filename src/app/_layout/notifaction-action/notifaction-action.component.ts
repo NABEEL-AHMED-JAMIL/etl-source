@@ -11,6 +11,7 @@ import {
 import { first } from 'rxjs';
 import { AlertService } from 'src/app/_helpers';
 
+
 /**
  * @author Nabeel Ahmed
  */
@@ -22,37 +23,45 @@ import { AlertService } from 'src/app/_helpers';
 export class NotifactionActionComponent implements OnInit {
 
     @Input()
-    public jobNotificationData: INotification[];
+    public jobNotificationData: INotification[] = [];
     @Input()
-    public userNotificationData: INotification[];
+    public userNotificationData: INotification[] = [];
 
-    constructor(private alertService: AlertService,
-        private notificationService: NotificationService) {}
+    constructor(
+        private readonly alertService: AlertService,
+        private readonly notificationService: NotificationService
+    ) {}
 
-    ngOnInit(): void {
+    ngOnInit(): void {}
+
+    public changeUserNotifactionStatus(notifaction: INotification, index: number): void {
+        this.updateNotificationStatus(this.userNotificationData, notifaction, index);
     }
 
-    public changeUserNotifactionStatus(notifaction: INotification, index: any) {
-        this.notificationService.updateNotification({uuid: notifaction.uuid}).pipe(first())
-            .subscribe((response: any) => 
-                this.handleApiResponse(response, () => {
-                    this.userNotificationData[index].status = "yellow";
-                }
-            ));
+    public changeJobNotifactionStatus(notifaction: INotification, index: number): void {
+        this.updateNotificationStatus(this.jobNotificationData, notifaction, index);
     }
 
-    public changeJobNotifactionStatus(notifaction: INotification, index: any) {
-        this.notificationService.updateNotification({uuid: notifaction.uuid}).pipe(first())
-            .subscribe((response: any) => 
+    private updateNotificationStatus(list: INotification[], notifaction: INotification, index: number): void {
+        if (!list || index < 0 || index >= list.length) {
+            return;
+        }
+        // optional safety check that the passed notification matches the item at index
+        if (list[index].uuid !== notifaction.uuid) {
+            return;
+        }
+        this.notificationService.updateNotification({ uuid: notifaction.uuid })
+            .pipe(first())
+            .subscribe((response: any) =>
                 this.handleApiResponse(response, () => {
-                    this.jobNotificationData[index].status = "yellow";
-                }
-            ));
+                    list[index].status = 'yellow';
+                })
+            );
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

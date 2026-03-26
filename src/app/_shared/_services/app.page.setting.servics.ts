@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ApiResponse, ApiService } from '../index';
-import { config } from '../../../environments/environment';
 import { Observable } from 'rxjs';
+import { config } from '../../../environments/environment';
+import {
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -11,7 +15,7 @@ import { Observable } from 'rxjs';
 })
 export class AppPageSettingServics {
 
-    constructor(private apiService: ApiService) {}
+    constructor(private readonly apiService: ApiService) {}
 
 	public addAppPageSetting(payload: any): Observable<ApiResponse> {
 		return this.apiService.postData(`${config.apiBaseUrl}/appPageSetting.json/addAppPageSetting`, payload);

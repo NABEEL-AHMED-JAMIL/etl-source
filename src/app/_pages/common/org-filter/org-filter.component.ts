@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CommomService } from 'src/app/_helpers';
-import { AuthResponse } from 'src/app/_shared';
+import { CommomService } from '../../../_helpers';
+import { AuthResponse } from '../../../_shared';
 
 /**
  * @author Nabeel Ahmed

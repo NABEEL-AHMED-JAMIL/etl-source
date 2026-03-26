@@ -11,6 +11,7 @@ import {
     StorageService
 } from '../../_helpers';
 
+
 /**
  * @author Nabeel Ahmed
  */
@@ -24,28 +25,28 @@ export class UserActionComponent implements OnInit {
     @Input()
     public sessionUser: AuthResponse;
 
-    constructor(private router: Router,
-        private alertService: AlertService,
-        private storageService: StorageService,
-        private authenticationService: AuthenticationService) {
+    constructor(private readonly router: Router,
+        private readonly alertService: AlertService,
+        private readonly storageService: StorageService,
+        private readonly authenticationService: AuthenticationService) {
     }
 
     ngOnInit(): void {
     }
 
-    public logout(): any {
+    public logout(): void {
         this.authenticationService.logout().pipe(first())
             .subscribe((response: any) =>
                 this.handleApiResponse(response, () => {
                     this.storageService.clear();
-                    this.router.navigate(['/login']);
+                    this.router.navigate(['auth/login']);
                 }
         ));
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

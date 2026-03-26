@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ApiResponse, ApiService } from '../index';
 import { Observable } from 'rxjs';
 import { config } from '../../../environments/environment';
+import {
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -11,7 +15,7 @@ import { config } from '../../../environments/environment';
 })
 export class CredentailService {
 
-    constructor(private apiService: ApiService) { }
+    constructor(private readonly apiService: ApiService) { }
 
     public addCredential(payload: any): Observable<ApiResponse> {
         return this.apiService.postData(`${config.apiBaseUrl}/credential.json/addCredential`, payload);

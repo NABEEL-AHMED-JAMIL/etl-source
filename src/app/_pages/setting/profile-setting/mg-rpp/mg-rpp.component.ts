@@ -246,7 +246,7 @@ export class MgRPPComponent implements OnInit {
                         this.handleApiResponse(response, () => {
                             this.fetchAllRole({});
                             this.setOfRoleCheckedId = new Set<any>();
-                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                            this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                         })
                     );
                 }
@@ -286,7 +286,7 @@ export class MgRPPComponent implements OnInit {
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
                     this.fetchAllRole({});
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
             );
     }
@@ -482,7 +482,7 @@ export class MgRPPComponent implements OnInit {
                         this.handleApiResponse(response, () => {
                             this.fetchAllProfile({});
                             this.setOfProfileCheckedId = new Set<any>();
-                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                            this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                         })
                     );
                 }
@@ -522,7 +522,7 @@ export class MgRPPComponent implements OnInit {
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
                     this.fetchAllProfile({});
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
             );
     }
@@ -702,7 +702,7 @@ export class MgRPPComponent implements OnInit {
                         this.handleApiResponse(response, () => {
                             this.fetchAllPermission({});
                             this.setOfPermissionCheckedId = new Set<any>();
-                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                            this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                         })
                     );
                 }
@@ -742,7 +742,7 @@ export class MgRPPComponent implements OnInit {
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
                     this.fetchAllPermission({});
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
             );
     }
@@ -758,7 +758,7 @@ export class MgRPPComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

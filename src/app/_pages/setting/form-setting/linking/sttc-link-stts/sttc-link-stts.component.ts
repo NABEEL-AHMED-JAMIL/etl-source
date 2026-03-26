@@ -1,10 +1,11 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { TransferItem } from 'ng-zorro-antd/transfer';
+import { first } from 'rxjs';
 import {
     AlertService,
     CommomService,
     SpinnerService
-} from 'src/app/_helpers';
+} from '../../../../../_helpers';
 import {
     ActionType,
     ApiCode,
@@ -14,8 +15,8 @@ import {
     IControlLinkSection,
     IGenControl,
     SERVER_ACTION
-} from 'src/app/_shared';
-import { first } from 'rxjs';
+} from '../../../../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -82,7 +83,7 @@ export class SttcLinkSttsComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 if (response.data) {
@@ -108,7 +109,7 @@ export class SttcLinkSttsComponent implements OnInit {
                 }
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 
@@ -144,13 +145,13 @@ export class SttcLinkSttsComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 this.refresh();
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 
@@ -183,16 +184,16 @@ export class SttcLinkSttsComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 Object.assign(this.controlLinkSectionTable[index], this.editCache[id].data);
                 this.editCache[id].edit = false;
                 this.refresh();
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 

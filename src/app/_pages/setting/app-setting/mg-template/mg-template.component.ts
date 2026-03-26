@@ -176,7 +176,7 @@ export class MgTemplateComponent implements OnInit {
 
     public openCuLookup(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
-            nzSize: 'default',
+            nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add Template' : 'Edit Template',
             nzPlacement: 'right',
             nzMaskClosable: false,
@@ -206,7 +206,7 @@ export class MgTemplateComponent implements OnInit {
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
                     this.fetchTemplateReg({});
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
             );
     }
@@ -217,14 +217,14 @@ export class MgTemplateComponent implements OnInit {
                 this.handleApiResponse(response, () => {
                     this.fetchTemplateReg({});
                     this.setOfCheckedId = new Set<any>();
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
             );
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

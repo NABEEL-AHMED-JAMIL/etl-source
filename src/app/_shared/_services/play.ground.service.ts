@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ApiResponse, ApiService } from '../index';
 import { Observable } from 'rxjs';
 import { config } from '../../../environments/environment';
+import {
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -11,7 +15,7 @@ import { config } from '../../../environments/environment';
 })
 export class PlayGroundService {
 
-    constructor(private apiService: ApiService) { }
+    constructor(private readonly apiService: ApiService) { }
     
     public fetchAllFormForPlayGround(payload: any): Observable<ApiResponse> {
         return this.apiService.postData(`${config.apiBaseUrl}/playGround.json/fetchAllFormForPlayGround`, payload);

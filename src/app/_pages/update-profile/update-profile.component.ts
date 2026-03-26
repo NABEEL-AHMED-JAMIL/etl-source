@@ -209,7 +209,7 @@ export class UpdateProfileComponent implements OnInit {
                         .subscribe((response: any) => 
                             this.handleApiResponse(response, () => {
                                 this.storageService.clear();
-                                this.router.navigate(['/login']);
+                                this.router.navigate(['auth/login']);
                             })
                         )
                 })
@@ -268,14 +268,14 @@ export class UpdateProfileComponent implements OnInit {
                     payload.data.tokenId = response.data.tokenId;
                     payload.data.expireTime = response.data.expireTime;
                     payload.data.accessToken = response.data.accessToken;
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
         );
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

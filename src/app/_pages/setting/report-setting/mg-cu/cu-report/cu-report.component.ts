@@ -10,7 +10,7 @@ import {
 import {
     AlertService,
     CommomService
-} from 'src/app/_helpers';
+} from '../../../../../_helpers';
 import {
     ActionType,
     AuthResponse,
@@ -32,7 +32,7 @@ import {
     IEventBridge,
     EVENT_BRIDGE_TYPE,
     UI_LOOKUP
-} from 'src/app/_shared';
+} from '../../../../../_shared';
 
 
 @Component({
@@ -195,11 +195,11 @@ export class CUReportComponent implements OnInit {
                 .subscribe((response: any) => {
                     if (response) {
                         if (response.data?.subLookupData.length === 0) {
-                            this.alertService.showError('Lookup not valid', ApiCode.ERROR);
+                            this.alertService.showError(ApiCode.ERROR, 'Lookup not valid');
                             return;
                         }
                     } else {
-                        this.alertService.showError('Lookup not valid', ApiCode.ERROR);
+                        this.alertService.showError(ApiCode.ERROR, 'Lookup not found');
                         return;
                     }
                 });
@@ -268,7 +268,7 @@ export class CUReportComponent implements OnInit {
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
                     this.closeDrawer();
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
             );
     }
@@ -278,7 +278,7 @@ export class CUReportComponent implements OnInit {
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
                     this.closeDrawer();
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
             );
     }
@@ -304,7 +304,7 @@ export class CUReportComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

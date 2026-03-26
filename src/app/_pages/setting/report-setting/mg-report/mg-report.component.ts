@@ -6,7 +6,7 @@ import { first } from 'rxjs';
 import {
     AlertService,
     CommomService
-} from 'src/app/_helpers';
+} from '../../../../_helpers';
 import {
     APPLICATION_STATUS,
     ActionType,
@@ -16,7 +16,7 @@ import {
     IReportSetting,
     IStaticTable,
     ReportSettingService
-} from 'src/app/_shared';
+} from '../../../../_shared';
 import {
     CUReportComponent
 } from '../mg-cu/cu-report/cu-report.component';
@@ -224,9 +224,9 @@ export class MgReportComponent implements OnInit {
             if (payload.data.groupType && payload.data.status.lookupCode === APPLICATION_STATUS.ACTIVE) {
                 this.router.navigate(['/report/viewReport'], { queryParams: { reportId: payload.data.id } });
             } else if (payload.data.status.lookupCode !== APPLICATION_STATUS.ACTIVE) {
-                this.alertService.showInfo('Please Activ Report.', ApiCode.ERROR);                
+                this.alertService.showInfo(ApiCode.ERROR, 'Please Activ Report.');
             } else {
-                this.alertService.showInfo('Please Link Report Group.', ApiCode.ERROR);
+                this.alertService.showInfo(ApiCode.ERROR, 'Please Link Report Group.');
             }
         } else if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
@@ -344,7 +344,7 @@ export class MgReportComponent implements OnInit {
                             username: this.sessionUser.username
                         }
                     });
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
             );
     }
@@ -361,14 +361,14 @@ export class MgReportComponent implements OnInit {
                         }
                     });
                     this.setOfCheckedId = new Set<any>();
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
             );
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

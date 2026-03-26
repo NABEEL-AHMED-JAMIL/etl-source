@@ -4,13 +4,13 @@ import { first } from 'rxjs';
 import {
     AlertService,
     AppDashboardThemeService
-} from 'src/app/_helpers';
+} from '../../../_helpers';
 import {
     ApiCode,
     AuthResponse,
     AuthenticationService,
     SettingService,
-} from 'src/app/_shared';
+} from '../../../_shared';
 
 /**
  * @author Nabeel Ahmed
@@ -77,7 +77,7 @@ export class SettingDashboardComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ApiResponse, ApiService } from '../index';
-import { config } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
+import { config } from '../../../environments/environment';
+import {
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -12,7 +16,7 @@ import { HttpParams } from '@angular/common/http';
 })
 export class EvenBridgeService {
 
-	constructor(private apiService: ApiService) { }
+	constructor(private readonly apiService: ApiService) { }
 
 	public addEventBridge(payload: any): Observable<ApiResponse> {
 		return this.apiService.postData(`${config.apiBaseUrl}/eventBridge.json/addEventBridge`, payload);

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
-import { ApiResponse, ApiService } from '..';
 import { Observable } from 'rxjs';
 import { config } from '../../../environments/environment';
+import {
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -12,7 +15,7 @@ import { config } from '../../../environments/environment';
 })
 export class SettingService {
 
-    constructor(private apiService: ApiService) { }
+    constructor(private readonly apiService: ApiService) { }
 
     public fetchStatisticsDashboard(payload: any): Observable<ApiResponse> {
         return this.apiService.postData(`${config.apiBaseUrl}/setting.json/fetchStatisticsDashboard`, payload);
@@ -22,7 +25,6 @@ export class SettingService {
         return this.apiService.postData(`${config.apiBaseUrl}/setting.json/fetchCountryData`, payload);
     }
 
-    // query
     public dynamicQueryResponse(payload: any): Observable<ApiResponse> {
         return this.apiService.postData(`${config.apiBaseUrl}/setting.json/dynamicQueryResponse`, payload);
     }

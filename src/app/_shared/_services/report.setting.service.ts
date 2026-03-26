@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ApiResponse } from '../_model/object';
 import { Observable } from 'rxjs';
 import { config } from '../../../environments/environment';
-import { ApiService } from './api.service';
+import {
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -12,7 +15,7 @@ import { ApiService } from './api.service';
 })
 export class ReportSettingService {
 
-    constructor(private apiService: ApiService) { }
+    constructor(private readonly apiService: ApiService) { }
 
     public addReportSetting(payload: any): Observable<ApiResponse> {
         return this.apiService.postData(`${config.apiBaseUrl}/reportSetting.json/addReportSetting`, payload);

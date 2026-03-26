@@ -5,19 +5,19 @@ import { first } from 'rxjs';
 import {
     AlertService,
     CommomService,
-} from 'src/app/_helpers';
+} from '../../../../_helpers';
 import {
     BatchComponent,
     CUEvariableComponent,
     EVUCroseTableComponent
-} from 'src/app/_pages';
+} from '../../../../_pages';
 import {
     ApiCode,
     IStaticTable,
     ActionType,
     EVariableService,
     IEnVariables
-} from 'src/app/_shared';
+} from '../../../../_shared';
 
 /**
  * @author Nabeel Ahmed
@@ -269,7 +269,7 @@ export class MgEVariableComponent implements OnInit {
             .subscribe((response: any) =>
                 this.handleApiResponse(response, () => {
                     this.fetchAllEnVariable({});
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 }
             ));
     }
@@ -280,14 +280,14 @@ export class MgEVariableComponent implements OnInit {
                 this.handleApiResponse(response, () => {
                     this.fetchAllEnVariable({});
                     this.setOfCheckedId = new Set<any>();
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 }
             ));
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

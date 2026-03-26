@@ -455,6 +455,13 @@ export interface ISubAppUser {
     username: any;
 }
 
+export interface INav {
+    name: any;
+    icon?: any;
+    link?: any;
+    permission?: any[];
+}
+
 export interface SideBar {
     name: any;
     icon?: any;
@@ -475,9 +482,16 @@ export interface ISession {
     yearly?: IKeyValue[];
 }
 
-// ***********
-// Enum
-// ***********
+export interface TokenPayload {
+    uuid: string;
+    email: string;
+    username: string;
+}
+
+export interface ResetPayload {
+    email: string;
+    newPassword: string;
+}
 
 export enum ApiCode {
     SUCCESS = 'SUCCESS',
@@ -679,245 +693,361 @@ export const CONTROL_PATTERN: IControlPattern[] = [
     }
 ];
 
+export const enum LOOKUP_TYPE {
+    FETCH_LIMIT = 'FETCH_LIMIT',
+    UI_LOOKUP = 'UI_LOOKUP',
+    APPLICATION_STATUS = 'APPLICATION_STATUS',
+    EMAIL_TEMPLATE = 'EMAIL_TEMPLATE',
+    CREDENTIAL_TYPE = 'CREDENTIAL_TYPE',
+    MASTER_ADMIN = 'MASTER_ADMIN',
+    FORM_TYPE = 'FORM_TYPE',
+    FIELD_TYPE = 'FIELD_TYPE',
+    IS_DEFAULT = 'IS_DEFAULT',
+    TASK_TYPE = 'TASK_TYPE',
+    REQUEST_METHOD = 'REQUEST_METHOD',
+    DASHBOARD_TYPE = 'DASHBOARD_TYPE',
+    PAYLOAD_REF = 'PAYLOAD_REF',
+    EVENT_BRIDGE_TYPE = 'EVENT_BRIDGE_TYPE',
+    COMPARISON_OPERATORS = 'COMPARISON_OPERATORS',
+    LOGICAL_OPERATORS = 'LOGICAL_OPERATORS',
+    DYNAMIC_CONDITION = 'DYNAMIC_CONDITION',
+    ACCOUNT_TYPE = 'ACCOUNT_TYPE',
+    ORG_FILTER_TYPE = 'ORG_FILTER_TYPE'
+}
+
+export const enum PROFILE {
+    SUPER_ADMIN_PROFILE = 'SUPER_ADMIN_PROFILE',
+    USER_PROFILE = 'USER_PROFILE',
+    ADMIN_PROFILE = 'ADMIN_PROFILE',
+    DB_PROFILE = 'DB_PROFILE'    
+}
+
+export const enum PERMISSION {
+    APP_SETTING_PERMISSION = 'APP_SETTING_PERMISSION',
+    DYNAMIC_PAYLOAD_PERMISSION = 'DYNAMIC_PAYLOAD_PERMISSION',
+    LOOKUP_PERMISSION = 'LOOKUP_PERMISSION',
+    SUPPORT_SETTING_PERMISSION = 'SUPPORT_SETTING_PERMISSION',
+    RPP_PERMISSION = 'RPP_PERMISSION',
+    TEMPLATE_PERMISSION = 'TEMPLATE_PERMISSION',
+    EVARIABL_PERMISSION = 'EVARIABL_PERMISSION',
+    PROFILE_SETTING_PERMISSION = 'PROFILE_SETTING_PERMISSION',
+    USER_PERMISSION = 'USER_PERMISSION',
+    REFRESH_TOKEN_PERMISSION = 'REFRESH_TOKEN_PERMISSION',
+    QUERY_INQUIRY_PERMISSION = 'QUERY_INQUIRY_PERMISSION',
+    PLAY_GROUND_PERMISSION = 'PLAY_GROUND_PERMISSION',
+    SERVICE_SETTING_PERMISSION = 'SERVICE_SETTING_PERMISSION',
+    SOURCE_TASK_PERMISSION = 'SOURCE_TASK_PERMISSION',
+    SOURCE_TASKTYPE_PERMISSION = 'SOURCE_TASKTYPE_PERMISSION',
+    SOURCE_CREDENTAIL_PERMISSION = 'SOURCE_CREDENTAIL_PERMISSION',
+    SOURCE_STORAGE_PERMISSION = 'SOURCE_STORAGE_PERMISSION',
+    FORM_SETTING_PERMISSION = 'FORM_SETTING_PERMISSION',
+    FORM_PERMISSION = 'FORM_PERMISSION',
+    SECTION_PERMISSION = 'SECTION_PERMISSION',
+    CONTROL_PERMISSION = 'CONTROL_PERMISSION',
+    MAIN_PAGE_PERMISSION = 'MAIN_PAGE_PERMISSION',
+    ADMIN_PAGE_PERMISSION = 'ADMIN_PAGE_PERMISSION',
+    SOURCE_ACTION_PERMISSION = 'SOURCE_ACTION_PERMISSION',
+    UPDATE_PROFILE_PERMISSION = 'UPDATE_PROFILE_PERMISSION',
+    REPORT_SETTING_PERMISSION = 'REPORT_SETTING_PERMISSION',
+    MANAGE_REPORT_PERMISSION = 'MANAGE_REPORT_PERMISSION',
+    DASHBOARD_SETTING_PERMISSION = 'DASHBOARD_SETTING_PERMISSION',
+    MANAGE_DASHBOARD_PERMISSION = 'MANAGE_DASHBOARD_PERMISSION',
+    REPORT_PAGE_PERMISSION = 'REPORT_PAGE_PERMISSION',
+    MANAGE_OLAP_PERMISSION = 'MANAGE_OLAP_PERMISSION',
+    VIEW_REPORT_PERMISSION = 'VIEW_REPORT_PERMISSION',
+    VIEW_DASHBOARD_PERMISSION = 'VIEW_DASHBOARD_PERMISSION',
+    ASSET_STORE_PERMISSION = 'ASSET_STORE_PERMISSION',
+    BUCKET_SETTING_PERMISSION = 'BUCKET_SETTING_PERMISSION',
+    EVENT_BRIDGE_PERMISSION = 'EVENT_BRIDGE_PERMISSION',
+    ENABLE_AND_VISIBLE_CONTROL_PERMISSION = 'ENABLE_AND_VISIBLE_CONTROL_PERMISSION',
+    FAKE_DATA_PAGE_PERMISSION = 'FAKE_DATA_PAGE_PERMISSION',
+    RUNNING_SOURCE_JOB_PERMISSION = 'RUNNING_SOURCE_JOB_PERMISSION',
+    SOURCE_JOB_HISTORY_PERMISSION = 'SOURCE_JOB_HISTORY_PERMISSION',
+    ORGANIZATION_PERMISSION = 'ORGANIZATION_PERMISSION',
+    APPPAGE_PERMISSION = 'APPPAGE_PERMISSION'
+};
+
+export const enum ROLE {
+    ROLE_DB = 'ROLE_DB',
+    ROLE_ADMIN = 'ROLE_ADMIN',
+    ROLE_USER = 'ROLE_USER',
+    ROLE_DEV = 'ROLE_DEV',
+    ROLE_MASTER_ADMIN = 'ROLE_MASTER_ADMIN'
+};
+
+// Todo: Update permissions and roles accordingly
+export const MORE_OPTION: INav[] = [
+    {
+        icon: 'setting',
+        name: 'Settings',
+        permission: []
+    },
+    {
+        icon: 'user',
+        name: 'Update Profile',
+        link: '/user/myProfile',
+        permission: []
+    },
+    {
+        icon: 'notification',
+        name: 'View Notification',
+        link: '/user/notification',
+        permission: []
+    },
+    {
+        icon: 'setting',
+        name: 'Configuration',
+        link: '/user/setting',
+        permission: []
+    },
+    {
+        icon: 'robot',
+        name: 'AI Tool',
+        permission: []
+    },
+    {
+        icon: 'picture',
+        name: 'AI Image Generator',
+        link: '/ai/imageGenerator',
+        permission: []
+    },
+    {
+        icon: 'message',
+        name: 'AI Chatbot Assistant',
+        link: '/ai/chatbotAssistant',
+        permission: []
+    },
+    {
+        icon: 'code',
+        name: 'AI Code Helper',
+        link: '/ai/codeHelper',
+        permission: []
+    },
+    {
+        icon: 'bar-chart',
+        name: 'AI Data Analyzer',
+        link: '/ai/dataAnalyzer',
+        permission: []
+    }
+];
+
 export const SETTING_SIDEBAR: SideBar[] = [
     {
         name: 'Service Setting',
         icon: 'dingding',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-        permission: ['SERVICE_SETTING_PERMISSION'],
+        roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN],
+        permission: [PERMISSION.SERVICE_SETTING_PERMISSION],
         childLinks: [
             {
                 name: 'Source Task',
                 icon: 'sketch',
                 link: '/setting/mgSourceTask',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['SOURCE_TASK_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN],
+                permission: [PERMISSION.SOURCE_TASK_PERMISSION]
             },
             {
                 name: 'Source Task Type',
                 icon: 'dropbox',
                 link: '/setting/mgSourceTaskType',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN'],
-                permission: ['SOURCE_TASKTYPE_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN],
+                permission: [PERMISSION.SOURCE_TASKTYPE_PERMISSION]
             }
         ]
     },
     {
         name: 'Asset Store',
         icon: 'folder',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-        permission: ['ASSET_STORE_PERMISSION'],
+        roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+        permission: [PERMISSION.ASSET_STORE_PERMISSION],
         childLinks: [
             {
                 name: 'Manage Bucket',
                 icon: 'folder-open',
                 link: '/setting/store',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['BUCKET_SETTING_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.BUCKET_SETTING_PERMISSION]
             }
         ]
     },
     {
         name: 'Dashboard Setting',
         icon: 'pie-chart',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-        permission: ['DASHBOARD_SETTING_PERMISSION'],
+        roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+        permission: [PERMISSION.DASHBOARD_SETTING_PERMISSION],
         childLinks: [
             {
                 name: 'Manage Dashboard',
                 icon: 'form',
                 link: '/setting/mgDashboard',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['MANAGE_DASHBOARD_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.MANAGE_DASHBOARD_PERMISSION]
             }
         ]
     },
     {
         name: 'Report Setting',
         icon: 'paper-clip',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-        permission: ['REPORT_SETTING_PERMISSION'],
+        roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+        permission: [PERMISSION.REPORT_SETTING_PERMISSION],
         childLinks: [
             {
                 name: 'Manage Report',
                 icon: 'form',
                 link: '/setting/mgReport',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['MANAGE_REPORT_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.MANAGE_REPORT_PERMISSION]
             },
             {
                 name: 'Manage OLAP',
                 icon: 'form',
                 link: '/setting/mgOLAP',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['MANAGE_OLAP_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.MANAGE_OLAP_PERMISSION]
             }
         ]
     },
     {
         name: 'Form Setting',
         icon: 'database',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-        permission: ['FORM_SETTING_PERMISSION'],
+        roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+        permission: [PERMISSION.FORM_SETTING_PERMISSION],
         childLinks: [
             {
                 name: 'Manage Form',
                 icon: 'form',
                 link: '/setting/mgForm',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['FORM_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.FORM_PERMISSION]
             },
             {
                 name: 'Manage Section',
                 icon: 'highlight',
                 link: '/setting/mgSection',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['SECTION_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.SECTION_PERMISSION]
             },
             {
                 name: 'Manage Control',
                 icon: 'control',
                 link: '/setting/mgControl',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['CONTROL_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.CONTROL_PERMISSION]
             },
             {
                 name: 'Enable & Visible',
                 icon: 'mac-command',
                 link: '/setting/evConfig',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['ENABLE_AND_VISIBLE_CONTROL_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.ENABLE_AND_VISIBLE_CONTROL_PERMISSION]
             },
             {
                 name: 'Dynamic Payload',
                 icon: 'partition',
                 link: '/setting/dynamicPayload',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['DYNAMIC_PAYLOAD_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.DYNAMIC_PAYLOAD_PERMISSION]
             },
             {
                 name: 'Play Ground',
                 icon: 'html5',
                 link: '/setting/mgPlayGround',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['PLAY_GROUND_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.PLAY_GROUND_PERMISSION]
             }
         ]
     },
     {
         name: 'Profile Setting',
         icon: 'profile',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
-        permission: ['PROFILE_SETTING_PERMISSION'],
+        roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_DEV, ROLE.ROLE_DB],
+        permission: [PERMISSION.PROFILE_SETTING_PERMISSION],
         childLinks: [
             {
                 name: 'Users',
                 icon: 'user-add',
                 link: '/setting/mgUsers',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
-                permission: ['USER_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_DEV, ROLE.ROLE_DB],
+                permission: [PERMISSION.USER_PERMISSION]
             },
             {
                 name: 'Organization',
                 icon: 'deployment-unit',
                 link: '/setting/mgOrganization',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
-                permission: ['ORGANIZATION_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_DEV, ROLE.ROLE_DB],
+                permission: [PERMISSION.ORGANIZATION_PERMISSION]
             },
             {
                 name: 'Role & Profile',
                 icon: 'pushpin',
                 link: '/setting/mgRPP',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
-                permission: ['RPP_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_DEV, ROLE.ROLE_DB],
+                permission: [PERMISSION.RPP_PERMISSION]
             },
             {
                 name: 'Refresh Token',
                 icon: 'euro',
                 link: '/setting/mgRefreshToken',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV'],
-                permission: ['REFRESH_TOKEN_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_DEV],
+                permission: [PERMISSION.REFRESH_TOKEN_PERMISSION]
             }
         ]
     },
     {
         name: 'App Setting',
         icon: 'appstore',
-        roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER', 'ROLE_DEV', 'ROLE_DB'],
-        permission: ['APP_SETTING_PERMISSION'],
+        roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER, ROLE.ROLE_DEV, ROLE.ROLE_DB],
+        permission: [PERMISSION.APP_SETTING_PERMISSION],
         childLinks: [
             {
                 name: 'Credential',
                 icon: 'key',
                 link: '/setting/mgCredentail',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['SOURCE_CREDENTAIL_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.SOURCE_CREDENTAIL_PERMISSION]
             },
             {
                 name: 'Event Bridge',
                 icon: 'group',
                 link: '/setting/mgEventBridge',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['EVENT_BRIDGE_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.EVENT_BRIDGE_PERMISSION]
             },
             {
                 name: 'Lookups',
                 icon: 'control',
                 link: '/setting/mgLookup',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'],
-                permission: ['LOOKUP_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_USER],
+                permission: [PERMISSION.LOOKUP_PERMISSION]
             },
             {
                 name: 'E-Variable',
                 icon: 'font-colors',
                 link: '/setting/mgEvariable',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
-                permission: ['EVARIABL_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_DEV, ROLE.ROLE_DB],
+                permission: [PERMISSION.EVARIABL_PERMISSION]
             },
             {
                 name: 'Template',
                 icon: 'mail',
                 link: '/setting/mgTemplate',
-                roles: ['ROLE_MASTER_ADMIN', 'ROLE_DEV', 'ROLE_DB'],
-                permission: ['TEMPLATE_PERMISSION']
+                roles: [ROLE.ROLE_MASTER_ADMIN, ROLE.ROLE_DEV, ROLE.ROLE_DB],
+                permission: [PERMISSION.TEMPLATE_PERMISSION]
             }
         ]
     },
     {
         name: 'Support',
         icon: 'wifi',
-        roles: ['ROLE_DEV', 'ROLE_DB'],
-        permission: ['SUPPORT_SETTING_PERMISSION'],
+        roles: [ROLE.ROLE_DEV, ROLE.ROLE_DB],
+        permission: [PERMISSION.SUPPORT_SETTING_PERMISSION],
         childLinks: [
             {
                 name: 'Query Inquiry',
                 icon: 'console-sql',
                 link: '/setting/inquery',
-                roles: ['ROLE_DEV', 'ROLE_DB'],
-                permission: ['QUERY_INQUIRY_PERMISSION']
+                roles: [ROLE.ROLE_DEV, ROLE.ROLE_DB],
+                permission: [PERMISSION.QUERY_INQUIRY_PERMISSION]
             }
         ]
     }
 ];
-
-export const LOOKUP_TYPE = {
-    FETCH_LIMIT: 'FETCH_LIMIT',
-    UI_LOOKUP: 'UI_LOOKUP',
-    APPLICATION_STATUS: 'APPLICATION_STATUS',
-    EMAIL_TEMPLATE: 'EMAIL_TEMPLATE',
-    CREDENTIAL_TYPE: 'CREDENTIAL_TYPE',
-    MASTER_ADMIN: 'MASTER_ADMIN',
-    FORM_TYPE: 'FORM_TYPE',
-    FIELD_TYPE: 'FIELD_TYPE',
-    IS_DEFAULT: 'IS_DEFAULT',
-    TASK_TYPE: 'TASK_TYPE',
-    REQUEST_METHOD: 'REQUEST_METHOD',
-    DASHBOARD_TYPE: 'DASHBOARD_TYPE',
-    PAYLOAD_REF: 'PAYLOAD_REF',
-    EVENT_BRIDGE_TYPE: 'EVENT_BRIDGE_TYPE',
-    COMPARISON_OPERATORS: 'COMPARISON_OPERATORS',
-    LOGICAL_OPERATORS: 'LOGICAL_OPERATORS',
-    DYNAMIC_CONDITION: 'DYNAMIC_CONDITION',
-    ACCOUNT_TYPE: 'ACCOUNT_TYPE',
-    ORG_FILTER_TYPE: 'ORG_FILTER_TYPE'
-}

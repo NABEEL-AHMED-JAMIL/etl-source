@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ApiResponse, ApiService } from '../index';
 import { Observable } from 'rxjs';
-import { config } from '../../../environments/environment';
 import { HttpParams } from '@angular/common/http';
+import { config } from '../../../environments/environment';
+import {
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -158,7 +162,7 @@ export class FormSettingService {
         return this.apiService.postData(`${config.apiBaseUrl}/formSetting.json/downloadSTTCommonTemplateFile`, payload, params);
     }
 
-    public uploadSTTCommon(payload: any): Observable<any> {
+    public uploadSTTCommon(payload: any): Observable<ApiResponse> {
         return this.apiService.postData(`${config.apiBaseUrl}/formSetting.json/uploadSTTCommon`, payload);
     }
 

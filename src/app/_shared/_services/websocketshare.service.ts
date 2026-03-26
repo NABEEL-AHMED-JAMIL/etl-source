@@ -1,5 +1,9 @@
 import { Injectable, OnDestroy } from "@angular/core";
-import { Observable, BehaviorSubject } from "rxjs";
+import {
+    Observable,
+    BehaviorSubject
+} from "rxjs";
+
 
 /**
  * @author Nabeel Ahmed
@@ -9,19 +13,20 @@ import { Observable, BehaviorSubject } from "rxjs";
 })
 export class WebSocketShareService implements OnDestroy {
 
-    private notifactionDataSubject = new BehaviorSubject<string>(undefined);
+    private notifactionDataSubject = new BehaviorSubject<any>(undefined);
 
-    constructor() { }
+    constructor() {}
 
-    public onNewValueReceive(msg: string) {
+    public onNewValueReceive(msg: any): void {
         this.notifactionDataSubject.next(msg);
     }
 
-    public getNewValue(): Observable<string> {
+    public getNewValue(): Observable<any> {
         return this.notifactionDataSubject.asObservable();
     }
 
     public ngOnDestroy(): void {
         this.notifactionDataSubject.unsubscribe();
     }
+
 }

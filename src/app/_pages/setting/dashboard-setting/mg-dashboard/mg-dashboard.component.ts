@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { first } from 'rxjs';
+import { Router } from '@angular/router';
 import {
     AlertService,
     CommomService,
-} from 'src/app/_helpers';
+} from '../../../../_helpers';
 import {
     ActionType,
     ApiCode,
@@ -14,9 +15,8 @@ import {
     DashboardService,
     IDashboardSetting,
     IStaticTable
-} from 'src/app/_shared';
-import { Router } from '@angular/router';
-import { CUDashboardComponent } from 'src/app/_pages';
+} from '../../../../_shared';
+import { CUDashboardComponent } from '../../../../_pages';
 
 /**
  * @author Nabeel Ahmed
@@ -170,7 +170,7 @@ export class MgDashboardComponent implements OnInit {
             if (payload.data.groupType) {
                 this.router.navigate(['/report/viewDashboard'], { queryParams: { dashboardId: payload.data.id } });
             } else {
-                this.alertService.showInfo('Please Link Dashboard Group.', ApiCode.SUCCESS);
+                this.alertService.showInfo(ApiCode.SUCCESS, 'Dashboard group type is not defined.');
             }
         } else if (ActionType.DELETE === payload.action) {
             this.modalService.confirm({
@@ -285,7 +285,7 @@ export class MgDashboardComponent implements OnInit {
                             username: this.sessionUser.username
                         }
                     });
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
             );
     }
@@ -302,14 +302,14 @@ export class MgDashboardComponent implements OnInit {
                         }
                     });
                     this.setOfCheckedId = new Set<any>();
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
             );
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

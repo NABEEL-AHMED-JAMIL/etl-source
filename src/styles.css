@@ -23,6 +23,13 @@ nz-content {
     margin: 14px;
 }
 
+.ant-avatar-sm {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    margin-top: -5px;
+}
+
 .auth-lang {
     padding-top: 15px;
     padding-left: 15px;

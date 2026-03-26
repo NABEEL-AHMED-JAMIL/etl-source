@@ -9,7 +9,7 @@ import {
 import {
     CommomService,
     AlertService
-} from 'src/app/_helpers';
+} from '../../../../..//_helpers';
 import {
     APPLICATION_STATUS,
     ActionType,
@@ -25,7 +25,7 @@ import {
     LookupService,
     EvenBridgeService,
     REQUEST_METHOD
-} from 'src/app/_shared';
+} from '../../../../../_shared';
 
 /**
  * @author Nabeel Ahmed
@@ -149,7 +149,7 @@ export class CUEventBridgeComponent implements OnInit {
         this.evenBridgeService.addEventBridge(payload).pipe(first())
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                     this.drawerRef.close();
                 }
             ));
@@ -159,7 +159,7 @@ export class CUEventBridgeComponent implements OnInit {
         this.evenBridgeService.updateEventBridge(payload).pipe(first())
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                     this.drawerRef.close();
                 }
             ));
@@ -167,7 +167,7 @@ export class CUEventBridgeComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

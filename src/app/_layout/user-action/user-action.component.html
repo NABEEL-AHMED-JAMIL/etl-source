@@ -1,8 +1,8 @@
-<ul nz-menu nzSelectable style="width: 300px;">
+<ul nz-menu nzSelectable style="width: 325px;">
     <li nz-menu-item>
         <div class="ant-list-item-meta">
             <div class="ant-list-item-meta-avatar">
-                <nz-avatar [nzSize]="48" [nzShape]="'square'" [nzIcon]="'user'"
+                <nz-avatar [nzSize]="70" [nzShape]="'square'" [nzIcon]="'user'"
                     nzSrc="{{'./assets/avatar/' + sessionUser.profileImage }}">
                 </nz-avatar>
             </div>
@@ -20,11 +20,7 @@
         </div>
     </li>
     <li nz-menu-divider></li>
-    <li nz-menu-item routerLink="/user/myProfile">
-        <span nz-icon nzType="profile" nzTheme="outline"></span>&nbsp;Update Profile
-    </li>
-    <li nz-menu-divider></li>
     <li nz-menu-item (click)="logout()">
-        <span nz-icon nzType="poweroff" nzTheme="outline" class="poweroff_btn"></span>&nbsp;LOGOUT
+        <span nz-icon nzType="poweroff" nzTheme="outline" class="poweroff_btn"></span>&nbsp;Logout
     </li>
 </ul>

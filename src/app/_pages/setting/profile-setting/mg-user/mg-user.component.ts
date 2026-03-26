@@ -6,7 +6,7 @@ import {
     AlertService,
     CommomService,
     SpinnerService
-} from 'src/app/_helpers';
+} from '../../../../_helpers';
 import {
     APPLICATION_STATUS,
     ActionType,
@@ -16,10 +16,11 @@ import {
     AuthenticationService,
     IAppUser,
     IStaticTable,
-} from 'src/app/_shared';
+} from '../../../../_shared';
 import {
     CUUserComponent,
-} from 'src/app/_pages';
+} from '../../../../_pages';
+
 
 /**
  * @author Nabeel Ahmed
@@ -380,7 +381,7 @@ export class MgUserComponent implements OnInit {
                 this.spinnerService.hide();
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
         }
     }
@@ -515,7 +516,7 @@ export class MgUserComponent implements OnInit {
                     this.spinnerService.hide();
                 }, (response: any) => {
                     this.spinnerService.hide();
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.error.message);
                 });
         }
     }
@@ -628,7 +629,7 @@ export class MgUserComponent implements OnInit {
             .subscribe((response: any) => {
                 if (response.status === ApiCode.ERROR) {
                     this.spinnerService.hide();
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 response.data
@@ -644,7 +645,7 @@ export class MgUserComponent implements OnInit {
                 this.spinnerService.hide();
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 
@@ -655,7 +656,7 @@ export class MgUserComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 this.fetchAllAppUserAccount({
@@ -666,10 +667,10 @@ export class MgUserComponent implements OnInit {
                         username: this.sessionUser.username
                     }
                 });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 
@@ -680,7 +681,7 @@ export class MgUserComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 this.fetchAllAppUserAccount({
@@ -691,10 +692,10 @@ export class MgUserComponent implements OnInit {
                         username: this.sessionUser.username
                     }
                 });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 
@@ -705,7 +706,7 @@ export class MgUserComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 this.fetchAllAppUserAccount({
@@ -716,10 +717,10 @@ export class MgUserComponent implements OnInit {
                         username: this.sessionUser.username
                     }
                 });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 

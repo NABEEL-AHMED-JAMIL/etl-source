@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { first } from 'rxjs/operators';
-import {AlertService } from '../../../_helpers';
 import {
-    ApiCode,
-    AuthenticationService
-} from '../../../_shared';
+    Router,
+    ActivatedRoute
+} from '@angular/router';
+import { first } from 'rxjs/operators';
 import {
     UntypedFormBuilder,
     UntypedFormControl,
@@ -13,6 +11,16 @@ import {
     Validators
 } from '@angular/forms';
 import jwt_decode from "jwt-decode";
+import {
+    AlertService
+} from '../../../_helpers';
+import {
+    ApiCode,
+    TokenPayload,
+    ResetPayload,
+    AuthenticationService
+} from '../../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -24,60 +32,96 @@ import jwt_decode from "jwt-decode";
 })
 export class ResetPassComponent implements OnInit {
 
-    public tokenPayload: any;
+    public tokenPayload: TokenPayload;
     public resetPassForm: UntypedFormGroup;
 
     constructor(
-        private router: Router,
-        private fb: UntypedFormBuilder,
-        private alertService: AlertService,
-        private activatedRoute: ActivatedRoute,
-        private authenticationService: AuthenticationService) {
+        private readonly router: Router,
+        private readonly fb: UntypedFormBuilder,
+        private readonly alertService: AlertService,
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly authenticationService: AuthenticationService) {
         this.activatedRoute.queryParamMap
-            .subscribe(params => {
-                try {
-                    if (!params?.get('token')) {
-                        // redirect to forgot password with message token not there
-                        this.alertService.showError('Invlaid url\n please enter email again.', ApiCode.ERROR);
-                        this.router.navigate(['/forgotpass']);
-                    }
-                    this.tokenPayload = jwt_decode(params?.get('token'), { header: false });
-                    this.tokenPayload = JSON.parse(this.tokenPayload.sub);
-                } catch (exception) {
-                    this.alertService.showError('Invlaid token\n please enter email again.', ApiCode.ERROR);
-                    this.router.navigate(['/forgotpass']);
-                }
-            });
+            .pipe(first())
+            .subscribe(params => this.initFromQueryParams(params));
+    }
+
+    private initFromQueryParams(params: any): void {
+        const token = params?.get('token');
+        if (!token) {
+            this.alertService.showError(ApiCode.ERROR, 'Invalid URL: please enter email again.');
+            this.router.navigate(['forgotpass']);
+            return;
+        }
+        try {
+            const decoded: any = jwt_decode(token, { header: false });
+            const sub = decoded?.sub ? JSON.parse(decoded.sub) : null;
+            if (!sub || !sub.uuid || !sub.email || !sub.username) {
+                throw new Error('invalid token payload');
+            }
+            this.tokenPayload = {
+                uuid: sub.uuid,
+                email: sub.email,
+                username: sub.username
+            };
+        } catch {
+            this.alertService.showError(ApiCode.ERROR, 'Invalid token: please enter email again.');
+            this.router.navigate(['forgotpass']);
+        }
     }
 
     ngOnInit() {
-        // if the token is not valid show the message and aslo hide redirect to reset password
+        if (!this.tokenPayload) {
+            return;
+        }
         this.resetPassForm = this.fb.group({
             uuid: [this.tokenPayload.uuid, Validators.required],
             email: [this.tokenPayload.email, Validators.required],
             username: [this.tokenPayload.username, Validators.required],
             newPassword: ['', [Validators.required]],
-            confirm: ['', [this.confirmValidator]],
+            confirm: ['', [this.confirmValidator]]
         });
         this.resetPassForm.controls['username'].disable();
         this.resetPassForm.controls['email'].disable();
     }
 
-    public validateConfirmPassword(): void {
-        setTimeout(() => this.resetPassForm.controls['confirm'].updateValueAndValidity());
+    private get email() {
+        return this.resetPassForm.controls['email'];
     }
 
-    public confirmValidator = (control: UntypedFormControl): { [s: string]: boolean } => {
+    private get username() {
+        return this.resetPassForm.controls['username'];
+    }
+
+    private get newPassword() {
+        return this.resetPassForm.controls['newPassword'];
+    }
+
+    private get confirm() {
+        return this.resetPassForm.controls['confirm'];
+    }
+
+    public validateConfirmPassword(): void {
+        setTimeout(() => this.confirm.updateValueAndValidity());
+    }
+
+    public confirmValidator = (control: UntypedFormControl): { [key: string]: any } | null => {
         if (!control.value) {
-            return { error: true, required: true };
-        } else if (control.value !== this.resetPassForm.controls['newPassword'].value) {
-            return { confirm: true, error: true };
+            return { required: true };
         }
-        return {};
+        if (!this.resetPassForm) {
+            return null;
+        }
+        if (control.value !== this.newPassword.value) {
+            return { confirm: true };
+        }
+        return null;
     };
 
-    public onSubmit(): any {
-        // stop here if form is invalid
+    public onSubmit(): void {
+        if (!this.resetPassForm) {
+            return;
+        }
         if (this.resetPassForm.invalid) {
             Object.values(this.resetPassForm.controls)
                 .forEach(control => {
@@ -88,22 +132,23 @@ export class ResetPassComponent implements OnInit {
                 });
             return;
         }
-        let payload = {
-            email: this.resetPassForm.controls['email'].value,
-            newPassword: this.resetPassForm.controls['newPassword'].value
+        const payload: ResetPayload = {
+            email: this.email.value,
+            newPassword: this.newPassword.value
         };
-        this.authenticationService.resetPassword(payload).pipe(first())
-            .subscribe((response: any) => 
+        this.authenticationService.resetPassword(payload)
+            .pipe(first())
+            .subscribe((response: any) =>
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    this.router.navigate(['/login']);
-                }
-            ));
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
+                    this.router.navigate(['auth/login']);
+                })
+            );
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

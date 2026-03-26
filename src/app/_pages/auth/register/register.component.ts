@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { AlertService } from '../../../_helpers';
-import {
-    ApiCode,
-    AuthenticationService
-} from '../../../_shared';
 import {
     UntypedFormBuilder,
     UntypedFormControl,
     UntypedFormGroup,
     Validators
 } from '@angular/forms';
+import {
+    AlertService
+} from '../../../_helpers';
+import {
+    ApiCode,
+    AuthenticationService
+} from '../../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -27,11 +30,11 @@ export class RegisterComponent implements OnInit {
     public registerForm!: UntypedFormGroup;
 
     constructor(
-        private router: Router,
-        private fb: UntypedFormBuilder,
-        private alertService: AlertService,
-        private authenticationService: AuthenticationService) {
-    }
+        private readonly router: Router,
+        private readonly fb: UntypedFormBuilder,
+        private readonly alertService: AlertService,
+        private readonly authenticationService: AuthenticationService
+    ) {}
 
     ngOnInit() {
         this.registerForm = this.fb.group({
@@ -41,8 +44,7 @@ export class RegisterComponent implements OnInit {
             email: ['', [Validators.email, Validators.required]],
             password: ['', [Validators.required]],
             confirm: ['', [this.confirmValidator]],
-            profileImg: [this.profileList[Math.floor(
-                Math.random() * this.profileList.length)]]
+            profileImg: [this.profileList[Math.floor(Math.random() * this.profileList.length)]]
         });
     }
 
@@ -60,7 +62,6 @@ export class RegisterComponent implements OnInit {
     };
 
     public onSubmit(): any {
-        // stop here if form is invalid
         if (this.registerForm.invalid) {
             Object.values(this.registerForm.controls)
                 .forEach(control => {
@@ -71,18 +72,19 @@ export class RegisterComponent implements OnInit {
                 });
             return;
         }
-        this.authenticationService.signupAppUser(this.registerForm.getRawValue()).pipe(first())
-            .subscribe((response: any) => 
+        this.authenticationService.signupAppUser(this.registerForm.getRawValue())
+            .pipe(first())
+            .subscribe((response: any) =>
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                    this.router.navigate(['/login']);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
+                    this.router.navigate(['auth/login']);
                 }
             ));
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

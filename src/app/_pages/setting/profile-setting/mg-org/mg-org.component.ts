@@ -3,9 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/internal/operators/first';
 import {
     AlertService,
-    CommomService
-} from 'src/app/_helpers';
-import { CUOrgComponent } from 'src/app/_pages';
+    CommomService,
+    AppDashboardThemeService
+} from '../../../../_helpers';
+import { CUOrgComponent } from '../../../../_pages';
 import {
     ActionType,
     ApiCode,
@@ -16,9 +17,8 @@ import {
     LOOKUP_TYPE,
     LookupService,
     OrganizationService,
-    AuthenticationService,
-    AppDashboardThemeService,
-} from 'src/app/_shared';
+    AuthenticationService,,
+} from '../../../../_shared';
 
 export interface SearchPayload {
     startDate: string;
@@ -244,7 +244,7 @@ export class MgOrgComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

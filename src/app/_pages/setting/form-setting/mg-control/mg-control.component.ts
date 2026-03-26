@@ -6,12 +6,12 @@ import {
     AlertService,
     CommomService,
     SpinnerService
-} from 'src/app/_helpers';
+} from '../../../../_helpers';
 import {
     BatchComponent,
     CUControlComponent,
     SttcLinkSttsComponent
-} from 'src/app/_pages';
+} from '../../../../_pages';
 import {
     AuthResponse,
     IStaticTable,
@@ -20,7 +20,8 @@ import {
     FormSettingService,
     ApiCode,
     IGenControl
-} from 'src/app/_shared';
+} from '../../../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -208,13 +209,13 @@ export class MgControlComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 this.genControlTable.dataSource = response.data;
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 
@@ -225,7 +226,7 @@ export class MgControlComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 this.fetchControls({
@@ -235,10 +236,10 @@ export class MgControlComponent implements OnInit {
                         username: this.sessionUser.username
                     }
                 });
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 
@@ -318,7 +319,7 @@ export class MgControlComponent implements OnInit {
                     this.spinnerService.hide();
                 }, (response: any) => {
                     this.spinnerService.hide();
-                    this.alertService.showError(response.error.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.error.message);
                 });
         } else if (ActionType.UPLOAD === payload.action) {
             payload.action = 'Upload Control';
@@ -373,25 +374,25 @@ export class MgControlComponent implements OnInit {
                             username: this.sessionUser.username
                         }
                     })
-                        .pipe(first())
-                        .subscribe((response: any) => {
-                            this.spinnerService.hide();
-                            if (response.status === ApiCode.ERROR) {
-                                this.alertService.showError(response.message, ApiCode.ERROR);
-                                return;
+                    .pipe(first())
+                    .subscribe((response: any) => {
+                        this.spinnerService.hide();
+                        if (response.status === ApiCode.ERROR) {
+                            this.alertService.showError(ApiCode.ERROR, response.message);
+                            return;
+                        }
+                        this.fetchControls({
+                            startDate: this.startDate,
+                            endDate: this.endDate,
+                            sessionUser: {
+                                username: this.sessionUser.username
                             }
-                            this.fetchControls({
-                                startDate: this.startDate,
-                                endDate: this.endDate,
-                                sessionUser: {
-                                    username: this.sessionUser.username
-                                }
-                            });
-                            this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
-                        }, (response: any) => {
-                            this.spinnerService.hide();
-                            this.alertService.showError(response.error.message, ApiCode.ERROR);
                         });
+                        this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
+                    }, (response: any) => {
+                        this.spinnerService.hide();
+                        this.alertService.showError(ApiCode.ERROR, response.error.message);
+                    });
                 }
             });
         }

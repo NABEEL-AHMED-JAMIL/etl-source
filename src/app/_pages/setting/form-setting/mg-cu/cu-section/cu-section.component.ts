@@ -10,7 +10,7 @@ import {
     AlertService,
     SpinnerService,
     CommomService
-} from 'src/app/_helpers';
+} from '../../../../../_helpers';
 import {
     APPLICATION_STATUS,
     ActionType,
@@ -22,7 +22,8 @@ import {
     ILookups,
     LOOKUP_TYPE,
     LookupService
-} from 'src/app/_shared';
+} from '../../../../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -124,14 +125,14 @@ export class CUSectionComponent implements OnInit {
             .subscribe((response: any) => {
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
             }, (response: any) => {
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 
@@ -154,15 +155,15 @@ export class CUSectionComponent implements OnInit {
                 this.loading = false;
                 this.spinnerService.hide();
                 if (response.status === ApiCode.ERROR) {
-                    this.alertService.showError(response.message, ApiCode.ERROR);
+                    this.alertService.showError(ApiCode.ERROR, response.message);
                     return;
                 }
                 this.closeDrawer();
-                this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
             }, (response: any) => {
                 this.loading = false;
                 this.spinnerService.hide();
-                this.alertService.showError(response.error.message, ApiCode.ERROR);
+                this.alertService.showError(ApiCode.ERROR, response.error.message);
             });
     }
 

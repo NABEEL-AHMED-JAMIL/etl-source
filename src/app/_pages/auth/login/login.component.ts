@@ -1,16 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { AlertService } from '../../../_helpers';
+import {
+    Router,
+    ActivatedRoute
+} from '@angular/router';
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators
 } from '@angular/forms';
+import { first } from 'rxjs/operators';
+import {
+    AlertService
+} from '../../../_helpers';
 import {
     ApiCode,
     AuthenticationService
 } from '../../../_shared';
-import { first } from 'rxjs/operators';
+
 
 /**
  * @author Nabeel Ahmed
@@ -58,21 +64,22 @@ export class LoginComponent implements OnInit {
             });
             return;
         }
-        this.authenticationService.signInAppUser(this.loginForm.value).pipe(first())
-            .subscribe((response: any) => 
+        this.authenticationService.signInAppUser(this.loginForm.value)
+            .pipe(first())
+            .subscribe((response: any) =>
                 this.handleApiResponse(response, () => {
-                    this.router.navigate([this.returnUrl]);
+                    this.router.navigate(['main']);
                 }
             ));
     }
 
-    public register(): any {
-        this.router.navigate(['/register']);
+    public register(): void {
+        this.router.navigate(['register']);
     }
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

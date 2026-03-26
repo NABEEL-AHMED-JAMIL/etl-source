@@ -13,3 +13,9 @@ export * from './spinner.component';
 export * from './action-header-list/action-header-list.component';
 export * from './notifaction-action/notifaction-action.component';
 export * from './user-action/user-action.component';
+export * from './more-action/more-action.component';
+//
+export * from './admin-routing.module';
+export * from './report-routing.module';
+export * from './main-routing.module';
+export * from './layout.module';

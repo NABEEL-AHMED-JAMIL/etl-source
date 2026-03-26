@@ -107,7 +107,7 @@ export class CUTemplateComponent implements OnInit {
         this.templateRegService.addTemplateReg(payload).pipe(first())
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                     this.drawerRef.close();
                 }
             ));
@@ -117,7 +117,7 @@ export class CUTemplateComponent implements OnInit {
         this.templateRegService.updateTemplateReg(payload).pipe(first())
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                     this.drawerRef.close();
                 }
             ));
@@ -125,7 +125,7 @@ export class CUTemplateComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

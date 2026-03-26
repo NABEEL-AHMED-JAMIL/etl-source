@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ApiResponse } from '../_model/object';
 import { Observable } from 'rxjs';
 import { config } from '../../../environments/environment';
-import { ApiService } from './api.service';
+import {
+    ApiResponse,
+    ApiService
+} from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -13,7 +15,7 @@ import { ApiService } from './api.service';
 })
 export class DashboardService {
 
-    constructor(private apiService: ApiService) { }
+    constructor(private readonly apiService: ApiService) { }
 
     public addDashboardSetting(payload: any): Observable<ApiResponse> {
         return this.apiService.postData(`${config.apiBaseUrl}/dashboardSetting.json/addDashboardSetting`, payload);

@@ -9,7 +9,7 @@ import {
 import {
     AlertService,
     CommomService,
-} from 'src/app/_helpers';
+} from '../../../../../_helpers';
 import {
     APPLICATION_STATUS,
     ActionType,
@@ -26,7 +26,7 @@ import {
     LookupService,
     REQUEST_METHOD,
     TASK_TYPE
-} from 'src/app/_shared';
+} from '../../../../../_shared';
 
 /**
  * @author Nabeel Ahmed
@@ -218,7 +218,7 @@ export class CuSourceTTypeComponent implements OnInit {
         this.sourceTaskTypeService.addSTT(payload).pipe(first())
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                     this.drawerRef.close();
                 })
             );
@@ -228,7 +228,7 @@ export class CuSourceTTypeComponent implements OnInit {
         this.sourceTaskTypeService.updateSTT(payload).pipe(first())
             .subscribe((response: any) => 
                 this.handleApiResponse(response, () => {
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                     this.drawerRef.close();
                 })
             );
@@ -255,7 +255,7 @@ export class CuSourceTTypeComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

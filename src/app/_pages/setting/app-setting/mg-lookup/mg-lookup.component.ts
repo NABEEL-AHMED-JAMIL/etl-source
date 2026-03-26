@@ -291,8 +291,9 @@ export class MGLookupComponent implements OnInit {
 
     public openCuLookup(actionType: ActionType, editPayload: any): void {
         const drawerRef = this.drawerService.create({
+            nzSize: 'large',
             nzTitle: actionType === ActionType.ADD ? 'Add Lookup' : 'Edit Lookup',
-            nzSize: 'default',
+            nzPlacement: 'right',
             nzMaskClosable: false,
             nzContent: CULookupComponent,
             nzContentParams: {
@@ -392,7 +393,7 @@ export class MGLookupComponent implements OnInit {
                         },
                         parentLookupId: this.lookupId
                     });
-                    this.alertService.showSuccess(response.message, ApiCode.SUCCESS);
+                    this.alertService.showSuccess(ApiCode.SUCCESS, response.message);
                 })
         );
     }
@@ -403,7 +404,7 @@ export class MGLookupComponent implements OnInit {
 
     private handleApiResponse(response: any, successCallback: Function): void {
         if (response.status === ApiCode.ERROR) {
-            this.alertService.showError(response.message, ApiCode.ERROR);
+            this.alertService.showError(ApiCode.ERROR, response.message);
             return;
         }
         successCallback();

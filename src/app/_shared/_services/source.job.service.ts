@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service';
+import { ApiService } from '../../_shared';
+
 
 /**
  * @author Nabeel Ahmed
@@ -9,6 +10,6 @@ import { ApiService } from './api.service';
 })
 export class SourceJobService {
 
-    constructor(private apiService: ApiService) { }
+    constructor(private readonly apiService: ApiService) { }
 
 }

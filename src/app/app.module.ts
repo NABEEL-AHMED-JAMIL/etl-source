@@ -1,114 +1,39 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgxEchartsModule } from 'ngx-echarts';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { registerLocaleData } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import en from '@angular/common/locales/en';
-import { NZ_I18N } from 'ng-zorro-antd/i18n';
-import { en_US } from 'ng-zorro-antd/i18n';
-import { DatePipe } from '@angular/common';
-// module
-import { IconsProviderModule } from './icons-provider.module';
-import { LayoutModule } from './_layout/layout.module';
-import { SpinnerComponent } from './_layout/index';
 import {
-    ReactiveFormsModule,
-    FormsModule
+    registerLocaleData,
+    CommonModule
+} from '@angular/common';
+// remove this once you add into other module
+import {
+    FormsModule,
+    ReactiveFormsModule
 } from '@angular/forms';
 import {
     HttpClientModule,
     HTTP_INTERCEPTORS
 } from '@angular/common/http';
+import en from '@angular/common/locales/en';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
+import { DatePipe } from '@angular/common';
 import {
-    NgZorroAntdModule,
     ErrorInterceptor,
     JwtInterceptor,
-    SearchFilterPipe,
-    AppDashboardThemeService
+    AppDashboardThemeService,
+    SearchFilterPipe
 } from './_helpers';
-// compoenet
 import {
-    LoginComponent,
-    RegisterComponent,
-    ForgotPassComponent,
-    ResetPassComponent,
-    PageNotFoundComponent,
-    DynamicPayloadQueryComponent,
-    DBQueryComponent,
-    QueryInquiryComponent,
-    CUQueryInquiryComponent,
-    BatchComponent,
-    GenTableComponent,
-    MGLookupComponent,
-    CULookupComponent,
-    MgTemplateComponent,
-    CUTemplateComponent,
-    MgRefreshTokenComponent,
-    CURoleComponent,
-    MgRPPComponent,
-    PPCroseTableComponent,
-    CUProfileComponent,
-    CUPermissionComponent,
-    UpdateProfileComponent,
-    CUEvariableComponent,
-    MgEVariableComponent,
-    CUUserComponent,
-    CUOrgComponent,
-    MgUserComponent,
-    MgOrgComponent,
-    RUCroseTableComponent,
-    PUCroseTableComponent,
-    EVUCroseTableComponent,
-    EnvVariableValueComponent,
-    CredentialComponent,
-    CuCredentialComponent,
-    CUFormComponent,
-    CUSectionComponent,
-    CUControlComponent,
-    MGFormComponent,
-    MGSectionComponent,
-    MgControlComponent,
-    MgPlayGroundComponent,
-    SettingDashboardComponent,
-    ViewDashboardComponent,
-    ETLSourceComponent,
-    SttcLinkSttsComponent,
-    SttfLinkSttComponent,
-    SttfLinkSttsComponent,
-    SttsLinkSttcComponent,
-    SttsLinkSttfComponent,
-    MgSourceTaskComponent,
-    CuSourceTaskComponent,
-    MgSourceTaskTypeComponent,
-    CuSourceTTypeComponent,
-    SttLinkFormComponent,
-    CUDashboardComponent,
-    CUReportComponent,
-    MgDashboardComponent,
-    MgReportComponent,
-    CUOLAPComponent,
-    MgOLAPComponent,
-    ViewReportComponent,
-    CUEventBridgeComponent,
-    MgEventBridgeComponent,
-    EBUCroseTableComponent,
-    EVConfigComponent,
-    SCVisibilityComponent,
-    SCEnableabilityComponent,
-    UserInfoComponent,
-    OrgFilterComponent,
+    SpinnerComponent
+} from './_layout';
+import {
+    PageNotFoundComponent
 } from './_pages';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 
-// dynamic fileds
-import {
-    DynamicInputComponent,
-    DynamicTextAreaComponent,
-    DynamicRadioComponent,
-    DynamicSelectComponent,
-    DynamicDatePickerComponent
-} from './_dynamic-fields';
 
 registerLocaleData(en);
 
@@ -117,112 +42,30 @@ export function loadThemeFactory(appDashboardThemeService: AppDashboardThemeServ
     return () => appDashboardThemeService.loadTheme();
 }
 
-// Components starting with 'CU'
-const CUComponents = [
-    CUQueryInquiryComponent,
-    CUProfileComponent,
-    CURoleComponent,
-    CUPermissionComponent,
-    CUEvariableComponent,
-    CUUserComponent,
-    CUOrgComponent,
-    CUSectionComponent,
-    CUFormComponent,
-    CUControlComponent,
-    CuCredentialComponent,
-    CULookupComponent,
-    CUDashboardComponent,
-    CUReportComponent,
-    CUOLAPComponent,
-    CUEventBridgeComponent,
-    CuSourceTaskComponent,
-    CuSourceTTypeComponent,
-    CUTemplateComponent,
-  ];
-  
-  // Other components
-  const OtherComponents = [
-    ETLSourceComponent,
-    SettingDashboardComponent,
-    ViewDashboardComponent,
-    BatchComponent,
-    EnvVariableValueComponent,
-    UserInfoComponent,
-    OrgFilterComponent,
-    GenTableComponent,
+// Other components
+const OtherComponents = [
     SearchFilterPipe,
     SpinnerComponent,
-    LoginComponent,
-    RegisterComponent,
-    ForgotPassComponent,
-    ResetPassComponent,
-    PageNotFoundComponent,
-    DynamicPayloadQueryComponent,
-    DBQueryComponent,
-    MGLookupComponent,
-    MgTemplateComponent,
-    MgRefreshTokenComponent,
-    MgRPPComponent,
-    PPCroseTableComponent,
-    RUCroseTableComponent,
-    PUCroseTableComponent,
-    EVUCroseTableComponent,
-    UpdateProfileComponent,
-    MgEVariableComponent,
-    MgUserComponent,
-    MgOrgComponent,
-    CredentialComponent,
-    MGFormComponent,
-    MGSectionComponent,
-    MgControlComponent,
-    MgPlayGroundComponent,
-    SttcLinkSttsComponent,
-    SttfLinkSttComponent,
-    SttfLinkSttsComponent,
-    SttsLinkSttcComponent,
-    SttsLinkSttfComponent,
-    MgSourceTaskComponent,
-    MgDashboardComponent,
-    MgReportComponent,
-    MgOLAPComponent,
-    ViewReportComponent,
-    MgEventBridgeComponent,
-    EBUCroseTableComponent,
-    EVConfigComponent,
-    SCEnableabilityComponent,
-    SCVisibilityComponent,
-    DynamicInputComponent,
-    DynamicTextAreaComponent,
-    DynamicRadioComponent,
-    DynamicSelectComponent,
-    DynamicDatePickerComponent,
-    QueryInquiryComponent,
-    SttLinkFormComponent,
-    MgSourceTaskTypeComponent
+    PageNotFoundComponent
 ];
-  
+
 /**
  * @author Nabeel Ahmed
  */
 @NgModule({
-    declarations: [
-        AppComponent,
-        ...CUComponents,
-        ...OtherComponents
-    ],
     imports: [
+        RouterModule,
+        CommonModule,
         BrowserModule,
-        AppRoutingModule,
+        BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        IconsProviderModule,
-        LayoutModule,
-        NgZorroAntdModule,
-        NgxEchartsModule.forRoot({
-            echarts: () => import('echarts')
-        })
+        AppRoutingModule,
+        HttpClientModule
+    ],
+    declarations: [
+        AppComponent,
+        ...OtherComponents
     ],
     providers: [
         DatePipe,
@@ -246,6 +89,9 @@ const CUComponents = [
             useClass: ErrorInterceptor,
             multi: true
         },
+    ],
+    exports: [
+        SearchFilterPipe
     ],
     bootstrap: [AppComponent]
 })
